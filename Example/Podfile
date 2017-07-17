@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'ManaKit_Example' do
+  pod 'ManaKit', :path => '../'
+
+  target 'ManaKit_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
