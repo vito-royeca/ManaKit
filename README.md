@@ -5,6 +5,8 @@
 [![License](https://img.shields.io/cocoapods/l/ManaKit.svg?style=flat)](http://cocoapods.org/pods/ManaKit)
 [![Platform](https://img.shields.io/cocoapods/p/ManaKit.svg?style=flat)](http://cocoapods.org/pods/ManaKit)
 
+A database of Magic: The Gathering cards. Includes prices and images. This is the  successor to the [Decktracker](https://github.com/jovito-royeca/Decktracker) project.
+
 ## Example
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
