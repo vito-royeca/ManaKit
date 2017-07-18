@@ -27,7 +27,6 @@ open class CardTableViewCell: UITableViewCell {
     @IBOutlet weak var castingCostView: UIView!
     @IBOutlet weak var typeLabel: UILabel!
     @IBOutlet weak var rarityImage: UIImageView!
-    
     @IBOutlet weak var setLabel: UILabel!
     
     // MARK: Overrides
@@ -68,7 +67,7 @@ open class CardTableViewCell: UITableViewCell {
             if let croppedImage = ManaKit.sharedInstance.croppedImage(card) {
                 thumbnailImage.image = croppedImage
             } else {
-                thumbnailImage.image = ManaKit.sharedInstance.imageFromFramework("/images/cardback-crop-hq.jpg")
+                thumbnailImage.image = ManaKit.sharedInstance.imageFromFramework(nil, imageSize: nil, name: kImageCardBackCropped)
                 ManaKit.sharedInstance.downloadCardImage(card, cropImage: true, completion: { (c: CMCard, image: UIImage?, croppedImage: UIImage?, error: NSError?) in
                     if error == nil {
                         if self.card == c {
@@ -134,7 +133,7 @@ open class CardTableViewCell: UITableViewCell {
                 let y = 0
                 var width = 20
                 let height = 20
-                var imageName = "32.png"
+                var imageSize:ImageSize = ._32
                 
                 for mana in manaArray {
                     if mana.characters.count == 0 {
@@ -143,16 +142,16 @@ open class CardTableViewCell: UITableViewCell {
                     
                     if mana == "1000000" {
                         width = 20 * 3
-                        imageName = "96.png"
+                        imageSize = ._96
                     }
                     
-                    var image = ManaKit.sharedInstance.imageFromFramework("/images/mana/\(mana)/\(imageName)")
+                    var image = ManaKit.sharedInstance.imageFromFramework(.mana, imageSize: imageSize, name: "mana-\(mana)")
                     
                     // fix for dual manas
                     if image == nil {
                         if mana.characters.count > 1 {
                             let reversedMana = String(mana.characters.reversed())
-                            image = ManaKit.sharedInstance.imageFromFramework("/images/mana/\(reversedMana)/\(imageName)")
+                            image = ManaKit.sharedInstance.imageFromFramework(.mana, imageSize: imageSize, name: "mana-\(reversedMana)")
                         }
                     }
                     
@@ -185,7 +184,7 @@ open class CardTableViewCell: UITableViewCell {
                     prefix = "C"
                 }
                 
-                rarityImage.image = ManaKit.sharedInstance.imageFromFramework("/images/set/\(set.code!)/\(prefix)/32.png")
+                rarityImage.image = ManaKit.sharedInstance.imageFromFramework(.set, imageSize: ._32, name: "\(set.code!)-\(prefix)")
 //                var setText = ""
                 
 //                if let name = set.name,

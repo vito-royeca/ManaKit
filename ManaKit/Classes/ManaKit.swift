@@ -19,6 +19,29 @@ public let kImagesVersionKey    = "kImagesVersionKey"
 public let kCardImageSource     = "http://magiccards.info"
 public let kEightEditionRelease = "2003-07-28"
 
+public enum ImageCategory: String {
+    case mana  = "mana",
+    other  = "other",
+    set = "set"
+}
+
+public enum ImageSize: Int {
+    case _16  = 16,
+    _32  = 32,
+    _48 = 48,
+    _64 = 64,
+    _96 = 96
+}
+
+// Some image constants
+public let kImageCardCircles            = "Card_Circles"
+public let kImageCardBackCropped        = "cardback-crop-hq"
+public let kImageCardBack               = "cardback-hq"
+public let kImageCollectorsCardBack     = "collectorscardback-hq"
+public let kImageCropBack               = "cropback-hq"
+public let kImageGrayPatterned          = "Gray_Patterned_BG"
+public let kImageIntlCollectorsCardBack = "internationalcollectorscardback-hq"
+
 @objc(ManaKit)
 open class ManaKit: NSObject {
     // MARK: - Shared Instance
@@ -39,32 +62,23 @@ open class ManaKit: NSObject {
         }
     }
     
-    // MARK: Bundle methods
     /*
      * Example path: "/images/set/2ED/C/48.png"
      */
-//    open func imageFromCache(_ path: String) -> UIImage? {
-//        if let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first {
-//            return UIImage(contentsOfFile: "\(cachePath)/\(path)")
-//        }
-//        
-//        return nil
-//    }
-    
-    /*
-     * Example path: "/images/set/2ED/C/48.png"
-     */
-    open func imageFromFramework(_ path: String) -> UIImage? {
+    open func imageFromFramework(_ imageCategory: ImageCategory?, imageSize: ImageSize?, name: String) -> UIImage? {
         let bundle = Bundle(for: ManaKit.self)
+        var subDir = "images"
+        var resource = name
         
-        let lastIndexOf = path.range(of: "/", options: .backwards, range: nil, locale: nil)?.lowerBound
-        let subdir = path.substring(to: lastIndexOf!)
-        let name = path.components(separatedBy: "/").last
-        let resource = name?.components(separatedBy: ".").first
-        let ext = name?.components(separatedBy: ".").last
+        if let imageCategory = imageCategory {
+            subDir = "\(subDir)/\(imageCategory.rawValue)"
+        }
         
+        if let imageSize = imageSize {
+            resource = "\(resource)-\(imageSize.rawValue)"
+        }
         
-        if let url = bundle.url(forResource: resource, withExtension: ext, subdirectory: subdir) {
+        if let url = bundle.url(forResource: resource, withExtension: "png", subdirectory: subDir) {
             let data = try! Data(contentsOf: url)
             return UIImage(data: data)
         }
