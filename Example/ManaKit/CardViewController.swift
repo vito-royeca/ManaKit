@@ -48,13 +48,13 @@ extension CardViewController : UITableViewDataSource {
             if let c = tableView.dequeueReusableCell(withIdentifier: "ImageCell") {
                 if let imageView = c.viewWithTag(100) as? UIImageView,
                     let card = card {
-                    let bgImage = ManaKit.sharedInstance.imageFromFramework(nil, imageSize: nil, name: kImageGrayPatterned)
+                    let bgImage = ManaKit.sharedInstance.imageFromFramework(imageName: .grayPatterned)
                     c.backgroundColor = UIColor(patternImage: bgImage!)
                     
                     if let cardImage = ManaKit.sharedInstance.cardImage(card) {
                         imageView.image = cardImage
                     } else {
-                        imageView.image = ManaKit.sharedInstance.imageFromFramework(nil, imageSize: nil, name: kImageCardBack)
+                        imageView.image = ManaKit.sharedInstance.imageFromFramework(imageName: .cardBack)
                         ManaKit.sharedInstance.downloadCardImage(card, cropImage: true, completion: { (c: CMCard, image: UIImage?, croppedImage: UIImage?, error: NSError?) in
                             if error == nil {
                                 UIView.transition(with: imageView,

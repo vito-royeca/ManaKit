@@ -19,18 +19,14 @@ public let kImagesVersionKey    = "kImagesVersionKey"
 public let kCardImageSource     = "http://magiccards.info"
 public let kEightEditionRelease = "2003-07-28"
 
-public enum ImageCategory: String {
-    case mana  = "mana",
-    other  = "other",
-    set = "set"
-}
-
-public enum ImageSize: Int {
-    case _16  = 16,
-    _32  = 32,
-    _48 = 48,
-    _64 = 64,
-    _96 = 96
+public enum ImageName: String {
+    case cardCircles       = "Card_Circles",
+    cardBackCropped        = "cardback-crop-hq",
+    cardBack               = "cardback-hq",
+    collectorsCardBack     = "collectorscardback-hq",
+    cropBack               = "cropback-hq",
+    grayPatterned          = "Gray_Patterned_BG",
+    intlCollectorsCardBack = "internationalcollectorscardback-hq"
 }
 
 // Some image constants
@@ -65,18 +61,10 @@ open class ManaKit: NSObject {
     /*
      * Example path: "/images/set/2ED/C/48.png"
      */
-    open func imageFromFramework(_ imageCategory: ImageCategory?, imageSize: ImageSize?, name: String) -> UIImage? {
+    open func imageFromFramework(imageName: ImageName) -> UIImage? {
         let bundle = Bundle(for: ManaKit.self)
-        var subDir = "images"
-        var resource = name
-        
-        if let imageCategory = imageCategory {
-            subDir = "\(subDir)/\(imageCategory.rawValue)"
-        }
-        
-        if let imageSize = imageSize {
-            resource = "\(resource)-\(imageSize.rawValue)"
-        }
+        let subDir = "images"
+        let resource = imageName.rawValue
         
         if let url = bundle.url(forResource: resource, withExtension: "png", subdirectory: subDir) {
             let data = try! Data(contentsOf: url)
@@ -86,8 +74,64 @@ open class ManaKit: NSObject {
         return nil
     }
     
-    open func imageFromAssets(name: String) -> UIImage? {
+    open func setImage(set: CMSet, rarity: CMRarity?) -> UIImage? {
         let bundle = Bundle(for: ManaKit.self)
+        var prefix = "C"
+        
+        if let rarity = rarity {
+            let index = rarity.name!.index(rarity.name!.startIndex, offsetBy: 1)
+            prefix = rarity.name!.substring(to: index)
+            
+            if rarity.name == "Basic Land" {
+                prefix = "C"
+            }
+        }
+    
+        var image = UIImage(named: "\(set.code!)-\(prefix)", in: bundle, compatibleWith: nil)
+        
+        if image == nil {
+            image = UIImage(named: "DEFAULT-\(prefix)", in: bundle, compatibleWith: nil)
+        }
+        
+        return image
+    }
+    
+    open func manaImages(manaCost: String) -> [[String:UIImage]] {
+        let bundle = Bundle(for: ManaKit.self)
+        
+        var array = [[String:UIImage]]()
+        let mc = manaCost.replacingOccurrences(of: "{", with: "")
+            .replacingOccurrences(of: "}", with: " ")
+            .replacingOccurrences(of: "/", with: "")
+        let manaArray = mc.components(separatedBy: " ")
+        
+        for mana in manaArray {
+            if mana.characters.count == 0 {
+                continue
+            }
+            
+            var image = UIImage(named: "mana-\(mana)", in: bundle, compatibleWith: nil)
+            
+            // fix for dual manas
+            if image == nil {
+                if mana.characters.count > 1 {
+                    let reversedMana = String(mana.characters.reversed())
+
+                    image = UIImage(named: "mana-\(reversedMana)", in: bundle, compatibleWith: nil)
+                }
+            }
+            
+            if let image = image {
+                array.append([mana:image])
+            }
+        }
+        
+        return array
+    }
+    
+    open func symbolImage(name: String) -> UIImage? {
+        let bundle = Bundle(for: ManaKit.self)
+        
         return UIImage(named: name, in: bundle, compatibleWith: nil)
     }
     
