@@ -7,6 +7,23 @@
 
 A database of Magic: The Gathering cards. Includes prices and images. This is the  successor to the [Decktracker](https://github.com/jovito-royeca/Decktracker) project.
 
+## Usage
+
+The singleton `ManaKit` class provides API methods for setting up the Core Data database, getting images embedded in the framework, and a lot more.
+
+Set up Manakit in your app delegate class:
+
+````
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    
+    // Override point for customization after application launch.
+    ManaKit.sharedInstance.setupResources()
+        
+    return true
+}
+    
+````
+
 ## Example
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
@@ -24,7 +41,8 @@ pod "ManaKit"
 
 ## Author
 
-jovito-royeca, jovit.royeca@gmail.com
+Jovito Royeca
+jovit.royeca@gmail.com
 
 ## License
 
