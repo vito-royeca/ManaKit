@@ -11,7 +11,7 @@ A database of Magic: The Gathering cards. Includes prices and images. This is th
 
 The singleton `ManaKit` class provides API methods for setting up the Core Data database, getting images embedded in the framework, and a lot more.
 
-Set up Manakit in your app delegate class:
+Set up ManaKit in your app delegate class:
 
 ````
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
