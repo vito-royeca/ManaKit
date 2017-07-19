@@ -115,10 +115,6 @@ open class CardTableViewCell: UITableViewCell {
                     
                     nameLabel.shadowColor = shadowColor
                     nameLabel.shadowOffset = shadowOffset
-//                    typeLabel.shadowColor = shadowColor
-//                    typeLabel.shadowOffset = shadowOffset
-//                    setLabel.shadowColor = shadowColor
-//                    setLabel.shadowOffset = shadowOffset
                 }
             }
             
@@ -184,7 +180,8 @@ open class CardTableViewCell: UITableViewCell {
                     prefix = "C"
                 }
                 
-                rarityImage.image = ManaKit.sharedInstance.imageFromFramework(.set, imageSize: ._32, name: "\(set.code!)-\(prefix)")
+                rarityImage.image = ManaKit.sharedInstance.imageFromAssets(name: "\(set.code!)-\(prefix)")
+                
 //                var setText = ""
                 
 //                if let name = set.name,

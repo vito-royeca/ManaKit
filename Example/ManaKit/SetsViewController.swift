@@ -30,6 +30,17 @@ class SetsViewController: UIViewController {
         searchController.dimsBackgroundDuringPresentation = false
         definesPresentationContext = true
         tableView.tableHeaderView = searchController.searchBar
+        
+        // print sets and booster
+//        let sets = dataSource!.all() as! [CMSet]
+//        for set in sets {
+//            print("\(set.name!) - \(set.code!)")
+//            if let setBoosters = set.setBoosters_ {
+//                for setBooster in setBoosters.allObjects as! [CMSetBooster] {
+//                    print("\t\(setBooster.booster!.name!)")
+//                }
+//            }
+//        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -51,27 +62,28 @@ class SetsViewController: UIViewController {
             request = fetchRequest
         } else {
             request = NSFetchRequest(entityName: "CMSet")
-            request!.sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: false)]
+//            request!.sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: false)]
+            request!.sortDescriptors = [NSSortDescriptor(key: "code", ascending: true)]
         }
         
-        let dataSource = DATASource(tableView: tableView, cellIdentifier: "Cell", fetchRequest: request!, mainContext: ManaKit.sharedInstance.dataStack!.mainContext, configuration: { cell, item, indexPath in
+        let dataSource = DATASource(tableView: tableView, cellIdentifier: "SetCell", fetchRequest: request!, mainContext: ManaKit.sharedInstance.dataStack!.mainContext, configuration: { cell, item, indexPath in
             if let set = item as? CMSet {
 
-                if let image = ManaKit.sharedInstance.imageFromFramework(.set, imageSize: ._32, name: "\(set.code!)-C") {
-                    cell.imageView?.image = image
-                } else if let image = ManaKit.sharedInstance.imageFromFramework(.set, imageSize: ._32, name: "\(set.code!)-R") {
-                    cell.imageView?.image = image
-                } else if let image = ManaKit.sharedInstance.imageFromFramework(.set, imageSize: ._32, name: "\(set.code!)-M") {
-                    cell.imageView?.image = image
-                } else if let image = ManaKit.sharedInstance.imageFromFramework(.set, imageSize: ._32, name: "\(set.code!)-S") {
-                    cell.imageView?.image = image
-                } else if let image = ManaKit.sharedInstance.imageFromFramework(.other, imageSize: ._32, name: "other-blank") {
-                    cell.imageView?.image = image
+                if let setIconView = cell.contentView.viewWithTag(100) as? UIImageView {
+                    setIconView.image = ManaKit.sharedInstance.imageFromAssets(name: "\(set.code!)-C")
                 }
-                
-                cell.imageView?.contentMode = .scaleAspectFit
-                cell.textLabel?.text = set.name
-                cell.detailTextLabel?.text = "\(set.code!) / \(set.cards!.allObjects.count) cards / Released: \(set.releaseDate!)"
+                if let label = cell.contentView.viewWithTag(200) as? UILabel {
+                    label.text = set.name
+                }
+                if let label = cell.contentView.viewWithTag(300) as? UILabel {
+                    label.text = set.code
+                }
+                if let label = cell.contentView.viewWithTag(400) as? UILabel {
+                    label.text = set.releaseDate
+                }
+                if let label = cell.contentView.viewWithTag(500) as? UILabel {
+                    label.text = "\(set.cards!.allObjects.count) cards"
+                }
             }
         })
         
@@ -126,6 +138,10 @@ extension SetsViewController : UITableViewDelegate {
         let sets = dataSource!.all()
         let set = sets[indexPath.row]
         performSegue(withIdentifier: "showSet", sender: set)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return CGFloat(66)
     }
 }
 

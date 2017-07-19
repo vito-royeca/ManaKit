@@ -22,6 +22,8 @@
 		0DA0325F5ED6DFA543F245ECEBEAAA03 /* Sync+ObjC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CEA21E3727C65D3EDD344967D28E31 /* Sync+ObjC.swift */; };
 		0E2C01DBA7F9B58B63C61300E4EA314B /* NSManagedObject+Export.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D42957431EDA3CE0E30E5273053F9A2 /* NSManagedObject+Export.swift */; };
 		0E6391EA7F1AFA2DC7CC15CF14BC8857 /* DATAStack-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 86A858006D0D0E4FEB1021ADBDCA5942 /* DATAStack-dummy.m */; };
+		110BB4EB1F1F042600086841 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 110BB4EA1F1F042600086841 /* Images.xcassets */; };
+		110BB4EC1F1F042600086841 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 110BB4EA1F1F042600086841 /* Images.xcassets */; };
 		114801C3B7F642AA111D32B6F6FC5826 /* NSDate+PropertyMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D17329D6D9C2C1CBD5689B41660D473 /* NSDate+PropertyMapper.m */; };
 		115151AE1F1E23870061C270 /* ManaKit.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 627EBB0F6DE7FDFBEB7EA1D36E60B5B4 /* ManaKit.xcdatamodeld */; };
 		115151AF1F1E23DA0061C270 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 115151981F1DF06A0061C270 /* images */; };
@@ -394,6 +396,7 @@
 		0FC429318B7806D20E2102F96CD7EBB9 /* TestCheck.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TestCheck.swift; path = Sources/TestCheck.swift; sourceTree = "<group>"; };
 		10ADC965CE955758B823477890B8EE6D /* SSZipArchive-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SSZipArchive-prefix.pch"; sourceTree = "<group>"; };
 		10DB4CCDF0F281A4277B955F5826C4C1 /* crypt.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = crypt.h; path = SSZipArchive/minizip/crypt.h; sourceTree = "<group>"; };
+		110BB4EA1F1F042600086841 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		115151981F1DF06A0061C270 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
 		115151BE1F1E26FD0061C270 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		1204157DB56FC23EAC3078E1932C482D /* Pods-ManaKit_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-ManaKit_Example-dummy.m"; sourceTree = "<group>"; };
@@ -1105,11 +1108,12 @@
 		CA9ADE98C75A7862347590A9B4A39399 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				50CC68059AD54F2561C521419CEC1B41 /* CardTableViewCell.xib */,
 				115151BE1F1E26FD0061C270 /* fonts */,
 				115151981F1DF06A0061C270 /* images */,
-				50CC68059AD54F2561C521419CEC1B41 /* CardTableViewCell.xib */,
-				627EBB0F6DE7FDFBEB7EA1D36E60B5B4 /* ManaKit.xcdatamodeld */,
+				110BB4EA1F1F042600086841 /* Images.xcassets */,
 				D45748A21643F3E4754064A7713B96ED /* ManaKit.sqlite.zip */,
+				627EBB0F6DE7FDFBEB7EA1D36E60B5B4 /* ManaKit.xcdatamodeld */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -1591,6 +1595,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F893A8F1193BBFB2AA680C1CEFF5D2B /* CardTableViewCell.xib in Resources */,
+				110BB4EC1F1F042600086841 /* Images.xcassets in Resources */,
 				90A3B2EDFF9812079325EF13123E0DE2 /* ManaKit.sqlite.zip in Resources */,
 				E5FD21084F0C670EE3A71D2C410E6583 /* ManaKit.xcdatamodeld in Resources */,
 			);
@@ -1602,6 +1607,7 @@
 			files = (
 				115151BF1F1E27E00061C270 /* fonts in Resources */,
 				115151AF1F1E23DA0061C270 /* images in Resources */,
+				110BB4EB1F1F042600086841 /* Images.xcassets in Resources */,
 				115151B01F1E23DA0061C270 /* CardTableViewCell.xib in Resources */,
 				115151B11F1E23DA0061C270 /* ManaKit.xcdatamodeld in Resources */,
 				115151B21F1E23DA0061C270 /* ManaKit.sqlite.zip in Resources */,

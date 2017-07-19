@@ -12,7 +12,7 @@ import SSZipArchive
 import Sync
 
 
-public let kMTGJSONVersion      = "3.8.7"
+public let kMTGJSONVersion      = "3.9.3"
 public let kMTGJSONVersionKey   = "kMTGJSONVersionKey"
 public let kImagesVersion       = kMTGJSONVersion
 public let kImagesVersionKey    = "kImagesVersionKey"
@@ -86,18 +86,19 @@ open class ManaKit: NSObject {
         return nil
     }
     
+    open func imageFromAssets(name: String) -> UIImage? {
+        let bundle = Bundle(for: ManaKit.self)
+        return UIImage(named: name, in: bundle, compatibleWith: nil)
+    }
+    
     open func nibFromBundle(_ name: String) -> UINib {
         let bundle = Bundle(for: ManaKit.self)
         return UINib(nibName: name, bundle: bundle)
     }
     
-    open func setupResources(willCopyDatabaseFile: Bool, willLoadCustomFonts: Bool) {
-        if willCopyDatabaseFile {
-            copyDatabaseFile()
-        }
-        if willLoadCustomFonts {
-            loadCustomFonts()
-        }
+    open func setupResources() {
+        copyDatabaseFile()
+        loadCustomFonts()
     }
     
     func copyDatabaseFile() {

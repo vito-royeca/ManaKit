@@ -19,11 +19,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
-        
-        ManaKit.sharedInstance.setupResources(willCopyDatabaseFile: true, willLoadCustomFonts: true)
+
+        // create database...
 //        DatabaseMaintainer.sharedInstance.json2CoreData()
 //        DatabaseMaintainer.sharedInstance.updateMCINumbers()
 
+        
+        // ... or test database
+        ManaKit.sharedInstance.setupResources()
         
         return true
     }
