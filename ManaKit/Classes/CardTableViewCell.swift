@@ -67,7 +67,7 @@ open class CardTableViewCell: UITableViewCell {
             if let croppedImage = ManaKit.sharedInstance.croppedImage(card) {
                 thumbnailImage.image = croppedImage
             } else {
-                thumbnailImage.image = ManaKit.sharedInstance.imageFromFramework(nil, imageSize: nil, name: kImageCardBackCropped)
+                thumbnailImage.image = ManaKit.sharedInstance.imageFromFramework(imageName: .cardBackCropped)
                 ManaKit.sharedInstance.downloadCardImage(card, cropImage: true, completion: { (c: CMCard, image: UIImage?, croppedImage: UIImage?, error: NSError?) in
                     if error == nil {
                         if self.card == c {
@@ -120,43 +120,28 @@ open class CardTableViewCell: UITableViewCell {
             
             // casting cost
             if let manaCost = card.manaCost {
-                let mc = manaCost.replacingOccurrences(of: "{", with: "")
-                                 .replacingOccurrences(of: "}", with: " ")
-                                 .replacingOccurrences(of: "/", with: "")
-                let manaArray = mc.components(separatedBy: " ")
+                let array = ManaKit.sharedInstance.manaImages(manaCost: manaCost)
                 
                 var x = 0
                 let y = 0
                 var width = 20
                 let height = 20
-                var imageSize:ImageSize = ._32
                 
-                for mana in manaArray {
-                    if mana.characters.count == 0 {
-                        continue
-                    }
-                    
-                    if mana == "1000000" {
-                        width = 20 * 3
-                        imageSize = ._96
-                    }
-                    
-                    var image = ManaKit.sharedInstance.imageFromFramework(.mana, imageSize: imageSize, name: "mana-\(mana)")
-                    
-                    // fix for dual manas
-                    if image == nil {
-                        if mana.characters.count > 1 {
-                            let reversedMana = String(mana.characters.reversed())
-                            image = ManaKit.sharedInstance.imageFromFramework(.mana, imageSize: imageSize, name: "mana-\(reversedMana)")
+                for dict in array {
+                    for (key,value) in dict {
+                        if key == "1000000" {
+                            width = 20 * 3
+                        } else {
+                            width = 20
                         }
+                        
+                        let imageView = UIImageView(frame: CGRect(x: x, y: y, width: width, height: height))
+                        imageView.image = value
+                        imageView.contentMode = .scaleAspectFit
+                        castingCostView.addSubview(imageView)
+                    
+                        x += width
                     }
-                    
-                    let imageView = UIImageView(frame: CGRect(x: x, y: y, width: width, height: height))
-                    imageView.image = image
-                    imageView.contentMode = .scaleAspectFit
-                    castingCostView.addSubview(imageView)
-                    
-                    x += width
                 }
             }
             
@@ -174,13 +159,8 @@ open class CardTableViewCell: UITableViewCell {
             // rarity and set
             if let rarity = card.rarity_,
                 let set = card.set {
-                let index = rarity.name!.index(rarity.name!.startIndex, offsetBy: 1)
-                var prefix = rarity.name!.substring(to: index)
-                if rarity.name == "Basic Land" {
-                    prefix = "C"
-                }
                 
-                rarityImage.image = ManaKit.sharedInstance.imageFromAssets(name: "\(set.code!)-\(prefix)")
+                rarityImage.image = ManaKit.sharedInstance.setImage(set: set, rarity: rarity)
                 
 //                var setText = ""
                 

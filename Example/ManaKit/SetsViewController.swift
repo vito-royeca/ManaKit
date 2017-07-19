@@ -30,17 +30,6 @@ class SetsViewController: UIViewController {
         searchController.dimsBackgroundDuringPresentation = false
         definesPresentationContext = true
         tableView.tableHeaderView = searchController.searchBar
-        
-        // print sets and booster
-//        let sets = dataSource!.all() as! [CMSet]
-//        for set in sets {
-//            print("\(set.name!) - \(set.code!)")
-//            if let setBoosters = set.setBoosters_ {
-//                for setBooster in setBoosters.allObjects as! [CMSetBooster] {
-//                    print("\t\(setBooster.booster!.name!)")
-//                }
-//            }
-//        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -62,15 +51,14 @@ class SetsViewController: UIViewController {
             request = fetchRequest
         } else {
             request = NSFetchRequest(entityName: "CMSet")
-//            request!.sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: false)]
-            request!.sortDescriptors = [NSSortDescriptor(key: "code", ascending: true)]
+            request!.sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: false)]
         }
         
         let dataSource = DATASource(tableView: tableView, cellIdentifier: "SetCell", fetchRequest: request!, mainContext: ManaKit.sharedInstance.dataStack!.mainContext, configuration: { cell, item, indexPath in
             if let set = item as? CMSet {
 
                 if let setIconView = cell.contentView.viewWithTag(100) as? UIImageView {
-                    setIconView.image = ManaKit.sharedInstance.imageFromAssets(name: "\(set.code!)-C")
+                    setIconView.image = ManaKit.sharedInstance.setImage(set: set, rarity: nil)
                 }
                 if let label = cell.contentView.viewWithTag(200) as? UILabel {
                     label.text = set.name
