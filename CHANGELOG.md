@@ -1,3 +1,7 @@
+**Version 0.7.0** @21.07.17
+
+- feat: Updated the SQLIte database to MTGJSON version 3.9.3.
+
 **Version 0.6.0** @ 20.07.17
 
 - refactor: Now using asset catalogue for mana symbols.
