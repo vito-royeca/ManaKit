@@ -29,30 +29,6 @@
 		1147B72C1F21CDED004EF296 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7C1CDBBF910AB83A73FF9F0984963C0 /* Images.xcassets */; };
 		1147B72D1F21CDED004EF296 /* ManaKit.xcdatamodeld in Resources */ = {isa = PBXBuildFile; fileRef = BD61241D5B49E49E4B9E0CC7AF8B9E57 /* ManaKit.xcdatamodeld */; };
 		1147B72E1F21CDED004EF296 /* ManaKit.sqlite.zip in Resources */ = {isa = PBXBuildFile; fileRef = DFE315E030614C7D8C412341C34B1EA5 /* ManaKit.sqlite.zip */; };
-		1147B72F1F21D02E004EF296 /* beleren-bold-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EA3477FC18DE5A94C69B7407E77C782A /* beleren-bold-webfont.ttf */; };
-		1147B7301F21D02E004EF296 /* belerensmallcaps-bold-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B2176608362BDAE9CFA171BF7D03C385 /* belerensmallcaps-bold-webfont.ttf */; };
-		1147B7311F21D02E004EF296 /* Goudy Medieval.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6CAA320C7B18E23CF33ECCBBAD46AC04 /* Goudy Medieval.ttf */; };
-		1147B7321F21D02E004EF296 /* Matrix Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D33395C9BD8B5784B29E2927A1D56ABF /* Matrix Bold.ttf */; };
-		1147B7331F21D02E004EF296 /* MPlantin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 513FB572B5359DB61C60A178BDD7EC61 /* MPlantin.ttf */; };
-		1147B7341F21D037004EF296 /* Card_Circles.png in Resources */ = {isa = PBXBuildFile; fileRef = 30260ED635178529D76A91BB9B7856A9 /* Card_Circles.png */; };
-		1147B7351F21D037004EF296 /* cardback-crop-hq.png in Resources */ = {isa = PBXBuildFile; fileRef = A3C6D3D2156CA2BEA9A7C78D793548E9 /* cardback-crop-hq.png */; };
-		1147B7361F21D037004EF296 /* cardback-hq.png in Resources */ = {isa = PBXBuildFile; fileRef = 85ED8468D9564729AB3E2AAB3020B133 /* cardback-hq.png */; };
-		1147B7371F21D037004EF296 /* collectorscardback-hq.png in Resources */ = {isa = PBXBuildFile; fileRef = 5087B218ADEF735C0035D8AB37D3ED2D /* collectorscardback-hq.png */; };
-		1147B7381F21D037004EF296 /* cropback-hq.png in Resources */ = {isa = PBXBuildFile; fileRef = 6283DD476CDF9C5C5FB3BC676778CD93 /* cropback-hq.png */; };
-		1147B7391F21D037004EF296 /* Gray_Patterned_BG.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B60F4A8CAE79CC3F67DDF40F50EFE21 /* Gray_Patterned_BG.png */; };
-		1147B73A1F21D037004EF296 /* internationalcollectorscardback-hq.png in Resources */ = {isa = PBXBuildFile; fileRef = FB1865A3DC43E6E0CEA7446020E66BB8 /* internationalcollectorscardback-hq.png */; };
-		1147B73B1F21D040004EF296 /* beleren-bold-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EA3477FC18DE5A94C69B7407E77C782A /* beleren-bold-webfont.ttf */; };
-		1147B73C1F21D040004EF296 /* belerensmallcaps-bold-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B2176608362BDAE9CFA171BF7D03C385 /* belerensmallcaps-bold-webfont.ttf */; };
-		1147B73D1F21D040004EF296 /* Goudy Medieval.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6CAA320C7B18E23CF33ECCBBAD46AC04 /* Goudy Medieval.ttf */; };
-		1147B73E1F21D040004EF296 /* Matrix Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D33395C9BD8B5784B29E2927A1D56ABF /* Matrix Bold.ttf */; };
-		1147B73F1F21D040004EF296 /* MPlantin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 513FB572B5359DB61C60A178BDD7EC61 /* MPlantin.ttf */; };
-		1147B7401F21D048004EF296 /* Card_Circles.png in Resources */ = {isa = PBXBuildFile; fileRef = 30260ED635178529D76A91BB9B7856A9 /* Card_Circles.png */; };
-		1147B7411F21D048004EF296 /* cardback-crop-hq.png in Resources */ = {isa = PBXBuildFile; fileRef = A3C6D3D2156CA2BEA9A7C78D793548E9 /* cardback-crop-hq.png */; };
-		1147B7421F21D048004EF296 /* cardback-hq.png in Resources */ = {isa = PBXBuildFile; fileRef = 85ED8468D9564729AB3E2AAB3020B133 /* cardback-hq.png */; };
-		1147B7431F21D048004EF296 /* collectorscardback-hq.png in Resources */ = {isa = PBXBuildFile; fileRef = 5087B218ADEF735C0035D8AB37D3ED2D /* collectorscardback-hq.png */; };
-		1147B7441F21D048004EF296 /* cropback-hq.png in Resources */ = {isa = PBXBuildFile; fileRef = 6283DD476CDF9C5C5FB3BC676778CD93 /* cropback-hq.png */; };
-		1147B7451F21D048004EF296 /* Gray_Patterned_BG.png in Resources */ = {isa = PBXBuildFile; fileRef = 8B60F4A8CAE79CC3F67DDF40F50EFE21 /* Gray_Patterned_BG.png */; };
-		1147B7461F21D048004EF296 /* internationalcollectorscardback-hq.png in Resources */ = {isa = PBXBuildFile; fileRef = FB1865A3DC43E6E0CEA7446020E66BB8 /* internationalcollectorscardback-hq.png */; };
 		114801C3B7F642AA111D32B6F6FC5826 /* NSDate+PropertyMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D17329D6D9C2C1CBD5689B41660D473 /* NSDate+PropertyMapper.m */; };
 		147494AAB7B18ADCDE089C65B2999A96 /* CardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48A8B3F3F80E9A01633A8CC9F111DD3 /* CardTableViewCell.swift */; };
 		1612CB07C4183AC32836A8EF8B3772BE /* CMForeignName+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA451EBD2BAA58F5DF1D466D018142 /* CMForeignName+CoreDataClass.swift */; };
@@ -1621,18 +1597,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1147B7341F21D037004EF296 /* Card_Circles.png in Resources */,
-				1147B7351F21D037004EF296 /* cardback-crop-hq.png in Resources */,
-				1147B7361F21D037004EF296 /* cardback-hq.png in Resources */,
-				1147B7371F21D037004EF296 /* collectorscardback-hq.png in Resources */,
-				1147B7381F21D037004EF296 /* cropback-hq.png in Resources */,
-				1147B7391F21D037004EF296 /* Gray_Patterned_BG.png in Resources */,
-				1147B73A1F21D037004EF296 /* internationalcollectorscardback-hq.png in Resources */,
-				1147B72F1F21D02E004EF296 /* beleren-bold-webfont.ttf in Resources */,
-				1147B7301F21D02E004EF296 /* belerensmallcaps-bold-webfont.ttf in Resources */,
-				1147B7311F21D02E004EF296 /* Goudy Medieval.ttf in Resources */,
-				1147B7321F21D02E004EF296 /* Matrix Bold.ttf in Resources */,
-				1147B7331F21D02E004EF296 /* MPlantin.ttf in Resources */,
 				1147B7291F21CDED004EF296 /* CardTableViewCell.xib in Resources */,
 				1147B72C1F21CDED004EF296 /* Images.xcassets in Resources */,
 				1147B72D1F21CDED004EF296 /* ManaKit.xcdatamodeld in Resources */,
@@ -1645,18 +1609,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1147B7401F21D048004EF296 /* Card_Circles.png in Resources */,
-				1147B7411F21D048004EF296 /* cardback-crop-hq.png in Resources */,
-				1147B7421F21D048004EF296 /* cardback-hq.png in Resources */,
-				1147B7431F21D048004EF296 /* collectorscardback-hq.png in Resources */,
-				1147B7441F21D048004EF296 /* cropback-hq.png in Resources */,
-				1147B7451F21D048004EF296 /* Gray_Patterned_BG.png in Resources */,
-				1147B7461F21D048004EF296 /* internationalcollectorscardback-hq.png in Resources */,
-				1147B73B1F21D040004EF296 /* beleren-bold-webfont.ttf in Resources */,
-				1147B73C1F21D040004EF296 /* belerensmallcaps-bold-webfont.ttf in Resources */,
-				1147B73D1F21D040004EF296 /* Goudy Medieval.ttf in Resources */,
-				1147B73E1F21D040004EF296 /* Matrix Bold.ttf in Resources */,
-				1147B73F1F21D040004EF296 /* MPlantin.ttf in Resources */,
 				437A7503FF3FB5D09365AEBA72D38D40 /* CardTableViewCell.xib in Resources */,
 				449D5DEAD0DA9795DBDF154F806BA03F /* Images.xcassets in Resources */,
 				B062F5CF9D8018053F49E05C3B4C93A4 /* ManaKit.sqlite.zip in Resources */,
