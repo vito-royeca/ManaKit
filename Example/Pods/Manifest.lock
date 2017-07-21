@@ -2,7 +2,7 @@ PODS:
   - DATASource (6.1.5)
   - DATAStack (6.2.0)
   - Kanna (2.1.1)
-  - ManaKit (0.1.0):
+  - ManaKit (0.6.0):
     - DATASource
     - DATAStack (~> 6)
     - Kanna
@@ -12,7 +12,7 @@ PODS:
     - Sync
   - Networking (3.0.3)
   - ReachabilitySwift (3)
-  - SSZipArchive (2.0.0)
+  - SSZipArchive (2.0.1)
   - Sync (3.3.0)
 
 DEPENDENCIES:
@@ -33,12 +33,12 @@ SPEC CHECKSUMS:
   DATASource: 52b86cfff6c7ac3db45192c01f7839c7473576c3
   DATAStack: 06d6a00f4fe84f11afdae2a6f47558f1087000e5
   Kanna: 9b4b086c218703f2b94f5b21a466217dd2f9332e
-  ManaKit: 8a98c6e6c6ac61658421d5e5a8cca303ef115814
+  ManaKit: 012e5fd786229bf84472b25532688d58be2cf747
   Networking: e2c42013296d093e4249f8247acb08e36958a11a
   ReachabilitySwift: f5b9bb30a0777fac8f09ce8b067e32faeb29bb64
-  SSZipArchive: 8153333145bf99acaf1918d257fdcef68a9269e1
+  SSZipArchive: 6678776f378494909195d3f1b3f00d91e76084f9
   Sync: 7bf0699de46e470d68dc5f1f8408e4c19536c71f
 
 PODFILE CHECKSUM: a7a847921ed47ff8741e29afbd0c571fae9ce895
 
-COCOAPODS: 1.3.0.beta.2
+COCOAPODS: 1.3.0.beta.3
