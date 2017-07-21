@@ -1,4 +1,4 @@
-**Version 0.7.0** @21.07.17
+**Version 0.7.1** @21.07.17
 
 - feat: Updated the SQLIte database to MTGJSON version 3.9.3.
 
