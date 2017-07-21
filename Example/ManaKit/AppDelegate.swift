@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         
         // ... or test the database
-//        ManaKit.sharedInstance.setupResources()
+        ManaKit.sharedInstance.setupResources()
         
         return true
     }
