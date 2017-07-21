@@ -18,7 +18,7 @@ class DatabaseMaintainer: NSObject {
     static let sharedInstance = DatabaseMaintainer()
     
     // MARK: Constants
-//    let setCodesForProcessing:[String]? = ["LEA", "8ED", "M15"]
+//    let setCodesForProcessing:[String]? = ["LEB"]
     let setCodesForProcessing:[String]? = nil
     let printMilestone = 1000
     
@@ -729,13 +729,22 @@ class DatabaseMaintainer: NSObject {
         }
     }
     
+    /**
+        Updates the `CMCard.mciNumber` value from http://magiccards.info/
+ 
+     */
     func updateMCINumbers() {
         let dateStart = Date()
         
         let request:NSFetchRequest<CMCard> = CMCard.fetchRequest() as! NSFetchRequest<CMCard>
-        let predicate = NSPredicate(format: "mciNumber == nil AND number == nil")
+        var predicate = NSPredicate(format: "mciNumber == nil AND number == nil")
         let sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
                                NSSortDescriptor(key: "name", ascending: true)]
+        
+        if let setCodesForProcessing = setCodesForProcessing {
+            let setPredicate = NSPredicate(format: "set.code in %@", setCodesForProcessing)
+            predicate = NSCompoundPredicate.init(andPredicateWithSubpredicates: [predicate, setPredicate])
+        }
         request.predicate = predicate
         request.sortDescriptors = sortDescriptors
         
@@ -789,6 +798,7 @@ class DatabaseMaintainer: NSObject {
                             let number = a["number"] as? String {
                             if name == card.name {
                                 card.mciNumber = number
+                                print("\(card.set!.code!) - \(card.name!) - \(number)")
                                 try! ManaKit.sharedInstance.dataStack?.mainContext.save()
                                 break
                             }
