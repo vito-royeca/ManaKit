@@ -101,11 +101,11 @@ class DatabaseMaintainer: NSObject {
                                         print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
                                         
                                         // rulings
-                                        tmpDateStart = Date()
-                                        self.updateRulings()
-                                        dateEnd = Date()
-                                        timeDifference = dateEnd.timeIntervalSince(tmpDateStart)
-                                        print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
+//                                        tmpDateStart = Date()
+//                                        self.updateRulings()
+//                                        dateEnd = Date()
+//                                        timeDifference = dateEnd.timeIntervalSince(tmpDateStart)
+//                                        print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
 //
 //                                        // foreign names
 //                                        tmpDateStart = Date()
@@ -115,11 +115,11 @@ class DatabaseMaintainer: NSObject {
 //                                        print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
                                         
                                         // legalities
-                                        tmpDateStart = Date()
-                                        self.updateLegalities()
-                                        dateEnd = Date()
-                                        timeDifference = dateEnd.timeIntervalSince(tmpDateStart)
-                                        print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
+//                                        tmpDateStart = Date()
+//                                        self.updateLegalities()
+//                                        dateEnd = Date()
+//                                        timeDifference = dateEnd.timeIntervalSince(tmpDateStart)
+//                                        print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
                                         
                                         
                                         dateEnd = Date()
@@ -147,6 +147,7 @@ class DatabaseMaintainer: NSObject {
         
         if let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
             print("Updating sets: \(sets.count)")
+            
             for set in sets {
                 // border
                 if let border = set.border {
@@ -215,6 +216,23 @@ class DatabaseMaintainer: NSObject {
                     set.tcgPlayerCode = tcgPlayerCodeDict[name]
                 }
 
+                // nameSection
+                let letters = CharacterSet.letters
+                var prefix = String(set.name!.characters.prefix(1))
+                if prefix.rangeOfCharacter(from: letters) == nil {
+                    prefix = "#"
+                }
+                set.nameSection = prefix.uppercased()
+                
+                // typeSection
+                prefix = String(set.type_!.name!.characters.prefix(1))
+                let rest = String(set.type_!.name!.characters.dropFirst())
+                set.typeSection = "\(prefix.uppercased())\(rest)"
+                
+                // yearSection
+                prefix = String(set.releaseDate!.characters.prefix(4))
+                set.yearSection = prefix
+                
                 try! ManaKit.sharedInstance.dataStack?.mainContext.save()
             }
         }
@@ -457,6 +475,23 @@ class DatabaseMaintainer: NSObject {
                     }
                     
                     card.border = nil
+                }
+                
+                // TODO: add section for name prefix, numberSection e.g. 1-20, 21-30, etc.
+                // nameSection
+                let letters = CharacterSet.letters
+                var prefix = String(card.name!.characters.prefix(1))
+                if prefix.rangeOfCharacter(from: letters) == nil {
+                    prefix = "#"
+                }
+                card.nameSection = prefix.uppercased()
+                
+                // numberSection
+                if let number = card.number ?? card.mciNumber {
+                    if let num = Int(number) {
+                        let div = num / 10
+                        card.numberSection = "\(div)0-\(div)9"
+                    }
                 }
                 
                 try! ManaKit.sharedInstance.dataStack?.mainContext.save()
@@ -798,6 +833,10 @@ class DatabaseMaintainer: NSObject {
                             let number = a["number"] as? String {
                             if name == card.name {
                                 card.mciNumber = number
+                                if let num = Int(number) {
+                                    let div = num / 10
+                                    card.numberSection = "\(div)0-\(div)9"
+                                }
                                 print("\(card.set!.code!) - \(card.name!) - \(number)")
                                 try! ManaKit.sharedInstance.dataStack?.mainContext.save()
                                 break
