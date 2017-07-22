@@ -388,6 +388,8 @@
 		0FC429318B7806D20E2102F96CD7EBB9 /* TestCheck.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TestCheck.swift; path = Sources/TestCheck.swift; sourceTree = "<group>"; };
 		10ADC965CE955758B823477890B8EE6D /* SSZipArchive-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SSZipArchive-prefix.pch"; sourceTree = "<group>"; };
 		10DB4CCDF0F281A4277B955F5826C4C1 /* crypt.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = crypt.h; path = SSZipArchive/minizip/crypt.h; sourceTree = "<group>"; };
+		1147B76B1F231700004EF296 /* 2017-22-07.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "2017-22-07.xcdatamodel"; sourceTree = "<group>"; };
+		11CA2CF31F234172004DC4DA /* 2017-07-22b.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "2017-07-22b.xcdatamodel"; sourceTree = "<group>"; };
 		11FA451EBD2BAA58F5DF1D466D018142 /* CMForeignName+CoreDataClass.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMForeignName+CoreDataClass.swift"; path = "ManaKit/Classes/CMForeignName+CoreDataClass.swift"; sourceTree = "<group>"; };
 		1204157DB56FC23EAC3078E1932C482D /* Pods-ManaKit_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-ManaKit_Example-dummy.m"; sourceTree = "<group>"; };
 		12AF731054FB5912B7D95E1B2E98FF51 /* aes_ni.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = aes_ni.h; path = SSZipArchive/minizip/aes/aes_ni.h; sourceTree = "<group>"; };
@@ -2910,9 +2912,11 @@
 		BD61241D5B49E49E4B9E0CC7AF8B9E57 /* ManaKit.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				11CA2CF31F234172004DC4DA /* 2017-07-22b.xcdatamodel */,
+				1147B76B1F231700004EF296 /* 2017-22-07.xcdatamodel */,
 				FACF0447A855A8DB45083785EB4222B4 /* Card Magus.xcdatamodel */,
 			);
-			currentVersion = FACF0447A855A8DB45083785EB4222B4 /* Card Magus.xcdatamodel */;
+			currentVersion = 11CA2CF31F234172004DC4DA /* 2017-07-22b.xcdatamodel */;
 			name = ManaKit.xcdatamodeld;
 			path = ManaKit/Assets/ManaKit.xcdatamodeld;
 			sourceTree = "<group>";

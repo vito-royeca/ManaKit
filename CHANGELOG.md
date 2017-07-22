@@ -1,3 +1,7 @@
+**Version 0.7.3** @ 22.07.2017
+
+- feat: Added CMSet and CMCard sections.
+
 **Version 0.7.2** @ 21.07.2017
 
 - fix: Loading of bundle resources.
