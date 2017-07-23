@@ -18,7 +18,7 @@ class DatabaseMaintainer: NSObject {
     static let sharedInstance = DatabaseMaintainer()
     
     // MARK: Constants
-//    let setCodesForProcessing:[String]? = ["LEB"]
+//    let setCodesForProcessing:[String]? = ["ALL"]
     let setCodesForProcessing:[String]? = nil
     let printMilestone = 1000
     
@@ -101,12 +101,12 @@ class DatabaseMaintainer: NSObject {
                                         print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
                                         
                                         // rulings
-//                                        tmpDateStart = Date()
-//                                        self.updateRulings()
-//                                        dateEnd = Date()
-//                                        timeDifference = dateEnd.timeIntervalSince(tmpDateStart)
-//                                        print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
-//
+                                        tmpDateStart = Date()
+                                        self.updateRulings()
+                                        dateEnd = Date()
+                                        timeDifference = dateEnd.timeIntervalSince(tmpDateStart)
+                                        print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
+
 //                                        // foreign names
 //                                        tmpDateStart = Date()
 //                                        self.updateForeignNames()
@@ -115,11 +115,11 @@ class DatabaseMaintainer: NSObject {
 //                                        print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
                                         
                                         // legalities
-//                                        tmpDateStart = Date()
-//                                        self.updateLegalities()
-//                                        dateEnd = Date()
-//                                        timeDifference = dateEnd.timeIntervalSince(tmpDateStart)
-//                                        print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
+                                        tmpDateStart = Date()
+                                        self.updateLegalities()
+                                        dateEnd = Date()
+                                        timeDifference = dateEnd.timeIntervalSince(tmpDateStart)
+                                        print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
                                         
                                         
                                         dateEnd = Date()
@@ -491,6 +491,22 @@ class DatabaseMaintainer: NSObject {
                     if let num = Int(number) {
                         let div = num / 10
                         card.numberSection = "\(div)0-\(div)9"
+                        
+                    } else {
+                        let digits = NSCharacterSet.decimalDigits
+                        var numString = ""
+                        
+                        for c in number.unicodeScalars {
+                            if digits.contains(c) {
+                                numString.append(String(c))
+                            }
+                        }
+                    
+                        if let num = Int(numString) {
+                            let div = num / 10
+                            card.numberSection = "\(div)0-\(div)9"
+                            
+                        }
                     }
                 }
                 
@@ -836,7 +852,23 @@ class DatabaseMaintainer: NSObject {
                                 if let num = Int(number) {
                                     let div = num / 10
                                     card.numberSection = "\(div)0-\(div)9"
+                                } else {
+                                    let digits = NSCharacterSet.decimalDigits
+                                    var numString = ""
+                                    
+                                    for c in number.unicodeScalars {
+                                        if digits.contains(c) {
+                                            numString.append(String(c))
+                                        }
+                                    }
+                                    
+                                    if let num = Int(numString) {
+                                        let div = num / 10
+                                        card.numberSection = "\(div)0-\(div)9"
+                                        
+                                    }
                                 }
+                                
                                 print("\(card.set!.code!) - \(card.name!) - \(number)")
                                 try! ManaKit.sharedInstance.dataStack?.mainContext.save()
                                 break

@@ -21,12 +21,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
 
         // create the database...
-        DatabaseMaintainer.sharedInstance.json2CoreData()
-        DatabaseMaintainer.sharedInstance.updateMCINumbers()
+//        DatabaseMaintainer.sharedInstance.json2CoreData()
+//        DatabaseMaintainer.sharedInstance.updateMCINumbers()
 
         
         // ... or test the database
-//        ManaKit.sharedInstance.setupResources()
+        ManaKit.sharedInstance.setupResources()
         
         return true
     }
