@@ -1,3 +1,7 @@
+**Version 0.8.0** @ 24.07.2017
+
+- feat: Updated the SQLite database to MTGJSON version 3.10.0.
+
 **Version 0.7.3** @ 22.07.2017
 
 - feat: Added CMSet and CMCard sections.
