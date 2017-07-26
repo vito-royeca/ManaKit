@@ -370,22 +370,40 @@ class DatabaseMaintainer: NSObject {
                 }
                 
                 // types
+                // TODO: implement typeSection: Concat types i.e. Artifact Creature
                 if let types = card.types {
                     let types_ = card.mutableSetValue(forKey: "types_")
                     
                     if let typesArray = NSKeyedUnarchiver.unarchiveObject(with: types as Data) as? [String] {
+                        var typeSection = ""
+                        
                         for type in typesArray {
                             if let object = cachedCardTypes.first(where: { $0.name == type }) {
                                 types_.add(object)
+                                
+                                if typeSection.characters.count == 0 {
+                                    typeSection.append(object.name!)
+                                } else {
+                                    typeSection.append(" \(object.name!)")
+                                }
+                                
                             } else {
                                 let objectFinder = ["name": type] as [String: AnyObject]
                                 if let object = ManaKit.sharedInstance.findOrCreateObject("CMCardType", objectFinder: objectFinder) as? CMCardType {
                                     object.name = type
                                     types_.add(object)
                                     cachedCardTypes.append(object)
+                                    
+                                    if typeSection.characters.count == 0 {
+                                        typeSection.append(object.name!)
+                                    } else {
+                                        typeSection.append(" \(object.name!)")
+                                    }
                                 }
                             }
                         }
+                        
+                        card.typeSection = typeSection
                     }
                     
                     card.types = nil
@@ -477,7 +495,6 @@ class DatabaseMaintainer: NSObject {
                     card.border = nil
                 }
                 
-                // TODO: add section for name prefix, numberSection e.g. 1-20, 21-30, etc.
                 // nameSection
                 let letters = CharacterSet.letters
                 var prefix = String(card.name!.characters.prefix(1))
@@ -778,6 +795,38 @@ class DatabaseMaintainer: NSObject {
             
             print("Updating legalities: \(count)/\(cards.count) \(Date())")
         }
+    }
+    
+    func tempUpdateCardTypeSection() {
+        let dateStart = Date()
+        let request:NSFetchRequest<CMCard> = CMCard.fetchRequest() as! NSFetchRequest<CMCard>
+        let sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
+                               NSSortDescriptor(key: "name", ascending: true)]
+        request.sortDescriptors = sortDescriptors
+        
+        if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
+            for card in cards {
+                if let types_ = card.types_ {
+                    let cardTypes = types_.allObjects as! [CMCardType]
+                    var typeSection = ""
+                    
+                    for type in cardTypes.sorted(by: { $0.name! < $1.name! }) {
+                        if typeSection.characters.count == 0 {
+                            typeSection.append(type.name!)
+                        } else {
+                            typeSection.append(" \(type.name!)")
+                        }
+                    }
+                    card.typeSection = typeSection
+                    print("\(card.set!.code!) - \(card.name!) - \(typeSection)")
+                }
+            }
+        }
+     
+        let dateEnd = Date()
+        let timeDifference = dateEnd.timeIntervalSince(dateStart)
+        print("Total Time Elapsed: \(dateStart) - \(dateEnd) = \(self.format(timeDifference))")
+        print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
     }
     
     /**
