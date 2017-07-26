@@ -22,10 +22,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // create the database...
 //        DatabaseMaintainer.sharedInstance.json2CoreData()
-        DatabaseMaintainer.sharedInstance.updateMCINumbers()
+//        DatabaseMaintainer.sharedInstance.updateMCINumbers()
+//        DatabaseMaintainer.sharedInstance.tempUpdateCardTypeSection()
         
         // ... or test the database
-//        ManaKit.sharedInstance.setupResources()
+        ManaKit.sharedInstance.setupResources()
         
         return true
     }
