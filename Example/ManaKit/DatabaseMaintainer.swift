@@ -818,7 +818,9 @@ class DatabaseMaintainer: NSObject {
                         }
                     }
                     card.typeSection = typeSection
+                    
                     print("\(card.set!.code!) - \(card.name!) - \(typeSection)")
+                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
                 }
             }
         }
