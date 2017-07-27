@@ -370,7 +370,6 @@ class DatabaseMaintainer: NSObject {
                 }
                 
                 // types
-                // TODO: implement typeSection: Concat types i.e. Artifact Creature
                 if let types = card.types {
                     let types_ = card.mutableSetValue(forKey: "types_")
                     

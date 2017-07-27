@@ -1,3 +1,7 @@
+**Version 0.8.3** @ 27.07.2017
+
+- Added notification if card image is downloaded.
+
 **Version 0.8.2** @ 27.07.2017
 
 - feat: Updated the SQLite database to MTGJSON version 3.10.5.
