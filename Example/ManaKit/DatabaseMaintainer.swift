@@ -796,40 +796,6 @@ class DatabaseMaintainer: NSObject {
         }
     }
     
-    func tempUpdateCardTypeSection() {
-        let dateStart = Date()
-        let request:NSFetchRequest<CMCard> = CMCard.fetchRequest() as! NSFetchRequest<CMCard>
-        let sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
-                               NSSortDescriptor(key: "name", ascending: true)]
-        request.sortDescriptors = sortDescriptors
-        
-        if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
-            for card in cards {
-                if let types_ = card.types_ {
-                    let cardTypes = types_.allObjects as! [CMCardType]
-                    var typeSection = ""
-                    
-                    for type in cardTypes.sorted(by: { $0.name! < $1.name! }) {
-                        if typeSection.characters.count == 0 {
-                            typeSection.append(type.name!)
-                        } else {
-                            typeSection.append(" \(type.name!)")
-                        }
-                    }
-                    card.typeSection = typeSection
-                    
-                    print("\(card.set!.code!) - \(card.name!) - \(typeSection)")
-                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
-                }
-            }
-        }
-     
-        let dateEnd = Date()
-        let timeDifference = dateEnd.timeIntervalSince(dateStart)
-        print("Total Time Elapsed: \(dateStart) - \(dateEnd) = \(self.format(timeDifference))")
-        print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
-    }
-    
     /**
         Updates the `CMCard.mciNumber` value from http://magiccards.info/
  
