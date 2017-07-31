@@ -1,3 +1,7 @@
+**Version 0.8.5** @ 31.07.2017
+
+- Added Card number in CardTableViewCell, after the set name.
+
 **Version 0.8.4** @ 31.07.2017
 
 - Updated the SQLite database to MTGJSON version 3.11.2.
