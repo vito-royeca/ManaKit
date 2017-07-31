@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ManaKit'
-  s.version          = '0.8.4'
+  s.version          = '0.8.5'
   s.summary          = 'A database of Magic: The Gathering cards.'
 
 # This description is used to generate tags and improve search results.
