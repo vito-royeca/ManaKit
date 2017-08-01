@@ -32,6 +32,7 @@ public enum ImageName: String {
 }
 
 public let Symbols = [
+    "∞": "{∞}",
     "0": "{0}",
     "1": "{1}",
     "2": "{2}",
@@ -56,27 +57,27 @@ public let Symbols = [
     "100": "{100}",
     "1000000": "{1000000}",
     "B": "{B}",
-    "BG": "{BG}",
-    "BP": "{BP}",
-    "BR": "{BR}",
+    "BG": "{B/G}",
+    "BP": "{B/P}",
+    "BR": "{B/R}",
     "C": "{C}",
     "G": "{G}",
-    "GP": "{GP}",
-    "GU": "{GU}",
-    "GW": "{GW}",
+    "GP": "{G/P}",
+    "GU": "{G/U}",
+    "GW": "{G/W}",
     "R": "{R}",
-    "RG": "{RG}",
-    "RP": "{RP}",
-    "RW": "{RW}",
+    "RG": "{R/G}",
+    "RP": "{R/P}",
+    "RW": "{R/W}",
     "S": "{S}",
     "U": "{U}",
-    "UB": "{UB}",
-    "UP": "{UP}",
-    "UR": "{UR}",
+    "UB": "{U/B}",
+    "UP": "{U/P}",
+    "UR": "{U/R}",
     "W": "{W}",
-    "WB": "{WB}",
-    "WP": "{WP}",
-    "WU": "{WU}",
+    "WB": "{W/B}",
+    "WP": "{W/P}",
+    "WU": "{W/U}",
     "X": "{X}",
     "Y": "{Y}",
     "Z": "{Z}",
@@ -197,7 +198,9 @@ open class ManaKit: NSObject {
     }
     
     open func symbolHTML(name: String) -> String? {
-        let cleanName = name.replacingOccurrences(of: "{", with: "").replacingOccurrences(of: "}", with: "")
+        var cleanName = name.replacingOccurrences(of: "{", with: "")
+            .replacingOccurrences(of: "}", with: "")
+            .replacingOccurrences(of: "/", with: "")
         var image: UIImage?
         var html: String?
         
@@ -209,6 +212,16 @@ open class ManaKit: NSObject {
             for array in manaImages(manaCost: name) {
                 for (_,value) in array {
                     image = value
+                }
+            }
+            
+            if image == nil {
+                cleanName = String(cleanName.characters.reversed())
+                
+                for array in manaImages(manaCost: "{\(cleanName)}") {
+                    for (_,value) in array {
+                        image = value
+                    }
                 }
             }
         }
