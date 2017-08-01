@@ -1,3 +1,8 @@
+**Version 0.8.7** @ 01.08.2017
+
+- Refactored SymbolName enum to dictionary.
+- Added method: symbolHTML(name: String) -> String? .
+
 **Version 0.8.6** @ 01.08.2017
 
 - Added SymbolName enum.

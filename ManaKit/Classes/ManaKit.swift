@@ -31,59 +31,59 @@ public enum ImageName: String {
     intlCollectorsCardBack = "internationalcollectorscardback-hq"
 }
 
-public enum SymbolName: String {
-    case _0 = "{0}",
-        _1 = "{1}",
-        _2 = "{2}",
-        _3 = "{3}",
-        _4 = "{4}",
-        _5 = "{5}",
-        _6 = "{6}",
-        _7 = "{7}",
-        _8 = "{8}",
-        _9 = "{9}",
-        _10 = "{10}",
-        _11 = "{11}",
-        _12 = "{12}",
-        _13 = "{13}",
-        _14 = "{14}",
-        _15 = "{15}",
-        _16 = "{16}",
-        _17 = "{17}",
-        _18 = "{18}",
-        _19 = "{19}",
-        _20 = "{20}",
-        _100 = "{100}",
-        _1000000 = "{1000000}",
-        _B = "{B}",
-        _BG = "{BG}",
-        _BP = "{BP}",
-        _BR = "{BR}",
-        _C = "{C}",
-        _G = "{G}",
-        _GP = "{GP}",
-        _GU = "{GU}",
-        _GW = "{GW}",
-        _R = "{R}",
-        _RG = "{RG}",
-        _RP = "{RP}",
-        _RW = "{RW}",
-        _S = "{S}",
-        _U = "{U}",
-        _UB = "{UB}",
-        _UP = "{UP}",
-        _UR = "{UR}",
-        _W = "{W}",
-        _WB = "{WB}",
-        _WP = "{WP}",
-        _WU = "{WU}",
-        _X = "{X}",
-        _Y = "{Y}",
-        _Z = "{Z}",
-        _E = "{E}",
-        _Q = "{Q}",
-        _T = "{T}"
-}
+public let Symbols = [
+    "0": "{0}",
+    "1": "{1}",
+    "2": "{2}",
+    "3": "{3}",
+    "4": "{4}",
+    "5": "{5}",
+    "6": "{6}",
+    "7": "{7}",
+    "8": "{8}",
+    "9": "{9}",
+    "10": "{10}",
+    "11": "{11}",
+    "12": "{12}",
+    "13": "{13}",
+    "14": "{14}",
+    "15": "{15}",
+    "16": "{16}",
+    "17": "{17}",
+    "18": "{18}",
+    "19": "{19}",
+    "20": "{20}",
+    "100": "{100}",
+    "1000000": "{1000000}",
+    "B": "{B}",
+    "BG": "{BG}",
+    "BP": "{BP}",
+    "BR": "{BR}",
+    "C": "{C}",
+    "G": "{G}",
+    "GP": "{GP}",
+    "GU": "{GU}",
+    "GW": "{GW}",
+    "R": "{R}",
+    "RG": "{RG}",
+    "RP": "{RP}",
+    "RW": "{RW}",
+    "S": "{S}",
+    "U": "{U}",
+    "UB": "{UB}",
+    "UP": "{UP}",
+    "UR": "{UR}",
+    "W": "{W}",
+    "WB": "{WB}",
+    "WP": "{WP}",
+    "WU": "{WU}",
+    "X": "{X}",
+    "Y": "{Y}",
+    "Z": "{Z}",
+    "E": "{E}",
+    "Q": "{Q}",
+    "T": "{T}"
+]
 
 @objc(ManaKit)
 open class ManaKit: NSObject {
@@ -194,6 +194,41 @@ open class ManaKit: NSObject {
         }
         
         return nil
+    }
+    
+    open func symbolHTML(name: String) -> String? {
+        let cleanName = name.replacingOccurrences(of: "{", with: "").replacingOccurrences(of: "}", with: "")
+        var image: UIImage?
+        var html: String?
+        
+        if name.contains("E") ||
+            name.contains("Q") ||
+            name.contains("T") {
+            image = symbolImage(name: cleanName)
+        } else {
+            for array in manaImages(manaCost: name) {
+                for (_,value) in array {
+                    image = value
+                }
+            }
+        }
+        
+        if let image = image {
+            if let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first {
+                let targetDir = "\(cachePath)/symbols"
+                let targetPath = "\(targetDir)/\(cleanName).png"
+                
+                // create targetDir
+                if !FileManager.default.fileExists(atPath: targetDir) {
+                    try! FileManager.default.createDirectory(atPath: targetDir, withIntermediateDirectories: true, attributes: nil)
+                }
+                
+                try! UIImagePNGRepresentation(image)?.write(to: URL(fileURLWithPath: targetPath))
+                html = "<img src=\'\(targetPath)\' width=\'20\' height=\'20\' />"
+            }
+        }
+        
+        return html
     }
     
     open func nibFromBundle(_ name: String) -> UINib? {
