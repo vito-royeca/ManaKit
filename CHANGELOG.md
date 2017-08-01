@@ -1,3 +1,7 @@
+**Version 0.8.6** @ 01.08.2017
+
+- Added SymbolName enum.
+
 **Version 0.8.5** @ 31.07.2017
 
 - Added Card number in CardTableViewCell, after the set name.
