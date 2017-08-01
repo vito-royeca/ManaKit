@@ -1,3 +1,7 @@
+**Version 0.8.9** @ 01.08.2017
+
+- Added the Infinity mana symbol.
+
 **Version 0.8.8** @ 01.08.2017
 
 - Optimized the unpacking of image symbols.
