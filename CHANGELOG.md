@@ -1,3 +1,7 @@
+**Version 0.8.8** @ 01.08.2017
+
+- Optimized the unpacking of image symbols.
+
 **Version 0.8.7** @ 01.08.2017
 
 - Refactored SymbolName enum to dictionary.
