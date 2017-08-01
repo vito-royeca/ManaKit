@@ -218,13 +218,15 @@ open class ManaKit: NSObject {
                 let targetDir = "\(cachePath)/symbols"
                 let targetPath = "\(targetDir)/\(cleanName).png"
                 
-                // create targetDir
-                if !FileManager.default.fileExists(atPath: targetDir) {
-                    try! FileManager.default.createDirectory(atPath: targetDir, withIntermediateDirectories: true, attributes: nil)
-                }
+                if !FileManager.default.fileExists(atPath: targetPath) {
+                    // create targetDir
+                    if !FileManager.default.fileExists(atPath: targetDir) {
+                        try! FileManager.default.createDirectory(atPath: targetDir, withIntermediateDirectories: true, attributes: nil)
+                    }
                 
-                try! UIImagePNGRepresentation(image)?.write(to: URL(fileURLWithPath: targetPath))
-                html = "<img src=\'\(targetPath)\' width=\'20\' height=\'20\' />"
+                    try! UIImagePNGRepresentation(image)?.write(to: URL(fileURLWithPath: targetPath))
+                }
+                html = "<img src=\'\(targetPath)\' width=\'25\' height=\'25\' />"
             }
         }
         
@@ -244,6 +246,11 @@ open class ManaKit: NSObject {
     }
     
     open func setupResources() {
+        // unpack the image symbols
+        for (_,v) in Symbols {
+            let _ = ManaKit.sharedInstance.symbolHTML(name: v)
+        }
+        
         copyDatabaseFile()
         loadCustomFonts()
     }
