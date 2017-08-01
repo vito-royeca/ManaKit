@@ -155,11 +155,11 @@ open class ManaKit: NSObject {
         let mc = manaCost.replacingOccurrences(of: "{", with: "")
             .replacingOccurrences(of: "}", with: " ")
             .replacingOccurrences(of: "/", with: "")
-        let manaArray = mc.components(separatedBy: " ")
         
         if let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle") {
             let resourceBundle = Bundle(url: bundleURL)
-            
+            let manaArray = mc.components(separatedBy: " ")
+
             for mana in manaArray {
                 if mana.characters.count == 0 {
                     continue
@@ -198,7 +198,7 @@ open class ManaKit: NSObject {
     }
     
     open func symbolHTML(name: String) -> String? {
-        var cleanName = name.replacingOccurrences(of: "{", with: "")
+        let cleanName = name.replacingOccurrences(of: "{", with: "")
             .replacingOccurrences(of: "}", with: "")
             .replacingOccurrences(of: "/", with: "")
         var image: UIImage?
@@ -212,16 +212,6 @@ open class ManaKit: NSObject {
             for array in manaImages(manaCost: name) {
                 for (_,value) in array {
                     image = value
-                }
-            }
-            
-            if image == nil {
-                cleanName = String(cleanName.characters.reversed())
-                
-                for array in manaImages(manaCost: "{\(cleanName)}") {
-                    for (_,value) in array {
-                        image = value
-                    }
                 }
             }
         }
@@ -239,7 +229,14 @@ open class ManaKit: NSObject {
                 
                     try! UIImagePNGRepresentation(image)?.write(to: URL(fileURLWithPath: targetPath))
                 }
-                html = "<img src=\'\(targetPath)\' width=\'25\' height=\'25\' />"
+                var width = "25"
+                if cleanName == "100" {
+                    width = "50"
+                } else if cleanName == "1000000" {
+                    width = "75"
+                }
+                
+                html = "<img src='\(targetPath)' width='\(width)' height='25' />"
             }
         }
         
