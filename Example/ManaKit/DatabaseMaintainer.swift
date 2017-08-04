@@ -13,12 +13,23 @@ import ManaKit
 import SSZipArchive
 import Sync
 
+extension Character
+{
+    func unicodeScalarCodePoint() -> UInt32
+    {
+        let characterString = String(self)
+        let scalars = characterString.unicodeScalars
+        
+        return scalars[scalars.startIndex].value
+    }
+}
+
 class DatabaseMaintainer: NSObject {
     // MARK: - Shared Instance
     static let sharedInstance = DatabaseMaintainer()
     
     // MARK: Constants
-//    let setCodesForProcessing:[String]? = ["ALL"]
+//    let setCodesForProcessing:[String]? = ["ISD"]
     let setCodesForProcessing:[String]? = nil
     let printMilestone = 1000
     
@@ -502,26 +513,33 @@ class DatabaseMaintainer: NSObject {
                 }
                 card.nameSection = prefix.uppercased()
                 
-                // numberSection
+                // numberOrder
                 if let number = card.number ?? card.mciNumber {
-                    if let num = Int(number) {
-                        let div = num / 10
-                        card.numberSection = "\(div)0-\(div)9"
+                    if let num = Double(number) {
+                        card.numberOrder = num
                         
                     } else {
                         let digits = NSCharacterSet.decimalDigits
                         var numString = ""
+                        var charString = ""
                         
                         for c in number.unicodeScalars {
                             if digits.contains(c) {
                                 numString.append(String(c))
+                            } else {
+                                charString.append(String(c))
                             }
                         }
                     
-                        if let num = Int(numString) {
-                            let div = num / 10
-                            card.numberSection = "\(div)0-\(div)9"
-                            
+                        if let num = Double(numString) {
+                            card.numberOrder = num
+                        }
+                        
+                        if charString.characters.count > 0 {
+                            for c in charString.unicodeScalars {
+                                let char = Character(c)
+                                card.numberOrder += Double(char.unicodeScalarCodePoint()) / 100
+                            }
                         }
                     }
                 }
@@ -796,6 +814,64 @@ class DatabaseMaintainer: NSObject {
         }
     }
     
+    func tempUpdateCardNumberOrder() {
+        let dateStart = Date()
+        
+        let request:NSFetchRequest<CMCard> = CMCard.fetchRequest() as! NSFetchRequest<CMCard>
+        var predicate = NSPredicate(format: "numberOrder == 0")
+        let sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
+                               NSSortDescriptor(key: "name", ascending: true)]
+        
+        if let setCodesForProcessing = setCodesForProcessing {
+            let setPredicate = NSPredicate(format: "set.code in %@", setCodesForProcessing)
+            predicate = NSCompoundPredicate.init(andPredicateWithSubpredicates: [predicate, setPredicate])
+        }
+        request.predicate = predicate
+        request.sortDescriptors = sortDescriptors
+        
+        if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
+            for card in cards {
+                if let number = card.number ?? card.mciNumber {
+                    if let num = Double(number) {
+                        card.numberOrder = num
+                        
+                    } else {
+                        let digits = NSCharacterSet.decimalDigits
+                        var numString = ""
+                        var charString = ""
+                        
+                        for c in number.unicodeScalars {
+                            if digits.contains(c) {
+                                numString.append(String(c))
+                            } else {
+                                charString.append(String(c))
+                            }
+                        }
+                        
+                        if let num = Double(numString) {
+                            card.numberOrder = num
+                        }
+                        
+                        if charString.characters.count > 0 {
+                            for c in charString.unicodeScalars {
+                                let char = Character(c)
+                                card.numberOrder += Double(char.unicodeScalarCodePoint()) / 100
+                            }
+                        }
+                    }
+                    
+                    print("\(card.set!.code!) - \(card.name!) - \(number) - \(card.numberOrder)")
+                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                }
+            }
+        }
+        
+        let dateEnd = Date()
+        let timeDifference = dateEnd.timeIntervalSince(dateStart)
+        print("Total Time Elapsed: \(dateStart) - \(dateEnd) = \(self.format(timeDifference))")
+        print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
+    }
+    
     /**
         Updates the `CMCard.mciNumber` value from http://magiccards.info/
  
@@ -865,25 +941,6 @@ class DatabaseMaintainer: NSObject {
                             let number = a["number"] as? String {
                             if name == card.name {
                                 card.mciNumber = number
-                                if let num = Int(number) {
-                                    let div = num / 10
-                                    card.numberSection = "\(div)0-\(div)9"
-                                } else {
-                                    let digits = NSCharacterSet.decimalDigits
-                                    var numString = ""
-                                    
-                                    for c in number.unicodeScalars {
-                                        if digits.contains(c) {
-                                            numString.append(String(c))
-                                        }
-                                    }
-                                    
-                                    if let num = Int(numString) {
-                                        let div = num / 10
-                                        card.numberSection = "\(div)0-\(div)9"
-                                        
-                                    }
-                                }
                                 
                                 print("\(card.set!.code!) - \(card.name!) - \(number)")
                                 try! ManaKit.sharedInstance.dataStack?.mainContext.save()

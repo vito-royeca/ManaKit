@@ -21,7 +21,7 @@
 		0A7A9A7294F0083C952CCF7E5700079C /* ReachabilitySwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A199E938F5B80436773135CC70085C70 /* ReachabilitySwift.framework */; };
 		0A7F5580C1B2AD6892808C256805FFCE /* NSDate+PropertyMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 057BA51C5757E05C1B9F2256658F4FE8 /* NSDate+PropertyMapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0ABF93D906F8EE9A0D6163DA20BCA2C5 /* CMBooster+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857A5CCA589EFE51585871DC29AA3939 /* CMBooster+CoreDataProperties.swift */; };
-		0B8B3178E96B6D1971BEE310699D7485 /* Goudy Medieval.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 81991DBDAE460F23AF6A336B088ACF5F /* Goudy Medieval.ttf */; };
+		0B8B3178E96B6D1971BEE310699D7485 /* Goudy Medieval.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86BB94CDF79E34819E24E94EB5980595 /* Goudy Medieval.ttf */; };
 		0C598E3D89D2545D4621DA81AD5087E6 /* CMBlock+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7B00FBBBAE3E5D9CFAF1AA0AAB8176 /* CMBlock+CoreDataClass.swift */; };
 		0DA0325F5ED6DFA543F245ECEBEAAA03 /* Sync+ObjC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49CEA21E3727C65D3EDD344967D28E31 /* Sync+ObjC.swift */; };
 		0E2C01DBA7F9B58B63C61300E4EA314B /* NSManagedObject+Export.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D42957431EDA3CE0E30E5273053F9A2 /* NSManagedObject+Export.swift */; };
@@ -42,9 +42,9 @@
 		24F11CECE63886BDA5A196B33EC07A3D /* CMCardLegality+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E37C7E10E7EDABC0D42066D23B5D21 /* CMCardLegality+CoreDataProperties.swift */; };
 		25A26F1D6364C5D47B2C7D41FD4338CA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65750782357009223D30658D1A82BD57 /* Foundation.framework */; };
 		262A5F08C2849E38E651C178F6663941 /* CMSetType+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2003CECBF003FC50540194E1AD26938A /* CMSetType+CoreDataProperties.swift */; };
-		28CF3AF7463E3AC4FAFE6DF3767FDA64 /* belerensmallcaps-bold-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D7493003AA69652A73617641288EB2E2 /* belerensmallcaps-bold-webfont.ttf */; };
+		28CF3AF7463E3AC4FAFE6DF3767FDA64 /* belerensmallcaps-bold-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C20E6C292690BD768A419AA25C9535CB /* belerensmallcaps-bold-webfont.ttf */; };
 		2B01B0FA4760062CEFF9BD9D23002E25 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8956055ADE049C18D970D0CFF1AEE309 /* Response.swift */; };
-		2B9F8B29BC43FAEDA0088C2214F1422A /* ManaKit.sqlite.zip in Resources */ = {isa = PBXBuildFile; fileRef = 05319F051E79F5F07887A5962B52165A /* ManaKit.sqlite.zip */; };
+		2B9F8B29BC43FAEDA0088C2214F1422A /* ManaKit.sqlite.zip in Resources */ = {isa = PBXBuildFile; fileRef = 13F2610A90964A8463AB093936BC7289 /* ManaKit.sqlite.zip */; };
 		2F8FEF49A261F78231EF462D68091AC8 /* ReachabilitySwift-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = DC3DD1DF8B706D9661A69DD72487A2C0 /* ReachabilitySwift-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		30D8C9021658787EFE31D1B09F7CF00C /* CMLayout+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AB22600CFC1F5DD7E4DD8759551E820 /* CMLayout+CoreDataClass.swift */; };
 		3189AF79095D0414FDC244163C1FC246 /* CMForeignName+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B377E78C4B15EAAE77F5F5651F38A200 /* CMForeignName+CoreDataProperties.swift */; };
@@ -55,7 +55,6 @@
 		35C1C6443DB65B252902F9CE26F82864 /* DATAStack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA0D35BAC3F638BA5E9AD0372CD3895D /* DATAStack.framework */; };
 		361165C8DA4E4FE0D98909A4C5CD98E1 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F79E3BD957FBECCBDB137F0358C2075 /* Result.swift */; };
 		365718EBE06F659420012255B7B2963E /* aes_ni.c in Sources */ = {isa = PBXBuildFile; fileRef = 4F36B73C40AFFD3568DB104378D3FEE6 /* aes_ni.c */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		38D4B46F1CB4A9DD9A4BB58756727404 /* ManaKit.xcdatamodeld in Resources */ = {isa = PBXBuildFile; fileRef = DFA5D84B07513443D74DAC632936B93B /* ManaKit.xcdatamodeld */; };
 		3A6341126BFE1081575CC5BA4B32E7D0 /* CMCardLegality+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D649A74E069BEF24E00B838A419CA9A /* CMCardLegality+CoreDataClass.swift */; };
 		3A69A1B2947CA9A284BD0E21D1663156 /* CMFormat+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51791FA7B18D51D28D86B73413A78DFA /* CMFormat+CoreDataProperties.swift */; };
 		3BAFC78FBD2CA01783B65FB8360B534B /* ManaKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8CDDE2D6BB82F770BBD61669B7ACA8 /* ManaKit.swift */; };
@@ -76,7 +75,7 @@
 		5198B6909DC3EF81F9576E105BC398A3 /* aes.h in Headers */ = {isa = PBXBuildFile; fileRef = E95B65988409A58BA7BB1E158E0D3FA7 /* aes.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		53BF3CE893FAE5347E7FD6AFCF3CFF61 /* Inflections.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A019EC5FFB0C2FE04927BFD8A4931D3 /* Inflections.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		54EA79F822B0223C2F720DC5E86C7F4D /* SSZipCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = E66CCE0CAAFE94DE91EF83F007B3A621 /* SSZipCommon.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		55402AB0F974B747300F4A297B7E35AB /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = ADBB1A66605D5631AAE5F8C4DE7733F2 /* fonts */; };
+		55402AB0F974B747300F4A297B7E35AB /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 96D84DB72DA9DC737FA5E907F5763075 /* fonts */; };
 		5559E253D5B6CB54308E72CF99435A35 /* DATASource+NSFetchedResultsControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F212064F0271D74369DBBC3D8C3E3C9 /* DATASource+NSFetchedResultsControllerDelegate.swift */; };
 		5854A177CEF4B9496DC9813389AB5B79 /* NSManagedObjectContext+Sync.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3B484FDCAF255DC227E2D464572FC2 /* NSManagedObjectContext+Sync.swift */; };
 		58EC0F526A1A8EABB4365E19A6D49A11 /* Sync+NSPersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D81DDE444244FFEECB0DEBFDA3BB0C9 /* Sync+NSPersistentContainer.swift */; };
@@ -99,11 +98,12 @@
 		69510239B2E431FE600307D7BD09F604 /* CMSet+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E860D6CC09D9505FF6CFC654A9E3725 /* CMSet+CoreDataClass.swift */; };
 		6A085C7A92E52097B5914C05DACC2BC4 /* DATAStack-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 0B6E7B9B57B6B6B1F721F2185F89B83D /* DATAStack-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6ADDB372030582054CAE4F5CF6431613 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65750782357009223D30658D1A82BD57 /* Foundation.framework */; };
+		6AEA6AC95DDF08EA37EC3F705F2DD408 /* ManaKit.xcdatamodeld in Resources */ = {isa = PBXBuildFile; fileRef = E7FE4A4F818E6C8C27A1470ECBE32C15 /* ManaKit.xcdatamodeld */; };
 		6C6FF17A7DE2939C3C923F25B54E06A2 /* CMLegality+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061505D8BB966121975685A71A4DCEB3 /* CMLegality+CoreDataClass.swift */; };
-		6CFC7910D170A1A2D52A80068164167D /* Gray_Patterned_BG.png in Resources */ = {isa = PBXBuildFile; fileRef = 11F1525C2EE2D9AA8955CF5A1429D8E5 /* Gray_Patterned_BG.png */; };
+		6CFC7910D170A1A2D52A80068164167D /* Gray_Patterned_BG.png in Resources */ = {isa = PBXBuildFile; fileRef = 109BA51B90441834895F0F779ECDFD21 /* Gray_Patterned_BG.png */; };
 		6E91A983EFFDFEBF432A5FB61EEFA1A4 /* TestCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99143E70E4C05CDDB3FDBF7033E78A96 /* TestCheck.swift */; };
 		6F47D47E42FDCF59BD71A04B0E565B08 /* NSArray+Sync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00431309D9C5982846E4F339D6B6D9C1 /* NSArray+Sync.swift */; };
-		6FA90C3262942EA31B23D1D245ABAEF9 /* internationalcollectorscardback-hq.png in Resources */ = {isa = PBXBuildFile; fileRef = FBFF1383D33DE91A2CAE2B4449789576 /* internationalcollectorscardback-hq.png */; };
+		6FA90C3262942EA31B23D1D245ABAEF9 /* internationalcollectorscardback-hq.png in Resources */ = {isa = PBXBuildFile; fileRef = 1782BA9CB8F91C3407FCABA422CEDB1A /* internationalcollectorscardback-hq.png */; };
 		6FC11E45577B50C2CB8715CD6BFEFEC5 /* NSEntityDescription+PrimaryKey.h in Headers */ = {isa = PBXBuildFile; fileRef = CA32EFCE683A88A995A2D38E1FD1D724 /* NSEntityDescription+PrimaryKey.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7164CB3AFBB50C1DA40FF19F3B277BC6 /* Sync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A98FAC3F1A141D20405CA7066E5796 /* Sync.swift */; };
 		738C1DF8FB145AA4D2B9F9FBC842BD6A /* CMColor+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4A8AE3D0F02A9612784847FD41A7692 /* CMColor+CoreDataProperties.swift */; };
@@ -115,8 +115,8 @@
 		781A4D12CC4A83EA4705C6029254B012 /* libxmlHTMLDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7762D372029161C22499FFF028E6C6 /* libxmlHTMLDocument.swift */; };
 		7920CC854761B1C6FD3CF7136E5BA9DC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65750782357009223D30658D1A82BD57 /* Foundation.framework */; };
 		7961B3FDA1D728B0CC410F3D3DB00023 /* NetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931FC72926766241E4C3D9C6B987F56F /* NetworkingManager.swift */; };
-		7FBDE7759931AA7172E1A12F0DDEAE89 /* cardback-crop-hq.png in Resources */ = {isa = PBXBuildFile; fileRef = CB67D878408C1A06D1D246A53F47353A /* cardback-crop-hq.png */; };
-		7FCE29F2360DCFDB02CEEA2FE848F28D /* collectorscardback-hq.png in Resources */ = {isa = PBXBuildFile; fileRef = 90498F872EAD72B6EB2448F23F5D0D7C /* collectorscardback-hq.png */; };
+		7FBDE7759931AA7172E1A12F0DDEAE89 /* cardback-crop-hq.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B02414FD8085F92BC53CE90DEC449E6 /* cardback-crop-hq.png */; };
+		7FCE29F2360DCFDB02CEEA2FE848F28D /* collectorscardback-hq.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D1BDC4165D6FE987677CB9B5832BA9E /* collectorscardback-hq.png */; };
 		80C68FFFC568D3400F0FA3A51FD32529 /* CMLanguage+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3CE45EBD32964BFB13BDEB83974A3E /* CMLanguage+CoreDataProperties.swift */; };
 		81B9B551F979A0AAF68A888179A677A7 /* ioapi_buf.h in Headers */ = {isa = PBXBuildFile; fileRef = 7FE582E14989D8D04166E8C238B6BC08 /* ioapi_buf.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		81FB3955F37699C1E95CFD004C7E23F0 /* SSZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F467C10C04E84ADB22C492466A279FCE /* SSZipArchive.framework */; };
@@ -125,10 +125,10 @@
 		8A2EDCE6C7926E12EFEFA1BFA9026D63 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92D10AB484F34EA5FB58B4D5FD5FE895 /* CoreData.framework */; };
 		8A32C53DBB3BC3ABB064B151DBF4F02A /* CMSetBooster+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F8BFDCBDEDED7B38E5AF26895146EA /* CMSetBooster+CoreDataProperties.swift */; };
 		8AAB9AEE4490F0C098D13D13EF5CA858 /* DATASource-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 211B5AA22594AE31AB10C6034C6E5A34 /* DATASource-dummy.m */; };
-		8D12B081A0B2EA63D4731B75200B5196 /* images in Resources */ = {isa = PBXBuildFile; fileRef = B83A3F2C8CA89C120C3BB5CB1122EAB4 /* images */; };
+		8D12B081A0B2EA63D4731B75200B5196 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 5445C125207B5B803F7021638430ED5C /* images */; };
 		8DC53378699C537BBDF5B40F3A2053E8 /* ioapi.h in Headers */ = {isa = PBXBuildFile; fileRef = 43A206F8379ADE93211C64848C8DDE36 /* ioapi.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		96CF273FDF3CFC3821E795D8A95F5226 /* Sync+NSManagedObjectContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBB21EE3BD9029048636B1F7FF16ABC /* Sync+NSManagedObjectContext.swift */; };
-		9850FA71485A432771DF7D02FC6FEB54 /* Matrix Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 208B3E869DF3500A61D4270B01C4C180 /* Matrix Bold.ttf */; };
+		9850FA71485A432771DF7D02FC6FEB54 /* Matrix Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 939F67A70F67081F8763214C2ECA79CB /* Matrix Bold.ttf */; };
 		9B331A1B8212DE3D0E4CBF307703A8EA /* CMLayout+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50478EFD6E76AD57407D7F82FC40E35 /* CMLayout+CoreDataProperties.swift */; };
 		9B8E7FF71F5493BC8A53C91D3E2F8B3C /* unzip.h in Headers */ = {isa = PBXBuildFile; fileRef = C964C93E71BC5D83C1140D0385613A64 /* unzip.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		9B999FB18EB2E48AF4797398833078C9 /* CMSetType+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CE1FA2E974D091FF7CF0804A4889A9 /* CMSetType+CoreDataClass.swift */; };
@@ -147,8 +147,8 @@
 		AF863C36D259D89189A0BDF54912C76E /* CSS.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE37D19CBABD6C6A59536AA19458F7D /* CSS.swift */; };
 		B193AAEA106CC821DACBA0F4ADF1732E /* minishared.c in Sources */ = {isa = PBXBuildFile; fileRef = 66FF3764D62A90018D73F3831F96D036 /* minishared.c */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		B2B8625CF83FB7199847396249D4843B /* SSZipArchive.h in Headers */ = {isa = PBXBuildFile; fileRef = DECCFE83643799E6CB71052E6574A6F5 /* SSZipArchive.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		B382784AD49F1CC2560BFE2FCFEE7BC9 /* MPlantin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E90750F7BFA5317012CCEAEFBA61341C /* MPlantin.ttf */; };
-		B43383506A82E3DD17EC0DB3BD887BC0 /* Card_Circles.png in Resources */ = {isa = PBXBuildFile; fileRef = 5720BDABAC9C8B9969F7DC8F84DE23C7 /* Card_Circles.png */; };
+		B382784AD49F1CC2560BFE2FCFEE7BC9 /* MPlantin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 70C8D68D559D73D39027DBC670449F20 /* MPlantin.ttf */; };
+		B43383506A82E3DD17EC0DB3BD887BC0 /* Card_Circles.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E041D9EB0D05A96F5DB7404A4C724CE /* Card_Circles.png */; };
 		B56DDAD436C76C77773F3DF99D8EED67 /* DATASource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 410E11143CC125C01E9F2166194A9874 /* DATASource.framework */; };
 		B80E882178BD96A1BEEF5F8FD3948CCE /* PropertyMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 160A0B7807BBD66236C857D974BD90F6 /* PropertyMapper.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B980955B1E4A36472C07D4C79FD363F5 /* Networking-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 50F4D9C8B5CE74B91C609B0582AECF30 /* Networking-dummy.m */; };
@@ -160,7 +160,7 @@
 		BD68485D3285BE7D5EE5ABC58FD5A388 /* CMRarity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8979DB919C49E63EB07E3FE0019996 /* CMRarity+CoreDataProperties.swift */; };
 		BE1253D84841C70851E7CD2F8D319342 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65750782357009223D30658D1A82BD57 /* Foundation.framework */; };
 		BF91C735C0EB41D85805830ACCD060C3 /* NSManagedObject+PropertyMapperHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = DF4E253D0B5465F8B03B03912B0C3970 /* NSManagedObject+PropertyMapperHelpers.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BFE694FE461766C4892E23475F609C93 /* cardback-hq.png in Resources */ = {isa = PBXBuildFile; fileRef = D852C7CB0368CB102412D91FDB161505 /* cardback-hq.png */; };
+		BFE694FE461766C4892E23475F609C93 /* cardback-hq.png in Resources */ = {isa = PBXBuildFile; fileRef = A7469F88FC326FA13B2FA7C7C90870DF /* cardback-hq.png */; };
 		C128940AA205E8266E7A196BD0D6FB17 /* Pods-ManaKit_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 727DCA75F51644F53C0251EE95A7715D /* Pods-ManaKit_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C1D45A6CC487EC1242742F747DE54C9B /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92D10AB484F34EA5FB58B4D5FD5FE895 /* CoreData.framework */; };
 		C2A3E68EDA159A042C0350818BE2FC5B /* aes_ni.h in Headers */ = {isa = PBXBuildFile; fileRef = 12AF731054FB5912B7D95E1B2E98FF51 /* aes_ni.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -168,11 +168,11 @@
 		C6151D5FC598A27C5D1C1C0404C4FFD3 /* ioapi_buf.c in Sources */ = {isa = PBXBuildFile; fileRef = 9961F9AD4A8EAC4D9E6B4DB88D56E3C3 /* ioapi_buf.c */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		C6EE116CF50F409363756A2C88A7D2BA /* CMArtist+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5346C53756B1E93D0D5C4C03615A367 /* CMArtist+CoreDataClass.swift */; };
 		C805053F7AE2ECC441AB3A96FE189B62 /* crypt.h in Headers */ = {isa = PBXBuildFile; fileRef = 10DB4CCDF0F281A4277B955F5826C4C1 /* crypt.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		CA7F875AABE7BDC4433C62EF8CA8E9BC /* CardTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84CF582BED48EAD23AA51DA2D3095E0E /* CardTableViewCell.xib */; };
+		CA7F875AABE7BDC4433C62EF8CA8E9BC /* CardTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58E85ADA805DAA87DB6F18166D5975CB /* CardTableViewCell.xib */; };
 		CAB5E8599B3A62E6736D2E6C6A608FEB /* sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = FC18B6E7C813CDF30416F618B89C85DD /* sha1.c */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		D0A6EAEA4D3C30C21E58BDAFA7BBF395 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DF8C14E4C077786D34A325B451BA27A4 /* Images.xcassets */; };
+		D0A6EAEA4D3C30C21E58BDAFA7BBF395 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD94ABDA9A200772EAF5D2FF117C18D3 /* Images.xcassets */; };
 		D687FCF997A96186E1C76A6DF023EC73 /* ZipArchive.h in Headers */ = {isa = PBXBuildFile; fileRef = 012507484AC4A62B53F9DE7A5217E12F /* ZipArchive.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D6B4247506584C26816AE3AFE3C558EC /* beleren-bold-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B66DFAA97A18D7C7186D7F9679166A1A /* beleren-bold-webfont.ttf */; };
+		D6B4247506584C26816AE3AFE3C558EC /* beleren-bold-webfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 40BC80651B8D67E7692EF4412B3C2CCF /* beleren-bold-webfont.ttf */; };
 		D721524DD582D5B9F988339FABCAA5AB /* Networking+Private.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6C27D3FE064CA7F43D95A8C7F6EF57 /* Networking+Private.swift */; };
 		D7292AEC18897D7D1F6364E6EE9901C8 /* pwd2key.c in Sources */ = {isa = PBXBuildFile; fileRef = 445AFC8F760FB54EBEA497A6B17F589D /* pwd2key.c */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		D80915FC55D96538562DF6DDBF7C0D19 /* aestab.h in Headers */ = {isa = PBXBuildFile; fileRef = 6062C24A9D194E7E83765333192B810B /* aestab.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -207,7 +207,7 @@
 		F7C46A95B551CC97A0116994E1EA94EF /* CMBorder+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF630F29AC48FF54811676CCE531C1C4 /* CMBorder+CoreDataClass.swift */; };
 		F992DCD9C4F995E71020503DC40CB06E /* DATAStack.h in Headers */ = {isa = PBXBuildFile; fileRef = 748DF8BA3EB1AB697D61755844AA4A4F /* DATAStack.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FB09071C5DFE629DD0187CAB83C1B691 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65750782357009223D30658D1A82BD57 /* Foundation.framework */; };
-		FB90029B3F1A36A477428D62B06C7DF6 /* cropback-hq.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F0B9FB3F0F3E0AA2FEA4A6D7CFC2E6F /* cropback-hq.png */; };
+		FB90029B3F1A36A477428D62B06C7DF6 /* cropback-hq.png in Resources */ = {isa = PBXBuildFile; fileRef = 9EDA6DC6CB301C82590F8C87BB3DE489 /* cropback-hq.png */; };
 		FBE224F6CEEB3F6CD3F89DE419D87F12 /* NSEntityDescription+PrimaryKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EF9C6E3B4CF07A3EF2AC67D7A33D91A /* NSEntityDescription+PrimaryKey.m */; };
 		FD69CBDB956B38484DEACC4D0B898141 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7180504B850911112A9B4B9EFA9A7254 /* JSON.swift */; };
 		FD87F8764674EFAAF3AABCA2552E5127 /* libxmlParserOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4EC95B1C54D1AF381389CC5A53CA458 /* libxmlParserOption.swift */; };
@@ -382,11 +382,11 @@
 
 /* Begin PBXFileReference section */
 		00431309D9C5982846E4F339D6B6D9C1 /* NSArray+Sync.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "NSArray+Sync.swift"; path = "Source/Sync/NSArray+Sync.swift"; sourceTree = "<group>"; };
+		0048E852619EEB03CCAFB1C3BCDC89DF /* 2017-22-07.xcdatamodel */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcdatamodel; path = "2017-22-07.xcdatamodel"; sourceTree = "<group>"; };
 		012507484AC4A62B53F9DE7A5217E12F /* ZipArchive.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ZipArchive.h; path = SSZipArchive/ZipArchive.h; sourceTree = "<group>"; };
 		03CE1FA2E974D091FF7CF0804A4889A9 /* CMSetType+CoreDataClass.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMSetType+CoreDataClass.swift"; path = "ManaKit/Classes/CMSetType+CoreDataClass.swift"; sourceTree = "<group>"; };
 		03F4E27FE752F3C8FE038D134F8824D1 /* aestab.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = aestab.c; path = SSZipArchive/minizip/aes/aestab.c; sourceTree = "<group>"; };
 		04EE048FAC7627568628F2D6BACC2786 /* DATASourceCollectionHeaderView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DATASourceCollectionHeaderView.swift; path = Source/DATASourceCollectionHeaderView.swift; sourceTree = "<group>"; };
-		05319F051E79F5F07887A5962B52165A /* ManaKit.sqlite.zip */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.zip; name = ManaKit.sqlite.zip; path = ManaKit/Assets/ManaKit.sqlite.zip; sourceTree = "<group>"; };
 		057BA51C5757E05C1B9F2256658F4FE8 /* NSDate+PropertyMapper.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSDate+PropertyMapper.h"; path = "Source/DateParser/NSDate+PropertyMapper.h"; sourceTree = "<group>"; };
 		061505D8BB966121975685A71A4DCEB3 /* CMLegality+CoreDataClass.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMLegality+CoreDataClass.swift"; path = "ManaKit/Classes/CMLegality+CoreDataClass.swift"; sourceTree = "<group>"; };
 		067830A47FFE0B1108DFCD76E77C6DD9 /* Kanna-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Kanna-prefix.pch"; sourceTree = "<group>"; };
@@ -397,15 +397,17 @@
 		0BC5B9C40C7FBFB691BA5D9DBFD615D3 /* brg_types.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = brg_types.h; path = SSZipArchive/minizip/aes/brg_types.h; sourceTree = "<group>"; };
 		0E2CA767A0EFD1BFC3BF9BFAB559BB9E /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0FC429318B7806D20E2102F96CD7EBB9 /* TestCheck.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TestCheck.swift; path = Sources/TestCheck.swift; sourceTree = "<group>"; };
+		109BA51B90441834895F0F779ECDFD21 /* Gray_Patterned_BG.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = Gray_Patterned_BG.png; sourceTree = "<group>"; };
 		10ADC965CE955758B823477890B8EE6D /* SSZipArchive-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SSZipArchive-prefix.pch"; sourceTree = "<group>"; };
 		10DB4CCDF0F281A4277B955F5826C4C1 /* crypt.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = crypt.h; path = SSZipArchive/minizip/crypt.h; sourceTree = "<group>"; };
-		11E4374E1F28E64F00459AD4 /* 2017-07-26.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "2017-07-26.xcdatamodel"; sourceTree = "<group>"; };
-		11F1525C2EE2D9AA8955CF5A1429D8E5 /* Gray_Patterned_BG.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = Gray_Patterned_BG.png; sourceTree = "<group>"; };
+		114952FE1F3418D700BE8DC8 /* 2017-08-04.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "2017-08-04.xcdatamodel"; sourceTree = "<group>"; };
 		11FA451EBD2BAA58F5DF1D466D018142 /* CMForeignName+CoreDataClass.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMForeignName+CoreDataClass.swift"; path = "ManaKit/Classes/CMForeignName+CoreDataClass.swift"; sourceTree = "<group>"; };
 		1204157DB56FC23EAC3078E1932C482D /* Pods-ManaKit_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-ManaKit_Example-dummy.m"; sourceTree = "<group>"; };
 		12AF731054FB5912B7D95E1B2E98FF51 /* aes_ni.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = aes_ni.h; path = SSZipArchive/minizip/aes/aes_ni.h; sourceTree = "<group>"; };
+		13F2610A90964A8463AB093936BC7289 /* ManaKit.sqlite.zip */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.zip; name = ManaKit.sqlite.zip; path = ManaKit/Assets/ManaKit.sqlite.zip; sourceTree = "<group>"; };
 		160A0B7807BBD66236C857D974BD90F6 /* PropertyMapper.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PropertyMapper.h; path = Source/PropertyMapper/PropertyMapper.h; sourceTree = "<group>"; };
 		1756984F6E7FB0D2071C94849AD9F4F1 /* Networking-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Networking-prefix.pch"; sourceTree = "<group>"; };
+		1782BA9CB8F91C3407FCABA422CEDB1A /* internationalcollectorscardback-hq.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = "internationalcollectorscardback-hq.png"; sourceTree = "<group>"; };
 		1812207EDCB9384B64A9682F553A605A /* Sync-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Sync-dummy.m"; sourceTree = "<group>"; };
 		18151F3CCE9A2CEA5620AC1FEC3D3C0E /* NSEntityDescription+Sync.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "NSEntityDescription+Sync.swift"; path = "Source/Sync/NSEntityDescription+Sync.swift"; sourceTree = "<group>"; };
 		18AEFC1D62CE19C1E184A154437B1FE5 /* Pods-ManaKit_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-ManaKit_Example-acknowledgements.plist"; sourceTree = "<group>"; };
@@ -420,12 +422,12 @@
 		1F3C5FE42B7C99F759A6951686ADE61B /* ManaKit.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ManaKit.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F79E3BD957FBECCBDB137F0358C2075 /* Result.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Result.swift; path = Sources/Result.swift; sourceTree = "<group>"; };
 		2003CECBF003FC50540194E1AD26938A /* CMSetType+CoreDataProperties.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMSetType+CoreDataProperties.swift"; path = "ManaKit/Classes/CMSetType+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		208B3E869DF3500A61D4270B01C4C180 /* Matrix Bold.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; path = "Matrix Bold.ttf"; sourceTree = "<group>"; };
 		20E539093A7F7728993505A4F14BA805 /* ManaKit.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = ManaKit.modulemap; sourceTree = "<group>"; };
 		211B5AA22594AE31AB10C6034C6E5A34 /* DATASource-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "DATASource-dummy.m"; sourceTree = "<group>"; };
 		21F3C183F567B611A5C745092467FFE1 /* Sync.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sync.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Sync.framework; sourceTree = DEVELOPER_DIR; };
 		23C05297A8089735318EEF4ED2ED0545 /* Pods-ManaKit_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-ManaKit_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		2434D49C41F1A8D4E9DC5BF5096DF40A /* Kanna.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = Kanna.modulemap; sourceTree = "<group>"; };
+		26A00B838EB24709D04E87DA286F6D72 /* Card Magus.xcdatamodel */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcdatamodel; path = "Card Magus.xcdatamodel"; sourceTree = "<group>"; };
 		296B989E3B7A7B0EF25CB103B5780896 /* unzip.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = unzip.c; path = SSZipArchive/minizip/unzip.c; sourceTree = "<group>"; };
 		2A6050AB659F8685BF4133392B094BAA /* Networking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Networking.h; path = Sources/Networking.h; sourceTree = "<group>"; };
 		2A6C0AAE3B821ADDA8797664905AA60D /* Sync-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Sync-umbrella.h"; sourceTree = "<group>"; };
@@ -434,7 +436,6 @@
 		2B814542D7DACC0CCF8C7F901260069E /* Pods-ManaKit_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-ManaKit_Tests-dummy.m"; sourceTree = "<group>"; };
 		2C953267D14AF1347F7A7075EC840BB3 /* prng.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = prng.h; path = SSZipArchive/minizip/aes/prng.h; sourceTree = "<group>"; };
 		2E53F1E986A63CD9ED2C304EB49BE2B9 /* CMBorder+CoreDataProperties.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMBorder+CoreDataProperties.swift"; path = "ManaKit/Classes/CMBorder+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		2E6324E2C152E8D5312ED8A49D50026D /* 2017-22-07.xcdatamodel */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcdatamodel; path = "2017-22-07.xcdatamodel"; sourceTree = "<group>"; };
 		2F5D3CB1BFF4CC48642503B0BCF6FAEE /* aescrypt.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = aescrypt.c; path = SSZipArchive/minizip/aes/aescrypt.c; sourceTree = "<group>"; };
 		30B97DAAD9CFFA59D9C6965019AE599E /* CMLegality+CoreDataProperties.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMLegality+CoreDataProperties.swift"; path = "ManaKit/Classes/CMLegality+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		30E37C7E10E7EDABC0D42066D23B5D21 /* CMCardLegality+CoreDataProperties.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMCardLegality+CoreDataProperties.swift"; path = "ManaKit/Classes/CMCardLegality+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -453,6 +454,7 @@
 		3D8FB452704833729C9946438AC4D0C9 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3E6C27D3FE064CA7F43D95A8C7F6EF57 /* Networking+Private.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Networking+Private.swift"; path = "Sources/Networking+Private.swift"; sourceTree = "<group>"; };
 		3F212064F0271D74369DBBC3D8C3E3C9 /* DATASource+NSFetchedResultsControllerDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "DATASource+NSFetchedResultsControllerDelegate.swift"; path = "Source/DATASource+NSFetchedResultsControllerDelegate.swift"; sourceTree = "<group>"; };
+		40BC80651B8D67E7692EF4412B3C2CCF /* beleren-bold-webfont.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; path = "beleren-bold-webfont.ttf"; sourceTree = "<group>"; };
 		410E11143CC125C01E9F2166194A9874 /* DATASource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DATASource.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/DATASource.framework; sourceTree = DEVELOPER_DIR; };
 		41F50B51A841B819E451D9432B794A0C /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43A206F8379ADE93211C64848C8DDE36 /* ioapi.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ioapi.h; path = SSZipArchive/minizip/ioapi.h; sourceTree = "<group>"; };
@@ -466,12 +468,15 @@
 		50F4D9C8B5CE74B91C609B0582AECF30 /* Networking-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Networking-dummy.m"; sourceTree = "<group>"; };
 		51791FA7B18D51D28D86B73413A78DFA /* CMFormat+CoreDataProperties.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMFormat+CoreDataProperties.swift"; path = "ManaKit/Classes/CMFormat+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		53FDDC9A35296C531F9BCF97AA405B24 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		5445C125207B5B803F7021638430ED5C /* images */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = images; path = ManaKit/Assets/images; sourceTree = "<group>"; };
 		551B33C61BBCDEFC050A8D9D42A91611 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5720BDABAC9C8B9969F7DC8F84DE23C7 /* Card_Circles.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = Card_Circles.png; sourceTree = "<group>"; };
 		5737EC340CACBD9C9B428F4770943C77 /* Networking.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Networking.swift; path = Sources/Networking.swift; sourceTree = "<group>"; };
 		58A98FAC3F1A141D20405CA7066E5796 /* Sync.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Sync.swift; path = Source/Sync/Sync.swift; sourceTree = "<group>"; };
+		58E85ADA805DAA87DB6F18166D5975CB /* CardTableViewCell.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = CardTableViewCell.xib; path = ManaKit/Assets/CardTableViewCell.xib; sourceTree = "<group>"; };
+		590DCFB5137B05FE2DCCE39A3EEB940E /* 2017-07-26.xcdatamodel */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcdatamodel; path = "2017-07-26.xcdatamodel"; sourceTree = "<group>"; };
 		598FA0AA02835114EFD8044AC957CE57 /* SSZipArchive-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SSZipArchive-umbrella.h"; sourceTree = "<group>"; };
 		5A019EC5FFB0C2FE04927BFD8A4931D3 /* Inflections.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Inflections.h; path = Source/Inflections/Inflections.h; sourceTree = "<group>"; };
+		5B02414FD8085F92BC53CE90DEC449E6 /* cardback-crop-hq.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = "cardback-crop-hq.png"; sourceTree = "<group>"; };
 		5D5BEAAC2D7B35FD95E23F0E0A2B5FC6 /* Helpers.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Helpers.swift; path = Sources/Helpers.swift; sourceTree = "<group>"; };
 		6062C24A9D194E7E83765333192B810B /* aestab.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = aestab.h; path = SSZipArchive/minizip/aes/aestab.h; sourceTree = "<group>"; };
 		618DA92350F71AC74455F97F1930C672 /* zip.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = zip.c; path = SSZipArchive/minizip/zip.c; sourceTree = "<group>"; };
@@ -490,6 +495,7 @@
 		6E4808796F1F90336250BD116034043A /* Pods-ManaKit_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-ManaKit_Example.modulemap"; sourceTree = "<group>"; };
 		6EA4D3697ADF12A830E740B4A6E9A115 /* DATASource.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DATASource.h; path = Source/DATASource.h; sourceTree = "<group>"; };
 		700763DB7334AE781DDEA68C59D0465D /* Pods_ManaKit_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ManaKit_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		70C8D68D559D73D39027DBC670449F20 /* MPlantin.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; path = MPlantin.ttf; sourceTree = "<group>"; };
 		70FBD7E83D97F4A5994119E42EA128C7 /* DATAStack.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = DATAStack.modulemap; sourceTree = "<group>"; };
 		7180504B850911112A9B4B9EFA9A7254 /* JSON.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = JSON.swift; path = Sources/JSON.swift; sourceTree = "<group>"; };
 		718A1EC4E48F9D260A86E553160428DE /* DATASource.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DATASource.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -498,6 +504,7 @@
 		748DF8BA3EB1AB697D61755844AA4A4F /* DATAStack.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DATAStack.h; path = Source/DATAStack.h; sourceTree = "<group>"; };
 		7629D1B1E941A785B978752BFB943C74 /* sha1.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = sha1.h; path = SSZipArchive/minizip/aes/sha1.h; sourceTree = "<group>"; };
 		7C7DE5E6ABF3D544F99EC8ED329DE20C /* Networking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Networking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D1BDC4165D6FE987677CB9B5832BA9E /* collectorscardback-hq.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = "collectorscardback-hq.png"; sourceTree = "<group>"; };
 		7D77118B792E7E45B96F2D3AA8E2E5C7 /* DATASourceDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DATASourceDelegate.swift; path = Source/DATASourceDelegate.swift; sourceTree = "<group>"; };
 		7EF6633E2B64B84E66188833D4E1A6EC /* ManaKit-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ManaKit-prefix.pch"; sourceTree = "<group>"; };
 		7F8CDDE2D6BB82F770BBD61669B7ACA8 /* ManaKit.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ManaKit.swift; path = ManaKit/Classes/ManaKit.swift; sourceTree = "<group>"; };
@@ -505,11 +512,10 @@
 		7FE582E14989D8D04166E8C238B6BC08 /* ioapi_buf.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ioapi_buf.h; path = SSZipArchive/minizip/ioapi_buf.h; sourceTree = "<group>"; };
 		800DBBDA1FD59CEA3A96AD6C4D5994AA /* CMSet+CoreDataProperties.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMSet+CoreDataProperties.swift"; path = "ManaKit/Classes/CMSet+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8081475F43D9A7ACE47F0FCFF60AA510 /* Sync.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Sync.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		81991DBDAE460F23AF6A336B088ACF5F /* Goudy Medieval.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; path = "Goudy Medieval.ttf"; sourceTree = "<group>"; };
 		8274646662D8709C4E72D87B9DF86914 /* brg_endian.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = brg_endian.h; path = SSZipArchive/minizip/aes/brg_endian.h; sourceTree = "<group>"; };
-		84CF582BED48EAD23AA51DA2D3095E0E /* CardTableViewCell.xib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.xib; name = CardTableViewCell.xib; path = ManaKit/Assets/CardTableViewCell.xib; sourceTree = "<group>"; };
 		857A5CCA589EFE51585871DC29AA3939 /* CMBooster+CoreDataProperties.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMBooster+CoreDataProperties.swift"; path = "ManaKit/Classes/CMBooster+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		86A858006D0D0E4FEB1021ADBDCA5942 /* DATAStack-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "DATAStack-dummy.m"; sourceTree = "<group>"; };
+		86BB94CDF79E34819E24E94EB5980595 /* Goudy Medieval.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; path = "Goudy Medieval.ttf"; sourceTree = "<group>"; };
 		88AF06031FCD3E836A92A8707E7A9343 /* Sync.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Sync.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8956055ADE049C18D970D0CFF1AEE309 /* Response.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Response.swift; path = Sources/Response.swift; sourceTree = "<group>"; };
 		8B6CBDC386EF987939C51E4726852068 /* Pods-ManaKit_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ManaKit_Example.release.xcconfig"; sourceTree = "<group>"; };
@@ -518,14 +524,15 @@
 		8E90B4755EA80E4241DFFA10BF05AFC0 /* ResourceBundle-ManaKit-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-ManaKit-Info.plist"; sourceTree = "<group>"; };
 		8EF9C6E3B4CF07A3EF2AC67D7A33D91A /* NSEntityDescription+PrimaryKey.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSEntityDescription+PrimaryKey.m"; path = "Source/PrimaryKey/NSEntityDescription+PrimaryKey.m"; sourceTree = "<group>"; };
 		8FADDB9022BCE8A7B136E6A84D10A716 /* CMCardType+CoreDataClass.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMCardType+CoreDataClass.swift"; path = "ManaKit/Classes/CMCardType+CoreDataClass.swift"; sourceTree = "<group>"; };
-		90498F872EAD72B6EB2448F23F5D0D7C /* collectorscardback-hq.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = "collectorscardback-hq.png"; sourceTree = "<group>"; };
 		9103ACE857E79A468C8621F399C7C853 /* aesopt.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = aesopt.h; path = SSZipArchive/minizip/aes/aesopt.h; sourceTree = "<group>"; };
 		91501C0519355BB14E69973EBDB2C732 /* Kanna.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Kanna.xcconfig; sourceTree = "<group>"; };
 		92D10AB484F34EA5FB58B4D5FD5FE895 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/CoreData.framework; sourceTree = DEVELOPER_DIR; };
 		931FC72926766241E4C3D9C6B987F56F /* NetworkingManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NetworkingManager.swift; path = ManaKit/Classes/NetworkingManager.swift; sourceTree = "<group>"; };
 		935200F2BB7177D876D646338770F4B0 /* Pods-ManaKit_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-ManaKit_Tests-frameworks.sh"; sourceTree = "<group>"; };
+		939F67A70F67081F8763214C2ECA79CB /* Matrix Bold.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; path = "Matrix Bold.ttf"; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		964625CDA060F6C26548B58A9CF021D7 /* ManaKit-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ManaKit-umbrella.h"; sourceTree = "<group>"; };
+		96D84DB72DA9DC737FA5E907F5763075 /* fonts */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = fonts; path = ManaKit/Assets/fonts; sourceTree = "<group>"; };
 		97D3DD3886DD83F6D8A81FD1A2446351 /* SSZipArchive.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SSZipArchive.m; path = SSZipArchive/SSZipArchive.m; sourceTree = "<group>"; };
 		981AC0B13A865AF94B142B134774FAE7 /* Kanna.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kanna.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Kanna.framework; sourceTree = DEVELOPER_DIR; };
 		99143E70E4C05CDDB3FDBF7033E78A96 /* TestCheck.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TestCheck.swift; path = Source/TestCheck.swift; sourceTree = "<group>"; };
@@ -533,9 +540,10 @@
 		9B31591838531818301C6B0D2ACAC3E4 /* ManaKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ManaKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B52CFC8FF33C0AD458BDBD67882C748 /* CMRarity+CoreDataClass.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMRarity+CoreDataClass.swift"; path = "ManaKit/Classes/CMRarity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		9D17329D6D9C2C1CBD5689B41660D473 /* NSDate+PropertyMapper.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSDate+PropertyMapper.m"; path = "Source/DateParser/NSDate+PropertyMapper.m"; sourceTree = "<group>"; };
+		9E041D9EB0D05A96F5DB7404A4C724CE /* Card_Circles.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = Card_Circles.png; sourceTree = "<group>"; };
 		9E860D6CC09D9505FF6CFC654A9E3725 /* CMSet+CoreDataClass.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMSet+CoreDataClass.swift"; path = "ManaKit/Classes/CMSet+CoreDataClass.swift"; sourceTree = "<group>"; };
 		9EADD8FA7D522F4DD34AE141C2E2AF25 /* DATAStack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DATAStack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9F0B9FB3F0F3E0AA2FEA4A6D7CFC2E6F /* cropback-hq.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = "cropback-hq.png"; sourceTree = "<group>"; };
+		9EDA6DC6CB301C82590F8C87BB3DE489 /* cropback-hq.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = "cropback-hq.png"; sourceTree = "<group>"; };
 		A0CBBE6B52DDA0D819FDD081013AFA59 /* fileenc.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = fileenc.c; path = SSZipArchive/minizip/aes/fileenc.c; sourceTree = "<group>"; };
 		A171E47BABB1E9C4FD59072B8F50CE21 /* Pods-ManaKit_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-ManaKit_Tests.modulemap"; sourceTree = "<group>"; };
 		A199E938F5B80436773135CC70085C70 /* ReachabilitySwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReachabilitySwift.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/ReachabilitySwift.framework; sourceTree = DEVELOPER_DIR; };
@@ -543,29 +551,27 @@
 		A50478EFD6E76AD57407D7F82FC40E35 /* CMLayout+CoreDataProperties.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMLayout+CoreDataProperties.swift"; path = "ManaKit/Classes/CMLayout+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		A553360067BDA9CA64D4B3D342452F61 /* hmac.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = hmac.h; path = SSZipArchive/minizip/aes/hmac.h; sourceTree = "<group>"; };
 		A6DCCB3FAD8359F702E42625413C5A21 /* Networking+HTTPRequests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Networking+HTTPRequests.swift"; path = "Sources/Networking+HTTPRequests.swift"; sourceTree = "<group>"; };
+		A7469F88FC326FA13B2FA7C7C90870DF /* cardback-hq.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = "cardback-hq.png"; sourceTree = "<group>"; };
 		A74892B8C6CA911FAF134C1C1B12C734 /* crypt.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = crypt.c; path = SSZipArchive/minizip/crypt.c; sourceTree = "<group>"; };
 		A9E4767BF481958262D86E8E2B97FD38 /* CMFormat+CoreDataClass.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMFormat+CoreDataClass.swift"; path = "ManaKit/Classes/CMFormat+CoreDataClass.swift"; sourceTree = "<group>"; };
 		AA348A39ADB106DFC86FD56DD8434FB0 /* ReachabilitySwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReachabilitySwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA5B5C2806F75C8656777514E9E2248E /* SSZipArchive.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SSZipArchive.xcconfig; sourceTree = "<group>"; };
 		AAECFDE61D368FF4BE8D63723E390AE5 /* pwd2key.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = pwd2key.h; path = SSZipArchive/minizip/aes/pwd2key.h; sourceTree = "<group>"; };
 		AB24385B8864F7E851D36CA992D63AEE /* NSManagedObject+PropertyMapperHelpers.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+PropertyMapperHelpers.m"; path = "Source/PropertyMapper/NSManagedObject+PropertyMapperHelpers.m"; sourceTree = "<group>"; };
-		ADBB1A66605D5631AAE5F8C4DE7733F2 /* fonts */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = fonts; path = ManaKit/Assets/fonts; sourceTree = "<group>"; };
-		AE089E7E2933D0093E6D67B0770BBA8F /* 2017-07-22b.xcdatamodel */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcdatamodel; path = "2017-07-22b.xcdatamodel"; sourceTree = "<group>"; };
 		AF5E293688D57C8245F9A3F90774772E /* DataStack.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DataStack.swift; path = Source/DataStack/DataStack.swift; sourceTree = "<group>"; };
 		AF630F29AC48FF54811676CCE531C1C4 /* CMBorder+CoreDataClass.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMBorder+CoreDataClass.swift"; path = "ManaKit/Classes/CMBorder+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B1C7F6587C1AD2F2A359822E183B9D74 /* Kanna-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Kanna-dummy.m"; sourceTree = "<group>"; };
 		B222ABF319BE9681757FAD96DD1AADC6 /* Pods-ManaKit_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-ManaKit_Tests-resources.sh"; sourceTree = "<group>"; };
 		B2D451C38AB23A681E7E12E99E3BFDF0 /* Pods-ManaKit_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-ManaKit_Example-resources.sh"; sourceTree = "<group>"; };
 		B2E18DE5EA52B196E0801BA8723F8DB7 /* DATAStack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DATAStack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B35D58DFAB00D78EAA5674E6CD2191B1 /* 2017-07-22b.xcdatamodel */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcdatamodel; path = "2017-07-22b.xcdatamodel"; sourceTree = "<group>"; };
 		B377E78C4B15EAAE77F5F5651F38A200 /* CMForeignName+CoreDataProperties.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMForeignName+CoreDataProperties.swift"; path = "ManaKit/Classes/CMForeignName+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B3B3AD18821BD8BA9D81A375CEC19774 /* DATASource.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DATASource.swift; path = Source/DATASource.swift; sourceTree = "<group>"; };
 		B4A8AE3D0F02A9612784847FD41A7692 /* CMColor+CoreDataProperties.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMColor+CoreDataProperties.swift"; path = "ManaKit/Classes/CMColor+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B4EC95B1C54D1AF381389CC5A53CA458 /* libxmlParserOption.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = libxmlParserOption.swift; path = Sources/Kanna/libxmlParserOption.swift; sourceTree = "<group>"; };
 		B54AC0E25F1F38B0D53BD8E373215382 /* CMCardType+CoreDataProperties.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMCardType+CoreDataProperties.swift"; path = "ManaKit/Classes/CMCardType+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		B66DFAA97A18D7C7186D7F9679166A1A /* beleren-bold-webfont.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; path = "beleren-bold-webfont.ttf"; sourceTree = "<group>"; };
 		B705E8EDA34BE83621F3C368CD713A83 /* ioapi_mem.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ioapi_mem.h; path = SSZipArchive/minizip/ioapi_mem.h; sourceTree = "<group>"; };
 		B7B6C67825F38CFAA3101FC8839EE5BD /* CMBlock+CoreDataProperties.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMBlock+CoreDataProperties.swift"; path = "ManaKit/Classes/CMBlock+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		B83A3F2C8CA89C120C3BB5CB1122EAB4 /* images */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = images; path = ManaKit/Assets/images; sourceTree = "<group>"; };
 		BB805889E29DA53EDB576084AF5C21A9 /* CMSetBooster+CoreDataClass.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMSetBooster+CoreDataClass.swift"; path = "ManaKit/Classes/CMSetBooster+CoreDataClass.swift"; sourceTree = "<group>"; };
 		BC73532E39A49145EFA1042F89AD4AD2 /* ReachabilitySwift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = ReachabilitySwift.modulemap; sourceTree = "<group>"; };
 		BD3B484FDCAF255DC227E2D464572FC2 /* NSManagedObjectContext+Sync.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "NSManagedObjectContext+Sync.swift"; path = "Source/Sync/NSManagedObjectContext+Sync.swift"; sourceTree = "<group>"; };
@@ -577,6 +583,7 @@
 		C03581F4945A562416396604656E9DE7 /* Sync.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = Sync.modulemap; sourceTree = "<group>"; };
 		C16B30A0C0CD210092E36F86B58B7AAC /* DATASource.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = DATASource.xcconfig; sourceTree = "<group>"; };
 		C16F5DE9CD171E38ADE2248C054424E0 /* minishared.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = minishared.h; path = SSZipArchive/minizip/minishared.h; sourceTree = "<group>"; };
+		C20E6C292690BD768A419AA25C9535CB /* belerensmallcaps-bold-webfont.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; path = "belerensmallcaps-bold-webfont.ttf"; sourceTree = "<group>"; };
 		C2F79ED7B9F500E5588971C76A8AA9A5 /* CMWatermark+CoreDataClass.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMWatermark+CoreDataClass.swift"; path = "ManaKit/Classes/CMWatermark+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C3684A883D497E3A7E64B8892B0D8BF2 /* CMCard+CoreDataClass.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMCard+CoreDataClass.swift"; path = "ManaKit/Classes/CMCard+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C4F228A8B8EDF11F79BAFD4D523B09EE /* Image.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Image.swift; path = Sources/Image.swift; sourceTree = "<group>"; };
@@ -585,7 +592,6 @@
 		CA218B43F5B3A006A460A803430D1DC0 /* ReachabilitySwift-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "ReachabilitySwift-dummy.m"; sourceTree = "<group>"; };
 		CA32EFCE683A88A995A2D38E1FD1D724 /* NSEntityDescription+PrimaryKey.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSEntityDescription+PrimaryKey.h"; path = "Source/PrimaryKey/NSEntityDescription+PrimaryKey.h"; sourceTree = "<group>"; };
 		CA4DE7EEF590F6E464987AE35132CCD8 /* hmac.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = hmac.c; path = SSZipArchive/minizip/aes/hmac.c; sourceTree = "<group>"; };
-		CB67D878408C1A06D1D246A53F47353A /* cardback-crop-hq.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = "cardback-crop-hq.png"; sourceTree = "<group>"; };
 		CDE37D19CBABD6C6A59536AA19458F7D /* CSS.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CSS.swift; path = Sources/Kanna/CSS.swift; sourceTree = "<group>"; };
 		CDFF5E477E8E7610A21C716228E96E2D /* DATASource-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "DATASource-prefix.pch"; sourceTree = "<group>"; };
 		CE3CE45EBD32964BFB13BDEB83974A3E /* CMLanguage+CoreDataProperties.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMLanguage+CoreDataProperties.swift"; path = "ManaKit/Classes/CMLanguage+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -597,10 +603,8 @@
 		D4897E687B2EA7D800B5B3404C8654F3 /* Pods-ManaKit_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ManaKit_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		D691FE10B043ABD2842461852A6D98D0 /* Sync+DataStack.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Sync+DataStack.swift"; path = "Source/Sync/Sync+DataStack.swift"; sourceTree = "<group>"; };
 		D701B3B8B242722245AB6147E54457D3 /* NSManagedObject+Sync.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "NSManagedObject+Sync.swift"; path = "Source/Sync/NSManagedObject+Sync.swift"; sourceTree = "<group>"; };
-		D7493003AA69652A73617641288EB2E2 /* belerensmallcaps-bold-webfont.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; path = "belerensmallcaps-bold-webfont.ttf"; sourceTree = "<group>"; };
 		D7643DEE7DD7D793A31ABB7502D8AFA2 /* Kanna.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Kanna.h; path = Sources/Kanna/Kanna.h; sourceTree = "<group>"; };
 		D779EC0B528B21F4EA137E8A3E8F5CF4 /* ioapi.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = ioapi.c; path = SSZipArchive/minizip/ioapi.c; sourceTree = "<group>"; };
-		D852C7CB0368CB102412D91FDB161505 /* cardback-hq.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = "cardback-hq.png"; sourceTree = "<group>"; };
 		D8C212A1B432589FC060BC3E0F653C4E /* ReachabilitySwift.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ReachabilitySwift.xcconfig; sourceTree = "<group>"; };
 		D97D2FD4C386C893310487ADB6BE5D33 /* SSZipArchive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SSZipArchive.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/SSZipArchive.framework; sourceTree = DEVELOPER_DIR; };
 		DA0D35BAC3F638BA5E9AD0372CD3895D /* DATAStack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DATAStack.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/DATAStack.framework; sourceTree = DEVELOPER_DIR; };
@@ -611,14 +615,11 @@
 		DD8B979C26A1A8EEE2E0496CCFE0DB62 /* DataFilter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DataFilter.swift; path = Source/DataFilter/DataFilter.swift; sourceTree = "<group>"; };
 		DECCFE83643799E6CB71052E6574A6F5 /* SSZipArchive.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SSZipArchive.h; path = SSZipArchive/SSZipArchive.h; sourceTree = "<group>"; };
 		DF4E253D0B5465F8B03B03912B0C3970 /* NSManagedObject+PropertyMapperHelpers.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSManagedObject+PropertyMapperHelpers.h"; path = "Source/PropertyMapper/NSManagedObject+PropertyMapperHelpers.h"; sourceTree = "<group>"; };
-		DF8C14E4C077786D34A325B451BA27A4 /* Images.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ManaKit/Assets/Images.xcassets; sourceTree = "<group>"; };
-		E03269745B9E22D1BD1948CE30A1C4D7 /* Card Magus.xcdatamodel */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcdatamodel; path = "Card Magus.xcdatamodel"; sourceTree = "<group>"; };
 		E1A8CA5EB5AC148B24298CA26638032E /* CMCard+CoreDataProperties.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMCard+CoreDataProperties.swift"; path = "ManaKit/Classes/CMCard+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		E5346C53756B1E93D0D5C4C03615A367 /* CMArtist+CoreDataClass.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMArtist+CoreDataClass.swift"; path = "ManaKit/Classes/CMArtist+CoreDataClass.swift"; sourceTree = "<group>"; };
 		E66CCE0CAAFE94DE91EF83F007B3A621 /* SSZipCommon.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SSZipCommon.h; path = SSZipArchive/SSZipCommon.h; sourceTree = "<group>"; };
 		E7DD1BF189422E21C3C06840B45C1FF0 /* Reachability.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Reachability.swift; path = Reachability/Reachability.swift; sourceTree = "<group>"; };
 		E82BAAD8072CCD0D0FC41FE122205EFC /* fileenc.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = fileenc.h; path = SSZipArchive/minizip/aes/fileenc.h; sourceTree = "<group>"; };
-		E90750F7BFA5317012CCEAEFBA61341C /* MPlantin.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; path = MPlantin.ttf; sourceTree = "<group>"; };
 		E95B65988409A58BA7BB1E158E0D3FA7 /* aes.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = aes.h; path = SSZipArchive/minizip/aes/aes.h; sourceTree = "<group>"; };
 		EA7B00FBBBAE3E5D9CFAF1AA0AAB8176 /* CMBlock+CoreDataClass.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMBlock+CoreDataClass.swift"; path = "ManaKit/Classes/CMBlock+CoreDataClass.swift"; sourceTree = "<group>"; };
 		EABA933BB3A74B86016FFAF6CA171FB7 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -637,8 +638,8 @@
 		F72ABD09C06AF3D442A7BAE26EB27B93 /* DATASource+UICollectionViewDataSource.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "DATASource+UICollectionViewDataSource.swift"; path = "Source/DATASource+UICollectionViewDataSource.swift"; sourceTree = "<group>"; };
 		F7F38EF9A77572EA5A71FD17FE5F5C20 /* SSZipArchive.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = SSZipArchive.modulemap; sourceTree = "<group>"; };
 		FB4EF6811E5768AC052DF7054EC0ACED /* NetworkActivityIndicator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NetworkActivityIndicator.swift; path = Sources/NetworkActivityIndicator.swift; sourceTree = "<group>"; };
-		FBFF1383D33DE91A2CAE2B4449789576 /* internationalcollectorscardback-hq.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = "internationalcollectorscardback-hq.png"; sourceTree = "<group>"; };
 		FC18B6E7C813CDF30416F618B89C85DD /* sha1.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = sha1.c; path = SSZipArchive/minizip/aes/sha1.c; sourceTree = "<group>"; };
+		FD94ABDA9A200772EAF5D2FF117C18D3 /* Images.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ManaKit/Assets/Images.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -874,7 +875,7 @@
 				7F8CDDE2D6BB82F770BBD61669B7ACA8 /* ManaKit.swift */,
 				1A1A049C0DE70755FBD8732D42FFA188 /* ManaKit-ManaKit-Bridging-Header.h */,
 				931FC72926766241E4C3D9C6B987F56F /* NetworkingManager.swift */,
-				E140EB68CFD5B3173E24028888B01BA0 /* Resources */,
+				BBEFD3E5172F251239DA91B0B4B491CA /* Resources */,
 				F24F14CC5C9622713FBB09CBAA8E6ADA /* Support Files */,
 			);
 			name = ManaKit;
@@ -899,6 +900,21 @@
 				E180787706591326EBA2C657840C7907 /* Support Files */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		2AFB636A7971AE328FD0100109F10904 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				9E041D9EB0D05A96F5DB7404A4C724CE /* Card_Circles.png */,
+				5B02414FD8085F92BC53CE90DEC449E6 /* cardback-crop-hq.png */,
+				A7469F88FC326FA13B2FA7C7C90870DF /* cardback-hq.png */,
+				7D1BDC4165D6FE987677CB9B5832BA9E /* collectorscardback-hq.png */,
+				9EDA6DC6CB301C82590F8C87BB3DE489 /* cropback-hq.png */,
+				109BA51B90441834895F0F779ECDFD21 /* Gray_Patterned_BG.png */,
+				1782BA9CB8F91C3407FCABA422CEDB1A /* internationalcollectorscardback-hq.png */,
+			);
+			name = images;
+			path = ManaKit/Assets/images;
 			sourceTree = "<group>";
 		};
 		3CAC00CFD20C5C718A5FB521B93FE37C /* iOS */ = {
@@ -979,6 +995,19 @@
 				D36DECD6395733F7873E3EDEC95A41BE /* Sync */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		6D5AFD231EA2ABA8F7CD3303FE8E95B9 /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				40BC80651B8D67E7692EF4412B3C2CCF /* beleren-bold-webfont.ttf */,
+				C20E6C292690BD768A419AA25C9535CB /* belerensmallcaps-bold-webfont.ttf */,
+				86BB94CDF79E34819E24E94EB5980595 /* Goudy Medieval.ttf */,
+				939F67A70F67081F8763214C2ECA79CB /* Matrix Bold.ttf */,
+				70C8D68D559D73D39027DBC670449F20 /* MPlantin.ttf */,
+			);
+			name = fonts;
+			path = ManaKit/Assets/fonts;
 			sourceTree = "<group>";
 		};
 		7732BB3B50DCEE82294DB3659BBFA87A /* Support Files */ = {
@@ -1103,6 +1132,21 @@
 			path = "../Target Support Files/DATAStack";
 			sourceTree = "<group>";
 		};
+		BBEFD3E5172F251239DA91B0B4B491CA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				58E85ADA805DAA87DB6F18166D5975CB /* CardTableViewCell.xib */,
+				96D84DB72DA9DC737FA5E907F5763075 /* fonts */,
+				5445C125207B5B803F7021638430ED5C /* images */,
+				FD94ABDA9A200772EAF5D2FF117C18D3 /* Images.xcassets */,
+				E7FE4A4F818E6C8C27A1470ECBE32C15 /* ManaKit.xcdatamodeld */,
+				13F2610A90964A8463AB093936BC7289 /* ManaKit.sqlite.zip */,
+				6D5AFD231EA2ABA8F7CD3303FE8E95B9 /* fonts */,
+				2AFB636A7971AE328FD0100109F10904 /* images */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		D36DECD6395733F7873E3EDEC95A41BE /* Sync */ = {
 			isa = PBXGroup;
 			children = (
@@ -1139,34 +1183,6 @@
 			path = Sync;
 			sourceTree = "<group>";
 		};
-		DE0412A7BFB849BBF6C38DB14C826E87 /* fonts */ = {
-			isa = PBXGroup;
-			children = (
-				B66DFAA97A18D7C7186D7F9679166A1A /* beleren-bold-webfont.ttf */,
-				D7493003AA69652A73617641288EB2E2 /* belerensmallcaps-bold-webfont.ttf */,
-				81991DBDAE460F23AF6A336B088ACF5F /* Goudy Medieval.ttf */,
-				208B3E869DF3500A61D4270B01C4C180 /* Matrix Bold.ttf */,
-				E90750F7BFA5317012CCEAEFBA61341C /* MPlantin.ttf */,
-			);
-			name = fonts;
-			path = ManaKit/Assets/fonts;
-			sourceTree = "<group>";
-		};
-		E140EB68CFD5B3173E24028888B01BA0 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				84CF582BED48EAD23AA51DA2D3095E0E /* CardTableViewCell.xib */,
-				ADBB1A66605D5631AAE5F8C4DE7733F2 /* fonts */,
-				B83A3F2C8CA89C120C3BB5CB1122EAB4 /* images */,
-				DF8C14E4C077786D34A325B451BA27A4 /* Images.xcassets */,
-				DFA5D84B07513443D74DAC632936B93B /* ManaKit.xcdatamodeld */,
-				05319F051E79F5F07887A5962B52165A /* ManaKit.sqlite.zip */,
-				DE0412A7BFB849BBF6C38DB14C826E87 /* fonts */,
-				F08758A37AAADCA702E6DC217BA70371 /* images */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-		};
 		E180787706591326EBA2C657840C7907 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -1179,21 +1195,6 @@
 			);
 			name = "Support Files";
 			path = "../Target Support Files/Networking";
-			sourceTree = "<group>";
-		};
-		F08758A37AAADCA702E6DC217BA70371 /* images */ = {
-			isa = PBXGroup;
-			children = (
-				5720BDABAC9C8B9969F7DC8F84DE23C7 /* Card_Circles.png */,
-				CB67D878408C1A06D1D246A53F47353A /* cardback-crop-hq.png */,
-				D852C7CB0368CB102412D91FDB161505 /* cardback-hq.png */,
-				90498F872EAD72B6EB2448F23F5D0D7C /* collectorscardback-hq.png */,
-				9F0B9FB3F0F3E0AA2FEA4A6D7CFC2E6F /* cropback-hq.png */,
-				11F1525C2EE2D9AA8955CF5A1429D8E5 /* Gray_Patterned_BG.png */,
-				FBFF1383D33DE91A2CAE2B4449789576 /* internationalcollectorscardback-hq.png */,
-			);
-			name = images;
-			path = ManaKit/Assets/images;
 			sourceTree = "<group>";
 		};
 		F24F14CC5C9622713FBB09CBAA8E6ADA /* Support Files */ = {
@@ -1637,7 +1638,7 @@
 				D0A6EAEA4D3C30C21E58BDAFA7BBF395 /* Images.xcassets in Resources */,
 				6FA90C3262942EA31B23D1D245ABAEF9 /* internationalcollectorscardback-hq.png in Resources */,
 				2B9F8B29BC43FAEDA0088C2214F1422A /* ManaKit.sqlite.zip in Resources */,
-				38D4B46F1CB4A9DD9A4BB58756727404 /* ManaKit.xcdatamodeld in Resources */,
+				6AEA6AC95DDF08EA37EC3F705F2DD408 /* ManaKit.xcdatamodeld in Resources */,
 				9850FA71485A432771DF7D02FC6FEB54 /* Matrix Bold.ttf in Resources */,
 				B382784AD49F1CC2560BFE2FCFEE7BC9 /* MPlantin.ttf in Resources */,
 			);
@@ -2934,15 +2935,16 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		DFA5D84B07513443D74DAC632936B93B /* ManaKit.xcdatamodeld */ = {
+		E7FE4A4F818E6C8C27A1470ECBE32C15 /* ManaKit.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				11E4374E1F28E64F00459AD4 /* 2017-07-26.xcdatamodel */,
-				AE089E7E2933D0093E6D67B0770BBA8F /* 2017-07-22b.xcdatamodel */,
-				2E6324E2C152E8D5312ED8A49D50026D /* 2017-22-07.xcdatamodel */,
-				E03269745B9E22D1BD1948CE30A1C4D7 /* Card Magus.xcdatamodel */,
+				114952FE1F3418D700BE8DC8 /* 2017-08-04.xcdatamodel */,
+				B35D58DFAB00D78EAA5674E6CD2191B1 /* 2017-07-22b.xcdatamodel */,
+				590DCFB5137B05FE2DCCE39A3EEB940E /* 2017-07-26.xcdatamodel */,
+				0048E852619EEB03CCAFB1C3BCDC89DF /* 2017-22-07.xcdatamodel */,
+				26A00B838EB24709D04E87DA286F6D72 /* Card Magus.xcdatamodel */,
 			);
-			currentVersion = 11E4374E1F28E64F00459AD4 /* 2017-07-26.xcdatamodel */;
+			currentVersion = 114952FE1F3418D700BE8DC8 /* 2017-08-04.xcdatamodel */;
 			name = ManaKit.xcdatamodeld;
 			path = ManaKit/Assets/ManaKit.xcdatamodeld;
 			sourceTree = "<group>";
