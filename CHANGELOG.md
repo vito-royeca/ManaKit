@@ -1,3 +1,7 @@
+**Version 0.9.1** @ 04.08.2017
+
+- Added CMCard.numberOrder property.
+
 **Version 0.9.0** @ 01.08.2017
 
 - Fixed the width of 100 and 1000000 mana symbols in HTML code.
