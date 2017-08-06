@@ -27,6 +27,14 @@
 		0E2C01DBA7F9B58B63C61300E4EA314B /* NSManagedObject+Export.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D42957431EDA3CE0E30E5273053F9A2 /* NSManagedObject+Export.swift */; };
 		0E6391EA7F1AFA2DC7CC15CF14BC8857 /* DATAStack-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 86A858006D0D0E4FEB1021ADBDCA5942 /* DATAStack-dummy.m */; };
 		114801C3B7F642AA111D32B6F6FC5826 /* NSDate+PropertyMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D17329D6D9C2C1CBD5689B41660D473 /* NSDate+PropertyMapper.m */; };
+		1165CD691F37026C006CC433 /* CMGlossary+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1165CD651F37026C006CC433 /* CMGlossary+CoreDataClass.swift */; };
+		1165CD6A1F37026C006CC433 /* CMGlossary+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1165CD661F37026C006CC433 /* CMGlossary+CoreDataProperties.swift */; };
+		1165CD6B1F37026C006CC433 /* CMRule+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1165CD671F37026C006CC433 /* CMRule+CoreDataClass.swift */; };
+		1165CD6C1F37026C006CC433 /* CMRule+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1165CD681F37026C006CC433 /* CMRule+CoreDataProperties.swift */; };
+		1165CD6E1F370C4E006CC433 /* CMGlossary+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1165CD651F37026C006CC433 /* CMGlossary+CoreDataClass.swift */; };
+		1165CD6F1F370C4E006CC433 /* CMGlossary+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1165CD661F37026C006CC433 /* CMGlossary+CoreDataProperties.swift */; };
+		1165CD701F370C4E006CC433 /* CMRule+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1165CD671F37026C006CC433 /* CMRule+CoreDataClass.swift */; };
+		1165CD711F370C4E006CC433 /* CMRule+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1165CD681F37026C006CC433 /* CMRule+CoreDataProperties.swift */; };
 		147494AAB7B18ADCDE089C65B2999A96 /* CardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48A8B3F3F80E9A01633A8CC9F111DD3 /* CardTableViewCell.swift */; };
 		1612CB07C4183AC32836A8EF8B3772BE /* CMForeignName+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA451EBD2BAA58F5DF1D466D018142 /* CMForeignName+CoreDataClass.swift */; };
 		18058ADC5CDC351F8E1949B38C8EA5A2 /* hmac.c in Sources */ = {isa = PBXBuildFile; fileRef = CA4DE7EEF590F6E464987AE35132CCD8 /* hmac.c */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
@@ -401,6 +409,11 @@
 		10ADC965CE955758B823477890B8EE6D /* SSZipArchive-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SSZipArchive-prefix.pch"; sourceTree = "<group>"; };
 		10DB4CCDF0F281A4277B955F5826C4C1 /* crypt.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = crypt.h; path = SSZipArchive/minizip/crypt.h; sourceTree = "<group>"; };
 		114952FE1F3418D700BE8DC8 /* 2017-08-04.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "2017-08-04.xcdatamodel"; sourceTree = "<group>"; };
+		1165CD651F37026C006CC433 /* CMGlossary+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CMGlossary+CoreDataClass.swift"; path = "ManaKit/Classes/CMGlossary+CoreDataClass.swift"; sourceTree = "<group>"; };
+		1165CD661F37026C006CC433 /* CMGlossary+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CMGlossary+CoreDataProperties.swift"; path = "ManaKit/Classes/CMGlossary+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		1165CD671F37026C006CC433 /* CMRule+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CMRule+CoreDataClass.swift"; path = "ManaKit/Classes/CMRule+CoreDataClass.swift"; sourceTree = "<group>"; };
+		1165CD681F37026C006CC433 /* CMRule+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CMRule+CoreDataProperties.swift"; path = "ManaKit/Classes/CMRule+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		1165CD6D1F3702B9006CC433 /* 2017-08-06.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "2017-08-06.xcdatamodel"; sourceTree = "<group>"; };
 		11FA451EBD2BAA58F5DF1D466D018142 /* CMForeignName+CoreDataClass.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMForeignName+CoreDataClass.swift"; path = "ManaKit/Classes/CMForeignName+CoreDataClass.swift"; sourceTree = "<group>"; };
 		1204157DB56FC23EAC3078E1932C482D /* Pods-ManaKit_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-ManaKit_Example-dummy.m"; sourceTree = "<group>"; };
 		12AF731054FB5912B7D95E1B2E98FF51 /* aes_ni.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = aes_ni.h; path = SSZipArchive/minizip/aes/aes_ni.h; sourceTree = "<group>"; };
@@ -854,6 +867,8 @@
 				B377E78C4B15EAAE77F5F5651F38A200 /* CMForeignName+CoreDataProperties.swift */,
 				A9E4767BF481958262D86E8E2B97FD38 /* CMFormat+CoreDataClass.swift */,
 				51791FA7B18D51D28D86B73413A78DFA /* CMFormat+CoreDataProperties.swift */,
+				1165CD651F37026C006CC433 /* CMGlossary+CoreDataClass.swift */,
+				1165CD661F37026C006CC433 /* CMGlossary+CoreDataProperties.swift */,
 				68027CD1BC5077B64DB6BDBC9A3D5661 /* CMLanguage+CoreDataClass.swift */,
 				CE3CE45EBD32964BFB13BDEB83974A3E /* CMLanguage+CoreDataProperties.swift */,
 				4AB22600CFC1F5DD7E4DD8759551E820 /* CMLayout+CoreDataClass.swift */,
@@ -862,6 +877,8 @@
 				30B97DAAD9CFFA59D9C6965019AE599E /* CMLegality+CoreDataProperties.swift */,
 				9B52CFC8FF33C0AD458BDBD67882C748 /* CMRarity+CoreDataClass.swift */,
 				0B8979DB919C49E63EB07E3FE0019996 /* CMRarity+CoreDataProperties.swift */,
+				1165CD671F37026C006CC433 /* CMRule+CoreDataClass.swift */,
+				1165CD681F37026C006CC433 /* CMRule+CoreDataProperties.swift */,
 				50CE629D171B4EED3F9C9F1609675CE6 /* CMRuling+CoreDataClass.swift */,
 				CFF616D1071C5823B6C22CCEAD751AD1 /* CMRuling+CoreDataProperties.swift */,
 				9E860D6CC09D9505FF6CFC654A9E3725 /* CMSet+CoreDataClass.swift */,
@@ -872,8 +889,8 @@
 				2003CECBF003FC50540194E1AD26938A /* CMSetType+CoreDataProperties.swift */,
 				C2F79ED7B9F500E5588971C76A8AA9A5 /* CMWatermark+CoreDataClass.swift */,
 				72B35EC74438724D162350D24412E262 /* CMWatermark+CoreDataProperties.swift */,
-				7F8CDDE2D6BB82F770BBD61669B7ACA8 /* ManaKit.swift */,
 				1A1A049C0DE70755FBD8732D42FFA188 /* ManaKit-ManaKit-Bridging-Header.h */,
+				7F8CDDE2D6BB82F770BBD61669B7ACA8 /* ManaKit.swift */,
 				931FC72926766241E4C3D9C6B987F56F /* NetworkingManager.swift */,
 				BBEFD3E5172F251239DA91B0B4B491CA /* Resources */,
 				F24F14CC5C9622713FBB09CBAA8E6ADA /* Support Files */,
@@ -1676,6 +1693,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1165CD6E1F370C4E006CC433 /* CMGlossary+CoreDataClass.swift in Sources */,
+				1165CD6F1F370C4E006CC433 /* CMGlossary+CoreDataProperties.swift in Sources */,
+				1165CD701F370C4E006CC433 /* CMRule+CoreDataClass.swift in Sources */,
+				1165CD711F370C4E006CC433 /* CMRule+CoreDataProperties.swift in Sources */,
 				147494AAB7B18ADCDE089C65B2999A96 /* CardTableViewCell.swift in Sources */,
 				C6EE116CF50F409363756A2C88A7D2BA /* CMArtist+CoreDataClass.swift in Sources */,
 				4C26C4ABD6AE20A2D061424B0750C6D4 /* CMArtist+CoreDataProperties.swift in Sources */,
@@ -1747,11 +1768,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				5559E253D5B6CB54308E72CF99435A35 /* DATASource+NSFetchedResultsControllerDelegate.swift in Sources */,
+				1165CD691F37026C006CC433 /* CMGlossary+CoreDataClass.swift in Sources */,
+				1165CD6A1F37026C006CC433 /* CMGlossary+CoreDataProperties.swift in Sources */,
 				BA7E405B49732920236EC45A27B48EC1 /* DATASource+UICollectionViewDataSource.swift in Sources */,
 				A3A50AF1577C3737D0DAFD9E2E9032D6 /* DATASource+UITableViewDataSource.swift in Sources */,
 				8AAB9AEE4490F0C098D13D13EF5CA858 /* DATASource-dummy.m in Sources */,
 				59DD984EF029F4F420E35CCD22D804B6 /* DATASource.swift in Sources */,
+				1165CD6B1F37026C006CC433 /* CMRule+CoreDataClass.swift in Sources */,
 				4801629F8E053ECDB6DA14F95CAE16B7 /* DATASourceCollectionHeaderView.swift in Sources */,
+				1165CD6C1F37026C006CC433 /* CMRule+CoreDataProperties.swift in Sources */,
 				E1495E84F39A88A7FF6363BD6F515933 /* DATASourceDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2938,13 +2963,14 @@
 		E7FE4A4F818E6C8C27A1470ECBE32C15 /* ManaKit.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				1165CD6D1F3702B9006CC433 /* 2017-08-06.xcdatamodel */,
 				114952FE1F3418D700BE8DC8 /* 2017-08-04.xcdatamodel */,
 				B35D58DFAB00D78EAA5674E6CD2191B1 /* 2017-07-22b.xcdatamodel */,
 				590DCFB5137B05FE2DCCE39A3EEB940E /* 2017-07-26.xcdatamodel */,
 				0048E852619EEB03CCAFB1C3BCDC89DF /* 2017-22-07.xcdatamodel */,
 				26A00B838EB24709D04E87DA286F6D72 /* Card Magus.xcdatamodel */,
 			);
-			currentVersion = 114952FE1F3418D700BE8DC8 /* 2017-08-04.xcdatamodel */;
+			currentVersion = 1165CD6D1F3702B9006CC433 /* 2017-08-06.xcdatamodel */;
 			name = ManaKit.xcdatamodeld;
 			path = ManaKit/Assets/ManaKit.xcdatamodeld;
 			sourceTree = "<group>";
