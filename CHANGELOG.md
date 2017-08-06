@@ -1,4 +1,4 @@
-**Version 0.9.2** @ 06.08.2017
+**Version 0.9.3** @ 06.08.2017
 
 - Added CMRule and CMGlossary managed objects.
 
