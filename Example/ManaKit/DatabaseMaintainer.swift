@@ -515,33 +515,7 @@ class DatabaseMaintainer: NSObject {
                 
                 // numberOrder
                 if let number = card.number ?? card.mciNumber {
-                    if let num = Double(number) {
-                        card.numberOrder = num
-                        
-                    } else {
-                        let digits = NSCharacterSet.decimalDigits
-                        var numString = ""
-                        var charString = ""
-                        
-                        for c in number.unicodeScalars {
-                            if digits.contains(c) {
-                                numString.append(String(c))
-                            } else {
-                                charString.append(String(c))
-                            }
-                        }
-                    
-                        if let num = Double(numString) {
-                            card.numberOrder = num
-                        }
-                        
-                        if charString.characters.count > 0 {
-                            for c in charString.unicodeScalars {
-                                let char = Character(c)
-                                card.numberOrder += Double(char.unicodeScalarCodePoint()) / 100
-                            }
-                        }
-                    }
+                    card.numberOrder = numberOrder(ofString: number)
                 }
                 
                 try! ManaKit.sharedInstance.dataStack?.mainContext.save()
@@ -813,65 +787,293 @@ class DatabaseMaintainer: NSObject {
             print("Updating legalities: \(count)/\(cards.count) \(Date())")
         }
     }
-    
-    func tempUpdateCardNumberOrder() {
-        let dateStart = Date()
-        
-        let request:NSFetchRequest<CMCard> = CMCard.fetchRequest() as! NSFetchRequest<CMCard>
-        var predicate = NSPredicate(format: "numberOrder == 0")
-        let sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
-                               NSSortDescriptor(key: "name", ascending: true)]
-        
-        if let setCodesForProcessing = setCodesForProcessing {
-            let setPredicate = NSPredicate(format: "set.code in %@", setCodesForProcessing)
-            predicate = NSCompoundPredicate.init(andPredicateWithSubpredicates: [predicate, setPredicate])
-        }
-        request.predicate = predicate
-        request.sortDescriptors = sortDescriptors
-        
-        if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
-            for card in cards {
-                if let number = card.number ?? card.mciNumber {
-                    if let num = Double(number) {
-                        card.numberOrder = num
-                        
-                    } else {
-                        let digits = NSCharacterSet.decimalDigits
-                        var numString = ""
-                        var charString = ""
-                        
-                        for c in number.unicodeScalars {
-                            if digits.contains(c) {
-                                numString.append(String(c))
-                            } else {
-                                charString.append(String(c))
-                            }
-                        }
-                        
-                        if let num = Double(numString) {
-                            card.numberOrder = num
-                        }
-                        
-                        if charString.characters.count > 0 {
-                            for c in charString.unicodeScalars {
-                                let char = Character(c)
-                                card.numberOrder += Double(char.unicodeScalarCodePoint()) / 100
-                            }
-                        }
-                    }
-                    
-                    print("\(card.set!.code!) - \(card.name!) - \(number) - \(card.numberOrder)")
+
+    func rules2CoreData() {
+        if let path = Bundle.main.path(forResource: "MagicCompRules_20170707", ofType: "txt", inDirectory: "data") {
+            let data = try! String(contentsOfFile: path, encoding: .ascii)
+            let lines = data.components(separatedBy: .newlines)
+            
+            // parse the title
+            var startLine = "Magic: The Gathering Comprehensive Rules"
+            var endLine = "Introduction"
+            var includeStartLine = true
+            var includeEndLine = false
+            if let text = parseData(fromLines: lines, startLine: startLine, endLine: endLine, includeStartLine: includeStartLine, includeEndLine: includeEndLine) {
+                let objectFinder = ["number": "Title"] as [String: AnyObject]
+                
+                if let object = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: objectFinder) as? CMRule {
+                    object.number = "Title"
+                    object.numberOrder = 0
+                    object.text = text
+                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                }
+            }
+            
+            // parse the introduction
+            startLine = "Introduction"
+            endLine = "Contents"
+            includeStartLine = false
+            includeEndLine = false
+            if let text = parseData(fromLines: lines, startLine: startLine, endLine: endLine, includeStartLine: includeStartLine, includeEndLine: includeEndLine) {
+                let objectFinder = ["number": "Introduction"] as [String: AnyObject]
+                
+                if let object = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: objectFinder) as? CMRule {
+                    object.number = "Introduction"
+                    object.numberOrder = 0.1
+                    object.text = text
+                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                }
+            }
+            
+            // parse the rules
+//            parseRules(fromLines: lines)
+            
+            // parse the glossary
+            parseGlossary(fromLines: lines)
+            
+            // parse the credits
+            startLine = "Magic: The Gathering Original Game Design: Richard Garfield"
+            endLine = "Published by Wizards of the Coast LLC"
+            includeStartLine = true
+            includeEndLine = true
+            if let text = parseData(fromLines: lines, startLine: startLine, endLine: endLine, includeStartLine: includeStartLine, includeEndLine: includeEndLine) {
+                let objectFinder = ["number": "Credits"] as [String: AnyObject]
+                
+                if let object = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: objectFinder) as? CMRule {
+                    object.number = "Credits"
+                    object.numberOrder = 10000
+                    object.text = text
                     try! ManaKit.sharedInstance.dataStack?.mainContext.save()
                 }
             }
         }
-        
-        let dateEnd = Date()
-        let timeDifference = dateEnd.timeIntervalSince(dateStart)
-        print("Total Time Elapsed: \(dateStart) - \(dateEnd) = \(self.format(timeDifference))")
-        print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
     }
     
+    func parseData(fromLines lines: [String], startLine: String, endLine: String, includeStartLine: Bool, includeEndLine: Bool) -> String? {
+        var text: String?
+        var isParsing = false
+        
+        for line in lines {
+            if line.hasPrefix(startLine) {
+                text = String()
+                isParsing = true
+            }
+            
+            if isParsing {
+                if line.hasPrefix(endLine) {
+                    if includeEndLine {
+                        text!.append(line == "" ? "\n" : line)
+                    }
+                    isParsing = false
+                } else {
+                    if line.hasPrefix(startLine) {
+                        if includeStartLine {
+                            text!.append(line == "" ? "\n" : line)
+                        }
+                    } else {
+                        text!.append(line == "" ? "\n" : line)
+                    }
+                }
+            }
+            
+            if !isParsing {
+                if text != nil {
+                    text = text!.replacingOccurrences(of: "\n\n\n", with: "\n")
+                    break
+                }
+            }
+        }
+        
+        return text
+    }
+    
+    func parseRules(fromLines lines: [String]) {
+        let startLine = "Credits"
+        let endLine = "Glossary"
+        var isParsing = false
+        var secondEndLine = false
+        
+        for line in lines {
+            if line.hasPrefix(startLine) {
+                isParsing = true
+            } else if line.hasPrefix(endLine) {
+                // glossary appears twice, so we need to end on the second appearance
+                if secondEndLine {
+                    break
+                }
+                secondEndLine = true
+            }
+            
+            if isParsing {
+                if line.hasPrefix("1") ||
+                    line.hasPrefix("2") ||
+                    line.hasPrefix("3") ||
+                    line.hasPrefix("4") ||
+                    line.hasPrefix("5") ||
+                    line.hasPrefix("6") ||
+                    line.hasPrefix("7") ||
+                    line.hasPrefix("8") ||
+                    line.hasPrefix("9") {
+                    
+                    var number = ""
+                    var text = ""
+                    var first = true
+                    
+                    for e in line.components(separatedBy: " ") {
+                        if first {
+                            number = e
+                            first = false
+                        } else {
+                            text.append(text.characters.count > 0 ? " \(e)" : e)
+                        }
+                    }
+                    if number.hasSuffix(".") {
+                        number.remove(at: number.index(before: number.endIndex))
+                    }
+                    
+                    let objectFinder = ["number": number] as [String: AnyObject]
+                    if let object = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: objectFinder) as? CMRule {
+                        object.number = number
+                        object.numberOrder = numberOrder(ofString: number)
+                        object.text = text
+                        try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                        
+                        // locate the parent rule
+                        while number != "" {
+                            number.remove(at: number.index(before: number.endIndex))
+                            
+                            if number.characters.count > 0 {
+                                let parentFinder = ["number": number] as [String: AnyObject]
+                                
+                                if let parent = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: parentFinder) as? CMRule {
+                                    if parent.text == nil &&
+                                        parent.number == nil {
+                                        ManaKit.sharedInstance.dataStack?.mainContext.delete(parent)
+                                        try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                                    } else {
+                                        if parent != object {
+                                            object.parent = parent
+                                            try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                                            break
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        return
+    }
+    
+    func parseGlossary(fromLines lines: [String]) {
+        let startLine = "Glossary"
+        let endLine = "Credits"
+        var isParsing = false
+        var firstStartLineDone = false
+        var firstEndLineDone = false
+        var term: String?
+        var definition: String?
+        var lastDefinition: String?
+        
+        for line in lines {
+            // Glssary and credits appear twice, hence must on second appearance
+            if line.hasPrefix(startLine) {
+                if firstStartLineDone {
+                    isParsing = true
+                    continue
+                }
+                firstStartLineDone = true
+            }
+            if line.hasPrefix(endLine) {
+                if firstEndLineDone {
+                    break
+                }
+                firstEndLineDone = true
+            }
+            
+            if isParsing {
+                if line == "" {
+                    if term != nil && definition != nil {
+                        var nextLine = lines[lines.index(of: lastDefinition!)! + 1]
+                        if nextLine == "" {
+                            nextLine = lines[lines.index(of: lastDefinition!)! + 2]
+                        }
+                        
+                        let isList = nextLine.hasPrefix("1") ||
+                            nextLine.hasPrefix("2") ||
+                            nextLine.hasPrefix("3") ||
+                            nextLine.hasPrefix("4") ||
+                            nextLine.hasPrefix("5") ||
+                            nextLine.hasPrefix("6") ||
+                            nextLine.hasPrefix("7") ||
+                            nextLine.hasPrefix("8") ||
+                            nextLine.hasPrefix("9") ||
+                            nextLine.hasPrefix("See") ||
+                            nextLine.hasPrefix("Some older cards")
+                        
+                        if isList {
+                            definition!.append(definition!.characters.count > 0 ? "\n\(line)" : line)
+                        } else {
+                            let objectFinder = ["term": term!] as [String: AnyObject]
+                            
+                            if let object = ManaKit.sharedInstance.findOrCreateObject("CMGlossary", objectFinder: objectFinder) as? CMGlossary {
+                                let letters = CharacterSet.letters
+                                var prefix = String(term!.characters.prefix(1))
+                                if prefix.rangeOfCharacter(from: letters) == nil {
+                                    prefix = "#"
+                                }
+                                
+                                object.term = term
+                                object.termSection = prefix
+                                object.definition = definition
+                                try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                                
+                                term = nil
+                                definition = nil
+                                lastDefinition = nil
+                            }
+                        }
+                    }
+                } else {
+                    let isList = line.hasPrefix("1") ||
+                        line.hasPrefix("2") ||
+                        line.hasPrefix("3") ||
+                        line.hasPrefix("4") ||
+                        line.hasPrefix("5") ||
+                        line.hasPrefix("6") ||
+                        line.hasPrefix("7") ||
+                        line.hasPrefix("8") ||
+                        line.hasPrefix("9") ||
+                        line.hasPrefix("See") ||
+                        line.hasPrefix("Some older cards")
+                    
+                    if isList {
+                        if definition == nil {
+                            definition = String()
+                        }
+                        definition!.append(definition!.characters.count > 0 ? "\n\(line)" : line)
+                        lastDefinition = line
+                    } else {
+                        if term == nil {
+                            term = line
+                        } else {
+                            if definition == nil {
+                                definition = String()
+                            }
+                            definition!.append(line)
+                            lastDefinition = line
+                        }
+                    }
+                }
+            }
+        }
+        
+        return
+    }
+
     /**
         Updates the `CMCard.mciNumber` value from http://magiccards.info/
  
@@ -1002,5 +1204,43 @@ class DatabaseMaintainer: NSObject {
         let minutes = (interval / 60).truncatingRemainder(dividingBy: 60)
         let hours = (interval / 3600)
         return String(format: "%.2d:%.2d:%.2d", Int(hours), Int(minutes), Int(seconds))
+    }
+    
+    /*
+        Converts @param string into double equivalents i.e. 100.1a = 100.197
+     
+        Useful for ordering in NSSortDescriptor.
+     */
+    func numberOrder(ofString string: String) -> Double {
+        var numberOrder = Double(0)
+        
+        if let num = Double(string) {
+            numberOrder = num
+        } else {
+            let digits = NSCharacterSet.decimalDigits
+            var numString = ""
+            var charString = ""
+            
+            for c in string.unicodeScalars {
+                if c == "." || digits.contains(c) {
+                    numString.append(String(c))
+                } else {
+                    charString.append(String(c))
+                }
+            }
+            
+            if let num = Double(numString) {
+                numberOrder = num
+            }
+            
+            if charString.characters.count > 0 {
+                for c in charString.unicodeScalars {
+                    let char = Character(c)
+                    numberOrder += Double(char.unicodeScalarCodePoint()) / 1000
+                }
+            }
+        }
+        
+        return numberOrder
     }
 }

@@ -1,3 +1,7 @@
+**Version 0.9.2** @ 06.08.2017
+
+- Added CMRule and CMGlossary managed objects.
+
 **Version 0.9.1** @ 04.08.2017
 
 - Added CMCard.numberOrder property.
