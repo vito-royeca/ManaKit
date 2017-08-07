@@ -1,3 +1,7 @@
+**Version 0.9.5** @ 07.08.2017
+
+- Added CMFormat.nameSection property.
+
 **Version 0.9.4** @ 07.08.2017
 
 - Rebuilt the CMRule and CMGlossary managed objects.
