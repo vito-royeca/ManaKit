@@ -826,7 +826,7 @@ class DatabaseMaintainer: NSObject {
             }
             
             // parse the rules
-//            parseRules(fromLines: lines)
+            parseRules(fromLines: lines)
             
             // parse the glossary
             parseGlossary(fromLines: lines)
