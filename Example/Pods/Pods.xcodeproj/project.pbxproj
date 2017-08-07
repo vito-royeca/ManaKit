@@ -408,6 +408,7 @@
 		109BA51B90441834895F0F779ECDFD21 /* Gray_Patterned_BG.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = Gray_Patterned_BG.png; sourceTree = "<group>"; };
 		10ADC965CE955758B823477890B8EE6D /* SSZipArchive-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SSZipArchive-prefix.pch"; sourceTree = "<group>"; };
 		10DB4CCDF0F281A4277B955F5826C4C1 /* crypt.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = crypt.h; path = SSZipArchive/minizip/crypt.h; sourceTree = "<group>"; };
+		113A6B121F387C2200C68FF9 /* 2017-08-07.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "2017-08-07.xcdatamodel"; sourceTree = "<group>"; };
 		114952FE1F3418D700BE8DC8 /* 2017-08-04.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "2017-08-04.xcdatamodel"; sourceTree = "<group>"; };
 		1165CD651F37026C006CC433 /* CMGlossary+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CMGlossary+CoreDataClass.swift"; path = "ManaKit/Classes/CMGlossary+CoreDataClass.swift"; sourceTree = "<group>"; };
 		1165CD661F37026C006CC433 /* CMGlossary+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CMGlossary+CoreDataProperties.swift"; path = "ManaKit/Classes/CMGlossary+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -2963,6 +2964,7 @@
 		E7FE4A4F818E6C8C27A1470ECBE32C15 /* ManaKit.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				113A6B121F387C2200C68FF9 /* 2017-08-07.xcdatamodel */,
 				1165CD6D1F3702B9006CC433 /* 2017-08-06.xcdatamodel */,
 				114952FE1F3418D700BE8DC8 /* 2017-08-04.xcdatamodel */,
 				B35D58DFAB00D78EAA5674E6CD2191B1 /* 2017-07-22b.xcdatamodel */,
@@ -2970,7 +2972,7 @@
 				0048E852619EEB03CCAFB1C3BCDC89DF /* 2017-22-07.xcdatamodel */,
 				26A00B838EB24709D04E87DA286F6D72 /* Card Magus.xcdatamodel */,
 			);
-			currentVersion = 1165CD6D1F3702B9006CC433 /* 2017-08-06.xcdatamodel */;
+			currentVersion = 113A6B121F387C2200C68FF9 /* 2017-08-07.xcdatamodel */;
 			name = ManaKit.xcdatamodeld;
 			path = ManaKit/Assets/ManaKit.xcdatamodeld;
 			sourceTree = "<group>";

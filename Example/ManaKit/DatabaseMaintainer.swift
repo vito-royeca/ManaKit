@@ -716,6 +716,27 @@ class DatabaseMaintainer: NSObject {
         }
     }
     
+    func tempUpdateFormatSections() {
+        let request:NSFetchRequest<CMFormat> = CMFormat.fetchRequest() as! NSFetchRequest<CMFormat>
+        let sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        request.sortDescriptors = sortDescriptors
+        
+        if let formats = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
+            let letters = CharacterSet.letters
+            
+            for format in formats {
+                if let name = format.name {
+                    var prefix = String(name.characters.prefix(1))
+                    if prefix.rangeOfCharacter(from: letters) == nil {
+                        prefix = "#"
+                    }
+                    format.nameSection = prefix.uppercased()
+                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                }
+            }
+        }
+    }
+    
     func updateLegalities() {
         let request:NSFetchRequest<CMCard> = CMCard.fetchRequest() as! NSFetchRequest<CMCard>
         let predicate = NSPredicate(format: "legalities != nil")
@@ -725,6 +746,7 @@ class DatabaseMaintainer: NSObject {
         request.sortDescriptors = sortDescriptors
         
         if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
+            let letters = CharacterSet.letters
             var cachedFormats = [CMFormat]()
             var cachedLegalities = [CMLegality]()
             
@@ -748,6 +770,14 @@ class DatabaseMaintainer: NSObject {
                                 let objectFinder = ["name": formatName] as [String: AnyObject]
                                 if let object = ManaKit.sharedInstance.findOrCreateObject("CMFormat", objectFinder: objectFinder) as? CMFormat {
                                     object.name = formatName
+                                    
+                                    // nameSection
+                                    var prefix = String(formatName.characters.prefix(1))
+                                    if prefix.rangeOfCharacter(from: letters) == nil {
+                                        prefix = "#"
+                                    }
+                                    object.nameSection = prefix.uppercased()
+                                    
                                     format = object
                                     cachedFormats.append(format!)
                                 }
