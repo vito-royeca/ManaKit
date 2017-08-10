@@ -1,3 +1,7 @@
+**Version 0.9.6** @ 09.08.2017
+
+- Updated the SQLite database to MTGJSON version 3.11.3.
+
 **Version 0.9.5** @ 07.08.2017
 
 - Added CMFormat.nameSection property.
