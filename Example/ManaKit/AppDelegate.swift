@@ -24,10 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        DatabaseMaintainer.sharedInstance.json2CoreData()
 //        DatabaseMaintainer.sharedInstance.updateMCINumbers()
 //        DatabaseMaintainer.sharedInstance.rules2CoreData()
-        DatabaseMaintainer.sharedInstance.tempUpdateFormatSections()
         
         // ... or test the database
-//        ManaKit.sharedInstance.setupResources()
+        ManaKit.sharedInstance.setupResources()
 
         return true
     }

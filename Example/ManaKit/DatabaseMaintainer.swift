@@ -716,27 +716,6 @@ class DatabaseMaintainer: NSObject {
         }
     }
     
-    func tempUpdateFormatSections() {
-        let request:NSFetchRequest<CMFormat> = CMFormat.fetchRequest() as! NSFetchRequest<CMFormat>
-        let sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
-        request.sortDescriptors = sortDescriptors
-        
-        if let formats = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
-            let letters = CharacterSet.letters
-            
-            for format in formats {
-                if let name = format.name {
-                    var prefix = String(name.characters.prefix(1))
-                    if prefix.rangeOfCharacter(from: letters) == nil {
-                        prefix = "#"
-                    }
-                    format.nameSection = prefix.uppercased()
-                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
-                }
-            }
-        }
-    }
-    
     func updateLegalities() {
         let request:NSFetchRequest<CMCard> = CMCard.fetchRequest() as! NSFetchRequest<CMCard>
         let predicate = NSPredicate(format: "legalities != nil")
@@ -1173,6 +1152,9 @@ class DatabaseMaintainer: NSObject {
                             let number = a["number"] as? String {
                             if name == card.name {
                                 card.mciNumber = number
+                                
+                                // numberOrder
+                                card.numberOrder = numberOrder(ofString: number)
                                 
                                 print("\(card.set!.code!) - \(card.name!) - \(number)")
                                 try! ManaKit.sharedInstance.dataStack?.mainContext.save()

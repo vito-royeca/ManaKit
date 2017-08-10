@@ -12,9 +12,11 @@ import DATASource
 
 class SetsViewController: UIViewController {
 
+    // MARK: Constants
+    let searchController = UISearchController(searchResultsController: nil)
+    
     // MARK: Variables
     var dataSource: DATASource?
-    let searchController = UISearchController(searchResultsController: nil)
     
     // MARK: Outlets
     @IBOutlet weak var tableView: UITableView!
