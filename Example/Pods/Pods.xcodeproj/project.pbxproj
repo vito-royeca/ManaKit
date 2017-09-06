@@ -415,6 +415,7 @@
 		1165CD671F37026C006CC433 /* CMRule+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CMRule+CoreDataClass.swift"; path = "ManaKit/Classes/CMRule+CoreDataClass.swift"; sourceTree = "<group>"; };
 		1165CD681F37026C006CC433 /* CMRule+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CMRule+CoreDataProperties.swift"; path = "ManaKit/Classes/CMRule+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		1165CD6D1F3702B9006CC433 /* 2017-08-06.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "2017-08-06.xcdatamodel"; sourceTree = "<group>"; };
+		11C906DB1F592A8400A21BE8 /* 2017-09-01.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "2017-09-01.xcdatamodel"; sourceTree = "<group>"; };
 		11FA451EBD2BAA58F5DF1D466D018142 /* CMForeignName+CoreDataClass.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CMForeignName+CoreDataClass.swift"; path = "ManaKit/Classes/CMForeignName+CoreDataClass.swift"; sourceTree = "<group>"; };
 		1204157DB56FC23EAC3078E1932C482D /* Pods-ManaKit_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-ManaKit_Example-dummy.m"; sourceTree = "<group>"; };
 		12AF731054FB5912B7D95E1B2E98FF51 /* aes_ni.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = aes_ni.h; path = SSZipArchive/minizip/aes/aes_ni.h; sourceTree = "<group>"; };
@@ -2964,6 +2965,7 @@
 		E7FE4A4F818E6C8C27A1470ECBE32C15 /* ManaKit.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				11C906DB1F592A8400A21BE8 /* 2017-09-01.xcdatamodel */,
 				113A6B121F387C2200C68FF9 /* 2017-08-07.xcdatamodel */,
 				1165CD6D1F3702B9006CC433 /* 2017-08-06.xcdatamodel */,
 				114952FE1F3418D700BE8DC8 /* 2017-08-04.xcdatamodel */,
@@ -2972,7 +2974,7 @@
 				0048E852619EEB03CCAFB1C3BCDC89DF /* 2017-22-07.xcdatamodel */,
 				26A00B838EB24709D04E87DA286F6D72 /* Card Magus.xcdatamodel */,
 			);
-			currentVersion = 113A6B121F387C2200C68FF9 /* 2017-08-07.xcdatamodel */;
+			currentVersion = 11C906DB1F592A8400A21BE8 /* 2017-09-01.xcdatamodel */;
 			name = ManaKit.xcdatamodeld;
 			path = ManaKit/Assets/ManaKit.xcdatamodeld;
 			sourceTree = "<group>";

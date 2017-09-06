@@ -799,6 +799,10 @@ class DatabaseMaintainer: NSObject {
 
     func rules2CoreData() {
         if let path = Bundle.main.path(forResource: "MagicCompRules_20170707", ofType: "txt", inDirectory: "data") {
+            let dateStart = Date()
+            
+            print("Updating comprehensive rules: \(dateStart)")
+            
             let data = try! String(contentsOfFile: path, encoding: .ascii)
             let lines = data.components(separatedBy: .newlines)
             
@@ -855,6 +859,11 @@ class DatabaseMaintainer: NSObject {
                     try! ManaKit.sharedInstance.dataStack?.mainContext.save()
                 }
             }
+            
+            let dateEnd = Date()
+            let timeDifference = dateEnd.timeIntervalSince(dateStart)
+            print("Total Time Elapsed: \(dateStart) - \(dateEnd) = \(self.format(timeDifference))")
+            print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
         }
     }
     
