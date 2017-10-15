@@ -126,12 +126,11 @@ class DatabaseMaintainer: NSObject {
 //                                        print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
                                         
                                         // legalities
-                                        tmpDateStart = Date()
-                                        self.updateLegalities()
-                                        dateEnd = Date()
-                                        timeDifference = dateEnd.timeIntervalSince(tmpDateStart)
-                                        print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
-                                        
+//                                        tmpDateStart = Date()
+//                                        self.updateLegalities()
+//                                        dateEnd = Date()
+//                                        timeDifference = dateEnd.timeIntervalSince(tmpDateStart)
+//                                        print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
                                         
                                         dateEnd = Date()
                                         timeDifference = dateEnd.timeIntervalSince(dateStart)
@@ -653,6 +652,7 @@ class DatabaseMaintainer: NSObject {
     }
     
     func updateForeignNames() {
+        let dateStart = Date()
         let request:NSFetchRequest<CMCard> = CMCard.fetchRequest() as! NSFetchRequest<CMCard>
         let predicate = NSPredicate(format: "foreignNames != nil")
         let sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
@@ -714,9 +714,15 @@ class DatabaseMaintainer: NSObject {
             
             print("Updating foreign names: \(count)/\(cards.count) \(Date())")
         }
+        
+        let dateEnd = Date()
+        let timeDifference = dateEnd.timeIntervalSince(dateStart)
+        print("Total Time Elapsed: \(dateStart) - \(dateEnd) = \(self.format(timeDifference))")
+        print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
     }
     
     func updateLegalities() {
+        let dateStart = Date()
         let request:NSFetchRequest<CMCard> = CMCard.fetchRequest() as! NSFetchRequest<CMCard>
         let predicate = NSPredicate(format: "legalities != nil")
         let sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
@@ -795,6 +801,11 @@ class DatabaseMaintainer: NSObject {
             
             print("Updating legalities: \(count)/\(cards.count) \(Date())")
         }
+        
+        let dateEnd = Date()
+        let timeDifference = dateEnd.timeIntervalSince(dateStart)
+        print("Total Time Elapsed: \(dateStart) - \(dateEnd) = \(self.format(timeDifference))")
+        print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
     }
 
     func rules2CoreData() {

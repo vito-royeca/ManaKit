@@ -22,6 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // create the database...
 //        DatabaseMaintainer.sharedInstance.json2CoreData()
+//        DatabaseMaintainer.sharedInstance.updateForeignNames()
+//        DatabaseMaintainer.sharedInstance.updateLegalities()
 //        DatabaseMaintainer.sharedInstance.updateMCINumbers()
 //        DatabaseMaintainer.sharedInstance.rules2CoreData()
         

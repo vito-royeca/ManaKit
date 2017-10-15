@@ -1,3 +1,7 @@
+**Version 1.0.0** @ 06.09.2017
+
+- Updated the SQLite database to MTGJSON version 3.11.7.
+
 **Version 0.9.7** @ 06.09.2017
 
 - Updated the SQLite database to MTGJSON version 3.11.5.
