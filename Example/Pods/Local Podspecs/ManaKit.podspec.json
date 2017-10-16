@@ -1,6 +1,6 @@
 {
   "name": "ManaKit",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "summary": "A database of Magic: The Gathering cards.",
   "description": "A database of Magic: The Gathering cards. Includes prices and images.",
   "homepage": "https://github.com/jovito-royeca/ManaKit",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/jovito-royeca/ManaKit.git",
-    "tag": "0.9.0"
+    "tag": "1.0.0"
   },
   "platforms": {
     "ios": "9.0"
