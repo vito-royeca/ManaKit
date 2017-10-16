@@ -8,8 +8,8 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ManaKit'
-  s.version          = '1.0.0'
-  s.summary          = 'A database of Magic: The Gathering cards.'
+  s.version          = '1.0.1'
+  s.summary          = 'Core Data implementation of MTGJSON.com.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?

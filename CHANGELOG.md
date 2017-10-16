@@ -1,4 +1,8 @@
-**Version 1.0.0** @ 06.09.2017
+**Version 1.0.1** @ 16.10.2017
+
+- Cocoapod updates.
+
+**Version 1.0.0** @ 15.10.2017
 
 - Updated the SQLite database to MTGJSON version 3.11.7.
 

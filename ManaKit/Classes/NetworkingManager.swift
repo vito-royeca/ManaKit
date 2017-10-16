@@ -20,7 +20,6 @@ enum HTTPMethod: String {
 typealias NetworkingResult = (_ result: [[String : Any]], _ error: NSError?) -> Void
 
 class NetworkingManager: NSObject {
-//    var networkers = [String: Any]()
     let reachability = Reachability()!
     
     func doOperation(_ baseUrl: String,
@@ -46,10 +45,10 @@ class NetworkingManager: NSObject {
                 networker.post(path, parameterType: paramType, parameters: params, completion: {(result) in
                     switch result {
                     case .success(let response):
-                        if response.json.dictionary.count > 0 {
-                            completionHandler([response.json.dictionary], nil)
-                        } else if response.json.array.count > 0 {
-                            completionHandler(response.json.array, nil)
+                        if response.dictionaryBody.count > 0 {
+                            completionHandler([response.dictionaryBody], nil)
+                        } else if response.arrayBody.count > 0 {
+                            completionHandler(response.arrayBody, nil)
                         } else {
                             completionHandler([[String : Any]](), nil)
                         }
@@ -63,10 +62,10 @@ class NetworkingManager: NSObject {
                 networker.get(path, parameters: params, completion: {(result) in
                     switch result {
                     case .success(let response):
-                        if response.json.dictionary.count > 0 {
-                            completionHandler([response.json.dictionary], nil)
-                        } else if response.json.array.count > 0 {
-                            completionHandler(response.json.array, nil)
+                        if response.dictionaryBody.count > 0 {
+                            completionHandler([response.dictionaryBody], nil)
+                        } else if response.arrayBody.count > 0 {
+                            completionHandler(response.arrayBody, nil)
                         } else {
                             completionHandler([[String : Any]](), nil)
                         }
@@ -82,10 +81,10 @@ class NetworkingManager: NSObject {
                 networker.put(path, parameterType: paramType, parameters: params, completion: {(result) in
                     switch result {
                     case .success(let response):
-                        if response.json.dictionary.count > 0 {
-                            completionHandler([response.json.dictionary], nil)
-                        } else if response.json.array.count > 0 {
-                            completionHandler(response.json.array, nil)
+                        if response.dictionaryBody.count > 0 {
+                            completionHandler([response.dictionaryBody], nil)
+                        } else if response.arrayBody.count > 0 {
+                            completionHandler(response.arrayBody, nil)
                         } else {
                             completionHandler([[String : Any]](), nil)
                         }
@@ -189,7 +188,7 @@ class NetworkingManager: NSObject {
 //            networker = newN
 //        }
 //
-        networker = Networking(baseURL: url, configurationType: .default)
+        networker = Networking(baseURL: url, configuration: .default)
         
         return networker!
     }
@@ -213,7 +212,7 @@ class NetworkingManager: NSObject {
 //            networker = newN
 //        }
         
-        networker = Networking(baseURL: baseUrl, configurationType: .default)
+        networker = Networking(baseURL: baseUrl, configuration: .default)
         return networker!
     }
     
