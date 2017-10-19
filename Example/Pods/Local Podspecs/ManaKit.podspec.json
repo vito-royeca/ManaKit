@@ -1,7 +1,7 @@
 {
   "name": "ManaKit",
-  "version": "1.0.0",
-  "summary": "A database of Magic: The Gathering cards.",
+  "version": "1.0.1",
+  "summary": "Core Data implementation of MTGJSON.com.",
   "description": "A database of Magic: The Gathering cards. Includes prices and images.",
   "homepage": "https://github.com/jovito-royeca/ManaKit",
   "license": {
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/jovito-royeca/ManaKit.git",
-    "tag": "1.0.0"
+    "tag": "1.0.1"
   },
   "platforms": {
     "ios": "9.0"
