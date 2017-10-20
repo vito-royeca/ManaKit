@@ -292,8 +292,10 @@ class DatabaseMaintainer: NSObject {
                                 let objectFinder = ["name": color] as [String: AnyObject]
                                 if let object = ManaKit.sharedInstance.findOrCreateObject("CMColor", objectFinder: objectFinder) as? CMColor {
                                     object.name = color
-                                    let index = color.index(color.startIndex, offsetBy: 1)
-                                    var prefix = color.substring(to: index)
+//                                    let index = color.index(color.startIndex, offsetBy: 1)
+//                                    var prefix = color.substring(to: index)
+                                    var prefix = String(color[..<color.endIndex])
+                                    
                                     if color == "Blue" {
                                         prefix = "U"
                                     }

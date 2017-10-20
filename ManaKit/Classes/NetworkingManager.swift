@@ -8,7 +8,7 @@
 
 import UIKit
 import Networking
-import ReachabilitySwift
+import Reachability
 
 enum HTTPMethod: String {
     case post  = "Post",
@@ -29,7 +29,7 @@ class NetworkingManager: NSObject {
                      paramType: Networking.ParameterType,
                      params: AnyObject?,
                      completionHandler: @escaping NetworkingResult) -> Void {
-        if !reachability.isReachable {
+        if reachability.connection != .none {
             let error = NSError(domain: "network", code: 408, userInfo: [NSLocalizedDescriptionKey: "Network error."])
             completionHandler([[String : Any]](), error)
             
