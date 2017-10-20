@@ -7,11 +7,11 @@ target 'ManaKit_Example' do
   target 'ManaKit_Tests' do
     inherit! :search_paths
 
-    pod 'Sync'#, '~> 2'
-    pod 'DATASource'#, '~> 5.8'
+    pod 'Sync'#, '~> 3'
+    pod 'DATASource'#, '~> 6'
     pod 'DATAStack'#, '~> 6'
-    pod 'Kanna', '~> 2.1.0'
-    pod 'Networking'
+    pod 'Kanna'#, '~> 2.1.0'
+    pod 'Networking'#, '~> 4'
     pod 'ReachabilitySwift'
     pod 'SSZipArchive'
 

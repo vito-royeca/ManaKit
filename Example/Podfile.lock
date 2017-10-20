@@ -1,8 +1,8 @@
 PODS:
   - DATASource (7.0.0)
   - DATAStack (6.2.0)
-  - Kanna (2.1.1)
-  - ManaKit (1.0.2):
+  - Kanna (2.2.1)
+  - ManaKit (1.0.3):
     - DATASource
     - DATAStack (~> 6)
     - Kanna
@@ -18,7 +18,7 @@ PODS:
 DEPENDENCIES:
   - DATASource
   - DATAStack
-  - Kanna (~> 2.1.0)
+  - Kanna
   - ManaKit (from `../`)
   - Networking
   - ReachabilitySwift
@@ -32,13 +32,13 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   DATASource: 201492e39ff86a1916defe0923900a08de5c5609
   DATAStack: 06d6a00f4fe84f11afdae2a6f47558f1087000e5
-  Kanna: 9b4b086c218703f2b94f5b21a466217dd2f9332e
-  ManaKit: 954fb1b0cda63914223251ebe8230c9b01d8a4ca
+  Kanna: 182789ab065e8f9a6ccc2a74ce6283d3401c0c4a
+  ManaKit: b4bc3239dbddf27a70af2d70cb2b43210593822d
   Networking: a118b2ef10600fc33a37fe72a92757c7f191f1b1
   ReachabilitySwift: 6849231cd4e06559f3b9ef4a97a0a0f96d41e09f
   SSZipArchive: 14401ade5f8e82aba1ff03e9f88e9de60937ae60
   Sync: edf38c4c95d4f02a47b78e759457279345a21804
 
-PODFILE CHECKSUM: a7a847921ed47ff8741e29afbd0c571fae9ce895
+PODFILE CHECKSUM: bc4a36afcc4175d6c6e73bd36f54d4a2e56ddc45
 
 COCOAPODS: 1.4.0.beta.1
