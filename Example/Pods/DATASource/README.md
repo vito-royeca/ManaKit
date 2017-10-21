@@ -62,22 +62,14 @@ Hooking up your table view to your `Task` model and making your UITableView reac
 
 **Swift:**
 ```swift
-lazy var dataSource: DATASource = {
-    let request: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Task")
-    request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+let request: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Task")
+request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
 
-    let dataSource = DATASource(tableView: self.tableView, cellIdentifier: "Cell", fetchRequest: request, mainContext: self.dataStack.mainContext, configuration: { cell, item, indexPath in
-        cell.textLabel?.text = item.valueForKey("title") as? String
-    })
+let dataSource = DATASource(tableView: self.tableView, cellIdentifier: "Cell", fetchRequest: request, mainContext: self.dataStack.mainContext, configuration: { cell, item, indexPath in
+    cell.textLabel?.text = item.valueForKey("title") as? String
+})
 
-    return dataSource  
-}()
-
-override func viewDidLoad() {
-  super.viewDidLoad()
-
-  self.tableView.dataSource = self.dataSource
-}
+tableView.dataSource = dataSource
 ```
 
 **Objective-C:**
@@ -101,7 +93,7 @@ self.tableView.dataSource = dataSource;
 
 **DATASource** provides an easy way to show an sectioned UITableView, you just need to specify the attribute we should use to group your items. This attribute is located in the `dataSource` initializer as a parameter called `sectionName`.
 
-Check the [TableViewControllerWithSections Demo](https://github.com/SyncDB/DATASource/blob/master/SwiftDemo/TableViewControllerWithSections/TableViewControllerWithSections.swift) for an example of this, were we have an sectioned UITableView of names, where each section is defined by the first letter of the name, just like the Contacts app!
+Check the [Swift Demo](https://github.com/SyncDB/DATASource/blob/master/TableSwift/ViewController.swift) for an example of this, were we have an sectioned UITableView of names, where each section is defined by the first letter of the name, just like the Contacts app!
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/SyncDB/DATASource/master/GitHub/table.gif" />
@@ -185,7 +177,7 @@ self.collectionView.dataSource = dataSource;
 
 **DATASource** provides an easy way to show an grouped UICollectionView, you just need to specify the attribute we should use to group your items. This attribute is located in the `dataSource` initializer as a parameter called `sectionName`. This will create a collectionView reusable header.
 
-Check the [CollectionViewControllerWithSections Demo](https://github.com/SyncDB/DATASource/blob/master/SwiftDemo/CollectionViewControllerWithSections/CollectionViewControllerWithSections.swift) for an example of this, were we have a grouped UICollectionView using the first letter of a name as a header, just like the Contacts.app!
+Check the [CollectionView Demo](https://github.com/SyncDB/DATASource/tree/master/CollectionSwift) for an example of this, were we have a grouped UICollectionView using the first letter of a name as a header, just like the Contacts.app!
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/SyncDB/DATASource/master/GitHub/collection.gif" />
@@ -197,18 +189,18 @@ Check the [CollectionViewControllerWithSections Demo](https://github.com/SyncDB/
 
 ## Customizing change animations
 
-By default `UITableViewRowAnimation.automatic` is used to animate inserts, updates and deletes, but if you want to overwrite this animation types you can use the `animations` dictionary on **DATASource**.
+By default `UITableViewRowAnimation.Automatic` is used to animate inserts, updates and deletes, but if you want to overwrite this animation types you can use the `animations` dictionary on **DATASource**.
 
 ### Animate insertions using fade
 ```swift
 let dataSource = ...
-dataSource.animations[.insert] = .fade
+dataSource.animations[.Insert] = .Fade
 ```
 
 ### Disabling all animations
 ```swift
 let dataSource = ...
-dataSource.animations = [.update: .none, .move  : .none, .insert: .none]
+dataSource.animations = [.Update: .None, .Move  : .None, .Insert: .None]
 ```
 
 ## Installation
@@ -229,7 +221,7 @@ github "SyncDB/DATASource" ~> 6.0
 
 ## Author
 
-Elvis Nuñez, [@3lvis](https://twitter.com/3lvis)
+SyncDB, [@Sync_DB](https://twitter.com/Sync_DB)
 
 ## License
 
