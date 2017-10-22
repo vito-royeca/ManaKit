@@ -326,13 +326,17 @@ open class ManaKit: NSObject {
                 for url in urls {
                     let data = try! Data(contentsOf: url)
                     let error: UnsafeMutablePointer<Unmanaged<CFError>?>? = nil
-                    guard let provider = CGDataProvider(data: data as CFData) else { return }
-                    guard let font = CGFont(provider) else { return }
-                    
-                    if !CTFontManagerRegisterGraphicsFont(font, error) {
-                        if let unmanagedError = error?.pointee {
-                            if let errorDescription = CFErrorCopyDescription(unmanagedError.takeUnretainedValue()) {
-                                print("Failed to load font: \(errorDescription)")
+
+                    if let provider = CGDataProvider(data: data as CFData) {
+                        let font = CGFont(provider)
+                        
+                        if let font = font {
+                            if !CTFontManagerRegisterGraphicsFont(font, error) {
+                                if let unmanagedError = error?.pointee {
+                                    if let errorDescription = CFErrorCopyDescription(unmanagedError.takeUnretainedValue()) {
+                                        print("Failed to load font: \(errorDescription)")
+                                    }
+                                }
                             }
                         }
                     }
