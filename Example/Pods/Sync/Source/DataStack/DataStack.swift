@@ -27,8 +27,6 @@ import CoreData
 
     private var containerURL = URL.directoryURL()
 
-    private var _mainContext: NSManagedObjectContext?
-
     /**
      The context for the main queue. Please do not use this to mutate data, use `performInNewBackgroundContext`
      instead.
@@ -300,9 +298,10 @@ import CoreData
                     for store in self.persistentStoreCoordinator.persistentStores {
                         guard let storeURL = store.url else { continue }
                         try! self.oldDrop(storeURL: storeURL)
-                        DispatchQueue.main.async {
-                            completion?(nil)
-                        }
+                    }
+
+                    DispatchQueue.main.async {
+                        completion?(nil)
                     }
                 }
             }
