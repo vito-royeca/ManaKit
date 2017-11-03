@@ -12,7 +12,7 @@ import SSZipArchive
 import Sync
 
 
-public let kMTGJSONVersion      = "3.11.5"
+public let kMTGJSONVersion      = "3.11.7"
 public let kMTGJSONVersionKey   = "kMTGJSONVersionKey"
 public let kImagesVersionKey    = "kImagesVersionKey"
 public let kCardImageSource     = "http://magiccards.info"
@@ -331,7 +331,7 @@ open class ManaKit: NSObject {
                         let font = CGFont(provider)
                         
 //                        if let font = font {
-                            if !CTFontManagerRegisterGraphicsFont(font!, error) {
+                            if !CTFontManagerRegisterGraphicsFont(font, error) {
                                 if let unmanagedError = error?.pointee {
                                     if let errorDescription = CFErrorCopyDescription(unmanagedError.takeUnretainedValue()) {
                                         print("Failed to load font: \(errorDescription)")

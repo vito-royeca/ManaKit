@@ -1,4 +1,4 @@
-**Version 1.0.9** @ 22.10.2017
+**Version 1.1.0** @ 03.11.2017
 
 - Cocoapod updates.
 

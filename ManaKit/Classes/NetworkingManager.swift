@@ -20,7 +20,7 @@ enum HTTPMethod: String {
 typealias NetworkingResult = (_ result: [[String : Any]], _ error: NSError?) -> Void
 
 class NetworkingManager: NSObject {
-    let reachability = Reachability()!
+    let reachability = Reachability()
     
     func doOperation(_ baseUrl: String,
                      path: String,
@@ -29,7 +29,7 @@ class NetworkingManager: NSObject {
                      paramType: Networking.ParameterType,
                      params: AnyObject?,
                      completionHandler: @escaping NetworkingResult) -> Void {
-        if reachability.connection != .none {
+        if !reachability.isReachable() {
             let error = NSError(domain: "network", code: 408, userInfo: [NSLocalizedDescriptionKey: "Network error."])
             completionHandler([[String : Any]](), error)
             

@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ManaKit'
-  s.version          = '1.0.9'
+  s.version          = '1.1.0'
   s.summary          = 'Core Data implementation of MTGJSON.com.'
 
 # This description is used to generate tags and improve search results.
@@ -37,12 +37,12 @@ A database of Magic: The Gathering cards. Includes prices and images.
   }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  s.frameworks = 'UIKit', 'MapKit', 'Sync', 'DATASource', 'DATAStack', 'Networking', 'ReachabilitySwift', 'SSZipArchive', 'Kanna'
+  s.frameworks = 'UIKit', 'MapKit', 'Sync', 'DATASource', 'DATAStack', 'Networking', 'Reachability', 'SSZipArchive', 'Kanna'
   s.dependency 'Sync'
   s.dependency 'DATASource'
   s.dependency 'DATAStack', '~> 6'
   s.dependency 'Networking'
-  s.dependency 'ReachabilitySwift'
+  s.dependency 'Reachability'
   s.dependency 'SSZipArchive'
   s.dependency 'Kanna'
 end

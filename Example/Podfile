@@ -2,16 +2,16 @@ platform :ios, "9.0"
 use_frameworks!
 
 target 'ManaKit_Example' do
-  pod 'ManaKit', :path => '../'
+    pod 'ManaKit', :path => '../'
 
   target 'ManaKit_Tests' do
     inherit! :search_paths
 
-    pod 'Sync'#, '~> 3'
-    pod 'DATASource', '~> 6'
-    pod 'DATAStack', '~> 6'
+    pod 'Sync'#, '~> 2'
+    pod 'DATASource'#, '~> 5.8'
+    pod 'DATAStack'#, '~> 6'
     pod 'Kanna', '~> 2.1.0'
-    pod 'Networking', '~> 4'
+    pod 'Networking'
     pod 'Reachability'
     pod 'SSZipArchive'
 
