@@ -126,9 +126,7 @@ open class ManaKit: NSObject {
         var prefix = "C"
         
         if let rarity = rarity {
-//            let index = rarity.name!.index(rarity.name!.startIndex, offsetBy: 1)
-//            prefix = rarity.name!.substring(to: index)
-            prefix = String(rarity.name![..<rarity.name!.endIndex])
+            prefix = String(rarity.name!.prefix(1))
             
             if rarity.name == "Basic Land" {
                 prefix = "C"
