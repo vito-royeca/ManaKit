@@ -29,6 +29,13 @@ class SetViewController: UIViewController {
         dataSource = getDataSource(nil)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        // to fix casting cost placement
+        tableView.reloadData()
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showCard" {
             if let dest = segue.destination as? CardViewController,
