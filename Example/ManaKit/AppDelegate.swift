@@ -27,9 +27,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        DatabaseMaintainer.sharedInstance.updateMCINumbers()
 //        DatabaseMaintainer.sharedInstance.rules2CoreData()
         
-        // ... or test the database
         ManaKit.sharedInstance.setupResources()
-
+        ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "ManaGuide", publicKey: nil, privateKey: nil)
+        
         return true
     }
 

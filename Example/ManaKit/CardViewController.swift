@@ -25,6 +25,12 @@ class CardViewController: UIViewController {
         tableView.register(ManaKit.sharedInstance.nibFromBundle("CardTableViewCell"), forCellReuseIdentifier: "CardCell")
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // to fix casting cost placement
+        tableView.reloadData()
+    }
 }
 
 // MARK: UITableViewDataSource

@@ -1,3 +1,8 @@
+**Version 2.0.0** @ 06.11.2017
+
+- Added TCGPlayer Hi-Mid-Low X3 pricing.
+- Redesign the CardTableViewCell to show TCGPlayer pricing.
+
 **Version 1.1.0** @ 03.11.2017
 
 - Cocoapod updates.

@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ManaKit'
-  s.version          = '1.1.0'
+  s.version          = '2.0.0'
   s.summary          = 'Core Data implementation of MTGJSON.com.'
 
 # This description is used to generate tags and improve search results.
@@ -26,7 +26,7 @@ A database of Magic: The Gathering cards. Includes prices and images.
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'jovito-royeca' => 'jovit.royeca@gmail.com' }
   s.source           = { :git => 'https://github.com/jovito-royeca/ManaKit.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.social_media_url = 'https://twitter.com/ManaGuideApp'
 
   s.ios.deployment_target = '9.0'
 
@@ -35,6 +35,8 @@ A database of Magic: The Gathering cards. Includes prices and images.
   s.resource_bundles = {
    'ManaKit' => ['ManaKit/Assets/**/*']
   }
+
+  s.pod_target_xcconfig = { 'HEADER_SEARCH_PATHS' => "$(SDKROOT)/usr/include/libxml2" }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'UIKit', 'MapKit', 'Sync', 'DATASource', 'DATAStack', 'Networking', 'Reachability', 'SSZipArchive', 'Kanna'

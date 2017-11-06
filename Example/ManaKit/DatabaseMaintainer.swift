@@ -118,20 +118,6 @@ class DatabaseMaintainer: NSObject {
                                         timeDifference = dateEnd.timeIntervalSince(tmpDateStart)
                                         print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
 
-//                                        // foreign names
-//                                        tmpDateStart = Date()
-//                                        self.updateForeignNames()
-//                                        dateEnd = Date()
-//                                        timeDifference = dateEnd.timeIntervalSince(tmpDateStart)
-//                                        print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
-                                        
-                                        // legalities
-//                                        tmpDateStart = Date()
-//                                        self.updateLegalities()
-//                                        dateEnd = Date()
-//                                        timeDifference = dateEnd.timeIntervalSince(tmpDateStart)
-//                                        print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
-                                        
                                         dateEnd = Date()
                                         timeDifference = dateEnd.timeIntervalSince(dateStart)
                                         print("Total Time Elapsed: \(dateStart) - \(dateEnd) = \(self.format(timeDifference))")
@@ -145,13 +131,13 @@ class DatabaseMaintainer: NSObject {
     
     public func updateSets() {
         let request:NSFetchRequest<CMSet> = CMSet.fetchRequest() as! NSFetchRequest<CMSet>
-        var tcgPlayerCodeDict:[String: String]?
+        var tcgPlayerNameDict:[String: String]?
         
-        if let path = Bundle.main.path(forResource: "TCGPlayerCode", ofType: "plist", inDirectory: "data") {
+        if let path = Bundle.main.path(forResource: "TCGPlayerName", ofType: "plist", inDirectory: "data") {
             if FileManager.default.fileExists(atPath: path) {
                 let data = try! Data(contentsOf: URL(fileURLWithPath: path))
                 
-                tcgPlayerCodeDict = try! PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? [String: String]
+                tcgPlayerNameDict = try! PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? [String: String]
             }
         }
         
@@ -220,27 +206,27 @@ class DatabaseMaintainer: NSObject {
                     set.booster = nil
                 }
                 
-                // tcgPlayerCode
-                if let tcgPlayerCodeDict = tcgPlayerCodeDict,
-                    let name = set.name {
-                    set.tcgPlayerCode = tcgPlayerCodeDict[name]
+                // tcgPlayerName
+                if let tcgPlayerNameDict = tcgPlayerNameDict,
+                    let code = set.code {
+                    set.tcgPlayerName = tcgPlayerNameDict[code]
                 }
 
                 // nameSection
                 let letters = CharacterSet.letters
-                var prefix = String(set.name!.characters.prefix(1))
+                var prefix = String(set.name!.prefix(1))
                 if prefix.rangeOfCharacter(from: letters) == nil {
                     prefix = "#"
                 }
                 set.nameSection = prefix.uppercased()
                 
                 // typeSection
-                prefix = String(set.type_!.name!.characters.prefix(1))
-                let rest = String(set.type_!.name!.characters.dropFirst())
+                prefix = String(set.type_!.name!.prefix(1))
+                let rest = String(set.type_!.name!.dropFirst())
                 set.typeSection = "\(prefix.uppercased())\(rest)"
                 
                 // yearSection
-                prefix = String(set.releaseDate!.characters.prefix(4))
+                prefix = String(set.releaseDate!.prefix(4))
                 set.yearSection = prefix
                 
                 try! ManaKit.sharedInstance.dataStack?.mainContext.save()
@@ -390,7 +376,7 @@ class DatabaseMaintainer: NSObject {
                             if let object = cachedCardTypes.first(where: { $0.name == type }) {
                                 types_.add(object)
                                 
-                                if typeSection.characters.count == 0 {
+                                if typeSection.count == 0 {
                                     typeSection.append(object.name!)
                                 } else {
                                     typeSection.append(" \(object.name!)")
@@ -403,7 +389,7 @@ class DatabaseMaintainer: NSObject {
                                     types_.add(object)
                                     cachedCardTypes.append(object)
                                     
-                                    if typeSection.characters.count == 0 {
+                                    if typeSection.count == 0 {
                                         typeSection.append(object.name!)
                                     } else {
                                         typeSection.append(" \(object.name!)")
@@ -506,7 +492,7 @@ class DatabaseMaintainer: NSObject {
                 
                 // nameSection
                 let letters = CharacterSet.letters
-                var prefix = String(card.name!.characters.prefix(1))
+                var prefix = String(card.name!.prefix(1))
                 if prefix.rangeOfCharacter(from: letters) == nil {
                     prefix = "#"
                 }
@@ -515,6 +501,12 @@ class DatabaseMaintainer: NSObject {
                 // numberOrder
                 if let number = card.number ?? card.mciNumber {
                     card.numberOrder = numberOrder(ofString: number)
+                }
+                
+                // cardPricing
+                if let cardPricing = ManaKit.sharedInstance.findOrCreateObject("CMCardPricing", objectFinder: ["card.id": card.id as AnyObject]) as? CMCardPricing {
+                    
+                    cardPricing.card = card
                 }
                 
                 try! ManaKit.sharedInstance.dataStack?.mainContext.save()
@@ -757,7 +749,7 @@ class DatabaseMaintainer: NSObject {
                                     object.name = formatName
                                     
                                     // nameSection
-                                    var prefix = String(formatName.characters.prefix(1))
+                                    var prefix = String(formatName.prefix(1))
                                     if prefix.rangeOfCharacter(from: letters) == nil {
                                         prefix = "#"
                                     }
@@ -953,7 +945,7 @@ class DatabaseMaintainer: NSObject {
                             number = e
                             first = false
                         } else {
-                            text.append(text.characters.count > 0 ? " \(e)" : e)
+                            text.append(text.count > 0 ? " \(e)" : e)
                         }
                     }
                     if number.hasSuffix(".") {
@@ -971,7 +963,7 @@ class DatabaseMaintainer: NSObject {
                         while number != "" {
                             number.remove(at: number.index(before: number.endIndex))
                             
-                            if number.characters.count > 0 {
+                            if number.count > 0 {
                                 let parentFinder = ["number": number] as [String: AnyObject]
                                 
                                 if let parent = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: parentFinder) as? CMRule {
@@ -1044,13 +1036,13 @@ class DatabaseMaintainer: NSObject {
                             nextLine.hasPrefix("Some older cards")
                         
                         if isList {
-                            definition!.append(definition!.characters.count > 0 ? "\n\(line)" : line)
+                            definition!.append(definition!.count > 0 ? "\n\(line)" : line)
                         } else {
                             let objectFinder = ["term": term!] as [String: AnyObject]
                             
                             if let object = ManaKit.sharedInstance.findOrCreateObject("CMGlossary", objectFinder: objectFinder) as? CMGlossary {
                                 let letters = CharacterSet.letters
-                                var prefix = String(term!.characters.prefix(1))
+                                var prefix = String(term!.prefix(1))
                                 if prefix.rangeOfCharacter(from: letters) == nil {
                                     prefix = "#"
                                 }
@@ -1083,7 +1075,7 @@ class DatabaseMaintainer: NSObject {
                         if definition == nil {
                             definition = String()
                         }
-                        definition!.append(definition!.characters.count > 0 ? "\n\(line)" : line)
+                        definition!.append(definition!.count > 0 ? "\n\(line)" : line)
                         lastDefinition = line
                     } else {
                         if term == nil {
@@ -1265,7 +1257,7 @@ class DatabaseMaintainer: NSObject {
                 numberOrder = num
             }
             
-            if charString.characters.count > 0 {
+            if charString.count > 0 {
                 for c in charString.unicodeScalars {
                     let char = Character(c)
                     numberOrder += Double(char.unicodeScalarCodePoint()) / 1000
