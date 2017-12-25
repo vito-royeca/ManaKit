@@ -35,22 +35,22 @@ class DatabaseMaintainer: NSObject {
     
     func json2CoreData() {
         let dateStart = Date()
-        
+
         if let path = Bundle.main.path(forResource: "AllSets-x.json", ofType: "zip", inDirectory: "data"),
             let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first {
-            
+
             let jsonPath = "\(docsPath)/AllSets-x.json"
             SSZipArchive.unzipFile(atPath: path, toDestination: docsPath)
-            
+
             if FileManager.default.fileExists(atPath: jsonPath) {
                 let data = try! Data(contentsOf: URL(fileURLWithPath: jsonPath))
-                
+
                 if let jsonDictionary = try! JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: [String: Any]] {
                     let notifName = NSNotification.Name.NSManagedObjectContextObjectsDidChange
                     var dictionary = [[String: Any]]()
                     for (key,value) in jsonDictionary {
                         var bWillAdd = false
-                        
+
                         if let setCodesForProcessing = setCodesForProcessing {
                             for setCode in setCodesForProcessing {
                                 if key == setCode {
@@ -60,12 +60,12 @@ class DatabaseMaintainer: NSObject {
                         } else {
                             bWillAdd = true
                         }
-                        
+
                         if bWillAdd {
                             dictionary.append(value)
                         }
                     }
-                    
+
                     ManaKit.sharedInstance.dataStack?.performInNewBackgroundContext { backgroundContext in
                         NotificationCenter.default.addObserver(self, selector: #selector(DatabaseMaintainer.changeNotification(_:)), name: notifName, object: backgroundContext)
                         Sync.changes(dictionary,
@@ -77,40 +77,43 @@ class DatabaseMaintainer: NSObject {
                                      operations: [.insert, .update],
                                      completion:  { error in
                                         NotificationCenter.default.removeObserver(self, name:notifName, object: nil)
+
+                                        // system
+                                        self.updateSystem()
                                         
                                         // json
                                         var dateEnd = Date()
                                         var timeDifference = dateEnd.timeIntervalSince(dateStart)
                                         print("Time Elapsed: \(dateStart) - \(dateEnd) = \(self.format(timeDifference))")
-                                        
+
                                         // sets
                                         var tmpDateStart = Date()
                                         self.updateSets()
                                         dateEnd = Date()
                                         timeDifference = dateEnd.timeIntervalSince(tmpDateStart)
                                         print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
-                                        
+
                                         // cards
                                         tmpDateStart = Date()
                                         self.updateCards()
                                         dateEnd = Date()
                                         timeDifference = dateEnd.timeIntervalSince(tmpDateStart)
                                         print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
-                                        
+
                                         // variations
                                         tmpDateStart = Date()
                                         self.updateVariations()
                                         dateEnd = Date()
                                         timeDifference = dateEnd.timeIntervalSince(tmpDateStart)
                                         print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
-                                        
-                                         // printings
+
+                                        // printings
                                         tmpDateStart = Date()
                                         self.updatePrintings()
                                         dateEnd = Date()
                                         timeDifference = dateEnd.timeIntervalSince(tmpDateStart)
                                         print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
-                                        
+
                                         // rulings
                                         tmpDateStart = Date()
                                         self.updateRulings()
@@ -129,15 +132,36 @@ class DatabaseMaintainer: NSObject {
         }
     }
     
+    public func updateSystem() {
+        let objectFinder = ["version": kMTGJSONVersion] as [String: AnyObject]
+        if let system = ManaKit.sharedInstance.findOrCreateObject("CMSystem", objectFinder: objectFinder) as? CMSystem {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .medium
+            
+            system.version = kMTGJSONVersion
+            system.date = NSDate(timeIntervalSince1970: formatter.date(from: kMTGJSONDate)!.timeIntervalSince1970)
+            try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+        }
+    }
+    
     public func updateSets() {
         let request:NSFetchRequest<CMSet> = CMSet.fetchRequest() as! NSFetchRequest<CMSet>
         var tcgPlayerNameDict:[String: String]?
+        var keyruneDict:[String: String]?
         
         if let path = Bundle.main.path(forResource: "TCGPlayerName", ofType: "plist", inDirectory: "data") {
             if FileManager.default.fileExists(atPath: path) {
                 let data = try! Data(contentsOf: URL(fileURLWithPath: path))
                 
                 tcgPlayerNameDict = try! PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? [String: String]
+            }
+        }
+        
+        if let path = Bundle.main.path(forResource: "Keyrune", ofType: "plist", inDirectory: "data") {
+            if FileManager.default.fileExists(atPath: path) {
+                let data = try! Data(contentsOf: URL(fileURLWithPath: path))
+                
+                keyruneDict = try! PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? [String: String]
             }
         }
         
@@ -212,6 +236,12 @@ class DatabaseMaintainer: NSObject {
                     set.tcgPlayerName = tcgPlayerNameDict[code]
                 }
 
+                // keyrune
+                if let keyruneDict = keyruneDict,
+                    let code = set.code {
+                    set.keyruneCode = keyruneDict[code.lowercased()]
+                }
+                
                 // nameSection
                 let letters = CharacterSet.letters
                 var prefix = String(set.name!.prefix(1))
@@ -504,10 +534,10 @@ class DatabaseMaintainer: NSObject {
                 }
                 
                 // cardPricing
-                if let cardPricing = ManaKit.sharedInstance.findOrCreateObject("CMCardPricing", objectFinder: ["card.id": card.id as AnyObject]) as? CMCardPricing {
-                    
-                    cardPricing.card = card
-                }
+//                if let cardPricing = ManaKit.sharedInstance.findOrCreateObject("CMCardPricing", objectFinder: ["card.id": card.id as AnyObject]) as? CMCardPricing {
+//
+//                    cardPricing.card = card
+//                }
                 
                 try! ManaKit.sharedInstance.dataStack?.mainContext.save()
                 

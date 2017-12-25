@@ -1,3 +1,7 @@
+**Version 2.1.0** @ 25.12.2017
+
+- Replaced set images with Keyrune font.
+
 **Version 2.0.0** @ 06.11.2017
 
 - Added TCGPlayer Hi-Mid-Low X3 pricing.

@@ -9,6 +9,7 @@
 import UIKit
 import ManaKit
 import DATASource
+import KXHtmlLabel
 
 class SetsViewController: UIViewController {
 
@@ -17,6 +18,7 @@ class SetsViewController: UIViewController {
     
     // MARK: Variables
     var dataSource: DATASource?
+    var commonRarity: CMRarity?
     
     // MARK: Outlets
     @IBOutlet weak var tableView: UITableView!
@@ -32,6 +34,11 @@ class SetsViewController: UIViewController {
         searchController.dimsBackgroundDuringPresentation = false
         definesPresentationContext = true
         tableView.tableHeaderView = searchController.searchBar
+        
+        let objectFinder = ["name": "Common"] as [String: AnyObject]
+        if let object = ManaKit.sharedInstance.findOrCreateObject("CMRarity", objectFinder: objectFinder) as? CMRarity {
+            commonRarity = object
+        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -57,22 +64,18 @@ class SetsViewController: UIViewController {
         }
         
         let dataSource = DATASource(tableView: tableView, cellIdentifier: "SetCell", fetchRequest: request!, mainContext: ManaKit.sharedInstance.dataStack!.mainContext, configuration: { cell, item, indexPath in
-            if let set = item as? CMSet {
+            if let set = item as? CMSet,
+                let commonRarity = self.commonRarity {
 
-                if let setIconView = cell.contentView.viewWithTag(100) as? UIImageView {
-                    setIconView.image = ManaKit.sharedInstance.setImage(set: set, rarity: nil)
+                if let label = cell.contentView.viewWithTag(100) as? UILabel {
+                    label.text = ManaKit.sharedInstance.keyruneUnicode(forSet: set)
+                    label.textColor = ManaKit.sharedInstance.keyruneColor(forRarity: commonRarity)
                 }
                 if let label = cell.contentView.viewWithTag(200) as? UILabel {
                     label.text = set.name
                 }
                 if let label = cell.contentView.viewWithTag(300) as? UILabel {
                     label.text = set.code
-                }
-                if let label = cell.contentView.viewWithTag(400) as? UILabel {
-                    label.text = set.releaseDate
-                }
-                if let label = cell.contentView.viewWithTag(500) as? UILabel {
-                    label.text = "\(set.cards!.allObjects.count) cards"
                 }
             }
         })

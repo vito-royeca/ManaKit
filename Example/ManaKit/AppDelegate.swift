@@ -24,8 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        DatabaseMaintainer.sharedInstance.json2CoreData()
 //        DatabaseMaintainer.sharedInstance.updateForeignNames()
 //        DatabaseMaintainer.sharedInstance.updateLegalities()
-//        DatabaseMaintainer.sharedInstance.updateMCINumbers()
 //        DatabaseMaintainer.sharedInstance.rules2CoreData()
+//        DatabaseMaintainer.sharedInstance.updateMCINumbers()
         
         ManaKit.sharedInstance.setupResources()
         ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "ManaGuide", publicKey: nil, privateKey: nil)
