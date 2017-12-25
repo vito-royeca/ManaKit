@@ -64,7 +64,6 @@ class SetViewController: UIViewController {
                 let cardCell = cell as? CardTableViewCell {
                 
                 cardCell.card = card
-                cardCell.updateDataDisplay()
             }
         })
         
@@ -82,6 +81,12 @@ extension SetViewController : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return kCardTableViewCellHeight
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let cardCell = cell as? CardTableViewCell {
+            cardCell.updateDataDisplay()
+        }
     }
 }
 
