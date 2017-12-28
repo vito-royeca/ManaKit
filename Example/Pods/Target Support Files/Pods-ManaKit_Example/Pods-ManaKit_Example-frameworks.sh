@@ -113,7 +113,6 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/DATASource/DATASource.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/DATAStack/DATAStack.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/KXHtmlLabel/KXHtmlLabel.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Kanna/Kanna.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ManaKit/ManaKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Networking/Networking.framework"
@@ -124,7 +123,6 @@ fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/DATASource/DATASource.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/DATAStack/DATAStack.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/KXHtmlLabel/KXHtmlLabel.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Kanna/Kanna.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ManaKit/ManaKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Networking/Networking.framework"
