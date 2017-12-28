@@ -9,7 +9,6 @@
 import UIKit
 import ManaKit
 import DATASource
-import KXHtmlLabel
 
 class SetsViewController: UIViewController {
 
