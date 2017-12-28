@@ -1,3 +1,7 @@
+**Version 2.1.1** @ 28.12.2017
+
+- Removed KXHtmlLabel pod.
+
 **Version 2.1.0** @ 25.12.2017
 
 - Replaced set images with Keyrune font.
