@@ -1,3 +1,7 @@
+**Version 2.2.1** @ 28.12.2017
+
+- Updated the SQLite database to MTGJSON version 3.13.1.
+
 **Version 2.1.1** @ 28.12.2017
 
 - Removed KXHtmlLabel pod.
