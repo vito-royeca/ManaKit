@@ -1,6 +1,0 @@
-framework module Pods_ManaKit_Example {
-  umbrella header "Pods-ManaKit_Example-umbrella.h"
-
-  export *
-  module * { export * }
-}
