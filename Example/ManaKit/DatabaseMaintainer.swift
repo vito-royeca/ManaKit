@@ -29,10 +29,11 @@ class DatabaseMaintainer: NSObject {
     static let sharedInstance = DatabaseMaintainer()
     
     // MARK: Constants
-//    let setCodesForProcessing:[String]? = ["ISD"]
+//    let setCodesForProcessing:[String]? = ["DOM"]
     let setCodesForProcessing:[String]? = nil
     let printMilestone = 1000
     
+    // MARK: Core Data updates 1
     func json2CoreData() {
         let dateStart = Date()
 
@@ -48,6 +49,7 @@ class DatabaseMaintainer: NSObject {
                 if let jsonDictionary = try! JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: [String: Any]] {
                     let notifName = NSNotification.Name.NSManagedObjectContextObjectsDidChange
                     var dictionary = [[String: Any]]()
+                    
                     for (key,value) in jsonDictionary {
                         var bWillAdd = false
 
@@ -65,7 +67,7 @@ class DatabaseMaintainer: NSObject {
                             dictionary.append(value)
                         }
                     }
-
+                    
                     ManaKit.sharedInstance.dataStack?.performInNewBackgroundContext { backgroundContext in
                         NotificationCenter.default.addObserver(self, selector: #selector(DatabaseMaintainer.changeNotification(_:)), name: notifName, object: backgroundContext)
                         Sync.changes(dictionary,
@@ -74,7 +76,7 @@ class DatabaseMaintainer: NSObject {
                                      parent: nil,
                                      parentRelationship: nil,
                                      inContext: backgroundContext,
-                                     operations: [.insert, .update],
+                                     operations: .all,
                                      completion:  { error in
                                         NotificationCenter.default.removeObserver(self, name:notifName, object: nil)
 
@@ -132,6 +134,68 @@ class DatabaseMaintainer: NSObject {
         }
     }
     
+    func updateTCGPlayerName() {
+        let request:NSFetchRequest<CMSet> = CMSet.fetchRequest() as! NSFetchRequest<CMSet>
+        var tcgPlayerNameDict:[String: String]?
+        
+        if let path = Bundle.main.path(forResource: "TCGPlayerName", ofType: "plist", inDirectory: "data") {
+            if FileManager.default.fileExists(atPath: path) {
+                let data = try! Data(contentsOf: URL(fileURLWithPath: path))
+                
+                tcgPlayerNameDict = try! PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? [String: String]
+            }
+        }
+        
+        request.predicate = NSPredicate(format: "tcgPlayerName == nil")
+        request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        if let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
+            print("Updating TCGPLayer Names: \(sets.count)")
+            
+            for set in sets {
+                print("\(set.code!) - \(set.name!)")
+
+                if let tcgPlayerNameDict = tcgPlayerNameDict,
+                    let code = set.code {
+                    set.tcgPlayerName = tcgPlayerNameDict[code]
+                }
+                
+                try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+            }
+            print("Done")
+        }
+    }
+    
+    func updateKeyruneCode() {
+        let request:NSFetchRequest<CMSet> = CMSet.fetchRequest() as! NSFetchRequest<CMSet>
+        var keyruneDict:[String: String]?
+        
+        if let path = Bundle.main.path(forResource: "Keyrune", ofType: "plist", inDirectory: "data") {
+            if FileManager.default.fileExists(atPath: path) {
+                let data = try! Data(contentsOf: URL(fileURLWithPath: path))
+                
+                keyruneDict = try! PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? [String: String]
+            }
+        }
+        
+        request.predicate = NSPredicate(format: "keyruneCode == nil")
+        request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        if let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
+            print("Updating Keyrune codes: \(sets.count)")
+            
+            for set in sets {
+                print("\(set.code!) - \(set.name!)")
+                
+                if let keyruneDict = keyruneDict,
+                    let code = set.code {
+                    set.keyruneCode = keyruneDict[code.lowercased()]
+                }
+                
+                try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+            }
+            print("Done")
+        }
+    }
+    
     public func updateSystem() {
         let objectFinder = ["version": kMTGJSONVersion] as [String: AnyObject]
         if let system = ManaKit.sharedInstance.findOrCreateObject("CMSystem", objectFinder: objectFinder) as? CMSystem {
@@ -146,24 +210,6 @@ class DatabaseMaintainer: NSObject {
     
     public func updateSets() {
         let request:NSFetchRequest<CMSet> = CMSet.fetchRequest() as! NSFetchRequest<CMSet>
-        var tcgPlayerNameDict:[String: String]?
-        var keyruneDict:[String: String]?
-        
-        if let path = Bundle.main.path(forResource: "TCGPlayerName", ofType: "plist", inDirectory: "data") {
-            if FileManager.default.fileExists(atPath: path) {
-                let data = try! Data(contentsOf: URL(fileURLWithPath: path))
-                
-                tcgPlayerNameDict = try! PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? [String: String]
-            }
-        }
-        
-        if let path = Bundle.main.path(forResource: "Keyrune", ofType: "plist", inDirectory: "data") {
-            if FileManager.default.fileExists(atPath: path) {
-                let data = try! Data(contentsOf: URL(fileURLWithPath: path))
-                
-                keyruneDict = try! PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? [String: String]
-            }
-        }
         
         if let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
             print("Updating sets: \(sets.count)")
@@ -228,18 +274,6 @@ class DatabaseMaintainer: NSObject {
                     }
                     
                     set.booster = nil
-                }
-                
-                // tcgPlayerName
-                if let tcgPlayerNameDict = tcgPlayerNameDict,
-                    let code = set.code {
-                    set.tcgPlayerName = tcgPlayerNameDict[code]
-                }
-
-                // keyrune
-                if let keyruneDict = keyruneDict,
-                    let code = set.code {
-                    set.keyruneCode = keyruneDict[code.lowercased()]
                 }
                 
                 // nameSection
@@ -673,6 +707,7 @@ class DatabaseMaintainer: NSObject {
         }
     }
     
+    // MARK: Core Data updates 2
     func updateForeignNames() {
         let dateStart = Date()
         let request:NSFetchRequest<CMCard> = CMCard.fetchRequest() as! NSFetchRequest<CMCard>
@@ -830,6 +865,7 @@ class DatabaseMaintainer: NSObject {
         print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
     }
 
+    // MARK: Core Data updates 3
     func rules2CoreData() {
         if let path = Bundle.main.path(forResource: "MagicCompRules_20170707", ofType: "txt", inDirectory: "data") {
             let dateStart = Date()
@@ -1126,9 +1162,9 @@ class DatabaseMaintainer: NSObject {
     }
 
     /**
-        Updates the `CMCard.mciNumber` value from http://magiccards.info/
- 
-     */
+      * Updates the `CMCard.mciNumber` value from http://magiccards.info/
+      *
+      */
     func updateMCINumbers() {
         let dateStart = Date()
         
@@ -1159,7 +1195,8 @@ class DatabaseMaintainer: NSObject {
                     if let set = card.set {
                         if let code = set.magicCardsInfoCode ?? set.code {
                             if let url = URL(string: "http://magiccards.info/\(code)/en.html") {
-                                if let htmlDoc = HTML(url: url, encoding: .utf8) {
+                                do {
+                                    let htmlDoc = try HTML(url: url, encoding: .utf8)
                                     array = [[String: Any]]()
                                     
                                     // Search for nodes by XPath
@@ -1181,6 +1218,8 @@ class DatabaseMaintainer: NSObject {
                                     }
                                     
                                     cachedMCISets[card.set!.code!] = array
+                                } catch {
+                                    print("Error in loading page: \(url.absoluteString)")
                                 }
                             }
                         }

@@ -20,13 +20,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
 
-        // create the database...
+        // Core Data updates 1
 //        DatabaseMaintainer.sharedInstance.json2CoreData()
-//        DatabaseMaintainer.sharedInstance.updateForeignNames()
-//        DatabaseMaintainer.sharedInstance.updateLegalities()
-//        DatabaseMaintainer.sharedInstance.rules2CoreData()
+//        DatabaseMaintainer.sharedInstance.updateTCGPlayerName()
+//        DatabaseMaintainer.sharedInstance.updateKeyruneCode()
 //        DatabaseMaintainer.sharedInstance.updateMCINumbers()
         
+//        Core Data updates 2
+//        DatabaseMaintainer.sharedInstance.updateForeignNames()
+        DatabaseMaintainer.sharedInstance.updateLegalities()
+        
+          // Core Data updates 3
+//        DatabaseMaintainer.sharedInstance.rules2CoreData()
+        
+          // Normal run
         ManaKit.sharedInstance.setupResources()
         ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "ManaGuide", publicKey: nil, privateKey: nil)
         
