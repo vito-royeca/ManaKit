@@ -13,11 +13,11 @@ import SSZipArchive
 import Sync
 
 
-public let kMTGJSONVersion      = "3.13.1"
-public let kMTGJSONDate         = "Jan 21, 2018"
+public let kMTGJSONVersion      = "3.15.2"
+public let kMTGJSONDate         = "Apr 20, 2018"
 public let kMTGJSONVersionKey   = "kMTGJSONVersionKey"
 public let kImagesVersionKey    = "kImagesVersionKey"
-public let kCardImageSource     = "http://magiccards.info"
+public let kCardImageSource     = "http://magiccards.info/scans/en"
 public let kEightEditionRelease = "2003-07-28"
 
 public let kTCGPlayerPricingAge = 24*3 // 3 days
@@ -405,7 +405,7 @@ open class ManaKit: NSObject {
         if let set = card.set {
             if let code = set.magicCardsInfoCode ?? set.code,
                 let number = card.number ?? card.mciNumber {
-                let path = "\(kCardImageSource)/scans/en/\(code.lowercased())/\(number).jpg"
+                let path = "\(kCardImageSource)/\(code.lowercased())/\(number).jpg"
                 url = URL(string: path)
             }
         }
@@ -548,32 +548,28 @@ open class ManaKit: NSObject {
                                     completion(nil, error)
                                 } else {
                                     if let data = data {
-                                        if let xml = XML(xml: data, encoding: .utf8) {
-                                            for product in xml.xpath("//product") {
-                                                if let id = product.xpath("id").first?.text,
-                                                    let hiprice = product.xpath("hiprice").first?.text,
-                                                    let lowprice = product.xpath("lowprice").first?.text,
-                                                    let avgprice = product.xpath("avgprice").first?.text,
-                                                    let foilavgprice = product.xpath("foilavgprice").first?.text,
-                                                    let link = product.xpath("link").first?.text {
-                                                    pricing.id = Int64(id)!
-                                                    pricing.high = Double(hiprice)!
-                                                    pricing.low = Double(lowprice)!
-                                                    pricing.average = Double(avgprice)!
-                                                    pricing.foil = Double(foilavgprice)!
-                                                    pricing.link = link
-                                                }
+                                        let xml = try! XML(xml: data, encoding: .utf8)
+
+                                        for product in xml.xpath("//product") {
+                                            if let id = product.xpath("id").first?.text,
+                                                let hiprice = product.xpath("hiprice").first?.text,
+                                                let lowprice = product.xpath("lowprice").first?.text,
+                                                let avgprice = product.xpath("avgprice").first?.text,
+                                                let foilavgprice = product.xpath("foilavgprice").first?.text,
+                                                let link = product.xpath("link").first?.text {
+                                                pricing.id = Int64(id)!
+                                                pricing.high = Double(hiprice)!
+                                                pricing.low = Double(lowprice)!
+                                                pricing.average = Double(avgprice)!
+                                                pricing.foil = Double(foilavgprice)!
+                                                pricing.link = link
                                             }
-                                            
-                                            pricing.lastUpdate = NSDate()
-                                            pricing.card = card
-                                            try! self.dataStack?.mainContext.save()
-                                            completion(pricing, nil)
-                                            
-                                        } else {
-                                            try! self.dataStack?.mainContext.save()
-                                            completion(pricing, nil)
                                         }
+                                        
+                                        pricing.lastUpdate = NSDate()
+                                        pricing.card = card
+                                        try! self.dataStack?.mainContext.save()
+                                        completion(pricing, nil)
                                     }
                                 }
                                 

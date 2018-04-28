@@ -98,6 +98,8 @@
 	<string>Deckmasters Garfield vs Finkel</string>
 	<key>DIS</key>
 	<string>Dissension</string>
+	<key>DOM</key>
+	<string>Dominaria</string>
 	<key>DGM</key>
 	<string>Dragon&apos;s Maze</string>
 	<key>DTK</key>
@@ -122,6 +124,8 @@
 	<string>Duel Decks: Elspeth vs. Tezzeret</string>
 	<key>EVG</key>
 	<string>Duel Decks: Elves vs. Goblins</string>
+	<key>DDU</key>
+	<string>Duel Decks: Elves vs. Inventors</string>
 	<key>DDD</key>
 	<string>Duel Decks: Garruk vs. Liliana</string>
 	<key>DDL</key>
@@ -192,6 +196,8 @@
 	<string>From the Vault: Realms</string>
 	<key>V10</key>
 	<string>From the Vault: Relics</string>
+	<key>V17</key>
+	<string>From the Vault: Transform</string>
 	<key>V13</key>
 	<string>From the Vault: Twenty</string>
 	<key>FUT</key>
@@ -272,6 +278,8 @@
 	<string>Masterpiece Series: Amonkhet Invocations</string>
 	<key>MPS</key>
 	<string>Masterpiece Series: Kaladesh Inventions</string>
+	<key>A25</key>
+	<string>Masters 25</string>
 	<key>p15A</key>
 	<string>Media Promos</string>
 	<key>pDRC</key>
@@ -340,6 +348,8 @@
 	<string>Revised Edition</string>
 	<key>ROE</key>
 	<string>Rise of the Eldrazi</string>
+	<key>RIX</key>
+	<string>Rivals of Ixalan</string>
 	<key>SOK</key>
 	<string>Saviors of Kamigawa</string>
 	<key>SOM</key>

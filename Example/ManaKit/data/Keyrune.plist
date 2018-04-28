@@ -2,40 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>pSUM</key>
-	<string>e605</string>
-	<key>ppod</key>
-	<string>e664</string>
-	<key>mgb</key>
-	<string>e61d</string>
-	<key>mps_akh</key>
-	<string>e922</string>
-	<key>pmpr</key>
-	<string>e688</string>
-	<key>plgm</key>
-	<string>e684</string>
-	<key>itp</key>
-	<string>e928</string>
-	<key>cei</key>
-	<string>e927</string>
-	<key>ced</key>
-	<string>e926</string>
-	<key>phho</key>
-	<string>e687</string>
-	<key>pgtw</key>
-	<string>e688</string>
-	<key>pelp</key>
-	<string>e92b</string>
-	<key>dd3_evg</key>
-	<string>e669</string>
-	<key>dd3_jvc</key>
-	<string>e66a</string>
-	<key>dd3_gvl</key>
-	<string>e66c</string>
-	<key>dd3_dvd</key>
-	<string>e66b</string>
-	<key>palp</key>
-	<string>e92a</string>
 	<key>10e</key>
 	<string>e60b</string>
 	<key>2ed</key>
@@ -56,6 +22,8 @@
 	<string>e609</string>
 	<key>9ed</key>
 	<string>e60a</string>
+	<key>a25</key>
+	<string>e93d</string>
 	<key>aer</key>
 	<string>e90f</string>
 	<key>akh</key>
@@ -100,6 +68,10 @@
 	<string>e910</string>
 	<key>c17</key>
 	<string>e934</string>
+	<key>ced</key>
+	<string>e926</string>
+	<key>cei</key>
+	<string>e927</string>
 	<key>chk</key>
 	<string>e634</string>
 	<key>chr</key>
@@ -119,6 +91,14 @@
 	<key>csp</key>
 	<string>e61b</string>
 	<key>dd2</key>
+	<string>e66a</string>
+	<key>dd3_dvd</key>
+	<string>e66b</string>
+	<key>dd3_evg</key>
+	<string>e669</string>
+	<key>dd3_gvl</key>
+	<string>e66c</string>
+	<key>dd3_jvc</key>
 	<string>e66a</string>
 	<key>ddc</key>
 	<string>e66b</string>
@@ -164,6 +144,8 @@
 	<string>e64b</string>
 	<key>dkm</key>
 	<string>e662</string>
+	<key>dom</key>
+	<string>e93f</string>
 	<key>dpa</key>
 	<string>e689</string>
 	<key>drb</key>
@@ -174,6 +156,8 @@
 	<string>e632</string>
 	<key>dtk</key>
 	<string>e693</string>
+	<key>ddu</key>
+	<string>e93e</string>
 	<key>e01</key>
 	<string>e92d</string>
 	<key>e02</key>
@@ -220,6 +204,8 @@
 	<string>e628</string>
 	<key>isd</key>
 	<string>e64a</string>
+	<key>itp</key>
+	<string>e928</string>
 	<key>jou</key>
 	<string>e652</string>
 	<key>jud</key>
@@ -262,6 +248,8 @@
 	<string>e690</string>
 	<key>med</key>
 	<string>e68d</string>
+	<key>mgb</key>
+	<string>e61d</string>
 	<key>mir</key>
 	<string>e61c</string>
 	<key>mm2</key>
@@ -280,6 +268,8 @@
 	<string>e922</string>
 	<key>mps</key>
 	<string>e913</string>
+	<key>mps_akh</key>
+	<string>e922</string>
 	<key>mrd</key>
 	<string>e631</string>
 	<key>nem</key>
@@ -298,6 +288,8 @@
 	<string>e697</string>
 	<key>p02</key>
 	<string>e665</string>
+	<key>palp</key>
+	<string>e92a</string>
 	<key>pc2</key>
 	<string>e659</string>
 	<key>pca</key>
@@ -308,14 +300,28 @@
 	<string>e680</string>
 	<key>pd3</key>
 	<string>e681</string>
+	<key>pelp</key>
+	<string>e92b</string>
+	<key>pgtw</key>
+	<string>e688</string>
+	<key>phho</key>
+	<string>e687</string>
 	<key>plc</key>
 	<string>e63b</string>
+	<key>plgm</key>
+	<string>e684</string>
 	<key>pls</key>
 	<string>e629</string>
+	<key>pmpr</key>
+	<string>e688</string>
 	<key>po2</key>
 	<string>e665</string>
 	<key>por</key>
 	<string>e664</string>
+	<key>ppod</key>
+	<string>e664</string>
+	<key>pSUM</key>
+	<string>e605</string>
 	<key>ptk</key>
 	<string>e666</string>
 	<key>rav</key>
