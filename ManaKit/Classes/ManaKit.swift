@@ -402,13 +402,16 @@ open class ManaKit: NSObject {
     open func urlOfCard(_ card: CMCard) -> URL? {
         var url:URL?
         
-        if let set = card.set {
-            if let code = set.magicCardsInfoCode ?? set.code,
-                let number = card.number ?? card.mciNumber {
-                let path = "\(kCardImageSource)/\(code.lowercased())/\(number).jpg"
-                url = URL(string: path)
-            }
-        }
+//        if let set = card.set {
+//            if let code = set.magicCardsInfoCode ?? set.code,
+//                let number = card.number ?? card.mciNumber {
+//                let path = "\(kCardImageSource)/\(code.lowercased())/\(number).jpg"
+//                url = URL(string: path)
+//            }
+//        }
+
+        let path = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=\(card.multiverseid)&type=card"
+        url = URL(string: path)
         
         return url
     }
