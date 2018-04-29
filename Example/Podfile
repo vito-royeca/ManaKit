@@ -11,7 +11,6 @@ target 'ManaKit_Example' do
     pod 'DATASource'#, '~> 5.8'
     pod 'DATAStack'#, '~> 6'
     pod 'Kanna', :git => 'https://github.com/tid-kijyun/Kanna', :branch => 'feature/v3.0.0'
-    pod 'Networking'
     pod 'PromiseKit', '~> 6.0'
     pod 'Reachability'
     pod 'SSZipArchive'
