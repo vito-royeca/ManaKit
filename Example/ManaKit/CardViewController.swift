@@ -60,8 +60,9 @@ extension CardViewController : UITableViewDataSource {
                     if let cardImage = ManaKit.sharedInstance.cardImage(card) {
                         imageView.image = cardImage
                     } else {
-                        imageView.image = ManaKit.sharedInstance.imageFromFramework(imageName: .cardBack)
-                        ManaKit.sharedInstance.downloadCardImage(card, cropImage: true, completion: { (c: CMCard, image: UIImage?, croppedImage: UIImage?, error: NSError?) in
+                        imageView.image = ManaKit.sharedInstance.cardBack(card)
+
+                        ManaKit.sharedInstance.downloadCardImage(card, cropImage: true, completion: { (c: CMCard, image: UIImage?, croppedImage: UIImage?, error: Error?) in
                             if error == nil {
                                 UIView.transition(with: imageView,
                                                   duration: 1.0,

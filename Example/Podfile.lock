@@ -1,16 +1,15 @@
 PODS:
   - DATASource (7.0.2)
-  - DATAStack (6.2.0)
+  - DATAStack (8.0.2)
   - Kanna (3.0.0)
   - ManaKit (2.2.1):
     - DATASource
-    - DATAStack (~> 6)
-    - Kanna
-    - Networking
+    - DATAStack
+    - Kanna (~> 3)
+    - PromiseKit
     - Reachability
     - SSZipArchive
     - Sync
-  - Networking (4.1.1)
   - PromiseKit (6.2.5):
     - PromiseKit/CorePromise (= 6.2.5)
     - PromiseKit/Foundation (= 6.2.5)
@@ -29,7 +28,6 @@ DEPENDENCIES:
   - DATAStack
   - Kanna (from `https://github.com/tid-kijyun/Kanna`, branch `feature/v3.0.0`)
   - ManaKit (from `../`)
-  - Networking
   - PromiseKit (~> 6.0)
   - Reachability
   - SSZipArchive
@@ -39,7 +37,6 @@ SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - DATASource
     - DATAStack
-    - Networking
     - PromiseKit
     - Reachability
     - SSZipArchive
@@ -59,15 +56,14 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   DATASource: b86db74542b5b27d4d2af43ae698022f19507379
-  DATAStack: 06d6a00f4fe84f11afdae2a6f47558f1087000e5
+  DATAStack: 9c415f6e7733eafb9cf5c076613bfb5958c407cb
   Kanna: 93a9af3643d46425e48899a8b033a2da44af2b49
-  ManaKit: b5593727c94486cc4806fee897a67412427c4579
-  Networking: ffde5754883907f90f9f751e183eba4a75dc4b89
+  ManaKit: a36a7afefc0b76316d11ba4f6bb7e6772ee23b69
   PromiseKit: a26828b0a8d5874960dfdb575b57a70790ec36f1
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SSZipArchive: d4009d2ce5520a421f231fd97028cc0e2667eed8
   Sync: 3cd2b84622c964220d7c7ba6e29823e096f1c1cf
 
-PODFILE CHECKSUM: eb7a8569c58d9eebb8ec651d26edba026da2d16b
+PODFILE CHECKSUM: 0a237b45bede95b93b20ddb6083725494752a0aa
 
 COCOAPODS: 1.5.0

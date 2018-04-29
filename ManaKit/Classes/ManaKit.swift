@@ -9,6 +9,7 @@
 import UIKit
 import DATASource
 import Kanna
+import PromiseKit
 import SSZipArchive
 import Sync
 
@@ -416,20 +417,29 @@ open class ManaKit: NSObject {
         return url
     }
     
-    open func downloadCardImage(_ card: CMCard, cropImage: Bool, completion: @escaping (_ card: CMCard, _ image: UIImage?, _ croppedImage: UIImage?, _ error: NSError?) -> Void) {
+    open func downloadCardImage(_ card: CMCard, cropImage: Bool, completion: @escaping (_ card: CMCard, _ image: UIImage?, _ croppedImage: UIImage?, _ error: Error?) -> Void) {
         
-        if let url = urlOfCard(card) {
-            NetworkingManager.sharedInstance.downloadImage(url, completionHandler: {(_ origURL: URL?, _ image: UIImage?, _ error: NSError?) -> Void in
-            
-                if let error = error {
-                    completion(card, nil, nil, error)
-                } else {
-                    NotificationCenter.default.post(name: Notification.Name(rawValue: kNotificationCardImageDownloaded), object: nil, userInfo: ["card": card])
-                    completion(card, image, cropImage ? self.crop(image!, ofCard: card) : nil, nil)
-                }
-            })
+        if let image = cardImage(card) {
+            completion(card, image, cropImage ? self.crop(image, ofCard: card) : nil, nil)
         } else {
-            completion(card, nil, nil, NSError(domain: "", code: 401, userInfo: [NSLocalizedDescriptionKey: "magicCardsInfoCode not found"]))
+            if let url = urlOfCard(card) {
+                
+                firstly {
+                    URLSession.shared.dataTask(.promise, with: url).compactMap{ UIImage(data: $0.data) }
+                    }
+                    .done { image in
+                        // write file to cache dir
+                        self.save(image: image, ofCard: card)
+                        
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: kNotificationCardImageDownloaded), object: nil, userInfo: ["card": card])
+                        completion(card, image, cropImage ? self.crop(image, ofCard: card) : nil, nil)
+                    }
+                    .catch { error in
+                        completion(card, nil, nil, error)
+                }
+            } else {
+                completion(card, nil, nil, NSError(domain: "", code: 401, userInfo: [NSLocalizedDescriptionKey: "Card image not found"]))
+            }
         }
     }
     
@@ -447,6 +457,22 @@ open class ManaKit: NSObject {
         }
         
         return isModern
+    }
+    
+    open func save(image: UIImage, ofCard card: CMCard) {
+        if let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first {
+            let path = "\(dir)/full/\(card.set!.code!)"
+            
+            if let number = card.number ?? card.mciNumber {
+                let fullPath = "\(path)/\(number).jpg"
+                
+                // write to file
+                if !FileManager.default.fileExists(atPath: path)  {
+                    try! FileManager.default.createDirectory(atPath: path, withIntermediateDirectories: true, attributes: nil)
+                }
+                try! UIImageJPEGRepresentation(image, 1.0)?.write(to: URL(fileURLWithPath: fullPath))
+            }
+        }
     }
     
     open func crop(_ image: UIImage, ofCard card: CMCard) -> UIImage? {
@@ -484,20 +510,27 @@ open class ManaKit: NSObject {
     }
     
     open func cardImage(_ card: CMCard) -> UIImage? {
-        if let url = urlOfCard(card) {
-            if let image = NetworkingManager.sharedInstance.localImageFromURL(url) {
-                return image
-            } else {
-                if card.set!.code == "CED" {
-                    return imageFromFramework(imageName: .collectorsCardBack)
-                } else if card.set!.code == "CEI" {
-                    return imageFromFramework(imageName: .intlCollectorsCardBack)
-                } else {
-                    return imageFromFramework(imageName: .cardBack)
-                }
+        
+        if let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first {
+            let path = "\(dir)/full/\(card.set!.code!)"
+            
+            if let number = card.number ?? card.mciNumber {
+                let fullPath = "\(path)/\(number).jpg"
+                
+                return UIImage(contentsOfFile: fullPath)
             }
+        }
+        
+        return nil
+    }
+    
+    open func cardBack(_ card: CMCard) -> UIImage? {
+        if card.set!.code == "CED" {
+            return imageFromFramework(imageName: .collectorsCardBack)
+        } else if card.set!.code == "CEI" {
+            return imageFromFramework(imageName: .intlCollectorsCardBack)
         } else {
-            return nil
+            return imageFromFramework(imageName: .cardBack)
         }
     }
     
@@ -543,41 +576,81 @@ open class ManaKit: NSObject {
                     
                     if let urlString = "http://partner.tcgplayer.com/x3/phl.asmx/p?pk=\(tcgPlayerPartnerKey)&s=\(tcgPlayerSetName)&p=\(cardName)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
                         if let url = URL(string: urlString) {
-                                //var closureName: (ParameterTypes) -> ReturnType
                             
+//                            NetworkingManager.sharedInstance.downloadFile(url, completionHandler: { (_ data: Data?, _ error: NSError?) in
+//                                if let error = error {
+//                                    completion(nil, error)
+//                                } else {
+//                                    if let data = data {
+//                                        let xml = try! XML(xml: data, encoding: .utf8)
+//
+//                                        for product in xml.xpath("//product") {
+//                                            if let id = product.xpath("id").first?.text,
+//                                                let hiprice = product.xpath("hiprice").first?.text,
+//                                                let lowprice = product.xpath("lowprice").first?.text,
+//                                                let avgprice = product.xpath("avgprice").first?.text,
+//                                                let foilavgprice = product.xpath("foilavgprice").first?.text,
+//                                                let link = product.xpath("link").first?.text {
+//                                                pricing.id = Int64(id)!
+//                                                pricing.high = Double(hiprice)!
+//                                                pricing.low = Double(lowprice)!
+//                                                pricing.average = Double(avgprice)!
+//                                                pricing.foil = Double(foilavgprice)!
+//                                                pricing.link = link
+//                                            }
+//                                        }
+//
+//                                        pricing.lastUpdate = NSDate()
+//                                        pricing.card = card
+//                                        try! self.dataStack?.mainContext.save()
+//                                        completion(pricing, nil)
+//                                    }
+//                                }
+//
+//                            })
+                        }
+                        
+                        
+                        if let url = URL(string: urlString) {
+                            var rq = URLRequest(url: url)
+                            rq.httpMethod = "GET"
+//                            rq.addValue("application/json", forHTTPHeaderField: "Content-Type")
+//                            rq.addValue("application/json", forHTTPHeaderField: "Accept")
                             
-                            NetworkingManager.sharedInstance.downloadFile(url, completionHandler: { (_ data: Data?, _ error: NSError?) in
-                                if let error = error {
-                                    completion(nil, error)
-                                } else {
-                                    if let data = data {
-                                        let xml = try! XML(xml: data, encoding: .utf8)
+                            firstly {
+                                URLSession.shared.dataTask(.promise, with: rq)
+                            }
+                            .compactMap {
+                                let xml = try! XML(xml: $0.data, encoding: .utf8)
 
-                                        for product in xml.xpath("//product") {
-                                            if let id = product.xpath("id").first?.text,
-                                                let hiprice = product.xpath("hiprice").first?.text,
-                                                let lowprice = product.xpath("lowprice").first?.text,
-                                                let avgprice = product.xpath("avgprice").first?.text,
-                                                let foilavgprice = product.xpath("foilavgprice").first?.text,
-                                                let link = product.xpath("link").first?.text {
-                                                pricing.id = Int64(id)!
-                                                pricing.high = Double(hiprice)!
-                                                pricing.low = Double(lowprice)!
-                                                pricing.average = Double(avgprice)!
-                                                pricing.foil = Double(foilavgprice)!
-                                                pricing.link = link
-                                            }
-                                        }
-                                        
-                                        pricing.lastUpdate = NSDate()
-                                        pricing.card = card
-                                        try! self.dataStack?.mainContext.save()
-                                        completion(pricing, nil)
+                                for product in xml.xpath("//product") {
+                                    if let id = product.xpath("id").first?.text,
+                                        let hiprice = product.xpath("hiprice").first?.text,
+                                        let lowprice = product.xpath("lowprice").first?.text,
+                                        let avgprice = product.xpath("avgprice").first?.text,
+                                        let foilavgprice = product.xpath("foilavgprice").first?.text,
+                                        let link = product.xpath("link").first?.text {
+                                        pricing.id = Int64(id)!
+                                        pricing.high = Double(hiprice)!
+                                        pricing.low = Double(lowprice)!
+                                        pricing.average = Double(avgprice)!
+                                        pricing.foil = Double(foilavgprice)!
+                                        pricing.link = link
                                     }
                                 }
-                                
-                            })
+                            }
+                            .done { json in
+                                    pricing.lastUpdate = NSDate()
+                                    pricing.card = card
+                                    try! self.dataStack?.mainContext.save()
+                                    completion(pricing, nil)
+                                    
+                            }
+                            .catch { error in
+                                    completion(nil, error)
+                            }
                         }
+                        
                     }
                 }
             } else {
