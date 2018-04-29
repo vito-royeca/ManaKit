@@ -1,3 +1,10 @@
+**Version 2.2.2** @ 30.04.2018
+
+- Updated the SQLite database to MTGJSON version 3.15.2.
+- Now using PromiseKit.
+- Now getting images from Gatherer instead of magiccards.info.
+- Removed the Pods directory. Now only maintaining Podfile and Podfile.lock.
+
 **Version 2.2.1** @ 28.12.2017
 
 - Updated the SQLite database to MTGJSON version 3.13.1.
