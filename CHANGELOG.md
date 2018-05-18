@@ -1,3 +1,7 @@
+**Version 2.2.4** @ 18.05.2018
+
+- Renamed the mana image names
+
 **Version 2.2.3** @ 18.05.2018
 
 - Added add and remove Annotation methods to CardTableViewCell

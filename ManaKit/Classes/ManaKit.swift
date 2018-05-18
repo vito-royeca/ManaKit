@@ -174,14 +174,14 @@ open class ManaKit: NSObject {
                     continue
                 }
                 
-                var image = UIImage(named: "mana-\(mana)", in: resourceBundle, compatibleWith: nil)
+                var image = UIImage(named: "\(mana)", in: resourceBundle, compatibleWith: nil)
                 
                 // fix for dual manas
                 if image == nil {
                     if mana.count > 1 {
                         let reversedMana = String(mana.reversed())
 
-                        image = UIImage(named: "mana-\(reversedMana)", in: resourceBundle, compatibleWith: nil)
+                        image = UIImage(named: "\(reversedMana)", in: resourceBundle, compatibleWith: nil)
                     }
                 }
                 
