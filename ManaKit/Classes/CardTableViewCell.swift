@@ -24,14 +24,15 @@ open class CardTableViewCell: UITableViewCell {
     // MARK: Outlets
     @IBOutlet weak var thumbnailImage: UIImageView!
     @IBOutlet weak var nameAndCCView: UIView!
+    @IBOutlet weak var annotationLabel: UILabel!
     @IBOutlet weak var symbolImage: UIImageView!
     @IBOutlet weak var typeLabel: UILabel!
     @IBOutlet weak var setImage: UILabel!
     @IBOutlet weak var lowPriceLabel: UILabel!
     @IBOutlet weak var midPriceLabel: UILabel!
-    @IBOutlet weak var highProceLabel: UILabel!
+    @IBOutlet weak var highPriceLabel: UILabel!
     @IBOutlet weak var foilPriceLabel: UILabel!
-    
+
     // MARK: Overrides
     override open func awakeFromNib() {
         super.awakeFromNib()
@@ -40,6 +41,8 @@ open class CardTableViewCell: UITableViewCell {
         // add round corners
         thumbnailImage.layer.cornerRadius = thumbnailImage.frame.height / 6
         setImage.layer.cornerRadius = setImage.frame.height / 2
+        annotationLabel.layer.cornerRadius = setImage.frame.height / 2
+        removeAnnotation()
     }
 
     override open func setSelected(_ selected: Bool, animated: Bool) {
@@ -54,11 +57,12 @@ open class CardTableViewCell: UITableViewCell {
         }
         thumbnailImage.image = UIImage(named: ImageName.cardBackCropped.rawValue)
         symbolImage.image = nil
+        removeAnnotation()
         typeLabel.text = nil
         setImage.text = nil
         lowPriceLabel.text  = "NA"
         midPriceLabel.text  = "NA"
-        highProceLabel.text = "NA"
+        highPriceLabel.text = "NA"
         foilPriceLabel.text = "NA"
     }
     
@@ -72,7 +76,7 @@ open class CardTableViewCell: UITableViewCell {
                 thumbnailImage.image = ManaKit.sharedInstance.imageFromFramework(imageName: .cardBackCropped)
                 
                 ManaKit.sharedInstance.downloadCardImage(card, cropImage: true, completion: { (c: CMCard, image: UIImage?, croppedImage: UIImage?, error: Error?) in
-                    
+
                     if error == nil {
                         if c.id == self.card?.id  {
                             UIView.transition(with: self.thumbnailImage,
@@ -205,11 +209,21 @@ open class CardTableViewCell: UITableViewCell {
                     if card.id == cardPricing.card?.id {
                         self.lowPriceLabel.text = cardPricing.low > 0 ? "\(cardPricing.low)" : "NA"
                         self.midPriceLabel.text = cardPricing.average > 0 ? "\(cardPricing.average)" : "NA"
-                        self.highProceLabel.text = cardPricing.high > 0 ? "\(cardPricing.high)" : "NA"
+                        self.highPriceLabel.text = cardPricing.high > 0 ? "\(cardPricing.high)" : "NA"
                         self.foilPriceLabel.text = cardPricing.foil > 0 ? "\(cardPricing.foil)" : "NA"
                     }
                 }
             })
         }
+    }
+    
+    open func add(annotation: Int) {
+        annotationLabel.backgroundColor = UIColor.red
+        annotationLabel.text = "\(annotation)"
+    }
+    
+    open func removeAnnotation() {
+        annotationLabel.backgroundColor = UIColor.clear
+        annotationLabel.text = ""
     }
 }

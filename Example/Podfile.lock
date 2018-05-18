@@ -2,24 +2,28 @@ PODS:
   - DATASource (7.0.2)
   - DATAStack (8.0.2)
   - Kanna (3.0.0)
-  - ManaKit (2.2.1):
+  - ManaKit (2.2.2):
     - DATASource
     - DATAStack
     - Kanna (~> 3)
     - PromiseKit
     - Reachability
+    - SDWebImage
     - SSZipArchive
     - Sync
-  - PromiseKit (6.2.5):
-    - PromiseKit/CorePromise (= 6.2.5)
-    - PromiseKit/Foundation (= 6.2.5)
-    - PromiseKit/UIKit (= 6.2.5)
-  - PromiseKit/CorePromise (6.2.5)
-  - PromiseKit/Foundation (6.2.5):
+  - PromiseKit (6.2.7):
+    - PromiseKit/CorePromise (= 6.2.7)
+    - PromiseKit/Foundation (= 6.2.7)
+    - PromiseKit/UIKit (= 6.2.7)
+  - PromiseKit/CorePromise (6.2.7)
+  - PromiseKit/Foundation (6.2.7):
     - PromiseKit/CorePromise
-  - PromiseKit/UIKit (6.2.5):
+  - PromiseKit/UIKit (6.2.7):
     - PromiseKit/CorePromise
   - Reachability (3.2)
+  - SDWebImage (4.3.3):
+    - SDWebImage/Core (= 4.3.3)
+  - SDWebImage/Core (4.3.3)
   - SSZipArchive (2.1.2)
   - Sync (4.1.3)
 
@@ -30,6 +34,7 @@ DEPENDENCIES:
   - ManaKit (from `../`)
   - PromiseKit (~> 6.0)
   - Reachability
+  - SDWebImage (~> 4.0)
   - SSZipArchive
   - Sync
 
@@ -39,6 +44,7 @@ SPEC REPOS:
     - DATAStack
     - PromiseKit
     - Reachability
+    - SDWebImage
     - SSZipArchive
     - Sync
 
@@ -58,12 +64,13 @@ SPEC CHECKSUMS:
   DATASource: b86db74542b5b27d4d2af43ae698022f19507379
   DATAStack: 9c415f6e7733eafb9cf5c076613bfb5958c407cb
   Kanna: 93a9af3643d46425e48899a8b033a2da44af2b49
-  ManaKit: a36a7afefc0b76316d11ba4f6bb7e6772ee23b69
-  PromiseKit: a26828b0a8d5874960dfdb575b57a70790ec36f1
+  ManaKit: 713001f4cef9c8d268c4c672c29b9c2bfddbadd4
+  PromiseKit: 12b9d87748b170714247d8b2677146ca57e488f2
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
+  SDWebImage: de4d90b5bff3571eae7bd16202b1f43135409fa5
   SSZipArchive: d4009d2ce5520a421f231fd97028cc0e2667eed8
   Sync: 3cd2b84622c964220d7c7ba6e29823e096f1c1cf
 
-PODFILE CHECKSUM: 0a237b45bede95b93b20ddb6083725494752a0aa
+PODFILE CHECKSUM: 07d71fb46df43d8ea2f6a06a905da162bd3c3f50
 
 COCOAPODS: 1.5.0

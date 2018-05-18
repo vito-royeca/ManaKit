@@ -10,6 +10,7 @@ import UIKit
 import DATASource
 import Kanna
 import PromiseKit
+import SDWebImage
 import SSZipArchive
 import Sync
 
@@ -400,45 +401,46 @@ open class ManaKit: NSObject {
     }
     
     // MARK: Miscellaneous methods
-    open func urlOfCard(_ card: CMCard) -> URL? {
+    open func imageURL(ofCard card: CMCard) -> URL? {
         var url:URL?
         
-//        if let set = card.set {
-//            if let code = set.magicCardsInfoCode ?? set.code,
-//                let number = card.number ?? card.mciNumber {
-//                let path = "\(kCardImageSource)/\(code.lowercased())/\(number).jpg"
-//                url = URL(string: path)
-//            }
-//        }
+        if card.multiverseid == 0 {
+            if let set = card.set {
+                if let code = set.magicCardsInfoCode ?? set.code,
+                    let number = card.number ?? card.mciNumber {
+                    let path = "\(kCardImageSource)/\(code.lowercased())/\(number).jpg"
+                    url = URL(string: path)
+                }
+            }
 
-        let path = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=\(card.multiverseid)&type=card"
-        url = URL(string: path)
+        } else {
+            let path = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=\(card.multiverseid)&type=card"
+            url = URL(string: path)
+        }
         
         return url
     }
     
     open func downloadCardImage(_ card: CMCard, cropImage: Bool, completion: @escaping (_ card: CMCard, _ image: UIImage?, _ croppedImage: UIImage?, _ error: Error?) -> Void) {
         
-        if let image = cardImage(card) {
-            completion(card, image, cropImage ? self.crop(image, ofCard: card) : nil, nil)
-        } else {
-            if let url = urlOfCard(card) {
-                
-                firstly {
-                    URLSession.shared.dataTask(.promise, with: url).compactMap{ UIImage(data: $0.data) }
-                    }
-                    .done { image in
-                        // write file to cache dir
-                        self.save(image: image, ofCard: card)
-                        
-                        NotificationCenter.default.post(name: Notification.Name(rawValue: kNotificationCardImageDownloaded), object: nil, userInfo: ["card": card])
-                        completion(card, image, cropImage ? self.crop(image, ofCard: card) : nil, nil)
-                    }
-                    .catch { error in
-                        completion(card, nil, nil, error)
-                }
+        if let url = imageURL(ofCard: card) {
+            if let image = self.cardImage(card) {
+                completion(card, image, cropImage ? self.crop(image, ofCard: card) : nil, nil)
             } else {
-                completion(card, nil, nil, NSError(domain: "", code: 401, userInfo: [NSLocalizedDescriptionKey: "Card image not found"]))
+                let downloader = SDWebImageDownloader.shared()
+                let cacheKey = url.absoluteString
+                let completion = { (image: UIImage?, data: Data?, error: Error?, finished: Bool) in
+                    if let image = image {
+                        let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
+                        let imageCache = SDImageCache.init(namespace: appName)
+                        imageCache.store(image, forKey: cacheKey, toDisk: true, completion: nil)
+                        completion(card, image, cropImage ? self.crop(image, ofCard: card) : nil, nil)
+                    } else {
+                        completion(card, nil, nil, error)
+                    }
+                }
+                
+                downloader.downloadImage(with: url, options: .lowPriority, progress: nil, completed: completion)
             }
         }
     }
@@ -457,22 +459,6 @@ open class ManaKit: NSObject {
         }
         
         return isModern
-    }
-    
-    open func save(image: UIImage, ofCard card: CMCard) {
-        if let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first {
-            let path = "\(dir)/full/\(card.set!.code!)"
-            
-            if let number = card.number ?? card.mciNumber {
-                let fullPath = "\(path)/\(number).jpg"
-                
-                // write to file
-                if !FileManager.default.fileExists(atPath: path)  {
-                    try! FileManager.default.createDirectory(atPath: path, withIntermediateDirectories: true, attributes: nil)
-                }
-                try! UIImageJPEGRepresentation(image, 1.0)?.write(to: URL(fileURLWithPath: fullPath))
-            }
-        }
     }
     
     open func crop(_ image: UIImage, ofCard card: CMCard) -> UIImage? {
@@ -510,18 +496,27 @@ open class ManaKit: NSObject {
     }
     
     open func cardImage(_ card: CMCard) -> UIImage? {
+        var cardImage: UIImage?
         
-        if let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first {
-            let path = "\(dir)/full/\(card.set!.code!)"
+        if let url = imageURL(ofCard: card) {
+            let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
+            let imageCache = SDImageCache.init(namespace: appName)
+            let cacheKey = url.absoluteString
             
-            if let number = card.number ?? card.mciNumber {
-                let fullPath = "\(path)/\(number).jpg"
-                
-                return UIImage(contentsOfFile: fullPath)
+            let semaphore = DispatchSemaphore(value: 0)
+            let cacheQueryCompletion = { (image: UIImage?, data: Data?, cacheType: SDImageCacheType) in
+                cardImage = image
+                semaphore.signal()
             }
+            
+            imageCache.queryCacheOperation(forKey: cacheKey, options: .queryDiskSync, done: cacheQueryCompletion)
+            semaphore.wait()
         }
         
-        return nil
+        if cardImage == nil {
+            // delete crop if existing
+        }
+        return cardImage
     }
     
     open func cardBack(_ card: CMCard) -> UIImage? {
@@ -575,41 +570,6 @@ open class ManaKit: NSObject {
                     let cardName = card.name {
                     
                     if let urlString = "http://partner.tcgplayer.com/x3/phl.asmx/p?pk=\(tcgPlayerPartnerKey)&s=\(tcgPlayerSetName)&p=\(cardName)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-                        if let url = URL(string: urlString) {
-                            
-//                            NetworkingManager.sharedInstance.downloadFile(url, completionHandler: { (_ data: Data?, _ error: NSError?) in
-//                                if let error = error {
-//                                    completion(nil, error)
-//                                } else {
-//                                    if let data = data {
-//                                        let xml = try! XML(xml: data, encoding: .utf8)
-//
-//                                        for product in xml.xpath("//product") {
-//                                            if let id = product.xpath("id").first?.text,
-//                                                let hiprice = product.xpath("hiprice").first?.text,
-//                                                let lowprice = product.xpath("lowprice").first?.text,
-//                                                let avgprice = product.xpath("avgprice").first?.text,
-//                                                let foilavgprice = product.xpath("foilavgprice").first?.text,
-//                                                let link = product.xpath("link").first?.text {
-//                                                pricing.id = Int64(id)!
-//                                                pricing.high = Double(hiprice)!
-//                                                pricing.low = Double(lowprice)!
-//                                                pricing.average = Double(avgprice)!
-//                                                pricing.foil = Double(foilavgprice)!
-//                                                pricing.link = link
-//                                            }
-//                                        }
-//
-//                                        pricing.lastUpdate = NSDate()
-//                                        pricing.card = card
-//                                        try! self.dataStack?.mainContext.save()
-//                                        completion(pricing, nil)
-//                                    }
-//                                }
-//
-//                            })
-                        }
-                        
                         
                         if let url = URL(string: urlString) {
                             var rq = URLRequest(url: url)
@@ -707,7 +667,7 @@ open class ManaKit: NSObject {
             cString.remove(at: cString.startIndex)
         }
         
-        if ((cString.characters.count) != 6) {
+        if ((cString.count) != 6) {
             return UIColor.gray
         }
         
