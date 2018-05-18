@@ -8,6 +8,7 @@
 
 import UIKit
 import ManaKit
+import SDWebImage
 
 class CardViewController: UIViewController {
 
@@ -54,8 +55,6 @@ extension CardViewController : UITableViewDataSource {
             if let c = tableView.dequeueReusableCell(withIdentifier: "ImageCell") {
                 if let imageView = c.viewWithTag(100) as? UIImageView,
                     let card = card {
-//                    let bgImage = ManaKit.sharedInstance.imageFromFramework(imageName: .grayPatterned)
-//                    c.backgroundColor = UIColor(patternImage: bgImage!)
                     
                     if let cardImage = ManaKit.sharedInstance.cardImage(card) {
                         imageView.image = cardImage
@@ -74,7 +73,6 @@ extension CardViewController : UITableViewDataSource {
                             }
                         })
                     }
-
                 }
                 
                 cell = c

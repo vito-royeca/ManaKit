@@ -1,3 +1,9 @@
+**Version 2.2.3** @ 18.05.2018
+
+- Added add and remove Annotation methods to CardTableViewCell
+- Fixed pricing label layout in CardTableViewCell
+- Now using SDWebImage to cache image downloads
+
 **Version 2.2.2** @ 30.04.2018
 
 - Updated the SQLite database to MTGJSON version 3.15.2.
