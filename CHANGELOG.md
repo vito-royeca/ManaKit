@@ -1,3 +1,9 @@
+**Version 2.2.6** @ 22.05.2018
+
+- Added CMArtist.lastName and CMArtist.firstName properties.
+- Fixed loading of mana symbols in CardTableViewCell.
+- Added $ symbol in CardTableViewCell.
+
 **Version 2.2.5** @ 21.05.2018
 
 - Added CMArtist.nameSection property.
