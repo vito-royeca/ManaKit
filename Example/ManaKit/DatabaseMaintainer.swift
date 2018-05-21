@@ -519,11 +519,39 @@ class DatabaseMaintainer: NSObject {
                     } else {
                         let objectFinder = ["name": artist] as [String: AnyObject]
                         if let object = ManaKit.sharedInstance.findOrCreateObject("CMArtist", objectFinder: objectFinder) as? CMArtist {
-                            var prefix = String(object.name!.prefix(1))
-                            if prefix.rangeOfCharacter(from: letters) == nil {
-                                prefix = "#"
+                            
+                            let names = object.name!.components(separatedBy: " ")
+                            var nameSection: String?
+                            
+                            if names.count > 1 {
+                                if let lastName = names.last {
+                                    object.lastName = lastName
+                                    nameSection = object.lastName
+                                }
+                                
+                                var firstName = ""
+                                for i in 0...names.count - 2 {
+                                    firstName.append("\(names[i])")
+                                    if i != names.count - 2 && names.count >= 3 {
+                                        firstName.append(" ")
+                                    }
+                                }
+                                object.firstName = firstName
+                                
+                            } else {
+                                object.firstName = names.first
+                                nameSection = object.firstName
                             }
-                            object.nameSection = prefix.uppercased().folding(options: .diacriticInsensitive, locale: .current)
+                            
+                            if let nameSection = nameSection {
+                                var prefix = String(nameSection.prefix(1))
+                                
+                                if prefix.rangeOfCharacter(from: letters) == nil {
+                                    prefix = "#"
+                                }
+                                object.nameSection = prefix.uppercased().folding(options: .diacriticInsensitive, locale: .current)
+                            }
+                            
                             object.name = artist
                             
                             card.artist_ = object
@@ -1343,7 +1371,7 @@ class DatabaseMaintainer: NSObject {
     }
     
     // MARK: temporary updates
-    func updateArtistNameSection() {
+    func updateArtist() {
         let dateStart = Date()
         
         let request:NSFetchRequest<CMArtist> = CMArtist.fetchRequest() as! NSFetchRequest<CMArtist>
@@ -1351,19 +1379,39 @@ class DatabaseMaintainer: NSObject {
         if let artists = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
             print("Updating Artists: \(artists.count) \(Date())")
             
-            let letters = CharacterSet.letters
-            
             for artist in artists {
                 let names = artist.name!.components(separatedBy: " ")
+                var nameSection: String?
                 
-                if let lastName = names.last {
-                    var prefix = String(lastName.prefix(1))
+                if names.count > 1 {
+                    if let lastName = names.last {
+                        artist.lastName = lastName
+                        nameSection = artist.lastName
+                    }
+                    
+                    var firstName = ""
+                    for i in 0...names.count - 2 {
+                        firstName.append("\(names[i])")
+                        if i != names.count - 2 && names.count >= 3 {
+                            firstName.append(" ")
+                        }
+                    }
+                    artist.firstName = firstName
+                    
+                } else {
+                    artist.firstName = names.first
+                    nameSection = artist.firstName
+                }
+                
+                if let nameSection = nameSection {
+                    let letters = CharacterSet.letters
+                    var prefix = String(nameSection.prefix(1))
+                    
                     if prefix.rangeOfCharacter(from: letters) == nil {
                         prefix = "#"
                     }
                     artist.nameSection = prefix.uppercased().folding(options: .diacriticInsensitive, locale: .current)
                 }
-                
             }
             
             try! ManaKit.sharedInstance.dataStack?.mainContext.save()

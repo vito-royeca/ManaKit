@@ -16,6 +16,8 @@ extension CMArtist {
         return NSFetchRequest<CMArtist>(entityName: "CMArtist") as! NSFetchRequest<NSFetchRequestResult>
     }
 
+    @NSManaged public var firstName: String?
+    @NSManaged public var lastName: String?
     @NSManaged public var name: String?
     @NSManaged public var nameSection: String?
     @NSManaged public var cards: NSSet?
