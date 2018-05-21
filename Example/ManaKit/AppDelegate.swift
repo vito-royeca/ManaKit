@@ -34,11 +34,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        DatabaseMaintainer.sharedInstance.rules2CoreData()
 
          // Temporary updates
-         DatabaseMaintainer.sharedInstance.updateArtistNameSection()
+//         DatabaseMaintainer.sharedInstance.updateArtistNameSection()
         
           // Normal run
-//        ManaKit.sharedInstance.setupResources()
-//        ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "ManaGuide", publicKey: nil, privateKey: nil)
+        ManaKit.sharedInstance.setupResources()
+        ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "ManaGuide", publicKey: nil, privateKey: nil)
         
         return true
     }
