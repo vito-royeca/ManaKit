@@ -1,3 +1,7 @@
+**Version 2.2.5** @ 21.05.2018
+
+- Added CMArtist.nameSection property.
+
 **Version 2.2.4** @ 18.05.2018
 
 - Renamed the mana image names
