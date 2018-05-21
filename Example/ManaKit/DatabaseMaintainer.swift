@@ -197,6 +197,11 @@ class DatabaseMaintainer: NSObject {
     }
     
     public func updateSystem() {
+        // delete existing data first
+        let request:NSFetchRequest<CMSystem> = CMSystem.fetchRequest() as! NSFetchRequest<CMSystem>
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: request as! NSFetchRequest<NSFetchRequestResult>)
+        try! ManaKit.sharedInstance.dataStack?.persistentStoreCoordinator.execute(deleteRequest, with: (ManaKit.sharedInstance.dataStack?.mainContext)!)
+        
         let objectFinder = ["version": kMTGJSONVersion] as [String: AnyObject]
         if let system = ManaKit.sharedInstance.findOrCreateObject("CMSystem", objectFinder: objectFinder) as? CMSystem {
             let formatter = DateFormatter()
@@ -282,7 +287,7 @@ class DatabaseMaintainer: NSObject {
                 if prefix.rangeOfCharacter(from: letters) == nil {
                     prefix = "#"
                 }
-                set.nameSection = prefix.uppercased()
+                set.nameSection = prefix.uppercased().folding(options: .diacriticInsensitive, locale: .current)
                 
                 // typeSection
                 prefix = String(set.type_!.name!.prefix(1))
@@ -302,6 +307,7 @@ class DatabaseMaintainer: NSObject {
         let request:NSFetchRequest<CMCard> = CMCard.fetchRequest() as! NSFetchRequest<CMCard>
         
         if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
+            let letters = CharacterSet.letters
             var cachedLayouts = [CMLayout]()
             var cachedColors = [CMColor]()
             var cachedCardTypes = [CMCardType]()
@@ -513,7 +519,13 @@ class DatabaseMaintainer: NSObject {
                     } else {
                         let objectFinder = ["name": artist] as [String: AnyObject]
                         if let object = ManaKit.sharedInstance.findOrCreateObject("CMArtist", objectFinder: objectFinder) as? CMArtist {
+                            var prefix = String(object.name!.prefix(1))
+                            if prefix.rangeOfCharacter(from: letters) == nil {
+                                prefix = "#"
+                            }
+                            object.nameSection = prefix.uppercased().folding(options: .diacriticInsensitive, locale: .current)
                             object.name = artist
+                            
                             card.artist_ = object
                             cachedArtists.append(object)
                         }
@@ -555,23 +567,16 @@ class DatabaseMaintainer: NSObject {
                 }
                 
                 // nameSection
-                let letters = CharacterSet.letters
                 var prefix = String(card.name!.prefix(1))
                 if prefix.rangeOfCharacter(from: letters) == nil {
                     prefix = "#"
                 }
-                card.nameSection = prefix.uppercased()
+                card.nameSection = prefix.uppercased().folding(options: .diacriticInsensitive, locale: .current)
                 
                 // numberOrder
                 if let number = card.number ?? card.mciNumber {
                     card.numberOrder = numberOrder(ofString: number)
                 }
-                
-                // cardPricing
-//                if let cardPricing = ManaKit.sharedInstance.findOrCreateObject("CMCardPricing", objectFinder: ["card.id": card.id as AnyObject]) as? CMCardPricing {
-//
-//                    cardPricing.card = card
-//                }
                 
                 try! ManaKit.sharedInstance.dataStack?.mainContext.save()
                 
@@ -1335,5 +1340,40 @@ class DatabaseMaintainer: NSObject {
         }
         
         return numberOrder
+    }
+    
+    // MARK: temporary updates
+    func updateArtistNameSection() {
+        let dateStart = Date()
+        
+        let request:NSFetchRequest<CMArtist> = CMArtist.fetchRequest() as! NSFetchRequest<CMArtist>
+        
+        if let artists = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
+            print("Updating Artists: \(artists.count) \(Date())")
+            
+            let letters = CharacterSet.letters
+            
+            for artist in artists {
+                let names = artist.name!.components(separatedBy: " ")
+                
+                if let lastName = names.last {
+                    var prefix = String(lastName.prefix(1))
+                    if prefix.rangeOfCharacter(from: letters) == nil {
+                        prefix = "#"
+                    }
+                    artist.nameSection = prefix.uppercased().folding(options: .diacriticInsensitive, locale: .current)
+                }
+                
+            }
+            
+            try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+        }
+        
+        self.updateSystem()
+        
+        let dateEnd = Date()
+        let timeDifference = dateEnd.timeIntervalSince(dateStart)
+        print("Total Time Elapsed: \(dateStart) - \(dateEnd) = \(self.format(timeDifference))")
+        print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
     }
 }
