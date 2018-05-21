@@ -52,9 +52,6 @@ open class CardTableViewCell: UITableViewCell {
     }
     
     override open func prepareForReuse() {
-        for c in nameAndCCView.subviews {
-            c.removeFromSuperview()
-        }
         thumbnailImage.image = UIImage(named: ImageName.cardBackCropped.rawValue)
         symbolImage.image = nil
         removeAnnotation()
@@ -69,9 +66,19 @@ open class CardTableViewCell: UITableViewCell {
     // MARK: Custom methods
     open func updateDataDisplay() {
         if let card = card {
-            // thumbnail image
+            
+            // clear first
+            for c in nameAndCCView.subviews {
+                c.removeFromSuperview()
+            }
+            
+            // name
+            updateName()
+            
+            // thumbnail image and casting cost
             if let croppedImage = ManaKit.sharedInstance.croppedImage(card) {
                 thumbnailImage.image = croppedImage
+                self.updateCastingCost()
             } else {
                 thumbnailImage.image = ManaKit.sharedInstance.imageFromFramework(imageName: .cardBackCropped)
                 
@@ -88,68 +95,12 @@ open class CardTableViewCell: UITableViewCell {
                                               completion: nil)
                         }
                     }
+                    
+                    self.updateCastingCost()
                 })
             }
             
             
-            // casting cost
-            var width = CGFloat(17)
-            let height = CGFloat(17)
-            var x = nameAndCCView.frame.size.width - width
-            let y = CGFloat(0)
-            if let manaCost = card.manaCost {
-                let array = ManaKit.sharedInstance.manaImages(manaCost: manaCost)
-                for dict in array.reversed() {
-                    for (key,value) in dict {
-                        if key == "1000000" {
-                            width = CGFloat(17) * 3
-                            x = nameAndCCView.frame.size.width - width
-                        } else {
-                            width = CGFloat(17)
-                        }
-                        
-                        let imageView = UIImageView(frame: CGRect(x: x, y: y, width: width, height: height))
-                        imageView.image = value
-                        imageView.contentMode = .scaleAspectFit
-                        
-                        nameAndCCView.addSubview(imageView)
-                        x -= width
-                    }
-                }
-            }
-            
-            // card name
-            let nameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: x + CGFloat(17), height: nameAndCCView.frame.size.height))
-            nameLabel.text = card.name
-            if let releaseDate = card.set!.releaseDate {
-                let isModern = ManaKit.sharedInstance.isModern(card)
-                let formatter = DateFormatter()
-                formatter.dateFormat = "yyyy-MM-dd"
-
-                if let m15Date = formatter.date(from: "2014-07-18"),
-                    let setReleaseDate = formatter.date(from: releaseDate) {
-
-                    var shadowColor:UIColor?
-                    var shadowOffset = CGSize(width: 0, height: -1)
-
-                    if setReleaseDate.compare(m15Date) == .orderedSame ||
-                        setReleaseDate.compare(m15Date) == .orderedDescending {
-                        nameLabel.font = magic2015Font
-
-                    } else {
-                        nameLabel.font = isModern ? eightEditionFont : preEightEditionFont
-
-                        if !isModern {
-                            shadowColor = UIColor.darkGray
-                            shadowOffset = CGSize(width: 1, height: 1)
-                        }
-                    }
-
-                    nameLabel.shadowColor = shadowColor
-                    nameLabel.shadowOffset = shadowOffset
-                }
-            }
-            nameAndCCView.addSubview(nameLabel)
             
             // set symbol
             if let rarity = card.rarity_,
@@ -225,5 +176,73 @@ open class CardTableViewCell: UITableViewCell {
     open func removeAnnotation() {
         annotationLabel.backgroundColor = UIColor.clear
         annotationLabel.text = ""
+    }
+    
+    open func updateName() {
+        if let card = card {
+            let width = CGFloat(17)
+            let x = nameAndCCView.frame.size.width - width
+            
+            let nameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: x + CGFloat(17), height: nameAndCCView.frame.size.height))
+            nameLabel.text = card.name
+            if let releaseDate = card.set!.releaseDate {
+                let isModern = ManaKit.sharedInstance.isModern(card)
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy-MM-dd"
+                
+                if let m15Date = formatter.date(from: "2014-07-18"),
+                    let setReleaseDate = formatter.date(from: releaseDate) {
+                    
+                    var shadowColor:UIColor?
+                    var shadowOffset = CGSize(width: 0, height: -1)
+                    
+                    if setReleaseDate.compare(m15Date) == .orderedSame ||
+                        setReleaseDate.compare(m15Date) == .orderedDescending {
+                        nameLabel.font = magic2015Font
+                        
+                    } else {
+                        nameLabel.font = isModern ? eightEditionFont : preEightEditionFont
+                        
+                        if !isModern {
+                            shadowColor = UIColor.darkGray
+                            shadowOffset = CGSize(width: 1, height: 1)
+                        }
+                    }
+                    
+                    nameLabel.shadowColor = shadowColor
+                    nameLabel.shadowOffset = shadowOffset
+                }
+            }
+            nameAndCCView.addSubview(nameLabel)
+        }
+    }
+    
+    open func updateCastingCost() {
+        if let card = card {
+            var width = CGFloat(17)
+            let height = CGFloat(17)
+            var x = nameAndCCView.frame.size.width - width
+            let y = CGFloat(0)
+            if let manaCost = card.manaCost {
+                let array = ManaKit.sharedInstance.manaImages(manaCost: manaCost)
+                for dict in array.reversed() {
+                    for (key,value) in dict {
+                        if key == "1000000" {
+                            width = CGFloat(17) * 3
+                            x = nameAndCCView.frame.size.width - width
+                        } else {
+                            width = CGFloat(17)
+                        }
+                        
+                        let imageView = UIImageView(frame: CGRect(x: x, y: y, width: width, height: height))
+                        imageView.image = value
+                        imageView.contentMode = .scaleAspectFit
+                        
+                        nameAndCCView.addSubview(imageView)
+                        x -= width
+                    }
+                }
+            }
+        }
     }
 }
