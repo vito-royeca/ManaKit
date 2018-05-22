@@ -320,6 +320,9 @@ class DatabaseMaintainer: NSObject {
             print("Updating cards: \(count)/\(cards.count) \(Date())")
             
             for card in cards {
+                // id
+                card.id = "\(card.set!.code!)_\(card.name!)_\(card.imageName!)"
+                
                 // layout
                 if let layout = card.layout {
                     if let object = cachedLayouts.first(where: { $0.name == layout }) {
@@ -1424,4 +1427,28 @@ class DatabaseMaintainer: NSObject {
         print("Total Time Elapsed: \(dateStart) - \(dateEnd) = \(self.format(timeDifference))")
         print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
     }
+    
+    func updateCardIDs() {
+        let dateStart = Date()
+        
+        let request:NSFetchRequest<CMCard> = CMCard.fetchRequest() as! NSFetchRequest<CMCard>
+        
+        if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
+            print("Updating Card IDs: \(cards.count) \(Date())")
+            
+            for card in cards {
+                card.id = "\(card.set!.code!)_\(card.name!)_\(card.imageName!)"
+            }
+            
+            try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+        }
+        
+        self.updateSystem()
+        
+        let dateEnd = Date()
+        let timeDifference = dateEnd.timeIntervalSince(dateStart)
+        print("Total Time Elapsed: \(dateStart) - \(dateEnd) = \(self.format(timeDifference))")
+        print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
+    }
+    
 }

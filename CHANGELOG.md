@@ -1,3 +1,7 @@
+**Version 2.2.7** @ 22.05.2018
+- fix: Updating of SQLite database.
+- refactor: Updated the CMCard.id value.
+
 **Version 2.2.6** @ 22.05.2018
 
 - Added CMArtist.lastName and CMArtist.firstName properties.
