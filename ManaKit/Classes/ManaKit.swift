@@ -15,7 +15,7 @@ import SSZipArchive
 import Sync
 
 
-public let kMTGJSONVersion      = "3.15.2 C"
+public let kMTGJSONVersion      = "3.15.2 E"
 public let kMTGJSONDate         = "Apr 20, 2018"
 public let kMTGJSONVersionKey   = "kMTGJSONVersionKey"
 public let kImagesVersionKey    = "kImagesVersionKey"
@@ -109,6 +109,9 @@ open class ManaKit: NSObject {
                 _dataStack = DataStack(model: objectModel, storeType: .sqLite)
             }
             return _dataStack
+        }
+        set {
+            _dataStack = newValue
         }
     }
     
@@ -293,9 +296,14 @@ open class ManaKit: NSObject {
                 // Check if we saved the version number
                 if let version = databaseVersion() /*UserDefaults.standard.object(forKey: kMTGJSONVersionKey) as? String*/ {
                     willCopy = version != kMTGJSONVersion
+                } else {
+                    willCopy = true
                 }
                 
                 if willCopy {
+                    // Shutdown database
+                    dataStack = nil
+                    
                     // Remove old database files
                     for file in try! FileManager.default.contentsOfDirectory(atPath: docsPath) {
                         let path = "\(docsPath)/\(file)"
