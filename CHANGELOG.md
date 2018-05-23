@@ -1,3 +1,6 @@
+**Version 2.2.8** @ 22.05.2018
+- Readded CMRule and CMGlosary data.
+
 **Version 2.2.7** @ 22.05.2018
 - fix: Updating of SQLite database.
 - refactor: Updated the CMCard.id value.

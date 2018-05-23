@@ -2,7 +2,7 @@ PODS:
   - DATASource (7.0.2)
   - DATAStack (8.0.2)
   - Kanna (3.0.0)
-  - ManaKit (2.2.4):
+  - ManaKit (2.2.7):
     - DATASource
     - DATAStack
     - Kanna (~> 3)
@@ -64,7 +64,7 @@ SPEC CHECKSUMS:
   DATASource: b86db74542b5b27d4d2af43ae698022f19507379
   DATAStack: 9c415f6e7733eafb9cf5c076613bfb5958c407cb
   Kanna: 93a9af3643d46425e48899a8b033a2da44af2b49
-  ManaKit: 9955511e834d9cf6b79f03649b9899536fbf3476
+  ManaKit: b69154c51bbc02ee15469f2ffe78ce2acbf31527
   PromiseKit: 12b9d87748b170714247d8b2677146ca57e488f2
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: de4d90b5bff3571eae7bd16202b1f43135409fa5
