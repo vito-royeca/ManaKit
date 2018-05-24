@@ -32,6 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
           // Core Data updates 3
 //        DatabaseMaintainer.sharedInstance.rules2CoreData()
+//        DatabaseMaintainer.sharedInstance.updateSystem()
 
          // Temporary updates
 //        DatabaseMaintainer.sharedInstance.updateArtist()
