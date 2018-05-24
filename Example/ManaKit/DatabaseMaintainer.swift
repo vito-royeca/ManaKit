@@ -908,38 +908,44 @@ class DatabaseMaintainer: NSObject {
             
             print("Updating comprehensive rules: \(dateStart)")
             
+            // delete existing data first
+            let request:NSFetchRequest<CMRule> = CMRule.fetchRequest() as! NSFetchRequest<CMRule>
+            let deleteRequest = NSBatchDeleteRequest(fetchRequest: request as! NSFetchRequest<NSFetchRequestResult>)
+            try! ManaKit.sharedInstance.dataStack?.persistentStoreCoordinator.execute(deleteRequest, with: (ManaKit.sharedInstance.dataStack?.mainContext)!)
+            let request2:NSFetchRequest<CMGlossary> = CMGlossary.fetchRequest() as! NSFetchRequest<CMGlossary>
+            let deleteRequest2 = NSBatchDeleteRequest(fetchRequest: request2 as! NSFetchRequest<NSFetchRequestResult>)
+            try! ManaKit.sharedInstance.dataStack?.persistentStoreCoordinator.execute(deleteRequest2, with: (ManaKit.sharedInstance.dataStack?.mainContext)!)
+            
             let data = try! String(contentsOfFile: path, encoding: .ascii)
             let lines = data.components(separatedBy: .newlines)
-            
-            // parse the title
-            var startLine = "Magic: The Gathering Comprehensive Rules"
-            var endLine = "Introduction"
-            var includeStartLine = true
+            var objectFinder:[String: AnyObject]? = nil
+            var startLine:String? = nil
+            var endLine:String? = nil
+            var includeStartLine = false
             var includeEndLine = false
-            if let text = parseData(fromLines: lines, startLine: startLine, endLine: endLine, includeStartLine: includeStartLine, includeEndLine: includeEndLine) {
-                let objectFinder = ["number": "Title"] as [String: AnyObject]
-                
-                if let object = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: objectFinder) as? CMRule {
-                    object.number = "Title"
-                    object.numberOrder = 0
-                    object.text = text
-                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
-                }
-            }
             
             // parse the introduction
-            startLine = "Introduction"
-            endLine = "Contents"
-            includeStartLine = false
-            includeEndLine = false
-            if let text = parseData(fromLines: lines, startLine: startLine, endLine: endLine, includeStartLine: includeStartLine, includeEndLine: includeEndLine) {
-                let objectFinder = ["number": "Introduction"] as [String: AnyObject]
+            objectFinder = ["number": "Introduction"] as [String: AnyObject]
+            if let object = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: objectFinder) as? CMRule {
+                object.number = "Introduction"
+                object.numberOrder = 0
+                object.text = nil
+                try! ManaKit.sharedInstance.dataStack?.mainContext.save()
                 
-                if let object = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: objectFinder) as? CMRule {
-                    object.number = "Introduction"
-                    object.numberOrder = 0.1
-                    object.text = text
-                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                startLine = "Magic: The Gathering Comprehensive Rules"
+                endLine = "Contents"
+                includeStartLine = true
+                includeEndLine = false
+                if let text = parseData(fromLines: lines, startLine: startLine!, endLine: endLine!, includeStartLine: includeStartLine, includeEndLine: includeEndLine) {
+                    objectFinder = ["parent": object] as [String: AnyObject]
+                    
+                    if let object2 = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: objectFinder) as? CMRule {
+                        object2.number = nil
+                        object2.numberOrder = 0.1
+                        object2.text = text
+                        object2.parent = object
+                        try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                    }
                 }
             }
             
@@ -947,21 +953,37 @@ class DatabaseMaintainer: NSObject {
             parseRules(fromLines: lines)
             
             // parse the glossary
+            objectFinder = ["number": "Glossary"] as [String: AnyObject]
+            if let object = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: objectFinder) as? CMRule {
+                object.number = "Glossary"
+                object.numberOrder = 10000
+                object.text = nil
+                try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+            }
             parseGlossary(fromLines: lines)
             
             // parse the credits
-            startLine = "Magic: The Gathering Original Game Design: Richard Garfield"
-            endLine = "Published by Wizards of the Coast LLC"
-            includeStartLine = true
-            includeEndLine = true
-            if let text = parseData(fromLines: lines, startLine: startLine, endLine: endLine, includeStartLine: includeStartLine, includeEndLine: includeEndLine) {
-                let objectFinder = ["number": "Credits"] as [String: AnyObject]
+            objectFinder = ["number": "Credits"] as [String: AnyObject]
+            if let object = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: objectFinder) as? CMRule {
+                object.number = "Credits"
+                object.numberOrder = 11000
+                object.text = nil
+                try! ManaKit.sharedInstance.dataStack?.mainContext.save()
                 
-                if let object = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: objectFinder) as? CMRule {
-                    object.number = "Credits"
-                    object.numberOrder = 10000
-                    object.text = text
-                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                startLine = "Magic: The Gathering Original Game Design: Richard Garfield"
+                endLine = "Published by Wizards of the Coast LLC"
+                includeStartLine = true
+                includeEndLine = true
+                if let text = parseData(fromLines: lines, startLine: startLine!, endLine: endLine!, includeStartLine: includeStartLine, includeEndLine: includeEndLine) {
+                    objectFinder = ["parent": object] as [String: AnyObject]
+                    
+                    if let object2 = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: objectFinder) as? CMRule {
+                        object2.number = nil
+                        object2.numberOrder = 11000.1
+                        object2.text = text
+                        object2.parent = object
+                        try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                    }
                 }
             }
             
@@ -1061,24 +1083,16 @@ class DatabaseMaintainer: NSObject {
                         object.text = text
                         try! ManaKit.sharedInstance.dataStack?.mainContext.save()
                         
-                        // locate the parent rule
-                        while number != "" {
-                            number.remove(at: number.index(before: number.endIndex))
-                            
-                            if number.count > 0 {
-                                let parentFinder = ["number": number] as [String: AnyObject]
+                        if number.contains(".") {
+                            number = number.components(separatedBy: ".").first!
+                            let _ = findParent(forRule: object, withNumber: number)
+                        } else {
+                            while number != "" {
+                                number.remove(at: number.index(before: number.endIndex))
                                 
-                                if let parent = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: parentFinder) as? CMRule {
-                                    if parent.text == nil &&
-                                        parent.number == nil {
-                                        ManaKit.sharedInstance.dataStack?.mainContext.delete(parent)
-                                        try! ManaKit.sharedInstance.dataStack?.mainContext.save()
-                                    } else {
-                                        if parent != object {
-                                            object.parent = parent
-                                            try! ManaKit.sharedInstance.dataStack?.mainContext.save()
-                                            break
-                                        }
+                                if number.count > 0 {
+                                    if let _ = findParent(forRule: object, withNumber: number) {
+                                        break
                                     }
                                 }
                             }
@@ -1089,6 +1103,26 @@ class DatabaseMaintainer: NSObject {
         }
         
         return
+    }
+    
+    func findParent(forRule rule: CMRule, withNumber number: String) -> CMRule? {
+        let parentFinder = ["number": number] as [String: AnyObject]
+        
+        if let parent = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: parentFinder) as? CMRule {
+            if parent.text == nil &&
+                parent.number == nil {
+                ManaKit.sharedInstance.dataStack?.mainContext.delete(parent)
+                try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+            } else {
+                if parent != rule {
+                    rule.parent = parent
+                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                    return parent
+                }
+            }
+        }
+        
+        return nil
     }
     
     func parseGlossary(fromLines lines: [String]) {

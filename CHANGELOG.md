@@ -1,3 +1,6 @@
+**Version 2.2.9** @ 22.05.2018
+- Fixed CMRule and CMGlosary data.
+
 **Version 2.2.8** @ 22.05.2018
 - Readded CMRule and CMGlosary data.
 
