@@ -273,7 +273,7 @@ open class ManaKit: NSObject {
         
         if let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle") {
             let resourceBundle = Bundle(url: bundleURL)
-            return = resourceBundle?.path(forResource: "EN_M15_QckStrtBklt_LR_Crop", ofType: "pdf")
+            return resourceBundle?.path(forResource: "EN_M15_QckStrtBklt_LR_Crop", ofType: "pdf")
         }
         
         return nil

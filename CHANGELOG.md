@@ -1,3 +1,6 @@
+**Version 2.3.1** @ 26.05.2018
+- Minor code fix
+
 **Version 2.3.0** @ 26.05.2018
 - New Comrprehensice Rules: April 27, 2018
 - New Basic Rules PDF
