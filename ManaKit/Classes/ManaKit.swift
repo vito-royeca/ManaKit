@@ -15,12 +15,13 @@ import SSZipArchive
 import Sync
 
 
-public let kMTGJSONVersion      = "3.15.2 H"
+public let kMTGJSONVersion      = "3.15.2 J"
 public let kMTGJSONDate         = "Apr 20, 2018"
 public let kMTGJSONVersionKey   = "kMTGJSONVersionKey"
 public let kImagesVersionKey    = "kImagesVersionKey"
 public let kCardImageSource     = "http://magiccards.info/scans/en"
 public let kEightEditionRelease = "2003-07-28"
+public let kBasicRulesFile      = "2003-07-28"
 
 public let kTCGPlayerPricingAge = 24*3 // 3 days
 
@@ -262,6 +263,17 @@ open class ManaKit: NSObject {
             let resourceBundle = Bundle(url: bundleURL)
             
             return UINib(nibName: name, bundle: resourceBundle)
+        }
+        
+        return nil
+    }
+    
+    open func basicRulesPath() -> String? {
+        let bundle = Bundle(for: ManaKit.self)
+        
+        if let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle") {
+            let resourceBundle = Bundle(url: bundleURL)
+            return = resourceBundle?.path(forResource: "EN_M15_QckStrtBklt_LR_Crop", ofType: "pdf")
         }
         
         return nil

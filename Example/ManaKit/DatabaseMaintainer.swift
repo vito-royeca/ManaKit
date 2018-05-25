@@ -321,7 +321,8 @@ class DatabaseMaintainer: NSObject {
             
             for card in cards {
                 // id
-                card.id = "\(card.set!.code!)_\(card.name!)_\(card.imageName!)"
+                let cardID = "\(card.set!.code!)_\(card.name!)_\(card.imageName!)".replacingOccurrences(of: ".", with: "-")
+                card.id = cardID
                 
                 // layout
                 if let layout = card.layout {
@@ -903,7 +904,7 @@ class DatabaseMaintainer: NSObject {
 
     // MARK: Core Data updates 3
     func rules2CoreData() {
-        if let path = Bundle.main.path(forResource: "MagicCompRules_20170707", ofType: "txt", inDirectory: "data") {
+        if let path = Bundle.main.path(forResource: "MagicCompRules 20180413", ofType: "txt", inDirectory: "data") {
             let dateStart = Date()
             
             print("Updating comprehensive rules: \(dateStart)")
@@ -1007,16 +1008,16 @@ class DatabaseMaintainer: NSObject {
             if isParsing {
                 if line.hasPrefix(endLine) {
                     if includeEndLine {
-                        text!.append(line == "" ? "\n" : line)
+                        text!.append(line == "" ? "\n\n" : line)
                     }
                     isParsing = false
                 } else {
                     if line.hasPrefix(startLine) {
                         if includeStartLine {
-                            text!.append(line == "" ? "\n" : line)
+                            text!.append(line == "" ? "\n\n" : line)
                         }
                     } else {
-                        text!.append(line == "" ? "\n" : line)
+                        text!.append(line == "" ? "\n\n" : line)
                     }
                 }
             }
@@ -1471,7 +1472,8 @@ class DatabaseMaintainer: NSObject {
             print("Updating Card IDs: \(cards.count) \(Date())")
             
             for card in cards {
-                card.id = "\(card.set!.code!)_\(card.name!)_\(card.imageName!)"
+                let cardID = "\(card.set!.code!)_\(card.name!)_\(card.imageName!)".replacingOccurrences(of: ".", with: "-")
+                card.id = cardID
             }
             
             try! ManaKit.sharedInstance.dataStack?.mainContext.save()
