@@ -1,3 +1,6 @@
+**Version 2.3.2** @ 27.05.2018
+- Fixed error when fetching TCG Pricing sor online-only sets.
+
 **Version 2.3.1** @ 26.05.2018
 - Minor code fix
 
