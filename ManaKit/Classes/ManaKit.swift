@@ -15,7 +15,7 @@ import SSZipArchive
 import Sync
 
 
-public let kMTGJSONVersion      = "3.15.2 J"
+public let kMTGJSONVersion      = "3.15.2 K"
 public let kMTGJSONDate         = "Apr 20, 2018"
 public let kMTGJSONVersionKey   = "kMTGJSONVersionKey"
 public let kImagesVersionKey    = "kImagesVersionKey"
@@ -130,32 +130,6 @@ open class ManaKit: NSObject {
         if let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle") {
             let resourceBundle = Bundle(url: bundleURL)
             return UIImage(named: imageName.rawValue, in: resourceBundle, compatibleWith: nil)
-        }
-        
-        return nil
-    }
-    
-    open func setImage(set: CMSet, rarity: CMRarity?) -> UIImage? {
-        let bundle = Bundle(for: ManaKit.self)
-        var prefix = "C"
-        
-        if let rarity = rarity {
-            prefix = String(rarity.name!.prefix(1))
-            
-            if rarity.name == "Basic Land" {
-                prefix = "C"
-            }
-        }
-
-        if let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle") {
-            let resourceBundle = Bundle(url: bundleURL)
-            var image = UIImage(named: "\(set.code!)-\(prefix)", in: resourceBundle, compatibleWith: nil)
-            
-            if image == nil {
-                image = UIImage(named: "DEFAULT-\(prefix)", in: resourceBundle, compatibleWith: nil)
-            }
-
-            return image
         }
         
         return nil
@@ -416,7 +390,7 @@ open class ManaKit: NSObject {
         if card.multiverseid == 0 {
             if let set = card.set {
                 if let code = set.magicCardsInfoCode ?? set.code,
-                    let number = card.number ?? card.mciNumber {
+                    let number = card.mciNumber ?? card.number {
                     let path = "\(kCardImageSource)/\(code.lowercased())/\(number).jpg"
                     url = URL(string: path)
                 }
@@ -474,8 +448,8 @@ open class ManaKit: NSObject {
         if let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first {
             let path = "\(dir)/crop/\(card.set!.code!)"
             
-            if let number = card.number ?? card.mciNumber {
-                let cropPath = "\(path)/\(number)-crop.jpg"
+            if let id = card.id {
+                let cropPath = "\(path)/\(id).jpg"
                 
                 if FileManager.default.fileExists(atPath: cropPath) {
                     return UIImage(contentsOfFile: cropPath)
@@ -542,8 +516,8 @@ open class ManaKit: NSObject {
         if let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first {
             let path = "\(dir)/crop/\(card.set!.code!)"
             
-            if let number = card.number ?? card.mciNumber {
-                let cropPath = "\(path)/\(number)-crop.jpg"
+            if let id = card.id {
+                let cropPath = "\(path)/\(id).jpg"
                 
                 if FileManager.default.fileExists(atPath: cropPath) {
                     return UIImage(contentsOfFile: cropPath)

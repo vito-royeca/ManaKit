@@ -1,3 +1,6 @@
+**Version 2.3.3** @ 29.05.2018
+- Merged entity CMGlossary to CMRule.
+
 **Version 2.3.2** @ 27.05.2018
 - Fixed error when fetching TCG Pricing sor online-only sets.
 
