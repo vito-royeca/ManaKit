@@ -524,7 +524,7 @@ class DatabaseMaintainer: NSObject {
                         let objectFinder = ["name": artist] as [String: AnyObject]
                         if let object = ManaKit.sharedInstance.findOrCreateObject("CMArtist", objectFinder: objectFinder) as? CMArtist {
                             
-                            let names = object.name!.components(separatedBy: " ")
+                            let names = artist.components(separatedBy: " ")
                             var nameSection: String?
                             
                             if names.count > 1 {
@@ -607,7 +607,7 @@ class DatabaseMaintainer: NSObject {
                 
                 // numberOrder
                 if let number = card.number ?? card.mciNumber {
-                    card.numberOrder = numberOrder(ofString: number)
+                    card.numberOrder = order(of: number)
                 }
                 
                 try! ManaKit.sharedInstance.dataStack?.mainContext.save()
@@ -902,7 +902,6 @@ class DatabaseMaintainer: NSObject {
         print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
     }
 
-    // MARK: Core Data updates 3
     func rules2CoreData() {
         if let path = Bundle.main.path(forResource: "MagicCompRules 20180413", ofType: "txt", inDirectory: "data") {
             let dateStart = Date()
@@ -913,9 +912,6 @@ class DatabaseMaintainer: NSObject {
             let request:NSFetchRequest<CMRule> = CMRule.fetchRequest() as! NSFetchRequest<CMRule>
             let deleteRequest = NSBatchDeleteRequest(fetchRequest: request as! NSFetchRequest<NSFetchRequestResult>)
             try! ManaKit.sharedInstance.dataStack?.persistentStoreCoordinator.execute(deleteRequest, with: (ManaKit.sharedInstance.dataStack?.mainContext)!)
-            let request2:NSFetchRequest<CMGlossary> = CMGlossary.fetchRequest() as! NSFetchRequest<CMGlossary>
-            let deleteRequest2 = NSBatchDeleteRequest(fetchRequest: request2 as! NSFetchRequest<NSFetchRequestResult>)
-            try! ManaKit.sharedInstance.dataStack?.persistentStoreCoordinator.execute(deleteRequest2, with: (ManaKit.sharedInstance.dataStack?.mainContext)!)
             
             let data = try! String(contentsOfFile: path, encoding: .ascii)
             let lines = data.components(separatedBy: .newlines)
@@ -926,11 +922,11 @@ class DatabaseMaintainer: NSObject {
             var includeEndLine = false
             
             // parse the introduction
-            objectFinder = ["number": "Introduction"] as [String: AnyObject]
+            objectFinder = ["term": "Introduction"] as [String: AnyObject]
             if let object = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: objectFinder) as? CMRule {
-                object.number = "Introduction"
-                object.numberOrder = 0
-                object.text = nil
+                object.term = "Introduction"
+                object.order = 0
+                object.definition = nil
                 try! ManaKit.sharedInstance.dataStack?.mainContext.save()
                 
                 startLine = "Magic: The Gathering Comprehensive Rules"
@@ -941,9 +937,9 @@ class DatabaseMaintainer: NSObject {
                     objectFinder = ["parent": object] as [String: AnyObject]
                     
                     if let object2 = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: objectFinder) as? CMRule {
-                        object2.number = nil
-                        object2.numberOrder = 0.1
-                        object2.text = text
+                        object2.term = nil
+                        object2.order = 0.1
+                        object2.definition = text
                         object2.parent = object
                         try! ManaKit.sharedInstance.dataStack?.mainContext.save()
                     }
@@ -954,21 +950,22 @@ class DatabaseMaintainer: NSObject {
             parseRules(fromLines: lines)
             
             // parse the glossary
-            objectFinder = ["number": "Glossary"] as [String: AnyObject]
+            objectFinder = ["term": "Glossary"] as [String: AnyObject]
             if let object = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: objectFinder) as? CMRule {
-                object.number = "Glossary"
-                object.numberOrder = 10000
-                object.text = nil
+                object.term = "Glossary"
+                object.order = 10000
+                object.definition = nil
                 try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                
+                parseGlossary(fromLines: lines, parent: object)
             }
-            parseGlossary(fromLines: lines)
             
             // parse the credits
-            objectFinder = ["number": "Credits"] as [String: AnyObject]
+            objectFinder = ["term": "Credits"] as [String: AnyObject]
             if let object = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: objectFinder) as? CMRule {
-                object.number = "Credits"
-                object.numberOrder = 11000
-                object.text = nil
+                object.term = "Credits"
+                object.order = 11000
+                object.definition = nil
                 try! ManaKit.sharedInstance.dataStack?.mainContext.save()
                 
                 startLine = "Magic: The Gathering Original Game Design: Richard Garfield"
@@ -979,9 +976,9 @@ class DatabaseMaintainer: NSObject {
                     objectFinder = ["parent": object] as [String: AnyObject]
                     
                     if let object2 = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: objectFinder) as? CMRule {
-                        object2.number = nil
-                        object2.numberOrder = 11000.1
-                        object2.text = text
+                        object2.term = nil
+                        object2.order = 11000.1
+                        object2.definition = text
                         object2.parent = object
                         try! ManaKit.sharedInstance.dataStack?.mainContext.save()
                     }
@@ -1061,38 +1058,38 @@ class DatabaseMaintainer: NSObject {
                     line.hasPrefix("8") ||
                     line.hasPrefix("9") {
                     
-                    var number = ""
-                    var text = ""
+                    var term = ""
+                    var definition = ""
                     var first = true
                     
                     for e in line.components(separatedBy: " ") {
                         if first {
-                            number = e
+                            term = e
                             first = false
                         } else {
-                            text.append(text.count > 0 ? " \(e)" : e)
+                            definition.append(definition.count > 0 ? " \(e)" : e)
                         }
                     }
-                    if number.hasSuffix(".") {
-                        number.remove(at: number.index(before: number.endIndex))
+                    if term.hasSuffix(".") {
+                        term.remove(at: term.index(before: term.endIndex))
                     }
                     
-                    let objectFinder = ["number": number] as [String: AnyObject]
+                    let objectFinder = ["term": term] as [String: AnyObject]
                     if let object = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: objectFinder) as? CMRule {
-                        object.number = number
-                        object.numberOrder = numberOrder(ofString: number)
-                        object.text = text
+                        object.term = term
+                        object.order = order(of: term)
+                        object.definition = definition
                         try! ManaKit.sharedInstance.dataStack?.mainContext.save()
                         
-                        if number.contains(".") {
-                            number = number.components(separatedBy: ".").first!
-                            let _ = findParent(forRule: object, withNumber: number)
+                        if term.contains(".") {
+                            term = term.components(separatedBy: ".").first!
+                            let _ = findParent(forRule: object, withTerm: term)
                         } else {
-                            while number != "" {
-                                number.remove(at: number.index(before: number.endIndex))
+                            while term != "" {
+                                term.remove(at: term.index(before: term.endIndex))
                                 
-                                if number.count > 0 {
-                                    if let _ = findParent(forRule: object, withNumber: number) {
+                                if term.count > 0 {
+                                    if let _ = findParent(forRule: object, withTerm: term) {
                                         break
                                     }
                                 }
@@ -1106,12 +1103,12 @@ class DatabaseMaintainer: NSObject {
         return
     }
     
-    func findParent(forRule rule: CMRule, withNumber number: String) -> CMRule? {
-        let parentFinder = ["number": number] as [String: AnyObject]
+    func findParent(forRule rule: CMRule, withTerm term: String) -> CMRule? {
+        let parentFinder = ["term": term] as [String: AnyObject]
         
         if let parent = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: parentFinder) as? CMRule {
-            if parent.text == nil &&
-                parent.number == nil {
+            if parent.definition == nil &&
+                parent.definition == nil {
                 ManaKit.sharedInstance.dataStack?.mainContext.delete(parent)
                 try! ManaKit.sharedInstance.dataStack?.mainContext.save()
             } else {
@@ -1126,7 +1123,7 @@ class DatabaseMaintainer: NSObject {
         return nil
     }
     
-    func parseGlossary(fromLines lines: [String]) {
+    func parseGlossary(fromLines lines: [String], parent: CMRule?) {
         let startLine = "Glossary"
         let endLine = "Credits"
         var isParsing = false
@@ -1135,7 +1132,7 @@ class DatabaseMaintainer: NSObject {
         var term: String?
         var definition: String?
         var lastDefinition: String?
-        
+
         for line in lines {
             // Glssary and credits appear twice, hence must on second appearance
             if line.hasPrefix(startLine) {
@@ -1151,7 +1148,7 @@ class DatabaseMaintainer: NSObject {
                 }
                 firstEndLineDone = true
             }
-            
+
             if isParsing {
                 if line == "" {
                     if term != nil && definition != nil {
@@ -1159,7 +1156,7 @@ class DatabaseMaintainer: NSObject {
                         if nextLine == "" {
                             nextLine = lines[lines.index(of: lastDefinition!)! + 2]
                         }
-                        
+
                         let isList = nextLine.hasPrefix("1") ||
                             nextLine.hasPrefix("2") ||
                             nextLine.hasPrefix("3") ||
@@ -1171,24 +1168,25 @@ class DatabaseMaintainer: NSObject {
                             nextLine.hasPrefix("9") ||
                             nextLine.hasPrefix("See") ||
                             nextLine.hasPrefix("Some older cards")
-                        
+
                         if isList {
                             definition!.append(definition!.count > 0 ? "\n\(line)" : line)
                         } else {
                             let objectFinder = ["term": term!] as [String: AnyObject]
-                            
-                            if let object = ManaKit.sharedInstance.findOrCreateObject("CMGlossary", objectFinder: objectFinder) as? CMGlossary {
+
+                            if let object = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: objectFinder) as? CMRule {
                                 let letters = CharacterSet.letters
                                 var prefix = String(term!.prefix(1))
                                 if prefix.rangeOfCharacter(from: letters) == nil {
                                     prefix = "#"
                                 }
-                                
+
                                 object.term = term
                                 object.termSection = prefix
                                 object.definition = definition
+                                object.parent = parent
                                 try! ManaKit.sharedInstance.dataStack?.mainContext.save()
-                                
+
                                 term = nil
                                 definition = nil
                                 lastDefinition = nil
@@ -1207,7 +1205,7 @@ class DatabaseMaintainer: NSObject {
                         line.hasPrefix("9") ||
                         line.hasPrefix("See") ||
                         line.hasPrefix("Some older cards")
-                    
+
                     if isList {
                         if definition == nil {
                             definition = String()
@@ -1228,7 +1226,7 @@ class DatabaseMaintainer: NSObject {
                 }
             }
         }
-        
+
         return
     }
 
@@ -1306,7 +1304,7 @@ class DatabaseMaintainer: NSObject {
                                 card.mciNumber = number
                                 
                                 // numberOrder
-                                card.numberOrder = numberOrder(ofString: number)
+                                card.numberOrder = order(of: number)
                                 
                                 print("\(card.set!.code!) - \(card.name!) - \(number)")
                                 try! ManaKit.sharedInstance.dataStack?.mainContext.save()
@@ -1375,11 +1373,11 @@ class DatabaseMaintainer: NSObject {
      
         Useful for ordering in NSSortDescriptor.
      */
-    func numberOrder(ofString string: String) -> Double {
-        var numberOrder = Double(0)
+    func order(of string: String) -> Double {
+        var termOrder = Double(0)
         
         if let num = Double(string) {
-            numberOrder = num
+            termOrder = num
         } else {
             let digits = NSCharacterSet.decimalDigits
             var numString = ""
@@ -1394,18 +1392,18 @@ class DatabaseMaintainer: NSObject {
             }
             
             if let num = Double(numString) {
-                numberOrder = num
+                termOrder = num
             }
             
             if charString.count > 0 {
                 for c in charString.unicodeScalars {
                     let char = Character(c)
-                    numberOrder += Double(char.unicodeScalarCodePoint()) / 1000
+                    termOrder += Double(char.unicodeScalarCodePoint()) / 1000
                 }
             }
         }
         
-        return numberOrder
+        return termOrder
     }
     
     // MARK: temporary updates
@@ -1450,30 +1448,6 @@ class DatabaseMaintainer: NSObject {
                     }
                     artist.nameSection = prefix.uppercased().folding(options: .diacriticInsensitive, locale: .current)
                 }
-            }
-            
-            try! ManaKit.sharedInstance.dataStack?.mainContext.save()
-        }
-        
-        self.updateSystem()
-        
-        let dateEnd = Date()
-        let timeDifference = dateEnd.timeIntervalSince(dateStart)
-        print("Total Time Elapsed: \(dateStart) - \(dateEnd) = \(self.format(timeDifference))")
-        print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
-    }
-    
-    func updateCardIDs() {
-        let dateStart = Date()
-        
-        let request:NSFetchRequest<CMCard> = CMCard.fetchRequest() as! NSFetchRequest<CMCard>
-        
-        if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
-            print("Updating Card IDs: \(cards.count) \(Date())")
-            
-            for card in cards {
-                let cardID = "\(card.set!.code!)_\(card.name!)_\(card.imageName!)".replacingOccurrences(of: ".", with: "-")
-                card.id = cardID
             }
             
             try! ManaKit.sharedInstance.dataStack?.mainContext.save()

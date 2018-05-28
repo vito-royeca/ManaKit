@@ -16,9 +16,11 @@ extension CMRule {
         return NSFetchRequest<CMRule>(entityName: "CMRule") as! NSFetchRequest<NSFetchRequestResult>
     }
 
-    @NSManaged public var number: String?
-    @NSManaged public var numberOrder: Double
-    @NSManaged public var text: String?
+    
+    @NSManaged public var definition: String?
+    @NSManaged public var order: Double
+    @NSManaged public var term: String?
+    @NSManaged public var termSection: String?
     @NSManaged public var parent: CMRule?
     @NSManaged public var children: NSSet?
 

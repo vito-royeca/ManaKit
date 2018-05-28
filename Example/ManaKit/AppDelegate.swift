@@ -27,13 +27,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        DatabaseMaintainer.sharedInstance.updateMCINumbers()
         
 //        Core Data updates 2
-//        DatabaseMaintainer.sharedInstance.updateForeignNames()
+//        //DatabaseMaintainer.sharedInstance.updateForeignNames()
 //        DatabaseMaintainer.sharedInstance.updateLegalities()
-        
-          // Core Data updates 3
 //        DatabaseMaintainer.sharedInstance.rules2CoreData()
-//        DatabaseMaintainer.sharedInstance.updateSystem()
-
+        
          // Temporary updates
 //        DatabaseMaintainer.sharedInstance.updateArtist()
 //        DatabaseMaintainer.sharedInstance.updateCardIDs()

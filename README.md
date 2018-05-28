@@ -38,12 +38,6 @@ Specific images:
 open func imageFromFramework(imageName: ImageName) -> UIImage?
 ```
 
-Set images:
-
-```
-open func setImage(set: CMSet, rarity: CMRarity?) -> UIImage?
-```
-
 Casting Cost images:
 
 ```
