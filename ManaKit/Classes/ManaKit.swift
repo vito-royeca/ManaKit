@@ -268,17 +268,6 @@ open class ManaKit: NSObject {
         return nil
     }
     
-    open func basicRulesPath() -> String? {
-        let bundle = Bundle(for: ManaKit.self)
-        
-        if let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle") {
-            let resourceBundle = Bundle(url: bundleURL)
-            return resourceBundle?.path(forResource: "EN_M15_QckStrtBklt_LR_Crop", ofType: "pdf")
-        }
-        
-        return nil
-    }
-    
     open func setupResources() {
         // unpack the image symbols
         for (_,v) in Symbols {
