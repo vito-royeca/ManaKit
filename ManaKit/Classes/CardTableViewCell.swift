@@ -82,25 +82,27 @@ open class CardTableViewCell: UITableViewCell {
             } else {
                 thumbnailImage.image = ManaKit.sharedInstance.imageFromFramework(imageName: .cardBackCropped)
                 
-                ManaKit.sharedInstance.downloadCardImage(card, cropImage: true, completion: { (c: CMCard, image: UIImage?, croppedImage: UIImage?, error: Error?) in
+                DispatchQueue.global(qos: .background).async {
+                    ManaKit.sharedInstance.downloadCardImage(card, cropImage: true, completion: { (c: CMCard, image: UIImage?, croppedImage: UIImage?, error: Error?) in
 
-                    if error == nil {
-                        if c.id == self.card?.id  {
-                            UIView.transition(with: self.thumbnailImage,
-                                              duration: 1.0,
-                                              options: .transitionCrossDissolve,
-                                              animations: {
-                                                  self.thumbnailImage.image = croppedImage
-                                              },
-                                              completion: nil)
+                        DispatchQueue.main.async {
+                            if error == nil {
+                                if c.id == self.card?.id  {
+                                    UIView.transition(with: self.thumbnailImage,
+                                                      duration: 1.0,
+                                                      options: .transitionCrossDissolve,
+                                                      animations: {
+                                                          self.thumbnailImage.image = croppedImage
+                                                      },
+                                                      completion: nil)
+                                }
+                            }
+                            
+                            self.updateCastingCost()
                         }
-                    }
-                    
-                    self.updateCastingCost()
-                })
+                    })
+                }
             }
-            
-            
             
             // set symbol
             if let rarity = card.rarity_,
