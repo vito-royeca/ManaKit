@@ -89,7 +89,7 @@ class SetsViewController: UIViewController {
         dataSource = getDataSource(nil)
         
         if let text = searchController.searchBar.text {
-            let count = text.characters.count
+            let count = text.count
             let sets = dataSource!.all() as! [CMSet]
             
             if count > 0 {
