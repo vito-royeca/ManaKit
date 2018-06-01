@@ -701,6 +701,48 @@ class DatabaseMaintainer: NSObject {
         }
     }
 
+    func updateNames() {
+        let dateStart = Date()
+        
+        let request:NSFetchRequest<CMCard> = CMCard.fetchRequest() as! NSFetchRequest<CMCard>
+        
+        if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
+            
+            var count = 0
+            print("Updating names: \(count)/\(cards.count) \(Date())")
+            
+            for card in cards {
+                if let names = card.names {
+                    let names_ = card.mutableSetValue(forKey: "names_")
+                    names_.removeAllObjects()
+                    
+                    if let namesArray = NSKeyedUnarchiver.unarchiveObject(with: names) as? [String] {
+                        for name in namesArray {
+                            if let object = cards.first(where: { $0.name == name && $0.set == card.set }) {
+                                names_.add(object)
+                            }
+                        }
+                    }
+                    
+                    card.names = nil
+                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                }
+                
+                count += 1
+                if count % printMilestone == 0 {
+                    print("Updating names: \(count)/\(cards.count) \(Date())")
+                }
+            }
+        }
+        
+        self.updateSystem()
+        
+        let dateEnd = Date()
+        let timeDifference = dateEnd.timeIntervalSince(dateStart)
+        print("Total Time Elapsed: \(dateStart) - \(dateEnd) = \(self.format(timeDifference))")
+        print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
+    }
+    
     func updateRulings() {
         let request:NSFetchRequest<CMCard> = CMCard.fetchRequest() as! NSFetchRequest<CMCard>
         let predicate = NSPredicate(format: "rulings != nil")
