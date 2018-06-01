@@ -32,8 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        DatabaseMaintainer.sharedInstance.rules2CoreData()
         
          // Temporary updates
-//        DatabaseMaintainer.sharedInstance.updateArtist()
-//        DatabaseMaintainer.sharedInstance.updateCardIDs()
+        DatabaseMaintainer.sharedInstance.updateNames()
         
           // Normal run
         ManaKit.sharedInstance.setupResources()

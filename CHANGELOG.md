@@ -1,3 +1,6 @@
+**Version 2.3.5** @ 01.06.2018
+- Added values to CMCard.names_.
+
 **Version 2.3.4** @ 01.06.2018
 - Downloading and displaying image is now in background thread in CardTableViewCell.
 

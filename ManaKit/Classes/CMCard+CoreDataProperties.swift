@@ -77,6 +77,7 @@ extension CMCard {
     @NSManaged public var type_: CMCardType?
     @NSManaged public var types_: NSSet?
     @NSManaged public var variations_: NSSet?
+    @NSManaged public var names_: NSSet?
     @NSManaged public var watermark_: CMWatermark?
 
 }
@@ -266,4 +267,21 @@ extension CMCard {
     @objc(removeVariations_:)
     @NSManaged public func removeFromVariations_(_ values: NSSet)
 
+}
+
+// MARK: Generated accessors for names_
+extension CMCard {
+    
+    @objc(addNames_Object:)
+    @NSManaged public func addToNames_(_ value: CMCard)
+    
+    @objc(removeNames_Object:)
+    @NSManaged public func removeFromNames_(_ value: CMCard)
+    
+    @objc(addNames_:)
+    @NSManaged public func addToNames_(_ values: NSSet)
+    
+    @objc(removeNames_:)
+    @NSManaged public func removeFromNames_(_ values: NSSet)
+    
 }
