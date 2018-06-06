@@ -25,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        DatabaseMaintainer.sharedInstance.updateTCGPlayerName()
 //        DatabaseMaintainer.sharedInstance.updateKeyruneCode()
 //        DatabaseMaintainer.sharedInstance.updateMCINumbers()
+//        DatabaseMaintainer.sharedInstance.updateScryfallNumbers()
         
 //        Core Data updates 2
 //        //DatabaseMaintainer.sharedInstance.updateForeignNames()
@@ -32,7 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        DatabaseMaintainer.sharedInstance.rules2CoreData()
         
          // Temporary updates
-        DatabaseMaintainer.sharedInstance.updateNames()
         
           // Normal run
         ManaKit.sharedInstance.setupResources()

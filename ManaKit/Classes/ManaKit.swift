@@ -93,6 +93,15 @@ public let Symbols = [
     "T": "{T}"
 ]
 
+public enum ImageType: Int {
+    case png
+    case borderCrop
+    case artCrop
+    case large
+    case normal
+    case small
+}
+
 @objc(ManaKit)
 open class ManaKit: NSObject {
     // MARK: - Shared Instance
@@ -343,9 +352,9 @@ open class ManaKit: NSObject {
         if let objectFinder = objectFinder {
             for (key,value) in objectFinder {
                 if predicate != nil {
-                    predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate!, NSPredicate(format: "%K == %@", key, value as! NSObject)])
+                    predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate!, NSPredicate(format: "%K == [c] %@", key, value as! NSObject)])
                 } else {
-                    predicate = NSPredicate(format: "%K == %@", key, value as! NSObject)
+                    predicate = NSPredicate(format: "%K == [c] %@", key, value as! NSObject)
                 }
             }
 
@@ -384,64 +393,45 @@ open class ManaKit: NSObject {
     }
     
     // MARK: Miscellaneous methods
-    open func imageURL(ofCard card: CMCard) -> URL? {
-        var url:URL?
-        
-        if card.multiverseid == 0 {
-            if let set = card.set {
-                if let code = set.magicCardsInfoCode ?? set.code,
-                    let number = card.mciNumber ?? card.number {
-                    let path = "\(kCardImageSource)/\(code.lowercased())/\(number).jpg"
-                    url = URL(string: path)
-                }
-            }
-
-        } else {
-            let path = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=\(card.multiverseid)&type=card"
-            url = URL(string: path)
-        }
-        
-        return url
-    }
-    
-    open func downloadCardImage(_ card: CMCard, cropImage: Bool, completion: @escaping (_ card: CMCard, _ image: UIImage?, _ croppedImage: UIImage?, _ error: Error?) -> Void) {
-        
-        if let url = imageURL(ofCard: card) {
-            if let image = self.cardImage(card) {
-                completion(card, image, cropImage ? self.crop(image, ofCard: card) : nil, nil)
-            } else {
-                let downloader = SDWebImageDownloader.shared()
-                let cacheKey = url.absoluteString
-                let completion = { (image: UIImage?, data: Data?, error: Error?, finished: Bool) in
-                    if let image = image {
-                        let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
-                        let imageCache = SDImageCache.init(namespace: appName)
-                        imageCache.store(image, forKey: cacheKey, toDisk: true, completion: nil)
-                        completion(card, image, cropImage ? self.crop(image, ofCard: card) : nil, nil)
-                    } else {
-                        completion(card, nil, nil, error)
+    open func downloadImage(ofCard card: CMCard, imageType: ImageType) -> Promise<UIImage?> {
+        return Promise { seal  in
+            
+            if let url = imageURL(ofCard: card, imageType: imageType) {
+                if let image = self.cardImage(card, imageType: imageType) {
+                    seal.fulfill(image)
+                } else {
+                    let downloader = SDWebImageDownloader.shared()
+                    let cacheKey = url.absoluteString
+                    let completion = { (image: UIImage?, data: Data?, error: Error?, finished: Bool) in
+                        if let error = error {
+                            seal.reject(error)
+                        } else {
+                            if let image = image {
+                                let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
+                                let imageCache = SDImageCache.init(namespace: appName)
+                                imageCache.store(image, forKey: cacheKey, toDisk: true, completion: nil)
+                                
+                                if imageType == .artCrop {
+                                    if let _ = card.scryfallNumber {
+                                        seal.fulfill(image)
+                                    } else {
+                                        seal.fulfill(self.crop(image, ofCard: card))
+                                    }
+                                } else {
+                                    seal.fulfill(image)
+                                }
+                                
+                            } else {
+                                seal.fulfill(nil)
+                            }
+                        }
                     }
+                    
+                    downloader.downloadImage(with: url, options: .lowPriority, progress: nil, completed: completion)
                 }
-                
-                downloader.downloadImage(with: url, options: .lowPriority, progress: nil, completed: completion)
             }
+            
         }
-    }
-    
-    open func isModern(_ card: CMCard) -> Bool {
-        var isModern = false
-        
-        if let releaseDate = card.set!.releaseDate {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd"
-            if let eightEditionDate = formatter.date(from: kEightEditionRelease),
-                let setReleaseDate = formatter.date(from: releaseDate) {
-                isModern = setReleaseDate.compare(eightEditionDate) == .orderedDescending ||
-                           setReleaseDate.compare(eightEditionDate) == .orderedSame
-            }
-        }
-        
-        return isModern
     }
     
     open func crop(_ image: UIImage, ofCard card: CMCard) -> UIImage? {
@@ -478,27 +468,37 @@ open class ManaKit: NSObject {
         return nil
     }
     
-    open func cardImage(_ card: CMCard) -> UIImage? {
+    open func cardImage(_ card: CMCard, imageType: ImageType) -> UIImage? {
         var cardImage: UIImage?
+        var willGetFromCache = false
         
-        if let url = imageURL(ofCard: card) {
-            let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
-            let imageCache = SDImageCache.init(namespace: appName)
-            let cacheKey = url.absoluteString
-            
-            let semaphore = DispatchSemaphore(value: 0)
-            let cacheQueryCompletion = { (image: UIImage?, data: Data?, cacheType: SDImageCacheType) in
-                cardImage = image
-                semaphore.signal()
+        if imageType == .artCrop {
+            if let _ = card.scryfallNumber {
+                willGetFromCache = true
+            } else {
+                cardImage = croppedImage(card)
             }
-            
-            imageCache.queryCacheOperation(forKey: cacheKey, options: .queryDiskSync, done: cacheQueryCompletion)
-            semaphore.wait()
+        } else {
+            willGetFromCache = true
         }
         
-        if cardImage == nil {
-            // delete crop if existing
+        if willGetFromCache {
+            if let url = imageURL(ofCard: card, imageType: imageType) {
+                let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
+                let imageCache = SDImageCache.init(namespace: appName)
+                let cacheKey = url.absoluteString
+                
+                let semaphore = DispatchSemaphore(value: 0)
+                let cacheQueryCompletion = { (image: UIImage?, data: Data?, cacheType: SDImageCacheType) in
+                    cardImage = image
+                    semaphore.signal()
+                }
+                
+                imageCache.queryCacheOperation(forKey: cacheKey, options: .queryDiskSync, done: cacheQueryCompletion)
+                semaphore.wait()
+            }
         }
+        
         return cardImage
     }
     
@@ -513,21 +513,89 @@ open class ManaKit: NSObject {
     }
     
     open func croppedImage(_ card: CMCard) -> UIImage? {
-        if let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first {
-            let path = "\(dir)/crop/\(card.set!.code!)"
-            
-            if let id = card.id {
-                let cropPath = "\(path)/\(id).jpg"
+        var image: UIImage?
+        
+        if let _ = card.scryfallNumber {
+            image = cardImage(card, imageType: .artCrop)
+        } else {
+            if let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first {
+                let path = "\(dir)/crop/\(card.set!.code!)"
                 
-                if FileManager.default.fileExists(atPath: cropPath) {
-                    return UIImage(contentsOfFile: cropPath)
+                if let id = card.id {
+                    let cropPath = "\(path)/\(id).jpg"
+                    
+                    if FileManager.default.fileExists(atPath: cropPath) {
+                        image = UIImage(contentsOfFile: cropPath)
+                    }
                 }
             }
         }
         
-        return nil
+        return image
     }
     
+    open func imageURL(ofCard card: CMCard, imageType: ImageType) -> URL? {
+        var url:URL?
+        
+        if let _ = card.scryfallNumber {
+            var dir = ""
+            
+            switch imageType {
+            case .png:
+                dir = "png"
+            case .borderCrop:
+                dir = "border_crop"
+            case .artCrop:
+                dir = "art_crop"
+            case .large:
+                dir = "large"
+            case .normal:
+                dir = "normal"
+            case .small:
+                dir = "small"
+            }
+            
+            if let set = card.set {
+                if let number = card.scryfallNumber {
+                    url = URL(string: "https://img.scryfall.com/cards/\(dir)/en/\(set.code!.lowercased())/\(number).jpg")
+                }
+            }
+            
+        } else {
+            if card.multiverseid == 0 {
+                if let set = card.set {
+                    if let code = set.magicCardsInfoCode ?? set.code,
+                        let number = card.mciNumber ?? card.number {
+                        let path = "\(kCardImageSource)/\(code.lowercased())/\(number).jpg"
+                        url = URL(string: path)
+                    }
+                }
+                
+            } else {
+                let path = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=\(card.multiverseid)&type=card"
+                url = URL(string: path)
+            }
+        }
+        
+        return url
+    }
+    
+    open func isModern(_ card: CMCard) -> Bool {
+        var isModern = false
+        
+        if let releaseDate = card.set!.releaseDate {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            if let eightEditionDate = formatter.date(from: kEightEditionRelease),
+                let setReleaseDate = formatter.date(from: releaseDate) {
+                isModern = setReleaseDate.compare(eightEditionDate) == .orderedDescending ||
+                    setReleaseDate.compare(eightEditionDate) == .orderedSame
+            }
+        }
+        
+        return isModern
+    }
+
     // MARK: TCGPlayer
     open func configureTCGPlayer(partnerKey: String, publicKey: String?, privateKey: String?) {
         tcgPlayerPartnerKey = partnerKey
@@ -535,72 +603,68 @@ open class ManaKit: NSObject {
         tcgPlayerPrivateKey = privateKey
     }
     
-    open func fetchTCGPlayerPricing(card: CMCard, completion: @escaping (_ cardPricing: CMCardPricing?, _ error: Error?) -> Void) {
-        if let pricing = findOrCreateObject("CMCardPricing", objectFinder: ["card.id": card.id as AnyObject]) as? CMCardPricing {
-            var willFetch = false
-            
-            if let lastUpdate = pricing.lastUpdate {
-                if let diff = Calendar.current.dateComponents([.hour], from: lastUpdate as Date, to: Date()).hour, diff >= kTCGPlayerPricingAge {
+    open func fetchTCGPlayerPricing(card: CMCard) -> Promise<CMCardPricing?> {
+        return Promise { seal  in
+            if let pricing = findOrCreateObject("CMCardPricing", objectFinder: ["card.id": card.id as AnyObject]) as? CMCardPricing {
+                var willFetch = false
+                
+                if let lastUpdate = pricing.lastUpdate {
+                    if let diff = Calendar.current.dateComponents([.hour], from: lastUpdate as Date, to: Date()).hour, diff >= kTCGPlayerPricingAge {
+                        willFetch = true
+                    }
+                } else {
                     willFetch = true
                 }
-            } else {
-                willFetch = true
-            }
-            
-            if willFetch {
-                if let tcgPlayerPartnerKey = tcgPlayerPartnerKey,
-                    let tcgPlayerSetName = card.set?.tcgPlayerName,
-                    let cardName = card.name {
-                    
-                    if let urlString = "http://partner.tcgplayer.com/x3/phl.asmx/p?pk=\(tcgPlayerPartnerKey)&s=\(tcgPlayerSetName)&p=\(cardName)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+                
+                if willFetch {
+                    if let tcgPlayerPartnerKey = tcgPlayerPartnerKey,
+                        let tcgPlayerSetName = card.set?.tcgPlayerName,
+                        let cardName = card.name {
                         
-                        if let url = URL(string: urlString) {
-                            var rq = URLRequest(url: url)
-                            rq.httpMethod = "GET"
-//                            rq.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//                            rq.addValue("application/json", forHTTPHeaderField: "Accept")
+                        if let urlString = "http://partner.tcgplayer.com/x3/phl.asmx/p?pk=\(tcgPlayerPartnerKey)&s=\(tcgPlayerSetName)&p=\(cardName)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
                             
-                            firstly {
-                                URLSession.shared.dataTask(.promise, with: rq)
-                            }
-                            .compactMap {
-                                let xml = try! XML(xml: $0.data, encoding: .utf8)
-
-                                for product in xml.xpath("//product") {
-                                    if let id = product.xpath("id").first?.text,
-                                        let hiprice = product.xpath("hiprice").first?.text,
-                                        let lowprice = product.xpath("lowprice").first?.text,
-                                        let avgprice = product.xpath("avgprice").first?.text,
-                                        let foilavgprice = product.xpath("foilavgprice").first?.text,
-                                        let link = product.xpath("link").first?.text {
-                                        pricing.id = Int64(id)!
-                                        pricing.high = Double(hiprice)!
-                                        pricing.low = Double(lowprice)!
-                                        pricing.average = Double(avgprice)!
-                                        pricing.foil = Double(foilavgprice)!
-                                        pricing.link = link
+                            if let url = URL(string: urlString) {
+                                var rq = URLRequest(url: url)
+                                rq.httpMethod = "GET"
+                                
+                                firstly {
+                                    URLSession.shared.dataTask(.promise, with: rq)
+                                }.map {
+                                    try! XML(xml: $0.data, encoding: .utf8)
+                                }.done { xml in
+                                    for product in xml.xpath("//product") {
+                                        if let id = product.xpath("id").first?.text,
+                                            let hiprice = product.xpath("hiprice").first?.text,
+                                            let lowprice = product.xpath("lowprice").first?.text,
+                                            let avgprice = product.xpath("avgprice").first?.text,
+                                            let foilavgprice = product.xpath("foilavgprice").first?.text,
+                                            let link = product.xpath("link").first?.text {
+                                            pricing.id = Int64(id)!
+                                            pricing.high = Double(hiprice)!
+                                            pricing.low = Double(lowprice)!
+                                            pricing.average = Double(avgprice)!
+                                            pricing.foil = Double(foilavgprice)!
+                                            pricing.link = link
+                                        }
                                     }
-                                }
-                            }
-                            .done { json in
                                     pricing.lastUpdate = NSDate()
                                     pricing.card = card
-                                    try! self.dataStack?.mainContext.save()
-                                    completion(pricing, nil)
                                     
-                            }
-                            .catch { error in
-                                    completion(nil, error)
+                                    try! self.dataStack?.mainContext.save()
+                                    seal.fulfill(pricing)
+                                        
+                                }.catch { error in
+                                        seal.reject(error)
+                                }
                             }
                         }
-                        
                     }
+                } else {
+                    seal.fulfill(pricing)
                 }
             } else {
-                completion(pricing, nil)
+                seal.fulfill(nil)
             }
-        } else {
-            completion(nil, nil)
         }
     }
     
