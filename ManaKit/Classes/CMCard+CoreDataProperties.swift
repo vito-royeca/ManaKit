@@ -47,6 +47,7 @@ extension CMCard {
     @NSManaged public var releaseDate: String?
     @NSManaged public var reserved: Bool
     @NSManaged public var rulings: Data?
+    @NSManaged public var scryfallNumber: String?
     @NSManaged public var source: String?
     @NSManaged public var starter: Bool
     @NSManaged public var subtypes: Data?

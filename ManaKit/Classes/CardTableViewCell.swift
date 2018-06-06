@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PromiseKit
 
 public let kCardTableViewCellHeight = CGFloat(88)
 
@@ -78,29 +79,25 @@ open class CardTableViewCell: UITableViewCell {
             // thumbnail image and casting cost
             if let croppedImage = ManaKit.sharedInstance.croppedImage(card) {
                 thumbnailImage.image = croppedImage
-                self.updateCastingCost()
+                updateCastingCost()
             } else {
                 thumbnailImage.image = ManaKit.sharedInstance.imageFromFramework(imageName: .cardBackCropped)
                 
-                DispatchQueue.global(qos: .background).async {
-                    ManaKit.sharedInstance.downloadCardImage(card, cropImage: true, completion: { (c: CMCard, image: UIImage?, croppedImage: UIImage?, error: Error?) in
-
-                        DispatchQueue.main.async {
-                            if error == nil {
-                                if c.id == self.card?.id  {
-                                    UIView.transition(with: self.thumbnailImage,
-                                                      duration: 1.0,
-                                                      options: .transitionCrossDissolve,
-                                                      animations: {
-                                                          self.thumbnailImage.image = croppedImage
-                                                      },
-                                                      completion: nil)
-                                }
-                            }
-                            
-                            self.updateCastingCost()
-                        }
-                    })
+                firstly {
+                    ManaKit.sharedInstance.downloadImage(ofCard: card, imageType: .artCrop)
+                }.done { (image: UIImage?) in
+                    UIView.transition(with: self.thumbnailImage,
+                                      duration: 1.0,
+                                      options: .transitionCrossDissolve,
+                                      animations: {
+                                        self.thumbnailImage.image = image
+                                      },
+                                      completion: nil)
+                    
+                    self.updateCastingCost()
+                    
+                }.catch { error in
+                    
                 }
             }
             
@@ -162,16 +159,31 @@ open class CardTableViewCell: UITableViewCell {
                 willFetchPricing = !set.onlineOnly
             }
             if willFetchPricing {
-                ManaKit.sharedInstance.fetchTCGPlayerPricing(card: card, completion: {(cardPricing: CMCardPricing?, error: Error?) in
-                    if let cardPricing = cardPricing {
-                        if card.id == cardPricing.card?.id {
-                            self.lowPriceLabel.text = cardPricing.low > 0 ? String(format: "$%.2f", cardPricing.low) : "NA"
-                            self.midPriceLabel.text = cardPricing.average > 0 ? String(format: "$%.2f", cardPricing.average) : "NA"
-                            self.highPriceLabel.text = cardPricing.high > 0 ? String(format: "$%.2f", cardPricing.high) : "NA"
-                            self.foilPriceLabel.text = cardPricing.foil > 0 ? String(format: "$%.2f", cardPricing.foil) : "NA"
-                        }
+                firstly {
+                    ManaKit.sharedInstance.fetchTCGPlayerPricing(card: card)
+                }.done { (pricing: CMCardPricing?) in
+                    if let pricing = pricing {
+                        self.lowPriceLabel.text = pricing.low > 0 ? String(format: "$%.2f", pricing.low) : "NA"
+                        self.midPriceLabel.text = pricing.average > 0 ? String(format: "$%.2f", pricing.average) : "NA"
+                        self.highPriceLabel.text = pricing.high > 0 ? String(format: "$%.2f", pricing.high) : "NA"
+                        self.foilPriceLabel.text = pricing.foil > 0 ? String(format: "$%.2f", pricing.foil) : "NA"
                     }
-                })
+                }.catch { error in
+                    self.lowPriceLabel.text = "NA"
+                    self.midPriceLabel.text = "NA"
+                    self.highPriceLabel.text = "NA"
+                    self.foilPriceLabel.text = "NA"
+                }
+//                ManaKit.sharedInstance.fetchTCGPlayerPricing(card: card, completion: {(cardPricing: CMCardPricing?, error: Error?) in
+//                    if let cardPricing = cardPricing {
+//                        if card.id == cardPricing.card?.id {
+//                            self.lowPriceLabel.text = cardPricing.low > 0 ? String(format: "$%.2f", cardPricing.low) : "NA"
+//                            self.midPriceLabel.text = cardPricing.average > 0 ? String(format: "$%.2f", cardPricing.average) : "NA"
+//                            self.highPriceLabel.text = cardPricing.high > 0 ? String(format: "$%.2f", cardPricing.high) : "NA"
+//                            self.foilPriceLabel.text = cardPricing.foil > 0 ? String(format: "$%.2f", cardPricing.foil) : "NA"
+//                        }
+//                    }
+//                })
             } else {
                 self.lowPriceLabel.text = "NA"
                 self.midPriceLabel.text = "NA"

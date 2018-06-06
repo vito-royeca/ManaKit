@@ -8,7 +8,7 @@
 
 import UIKit
 import ManaKit
-import SDWebImage
+import PromiseKit
 
 class CardViewController: UIViewController {
 
@@ -40,7 +40,6 @@ extension CardViewController : UITableViewDataSource {
         return 2
     }
     
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell:UITableViewCell?
         
@@ -56,22 +55,24 @@ extension CardViewController : UITableViewDataSource {
                 if let imageView = c.viewWithTag(100) as? UIImageView,
                     let card = card {
                     
-                    if let cardImage = ManaKit.sharedInstance.cardImage(card) {
+                    if let cardImage = ManaKit.sharedInstance.cardImage(card, imageType: .normal) {
                         imageView.image = cardImage
                     } else {
                         imageView.image = ManaKit.sharedInstance.cardBack(card)
 
-                        ManaKit.sharedInstance.downloadCardImage(card, cropImage: true, completion: { (c: CMCard, image: UIImage?, croppedImage: UIImage?, error: Error?) in
-                            if error == nil {
-                                UIView.transition(with: imageView,
-                                                  duration: 1.0,
-                                                  options: .transitionFlipFromRight,
-                                                  animations: {
-                                                    imageView.image = image
-                                                },
-                                                  completion: nil)
-                            }
-                        })
+                        firstly {
+                            ManaKit.sharedInstance.downloadImage(ofCard: card, imageType: .normal)
+                        }.done { (image: UIImage?) in
+                            UIView.transition(with: imageView,
+                                              duration: 1.0,
+                                              options: .transitionFlipFromRight,
+                                              animations: {
+                                                imageView.image = image
+                                              },
+                                              completion: nil)
+                        }.catch { error in
+                                
+                        }
                     }
                 }
                 

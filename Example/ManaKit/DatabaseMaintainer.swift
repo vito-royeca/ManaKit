@@ -10,16 +10,14 @@ import UIKit
 import DATAStack
 import Kanna
 import ManaKit
+import PromiseKit
 import SSZipArchive
 import Sync
 
-extension Character
-{
-    func unicodeScalarCodePoint() -> UInt32
-    {
+extension Character {
+    func unicodeScalarCodePoint() -> UInt32 {
         let characterString = String(self)
         let scalars = characterString.unicodeScalars
-        
         return scalars[scalars.startIndex].value
     }
 }
@@ -29,13 +27,15 @@ class DatabaseMaintainer: NSObject {
     static let sharedInstance = DatabaseMaintainer()
     
     // MARK: Constants
-//    let setCodesForProcessing:[String]? = ["DOM"]
-    let setCodesForProcessing:[String]? = nil
+    let setCodesForProcessing:[String]? = ["PO2", "INV", "HOP", "pARL", "pMPR", "pPRE", "APC", "EVG", "MIR", "5ED", "DGM", "4ED", "CED", "3ED", "VAN", "CEI", "NMS"]
     let printMilestone = 1000
+    
+    // MARK: Variables
+    var dateStart = Date()
     
     // MARK: Core Data updates 1
     func json2CoreData() {
-        let dateStart = Date()
+        dateStart = Date()
 
         if let path = Bundle.main.path(forResource: "AllSets-x.json", ofType: "zip", inDirectory: "data"),
             let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first {
@@ -85,8 +85,8 @@ class DatabaseMaintainer: NSObject {
                                         
                                         // json
                                         var dateEnd = Date()
-                                        var timeDifference = dateEnd.timeIntervalSince(dateStart)
-                                        print("Time Elapsed: \(dateStart) - \(dateEnd) = \(self.format(timeDifference))")
+                                        var timeDifference = dateEnd.timeIntervalSince(self.dateStart)
+                                        print("Time Elapsed: \(self.dateStart) - \(dateEnd) = \(self.format(timeDifference))")
 
                                         // sets
                                         var tmpDateStart = Date()
@@ -122,10 +122,17 @@ class DatabaseMaintainer: NSObject {
                                         dateEnd = Date()
                                         timeDifference = dateEnd.timeIntervalSince(tmpDateStart)
                                         print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
+                                        
+                                        // names
+                                        tmpDateStart = Date()
+                                        self.updateNames()
+                                        dateEnd = Date()
+                                        timeDifference = dateEnd.timeIntervalSince(tmpDateStart)
+                                        print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
 
                                         dateEnd = Date()
-                                        timeDifference = dateEnd.timeIntervalSince(dateStart)
-                                        print("Total Time Elapsed: \(dateStart) - \(dateEnd) = \(self.format(timeDifference))")
+                                        timeDifference = dateEnd.timeIntervalSince(self.dateStart)
+                                        print("Total Time Elapsed: \(self.dateStart) - \(dateEnd) = \(self.format(timeDifference))")
                                         print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
                         })
                     }
@@ -701,48 +708,6 @@ class DatabaseMaintainer: NSObject {
         }
     }
 
-    func updateNames() {
-        let dateStart = Date()
-        
-        let request:NSFetchRequest<CMCard> = CMCard.fetchRequest() as! NSFetchRequest<CMCard>
-        
-        if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
-            
-            var count = 0
-            print("Updating names: \(count)/\(cards.count) \(Date())")
-            
-            for card in cards {
-                if let names = card.names {
-                    let names_ = card.mutableSetValue(forKey: "names_")
-                    names_.removeAllObjects()
-                    
-                    if let namesArray = NSKeyedUnarchiver.unarchiveObject(with: names) as? [String] {
-                        for name in namesArray {
-                            if let object = cards.first(where: { $0.name == name && $0.set == card.set }) {
-                                names_.add(object)
-                            }
-                        }
-                    }
-                    
-                    card.names = nil
-                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
-                }
-                
-                count += 1
-                if count % printMilestone == 0 {
-                    print("Updating names: \(count)/\(cards.count) \(Date())")
-                }
-            }
-        }
-        
-        self.updateSystem()
-        
-        let dateEnd = Date()
-        let timeDifference = dateEnd.timeIntervalSince(dateStart)
-        print("Total Time Elapsed: \(dateStart) - \(dateEnd) = \(self.format(timeDifference))")
-        print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
-    }
-    
     func updateRulings() {
         let request:NSFetchRequest<CMCard> = CMCard.fetchRequest() as! NSFetchRequest<CMCard>
         let predicate = NSPredicate(format: "rulings != nil")
@@ -786,9 +751,51 @@ class DatabaseMaintainer: NSObject {
         }
     }
     
+    func updateNames() {
+        dateStart = Date()
+        
+        let request:NSFetchRequest<CMCard> = CMCard.fetchRequest() as! NSFetchRequest<CMCard>
+        
+        if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
+            
+            var count = 0
+            print("Updating names: \(count)/\(cards.count) \(Date())")
+            
+            for card in cards {
+                if let names = card.names {
+                    let names_ = card.mutableSetValue(forKey: "names_")
+                    names_.removeAllObjects()
+                    
+                    if let namesArray = NSKeyedUnarchiver.unarchiveObject(with: names) as? [String] {
+                        for name in namesArray {
+                            if let object = cards.first(where: { $0.name == name && $0.set == card.set }) {
+                                names_.add(object)
+                            }
+                        }
+                    }
+                    
+                    card.names = nil
+                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                }
+                
+                count += 1
+                if count % printMilestone == 0 {
+                    print("Updating names: \(count)/\(cards.count) \(Date())")
+                }
+            }
+        }
+        
+        self.updateSystem()
+        
+        let dateEnd = Date()
+        let timeDifference = dateEnd.timeIntervalSince(dateStart)
+        print("Total Time Elapsed: \(dateStart) - \(dateEnd) = \(self.format(timeDifference))")
+        print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
+    }
+
     // MARK: Core Data updates 2
     func updateForeignNames() {
-        let dateStart = Date()
+        dateStart = Date()
         let request:NSFetchRequest<CMCard> = CMCard.fetchRequest() as! NSFetchRequest<CMCard>
         let predicate = NSPredicate(format: "foreignNames != nil")
         let sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
@@ -858,7 +865,7 @@ class DatabaseMaintainer: NSObject {
     }
     
     func updateLegalities() {
-        let dateStart = Date()
+        dateStart = Date()
         let request:NSFetchRequest<CMCard> = CMCard.fetchRequest() as! NSFetchRequest<CMCard>
         let predicate = NSPredicate(format: "legalities != nil")
         let sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
@@ -946,7 +953,7 @@ class DatabaseMaintainer: NSObject {
 
     func rules2CoreData() {
         if let path = Bundle.main.path(forResource: "MagicCompRules 20180413", ofType: "txt", inDirectory: "data") {
-            let dateStart = Date()
+            dateStart = Date()
             
             print("Updating comprehensive rules: \(dateStart)")
             
@@ -1277,7 +1284,7 @@ class DatabaseMaintainer: NSObject {
       *
       */
     func updateMCINumbers() {
-        let dateStart = Date()
+        dateStart = Date()
         
         let request:NSFetchRequest<CMCard> = CMCard.fetchRequest() as! NSFetchRequest<CMCard>
         var predicate = NSPredicate(format: "mciNumber == nil AND number == nil")
@@ -1379,6 +1386,116 @@ class DatabaseMaintainer: NSObject {
         print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
     }
     
+    /**
+     * Updates the `CMCard.scryfallNumber` value from https://api.scryfall.com
+     *
+     */
+    func updateScryfallNumbers() {
+        dateStart = Date()
+        
+        let request:NSFetchRequest<CMSet> = CMSet.fetchRequest() as! NSFetchRequest<CMSet>
+        var predicate:NSPredicate? = nil
+        let sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: true),
+                               NSSortDescriptor(key: "name", ascending: true)]
+        
+        if let setCodesForProcessing = setCodesForProcessing {
+            predicate = NSPredicate(format: "code in %@", setCodesForProcessing)
+        }
+        request.predicate = predicate
+        request.sortDescriptors = sortDescriptors
+        
+        if let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
+            print("Updating Scryfall Numbers: \(sets.count) \(Date())")
+            
+            var promises = [Promise<URL?>]()
+            for set in sets {
+                if let urlString = "https://api.scryfall.com/cards/search?q=e:\(set.code!.lowercased())&unique=prints".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+                    
+                    promises.append(readScryfall(url: URL(string: urlString)!))
+                }
+            }
+
+            loopScryfall(promises: promises)
+        }
+    }
+
+    func loopScryfall(promises: [Promise<URL?>]) {
+        firstly {
+            when(fulfilled: promises)
+        }.done { results in
+            var newPromises = [Promise<URL?>]()
+                
+            for u in results {
+                if let url = u {
+                    newPromises.append(self.readScryfall(url: url))
+                }
+            }
+            
+            if newPromises.count > 0 {
+                self.loopScryfall(promises: newPromises)
+            } else {
+                let dateEnd = Date()
+                let timeDifference = dateEnd.timeIntervalSince(self.dateStart)
+                print("Total Time Elapsed: \(self.dateStart) - \(dateEnd) = \(self.format(timeDifference))")
+                print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
+            }
+        }.catch { error in
+            print("\(error)")
+        }
+    }
+    
+    func readScryfall(url: URL) -> Promise<URL?> {
+        return Promise { seal  in
+            var rq = URLRequest(url: url)
+            rq.httpMethod = "GET"
+            
+            firstly {
+                URLSession.shared.dataTask(.promise, with:rq)
+            }.compactMap {
+                try JSONSerialization.jsonObject(with: $0.data) as? [String: Any]
+            }.done { json in
+                if let data = json["data"] as? [[String: Any]] {
+                    for e in data {
+                        if let set = e["set"] as? String,
+                            let name = e["name"] as? String,
+                            let multiverseIDs = e["multiverse_ids"] as? [Int],
+                            let collectorNumber = e["collector_number"] as? String {
+
+                            var objectFinder = ["set.code": set,
+                                                "name": name,
+                                                "multiverseid": Int64(0)] as [String : AnyObject]
+                            
+                            if let first = multiverseIDs.first {
+                                objectFinder["multiverseid"] = Int64(first) as AnyObject
+                            }
+                            
+                            if let card = ManaKit.sharedInstance.findOrCreateObject("CMCard", objectFinder: objectFinder) as? CMCard {
+                                card.scryfallNumber = collectorNumber
+                            }
+                        }
+                    }
+                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                }
+                print("Scraped... \(url)")
+                
+                if let hasMore = json["has_more"] as? Bool,
+                    let nextPage = json["next_page"] as? String {
+                    
+                    if hasMore {
+                        seal.fulfill(URL(string: nextPage)!)
+                    } else {
+                        seal.fulfill(nil)
+                    }
+                } else {
+                    seal.fulfill(nil)
+                }
+            }.catch { error in
+//                seal.reject(error)
+                seal.fulfill(nil)
+            }
+        }
+    }
+    
     // MARK: Custom methods
     func changeNotification(_ notification: Notification) {
         if let updatedObjects = notification.userInfo?[NSUpdatedObjectsKey] {
@@ -1450,7 +1567,7 @@ class DatabaseMaintainer: NSObject {
     
     // MARK: temporary updates
     func updateArtist() {
-        let dateStart = Date()
+        dateStart = Date()
         
         let request:NSFetchRequest<CMArtist> = CMArtist.fetchRequest() as! NSFetchRequest<CMArtist>
         

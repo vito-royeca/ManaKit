@@ -1,3 +1,6 @@
+**Version 2.3.6** @ 01.06.2018
+- Added support for Scryfall images.
+
 **Version 2.3.5** @ 01.06.2018
 - Added values to CMCard.names_.
 
