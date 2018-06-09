@@ -35,7 +35,7 @@ class SetsViewController: UIViewController {
         tableView.tableHeaderView = searchController.searchBar
         
         let objectFinder = ["name": "Common"] as [String: AnyObject]
-        if let object = ManaKit.sharedInstance.findOrCreateObject("CMRarity", objectFinder: objectFinder) as? CMRarity {
+        if let object = ManaKit.sharedInstance.findObject("CMRarity", objectFinder: objectFinder, createIfNotFound: false) as? CMRarity {
             commonRarity = object
         }
     }

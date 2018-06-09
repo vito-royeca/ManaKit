@@ -1,3 +1,6 @@
+**Version 2.3.7** @ 09.06.2018
+- Updated the SQLite database to MTGJSON version 3.16.
+
 **Version 2.3.6** @ 01.06.2018
 - Added support for Scryfall images.
 

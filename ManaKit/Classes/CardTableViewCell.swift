@@ -174,16 +174,6 @@ open class CardTableViewCell: UITableViewCell {
                     self.highPriceLabel.text = "NA"
                     self.foilPriceLabel.text = "NA"
                 }
-//                ManaKit.sharedInstance.fetchTCGPlayerPricing(card: card, completion: {(cardPricing: CMCardPricing?, error: Error?) in
-//                    if let cardPricing = cardPricing {
-//                        if card.id == cardPricing.card?.id {
-//                            self.lowPriceLabel.text = cardPricing.low > 0 ? String(format: "$%.2f", cardPricing.low) : "NA"
-//                            self.midPriceLabel.text = cardPricing.average > 0 ? String(format: "$%.2f", cardPricing.average) : "NA"
-//                            self.highPriceLabel.text = cardPricing.high > 0 ? String(format: "$%.2f", cardPricing.high) : "NA"
-//                            self.foilPriceLabel.text = cardPricing.foil > 0 ? String(format: "$%.2f", cardPricing.foil) : "NA"
-//                        }
-//                    }
-//                })
             } else {
                 self.lowPriceLabel.text = "NA"
                 self.midPriceLabel.text = "NA"

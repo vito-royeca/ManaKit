@@ -2,7 +2,7 @@ PODS:
   - DATASource (7.0.2)
   - DATAStack (8.0.2)
   - Kanna (3.0.0)
-  - ManaKit (2.2.7):
+  - ManaKit (2.3.6):
     - DATASource
     - DATAStack
     - Kanna (~> 3)
@@ -11,20 +11,20 @@ PODS:
     - SDWebImage
     - SSZipArchive
     - Sync
-  - PromiseKit (6.2.7):
-    - PromiseKit/CorePromise (= 6.2.7)
-    - PromiseKit/Foundation (= 6.2.7)
-    - PromiseKit/UIKit (= 6.2.7)
-  - PromiseKit/CorePromise (6.2.7)
-  - PromiseKit/Foundation (6.2.7):
+  - PromiseKit (6.2.8):
+    - PromiseKit/CorePromise (= 6.2.8)
+    - PromiseKit/Foundation (= 6.2.8)
+    - PromiseKit/UIKit (= 6.2.8)
+  - PromiseKit/CorePromise (6.2.8)
+  - PromiseKit/Foundation (6.2.8):
     - PromiseKit/CorePromise
-  - PromiseKit/UIKit (6.2.7):
+  - PromiseKit/UIKit (6.2.8):
     - PromiseKit/CorePromise
   - Reachability (3.2)
-  - SDWebImage (4.3.3):
-    - SDWebImage/Core (= 4.3.3)
-  - SDWebImage/Core (4.3.3)
-  - SSZipArchive (2.1.2)
+  - SDWebImage (4.4.0):
+    - SDWebImage/Core (= 4.4.0)
+  - SDWebImage/Core (4.4.0)
+  - SSZipArchive (2.1.3)
   - Sync (4.1.3)
 
 DEPENDENCIES:
@@ -64,11 +64,11 @@ SPEC CHECKSUMS:
   DATASource: b86db74542b5b27d4d2af43ae698022f19507379
   DATAStack: 9c415f6e7733eafb9cf5c076613bfb5958c407cb
   Kanna: 93a9af3643d46425e48899a8b033a2da44af2b49
-  ManaKit: b69154c51bbc02ee15469f2ffe78ce2acbf31527
-  PromiseKit: 12b9d87748b170714247d8b2677146ca57e488f2
+  ManaKit: 670c536801c63831cb12889219e308f67d8d184a
+  PromiseKit: 6788ce1a0ed5448b83d4aaf56b9fc49fb7647d32
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  SDWebImage: de4d90b5bff3571eae7bd16202b1f43135409fa5
-  SSZipArchive: d4009d2ce5520a421f231fd97028cc0e2667eed8
+  SDWebImage: b534502786e43dde36dfcaee89356fe6df30e203
+  SSZipArchive: 51a800ebb77f95a8329b6ced1faaff394b47f509
   Sync: 3cd2b84622c964220d7c7ba6e29823e096f1c1cf
 
 PODFILE CHECKSUM: 07d71fb46df43d8ea2f6a06a905da162bd3c3f50

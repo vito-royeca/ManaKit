@@ -27,7 +27,7 @@ class DatabaseMaintainer: NSObject {
     static let sharedInstance = DatabaseMaintainer()
     
     // MARK: Constants
-    let setCodesForProcessing:[String]? = ["PO2", "INV", "HOP", "pARL", "pMPR", "pPRE", "APC", "EVG", "MIR", "5ED", "DGM", "4ED", "CED", "3ED", "VAN", "CEI", "NMS"]
+    let setCodesForProcessing:[String]? = nil//["APC"]
     let printMilestone = 1000
     
     // MARK: Variables
@@ -210,7 +210,7 @@ class DatabaseMaintainer: NSObject {
         try! ManaKit.sharedInstance.dataStack?.persistentStoreCoordinator.execute(deleteRequest, with: (ManaKit.sharedInstance.dataStack?.mainContext)!)
         
         let objectFinder = ["version": kMTGJSONVersion] as [String: AnyObject]
-        if let system = ManaKit.sharedInstance.findOrCreateObject("CMSystem", objectFinder: objectFinder) as? CMSystem {
+        if let system = ManaKit.sharedInstance.findObject("CMSystem", objectFinder: objectFinder, createIfNotFound: true) as? CMSystem {
             let formatter = DateFormatter()
             formatter.dateStyle = .medium
             
@@ -230,7 +230,7 @@ class DatabaseMaintainer: NSObject {
                 // border
                 if let border = set.border {
                     let objectFinder = ["name": border] as [String: AnyObject]
-                    if let object = ManaKit.sharedInstance.findOrCreateObject("CMBorder", objectFinder: objectFinder) as? CMBorder {
+                    if let object = ManaKit.sharedInstance.findObject("CMBorder", objectFinder: objectFinder, createIfNotFound: true) as? CMBorder {
                         object.name = border
                         set.border = nil
                         set.border_ = object
@@ -240,7 +240,7 @@ class DatabaseMaintainer: NSObject {
                 // type
                 if let type = set.type {
                     let objectFinder = ["name": type] as [String: AnyObject]
-                    if let object = ManaKit.sharedInstance.findOrCreateObject("CMSetType", objectFinder: objectFinder) as? CMSetType {
+                    if let object = ManaKit.sharedInstance.findObject("CMSetType", objectFinder: objectFinder, createIfNotFound: true) as? CMSetType {
                         object.name = type
                         set.type = nil
                         set.type_ = object
@@ -250,7 +250,7 @@ class DatabaseMaintainer: NSObject {
                 // block
                 if let block = set.block {
                     let objectFinder = ["name": block] as [String: AnyObject]
-                    if let object = ManaKit.sharedInstance.findOrCreateObject("CMBlock", objectFinder: objectFinder) as? CMBlock {
+                    if let object = ManaKit.sharedInstance.findObject("CMBlock", objectFinder: objectFinder, createIfNotFound: true) as? CMBlock {
                         object.name = block
                         set.block = nil
                         set.block_ = object
@@ -264,7 +264,7 @@ class DatabaseMaintainer: NSObject {
                         
                         for booster in boosterArray {
                             let objectFinder = ["name": booster] as [String: AnyObject]
-                            if let object = ManaKit.sharedInstance.findOrCreateObject("CMBooster", objectFinder: objectFinder) as? CMBooster {
+                            if let object = ManaKit.sharedInstance.findObject("CMBooster", objectFinder: objectFinder, createIfNotFound: true) as? CMBooster {
                                 object.name = booster
                                 
                                 if let value = boosterDict[object] {
@@ -276,7 +276,7 @@ class DatabaseMaintainer: NSObject {
                         }
                         
                         for (key,value) in boosterDict {
-                            if let object = ManaKit.sharedInstance.findOrCreateObject("CMSetBooster", objectFinder: nil) as? CMSetBooster {
+                            if let object = ManaKit.sharedInstance.findObject("CMSetBooster", objectFinder: nil, createIfNotFound: true) as? CMSetBooster {
                                 object.booster = key
                                 object.set = set
                                 object.count = Int32(value)
@@ -337,7 +337,7 @@ class DatabaseMaintainer: NSObject {
                         card.layout_ = object
                     } else {
                         let objectFinder = ["name": layout] as [String: AnyObject]
-                        if let object = ManaKit.sharedInstance.findOrCreateObject("CMLayout", objectFinder: objectFinder) as? CMLayout {
+                        if let object = ManaKit.sharedInstance.findObject("CMLayout", objectFinder: objectFinder, createIfNotFound: true) as? CMLayout {
                             object.name = layout
                             card.layout_ = object
                             cachedLayouts.append(object)
@@ -357,7 +357,7 @@ class DatabaseMaintainer: NSObject {
                                 colors_.add(object)
                             } else {
                                 let objectFinder = ["name": color] as [String: AnyObject]
-                                if let object = ManaKit.sharedInstance.findOrCreateObject("CMColor", objectFinder: objectFinder) as? CMColor {
+                                if let object = ManaKit.sharedInstance.findObject("CMColor", objectFinder: objectFinder, createIfNotFound: true) as? CMColor {
                                     object.name = color
                                     var prefix = String(color.prefix(1))
                                     
@@ -385,7 +385,7 @@ class DatabaseMaintainer: NSObject {
                                 colorIdentities_.add(object)
                             } else {
                                 let objectFinder = ["symbol": colorIdentity] as [String: AnyObject]
-                                if let object = ManaKit.sharedInstance.findOrCreateObject("CMColor", objectFinder: objectFinder) as? CMColor {
+                                if let object = ManaKit.sharedInstance.findObject("CMColor", objectFinder: objectFinder, createIfNotFound: true) as? CMColor {
                                     if symbol == "B" {
                                         object.name = "Black"
                                     } else if symbol == "U" {
@@ -414,7 +414,7 @@ class DatabaseMaintainer: NSObject {
                         card.type_ = object
                     } else {
                         let objectFinder = ["name": type] as [String: AnyObject]
-                        if let object = ManaKit.sharedInstance.findOrCreateObject("CMCardType", objectFinder: objectFinder) as? CMCardType {
+                        if let object = ManaKit.sharedInstance.findObject("CMCardType", objectFinder: objectFinder, createIfNotFound: true) as? CMCardType {
                             object.name = type
                             card.type_ = object
                             cachedCardTypes.append(object)
@@ -434,7 +434,7 @@ class DatabaseMaintainer: NSObject {
                                 supertypes_.add(object)
                             } else {
                                 let objectFinder = ["name": supertype] as [String: AnyObject]
-                                if let object = ManaKit.sharedInstance.findOrCreateObject("CMCardType", objectFinder: objectFinder) as? CMCardType {
+                                if let object = ManaKit.sharedInstance.findObject("CMCardType", objectFinder: objectFinder, createIfNotFound: true) as? CMCardType {
                                     object.name = supertype
                                     supertypes_.add(object)
                                     cachedCardTypes.append(object)
@@ -465,7 +465,7 @@ class DatabaseMaintainer: NSObject {
                                 
                             } else {
                                 let objectFinder = ["name": type] as [String: AnyObject]
-                                if let object = ManaKit.sharedInstance.findOrCreateObject("CMCardType", objectFinder: objectFinder) as? CMCardType {
+                                if let object = ManaKit.sharedInstance.findObject("CMCardType", objectFinder: objectFinder, createIfNotFound: true) as? CMCardType {
                                     object.name = type
                                     types_.add(object)
                                     cachedCardTypes.append(object)
@@ -495,7 +495,7 @@ class DatabaseMaintainer: NSObject {
                                 subtypes_.add(object)
                             } else {
                                 let objectFinder = ["name": subtype] as [String: AnyObject]
-                                if let object = ManaKit.sharedInstance.findOrCreateObject("CMCardType", objectFinder: objectFinder) as? CMCardType {
+                                if let object = ManaKit.sharedInstance.findObject("CMCardType", objectFinder: objectFinder, createIfNotFound: true) as? CMCardType {
                                     object.name = subtype
                                     subtypes_.add(object)
                                     cachedCardTypes.append(object)
@@ -513,7 +513,7 @@ class DatabaseMaintainer: NSObject {
                         card.rarity_ = object
                     } else {
                         let objectFinder = ["name": rarity] as [String: AnyObject]
-                        if let object = ManaKit.sharedInstance.findOrCreateObject("CMRarity", objectFinder: objectFinder) as? CMRarity {
+                        if let object = ManaKit.sharedInstance.findObject("CMRarity", objectFinder: objectFinder, createIfNotFound: true) as? CMRarity {
                             object.name = rarity
                             card.rarity_ = object
                             cachedRarities.append(object)
@@ -529,7 +529,7 @@ class DatabaseMaintainer: NSObject {
                         card.artist_ = object
                     } else {
                         let objectFinder = ["name": artist] as [String: AnyObject]
-                        if let object = ManaKit.sharedInstance.findOrCreateObject("CMArtist", objectFinder: objectFinder) as? CMArtist {
+                        if let object = ManaKit.sharedInstance.findObject("CMArtist", objectFinder: objectFinder, createIfNotFound: true) as? CMArtist {
                             
                             let names = artist.components(separatedBy: " ")
                             var nameSection: String?
@@ -579,7 +579,7 @@ class DatabaseMaintainer: NSObject {
                         card.watermark_ = object
                     } else {
                         let objectFinder = ["name": watermark] as [String: AnyObject]
-                        if let object = ManaKit.sharedInstance.findOrCreateObject("CMWatermark", objectFinder: objectFinder) as? CMWatermark {
+                        if let object = ManaKit.sharedInstance.findObject("CMWatermark", objectFinder: objectFinder, createIfNotFound: true) as? CMWatermark {
                             object.name = watermark
                             card.watermark_ = object
                             cachedWatermarks.append(object)
@@ -595,7 +595,7 @@ class DatabaseMaintainer: NSObject {
                         card.border_ = object
                     } else {
                         let objectFinder = ["name": border] as [String: AnyObject]
-                        if let object = ManaKit.sharedInstance.findOrCreateObject("CMBorder", objectFinder: objectFinder) as? CMBorder {
+                        if let object = ManaKit.sharedInstance.findObject("CMBorder", objectFinder: objectFinder, createIfNotFound: true) as? CMBorder {
                             object.name = border
                             card.border_ = object
                             cachedBorders.append(object)
@@ -727,7 +727,7 @@ class DatabaseMaintainer: NSObject {
                     
                     if let rulingsArray = NSKeyedUnarchiver.unarchiveObject(with: rulings as Data) as? [[String: AnyObject]] {
                         for ruling in rulingsArray {
-                            if let object = ManaKit.sharedInstance.findOrCreateObject("CMRuling", objectFinder: nil) as? CMRuling {
+                            if let object = ManaKit.sharedInstance.findObject("CMRuling", objectFinder: nil, createIfNotFound: true) as? CMRuling {
                                 object.date = ruling["date"] as? String
                                 object.text = ruling["text"] as? String
                                 object.card = card
@@ -752,8 +752,6 @@ class DatabaseMaintainer: NSObject {
     }
     
     func updateNames() {
-        dateStart = Date()
-        
         let request:NSFetchRequest<CMCard> = CMCard.fetchRequest() as! NSFetchRequest<CMCard>
         
         if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
@@ -784,13 +782,6 @@ class DatabaseMaintainer: NSObject {
                 }
             }
         }
-        
-        self.updateSystem()
-        
-        let dateEnd = Date()
-        let timeDifference = dateEnd.timeIntervalSince(dateStart)
-        print("Total Time Elapsed: \(dateStart) - \(dateEnd) = \(self.format(timeDifference))")
-        print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
     }
 
     // MARK: Core Data updates 2
@@ -822,14 +813,14 @@ class DatabaseMaintainer: NSObject {
                                 language = object
                             } else {
                                 let objectFinder = ["name": name] as [String: AnyObject]
-                                if let object = ManaKit.sharedInstance.findOrCreateObject("CMLanguage", objectFinder: objectFinder) as? CMLanguage {
+                                if let object = ManaKit.sharedInstance.findObject("CMLanguage", objectFinder: objectFinder, createIfNotFound: true) as? CMLanguage {
                                     object.name = name
                                     language = object
                                     cachedLanguages.append(language!)
                                 }
                             }
                             
-                            if let object = ManaKit.sharedInstance.findOrCreateObject("CMForeignName", objectFinder: nil) as? CMForeignName {
+                            if let object = ManaKit.sharedInstance.findObject("CMForeignName", objectFinder: nil, createIfNotFound: true) as? CMForeignName {
                                 object.name = foreignName["name"] as? String
                                 object.language = language
                                 object.card = card
@@ -896,7 +887,7 @@ class DatabaseMaintainer: NSObject {
                                 format = object
                             } else {
                                 let objectFinder = ["name": formatName] as [String: AnyObject]
-                                if let object = ManaKit.sharedInstance.findOrCreateObject("CMFormat", objectFinder: objectFinder) as? CMFormat {
+                                if let object = ManaKit.sharedInstance.findObject("CMFormat", objectFinder: objectFinder, createIfNotFound: true) as? CMFormat {
                                     object.name = formatName
                                     
                                     // nameSection
@@ -915,14 +906,14 @@ class DatabaseMaintainer: NSObject {
                                 legal = object
                             } else {
                                 let objectFinder = ["name": legalName] as [String: AnyObject]
-                                if let object = ManaKit.sharedInstance.findOrCreateObject("CMLegality", objectFinder: objectFinder) as? CMLegality {
+                                if let object = ManaKit.sharedInstance.findObject("CMLegality", objectFinder: objectFinder, createIfNotFound: true) as? CMLegality {
                                     object.name = legalName
                                     legal = object
                                     cachedLegalities.append(legal!)
                                 }
                             }
                             
-                            if let object = ManaKit.sharedInstance.findOrCreateObject("CMCardLegality", objectFinder: nil) as? CMCardLegality {
+                            if let object = ManaKit.sharedInstance.findObject("CMCardLegality", objectFinder: nil, createIfNotFound: true) as? CMCardLegality {
                                 object.format = format
                                 object.legality = legal
                                 object.card = card
@@ -972,7 +963,7 @@ class DatabaseMaintainer: NSObject {
             
             // parse the introduction
             objectFinder = ["term": "Introduction"] as [String: AnyObject]
-            if let object = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: objectFinder) as? CMRule {
+            if let object = ManaKit.sharedInstance.findObject("CMRule", objectFinder: objectFinder, createIfNotFound: true) as? CMRule {
                 object.term = "Introduction"
                 object.order = 0
                 object.definition = nil
@@ -985,7 +976,7 @@ class DatabaseMaintainer: NSObject {
                 if let text = parseData(fromLines: lines, startLine: startLine!, endLine: endLine!, includeStartLine: includeStartLine, includeEndLine: includeEndLine) {
                     objectFinder = ["parent": object] as [String: AnyObject]
                     
-                    if let object2 = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: objectFinder) as? CMRule {
+                    if let object2 = ManaKit.sharedInstance.findObject("CMRule", objectFinder: objectFinder, createIfNotFound: true) as? CMRule {
                         object2.term = nil
                         object2.order = 0.1
                         object2.definition = text
@@ -1000,7 +991,7 @@ class DatabaseMaintainer: NSObject {
             
             // parse the glossary
             objectFinder = ["term": "Glossary"] as [String: AnyObject]
-            if let object = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: objectFinder) as? CMRule {
+            if let object = ManaKit.sharedInstance.findObject("CMRule", objectFinder: objectFinder, createIfNotFound: true) as? CMRule {
                 object.term = "Glossary"
                 object.order = 10000
                 object.definition = nil
@@ -1011,7 +1002,7 @@ class DatabaseMaintainer: NSObject {
             
             // parse the credits
             objectFinder = ["term": "Credits"] as [String: AnyObject]
-            if let object = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: objectFinder) as? CMRule {
+            if let object = ManaKit.sharedInstance.findObject("CMRule", objectFinder: objectFinder, createIfNotFound: true) as? CMRule {
                 object.term = "Credits"
                 object.order = 11000
                 object.definition = nil
@@ -1024,7 +1015,7 @@ class DatabaseMaintainer: NSObject {
                 if let text = parseData(fromLines: lines, startLine: startLine!, endLine: endLine!, includeStartLine: includeStartLine, includeEndLine: includeEndLine) {
                     objectFinder = ["parent": object] as [String: AnyObject]
                     
-                    if let object2 = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: objectFinder) as? CMRule {
+                    if let object2 = ManaKit.sharedInstance.findObject("CMRule", objectFinder: objectFinder, createIfNotFound: true) as? CMRule {
                         object2.term = nil
                         object2.order = 11000.1
                         object2.definition = text
@@ -1124,7 +1115,7 @@ class DatabaseMaintainer: NSObject {
                     }
                     
                     let objectFinder = ["term": term] as [String: AnyObject]
-                    if let object = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: objectFinder) as? CMRule {
+                    if let object = ManaKit.sharedInstance.findObject("CMRule", objectFinder: objectFinder, createIfNotFound: true) as? CMRule {
                         object.term = term
                         object.order = order(of: term)
                         object.definition = definition
@@ -1155,7 +1146,7 @@ class DatabaseMaintainer: NSObject {
     func findParent(forRule rule: CMRule, withTerm term: String) -> CMRule? {
         let parentFinder = ["term": term] as [String: AnyObject]
         
-        if let parent = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: parentFinder) as? CMRule {
+        if let parent = ManaKit.sharedInstance.findObject("CMRule", objectFinder: parentFinder, createIfNotFound: true) as? CMRule {
             if parent.definition == nil &&
                 parent.definition == nil {
                 ManaKit.sharedInstance.dataStack?.mainContext.delete(parent)
@@ -1223,7 +1214,7 @@ class DatabaseMaintainer: NSObject {
                         } else {
                             let objectFinder = ["term": term!] as [String: AnyObject]
 
-                            if let object = ManaKit.sharedInstance.findOrCreateObject("CMRule", objectFinder: objectFinder) as? CMRule {
+                            if let object = ManaKit.sharedInstance.findObject("CMRule", objectFinder: objectFinder, createIfNotFound: true) as? CMRule {
                                 let letters = CharacterSet.letters
                                 var prefix = String(term!.prefix(1))
                                 if prefix.rangeOfCharacter(from: letters) == nil {
@@ -1393,7 +1384,30 @@ class DatabaseMaintainer: NSObject {
     func updateScryfallNumbers() {
         dateStart = Date()
         
-        let request:NSFetchRequest<CMSet> = CMSet.fetchRequest() as! NSFetchRequest<CMSet>
+        var request:NSFetchRequest<CMSet> = CMSet.fetchRequest() as! NSFetchRequest<CMSet>
+        var scryfallDict:[String: String]?
+        
+        if let path = Bundle.main.path(forResource: "Scryfall", ofType: "plist", inDirectory: "data") {
+            if FileManager.default.fileExists(atPath: path) {
+                let data = try! Data(contentsOf: URL(fileURLWithPath: path))
+                
+                scryfallDict = try! PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? [String: String]
+            }
+        }
+        
+        request.predicate = NSPredicate(format: "scryfallCode == nil")
+        request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        if let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
+            for set in sets {
+                if let scryfallDict = scryfallDict,
+                    let code = set.code {
+                    set.scryfallCode = scryfallDict[code]
+                }
+            }
+            try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+        }
+        
+        request = CMSet.fetchRequest() as! NSFetchRequest<CMSet>
         var predicate:NSPredicate? = nil
         let sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: true),
                                NSSortDescriptor(key: "name", ascending: true)]
@@ -1405,16 +1419,28 @@ class DatabaseMaintainer: NSObject {
         request.sortDescriptors = sortDescriptors
         
         if let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
-            print("Updating Scryfall Numbers: \(sets.count) \(Date())")
-            
             var promises = [Promise<URL?>]()
             for set in sets {
-                if let urlString = "https://api.scryfall.com/cards/search?q=e:\(set.code!.lowercased())&unique=prints".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+                var willUpdate = false
+                if let cards = set.cards?.allObjects as? [CMCard] {
+                    for card in cards {
+                        if card.scryfallNumber == nil {
+                            willUpdate = true
+                            break
+                        }
+                    }
+                }
+                
+                if willUpdate {
+                    let code = set.scryfallCode ?? set.code
                     
-                    promises.append(readScryfall(url: URL(string: urlString)!))
+                    if let urlString = "https://api.scryfall.com/cards/search?q=e:\(code!.lowercased())&unique=prints".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+                        promises.append(readScryfall(url: URL(string: urlString)!))
+                    }
                 }
             }
-
+            
+            print("Updating Scryfall Numbers: \(promises.count) \(Date())")
             loopScryfall(promises: promises)
         }
     }
@@ -1457,21 +1483,92 @@ class DatabaseMaintainer: NSObject {
                 if let data = json["data"] as? [[String: Any]] {
                     for e in data {
                         if let set = e["set"] as? String,
-                            let name = e["name"] as? String,
                             let multiverseIDs = e["multiverse_ids"] as? [Int],
+                            let artist = e["artist"] as? String,
+                            let name = e["name"] as? String,
                             let collectorNumber = e["collector_number"] as? String {
 
-                            var objectFinder = ["set.code": set,
-                                                "name": name,
-                                                "multiverseid": Int64(0)] as [String : AnyObject]
+                            var found = false
                             
-                            if let first = multiverseIDs.first {
-                                objectFinder["multiverseid"] = Int64(first) as AnyObject
+                            // match with multiverseID
+                            for mid in multiverseIDs {
+                                let request:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CMCard")
+                                request.predicate = NSPredicate(format: "multiverseid == %d", mid)
+                                
+                                if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) as? [CMCard] {
+                                    for card in cards {
+                                        if card.scryfallNumber == nil {
+                                            card.scryfallNumber = collectorNumber
+                                            found = true
+                                        }
+                                    }
+                                }
                             }
                             
-                            if let card = ManaKit.sharedInstance.findOrCreateObject("CMCard", objectFinder: objectFinder) as? CMCard {
-                                card.scryfallNumber = collectorNumber
+                            // match with name and artist
+                            if !found {
+                                let request:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CMCard")
+                                request.predicate = NSPredicate(format: "set.code = [cd] %@ AND artist_.name = %@ AND name CONTAINS[cd] %@", set, artist, name)
+                                request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true),
+                                                           NSSortDescriptor(key: "number", ascending: true),
+                                                           NSSortDescriptor(key: "mciNumber", ascending: true)]
+                                
+                                if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) as? [CMCard] {
+                                    for card in cards {
+                                        if card.scryfallNumber == nil {
+                                            card.scryfallNumber = collectorNumber
+                                            found = true
+                                        }
+                                    }
+                                } else {
+                                    request.predicate = NSPredicate(format: "set.scryfallCode = [cd] %@ AND artist_.name = %@ AND name CONTAINS[cd] %@", set, artist, name)
+
+                                    if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) as? [CMCard] {
+                                        for card in cards {
+                                            if card.scryfallNumber == nil {
+                                                card.scryfallNumber = collectorNumber
+                                                found = true
+                                            }
+                                        }
+                                    }
+                                }
                             }
+
+//                            // match with number
+//                            if !found {
+//                                var objectFinder = ["set.code": set,
+//                                                    "number": collectorNumber] as [String : AnyObject]
+//                                
+//                                if let card = ManaKit.sharedInstance.findObject("CMCard", objectFinder: objectFinder, createIfNotFound: false) as? CMCard {
+//                                    card.scryfallNumber = collectorNumber
+//                                    found = true
+//                                } else {
+//                                    objectFinder = ["set.scryfallCode": set,
+//                                                    "number": collectorNumber] as [String : AnyObject]
+//                                    if let card = ManaKit.sharedInstance.findObject("CMCard", objectFinder: objectFinder, createIfNotFound: false) as? CMCard {
+//                                        card.scryfallNumber = collectorNumber
+//                                        found = true
+//                                    }
+//                                }
+//                            }
+//                            
+//                            // match with mciNumber
+//                            if !found {
+//                                var objectFinder = ["set.code": set,
+//                                                    "mciNumber": collectorNumber] as [String : AnyObject]
+//                                
+//                                if let card = ManaKit.sharedInstance.findObject("CMCard", objectFinder: objectFinder, createIfNotFound: false) as? CMCard {
+//                                    card.scryfallNumber = collectorNumber
+//                                    found = true
+//                                } else {
+//                                    objectFinder = ["set.scryfallCode": set,
+//                                                    "mciNumber": collectorNumber] as [String : AnyObject]
+//                                    if let card = ManaKit.sharedInstance.findObject("CMCard", objectFinder: objectFinder, createIfNotFound: false) as? CMCard {
+//                                        card.scryfallNumber = collectorNumber
+//                                        found = true
+//                                    }
+//                                }
+//                            }
                         }
                     }
                     try! ManaKit.sharedInstance.dataStack?.mainContext.save()

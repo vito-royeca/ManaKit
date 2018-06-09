@@ -15,8 +15,8 @@ import SSZipArchive
 import Sync
 
 
-public let kMTGJSONVersion      = "3.15.2 M"
-public let kMTGJSONDate         = "Apr 20, 2018"
+public let kMTGJSONVersion      = "3.16"
+public let kMTGJSONDate         = "Jun 2, 2018"
 public let kMTGJSONVersionKey   = "kMTGJSONVersionKey"
 public let kImagesVersionKey    = "kImagesVersionKey"
 public let kCardImageSource     = "http://magiccards.info/scans/en"
@@ -344,7 +344,7 @@ open class ManaKit: NSObject {
     }
     
     // MARK: Database methods
-    open func findOrCreateObject(_ entityName: String, objectFinder: [String: AnyObject]?) -> NSManagedObject? {
+    open func findObject(_ entityName: String, objectFinder: [String: AnyObject]?, createIfNotFound: Bool) -> NSManagedObject? {
         var object:NSManagedObject?
         var predicate:NSPredicate?
         var fetchRequest:NSFetchRequest<NSFetchRequestResult>?
@@ -366,15 +366,19 @@ open class ManaKit: NSObject {
             if let m = try! dataStack?.mainContext.fetch(fetchRequest).first as? NSManagedObject {
                 object = m
             } else {
+                if createIfNotFound {
+                    if let desc = NSEntityDescription.entity(forEntityName: entityName, in: dataStack!.mainContext) {
+                        object = NSManagedObject(entity: desc, insertInto: dataStack?.mainContext)
+                        try! dataStack?.mainContext.save()
+                    }
+                }
+            }
+        } else {
+            if createIfNotFound {
                 if let desc = NSEntityDescription.entity(forEntityName: entityName, in: dataStack!.mainContext) {
                     object = NSManagedObject(entity: desc, insertInto: dataStack?.mainContext)
                     try! dataStack?.mainContext.save()
                 }
-            }
-        } else {
-            if let desc = NSEntityDescription.entity(forEntityName: entityName, in: dataStack!.mainContext) {
-                object = NSManagedObject(entity: desc, insertInto: dataStack?.mainContext)
-                try! dataStack?.mainContext.save()
             }
         }
         
@@ -385,7 +389,7 @@ open class ManaKit: NSObject {
         var version:String?
         
         let objectFinder = ["version": kMTGJSONVersion] as [String: AnyObject]
-        if let object = ManaKit.sharedInstance.findOrCreateObject("CMSystem", objectFinder: objectFinder) as? CMSystem {
+        if let object = ManaKit.sharedInstance.findObject("CMSystem", objectFinder: objectFinder, createIfNotFound: true) as? CMSystem {
             version = object.version
         }
         
@@ -407,8 +411,9 @@ open class ManaKit: NSObject {
                             seal.reject(error)
                         } else {
                             if let image = image {
-                                let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
-                                let imageCache = SDImageCache.init(namespace: appName)
+//                                let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
+//                                let imageCache = SDImageCache.init(namespace: appName)
+                                let imageCache = SDImageCache.init()
                                 imageCache.store(image, forKey: cacheKey, toDisk: true, completion: nil)
                                 
                                 if imageType == .artCrop {
@@ -484,8 +489,9 @@ open class ManaKit: NSObject {
         
         if willGetFromCache {
             if let url = imageURL(ofCard: card, imageType: imageType) {
-                let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
-                let imageCache = SDImageCache.init(namespace: appName)
+//                let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
+//                let imageCache = SDImageCache.init(namespace: appName)
+                let imageCache = SDImageCache.init()
                 let cacheKey = url.absoluteString
                 
                 let semaphore = DispatchSemaphore(value: 0)
@@ -539,25 +545,34 @@ open class ManaKit: NSObject {
         
         if let _ = card.scryfallNumber {
             var dir = ""
+            var ext = ""
             
             switch imageType {
             case .png:
                 dir = "png"
+                ext = "png"
             case .borderCrop:
                 dir = "border_crop"
+                ext = "jpg"
             case .artCrop:
                 dir = "art_crop"
+                ext = "jpg"
             case .large:
                 dir = "large"
+                ext = "jpg"
             case .normal:
                 dir = "normal"
+                ext = "jpg"
             case .small:
                 dir = "small"
+                ext = "jpg"
             }
             
             if let set = card.set {
-                if let number = card.scryfallNumber {
-                    url = URL(string: "https://img.scryfall.com/cards/\(dir)/en/\(set.code!.lowercased())/\(number).jpg")
+                
+                if let number = card.scryfallNumber,
+                    let scryfallCode = set.scryfallCode ?? set.code {
+                    url = URL(string: "https://img.scryfall.com/cards/\(dir)/en/\(scryfallCode.lowercased())/\(number).\(ext)")
                 }
             }
             
@@ -605,7 +620,7 @@ open class ManaKit: NSObject {
     
     open func fetchTCGPlayerPricing(card: CMCard) -> Promise<CMCardPricing?> {
         return Promise { seal  in
-            if let pricing = findOrCreateObject("CMCardPricing", objectFinder: ["card.id": card.id as AnyObject]) as? CMCardPricing {
+            if let pricing = findObject("CMCardPricing", objectFinder: ["card.id": card.id as AnyObject], createIfNotFound: true) as? CMCardPricing {
                 var willFetch = false
                 
                 if let lastUpdate = pricing.lastUpdate {

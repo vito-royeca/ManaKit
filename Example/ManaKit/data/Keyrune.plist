@@ -48,6 +48,8 @@
 	<string>e614</string>
 	<key>avr</key>
 	<string>e64c</string>
+	<key>bbd</key>
+	<string>e942</string>
 	<key>bfz</key>
 	<string>e699</string>
 	<key>bng</key>
@@ -61,7 +63,7 @@
 	<key>c13</key>
 	<string>e65b</string>
 	<key>c14</key>
-	<string>e63d</string>
+	<string>e65d</string>
 	<key>c15</key>
 	<string>e900</string>
 	<key>c16</key>
@@ -78,6 +80,8 @@
 	<string>e65e</string>
 	<key>cm1</key>
 	<string>e65a</string>
+	<key>cm2</key>
+	<string> e940</string>
 	<key>cma</key>
 	<string>e916</string>
 	<key>cmd</key>
