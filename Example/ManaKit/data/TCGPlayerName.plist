@@ -44,6 +44,8 @@
 	<string>Battle for Zendikar</string>
 	<key>BRB</key>
 	<string>Battle Royale Box Set</string>
+	<key>BBD</key>
+	<string>Battlebond</string>
 	<key>BTD</key>
 	<string>Beatdown Box Set</string>
 	<key>LEB</key>
@@ -84,6 +86,8 @@
 	<string>Commander Anthology</string>
 	<key>CM1</key>
 	<string>Commander&apos;s Arsenal</string>
+	<key>CM2</key>
+	<string>Commander Anthology Volume II</string>
 	<key>CON</key>
 	<string>Conflux</string>
 	<key>CNS</key>

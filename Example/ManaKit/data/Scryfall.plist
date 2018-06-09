@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>DD3_DVD</key>
+	<string>DVD</string>
+	<key>DD3_EVG</key>
+	<string>EVG</string>
+	<key>DD3_GVL</key>
+	<string>GVL</string>
+	<key>DD3_JVC</key>
+	<string>JVC</string>
+	<key>EVG</key>
+	<string>DD1</string>
+	<key>FRF_UGIN</key>
+	<string>UGIN</string>
+	<key>MPS_AKH</key>
+	<string>MP2</string>
+	<key>NMS</key>
+	<string>NEM</string>
+	<key>pFNM</key>
+	<string>FNM</string>
+	<key>pJGP</key>
+	<string>JGP</string>
+	<key>pMPR</key>
+	<string>MPR</string>
+	<key>PO2</key>
+	<string>P02</string>
+	<key>VAN</key>
+	<string>PVAN</string>
+</dict>
+</plist>
