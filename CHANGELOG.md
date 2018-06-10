@@ -1,3 +1,6 @@
+**Version 2.3.8** @ 10.06.2018
+- Now returns rounded corner card images.
+
 **Version 2.3.7** @ 09.06.2018
 - Updated the SQLite database to MTGJSON version 3.16.
 
