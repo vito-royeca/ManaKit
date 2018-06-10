@@ -411,8 +411,6 @@ open class ManaKit: NSObject {
                             seal.reject(error)
                         } else {
                             if let image = image {
-//                                let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
-//                                let imageCache = SDImageCache.init(namespace: appName)
                                 let imageCache = SDImageCache.init()
                                 imageCache.store(image, forKey: cacheKey, toDisk: true, completion: nil)
                                 
@@ -423,7 +421,9 @@ open class ManaKit: NSObject {
                                         seal.fulfill(self.crop(image, ofCard: card))
                                     }
                                 } else {
-                                    seal.fulfill(image)
+                                    // return rounded corners
+                                    let roundCornered = image.roundCornered(card: card)
+                                    seal.fulfill(roundCornered)
                                 }
                                 
                             } else {
@@ -489,19 +489,23 @@ open class ManaKit: NSObject {
         
         if willGetFromCache {
             if let url = imageURL(ofCard: card, imageType: imageType) {
-//                let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
-//                let imageCache = SDImageCache.init(namespace: appName)
                 let imageCache = SDImageCache.init()
                 let cacheKey = url.absoluteString
                 
-                let semaphore = DispatchSemaphore(value: 0)
-                let cacheQueryCompletion = { (image: UIImage?, data: Data?, cacheType: SDImageCacheType) in
-                    cardImage = image
-                    semaphore.signal()
-                }
+//                let semaphore = DispatchSemaphore(value: 0)
+//                let cacheQueryCompletion = { (image: UIImage?, data: Data?, cacheType: SDImageCacheType) in
+//                    cardImage = image
+//                    semaphore.signal()
+//                }
+//
+//                imageCache.queryCacheOperation(forKey: cacheKey, options: .queryDiskSync, done: cacheQueryCompletion)
+//                semaphore.wait()
+                cardImage = imageCache.imageFromDiskCache(forKey: cacheKey)
                 
-                imageCache.queryCacheOperation(forKey: cacheKey, options: .queryDiskSync, done: cacheQueryCompletion)
-                semaphore.wait()
+                // return roundCornered image
+                if let c = cardImage {
+                    cardImage = c.roundCornered(card: card)
+                }
             }
         }
         

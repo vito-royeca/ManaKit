@@ -55,6 +55,8 @@ extension CardViewController : UITableViewDataSource {
                 if let imageView = c.viewWithTag(100) as? UIImageView,
                     let card = card {
                     
+                    imageView.backgroundColor = UIColor.lightGray
+                    
                     if let cardImage = ManaKit.sharedInstance.cardImage(card, imageType: .normal) {
                         imageView.image = cardImage
                     } else {
