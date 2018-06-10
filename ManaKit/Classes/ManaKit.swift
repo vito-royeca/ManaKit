@@ -15,7 +15,7 @@ import SSZipArchive
 import Sync
 
 
-public let kMTGJSONVersion      = "3.16"
+public let kMTGJSONVersion      = "3.16 B"
 public let kMTGJSONDate         = "Jun 2, 2018"
 public let kMTGJSONVersionKey   = "kMTGJSONVersionKey"
 public let kImagesVersionKey    = "kImagesVersionKey"
@@ -546,6 +546,7 @@ open class ManaKit: NSObject {
     
     open func imageURL(ofCard card: CMCard, imageType: ImageType) -> URL? {
         var url:URL?
+        var urlString: String?
         
         if let _ = card.scryfallNumber {
             var dir = ""
@@ -573,10 +574,10 @@ open class ManaKit: NSObject {
             }
             
             if let set = card.set {
-                
                 if let number = card.scryfallNumber,
                     let scryfallCode = set.scryfallCode ?? set.code {
-                    url = URL(string: "https://img.scryfall.com/cards/\(dir)/en/\(scryfallCode.lowercased())/\(number).\(ext)")
+//                    url = URL(string: "https://img.scryfall.com/cards/\(dir)/en/\(scryfallCode.lowercased())/\(number).\(ext)")
+                    urlString = "https://img.scryfall.com/cards/\(dir)/en/\(scryfallCode.lowercased())/\(number).\(ext)"
                 }
             }
             
@@ -585,14 +586,18 @@ open class ManaKit: NSObject {
                 if let set = card.set {
                     if let code = set.magicCardsInfoCode ?? set.code,
                         let number = card.mciNumber ?? card.number {
-                        let path = "\(kCardImageSource)/\(code.lowercased())/\(number).jpg"
-                        url = URL(string: path)
+                        urlString = "\(kCardImageSource)/\(code.lowercased())/\(number).jpg"
                     }
                 }
                 
             } else {
-                let path = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=\(card.multiverseid)&type=card"
-                url = URL(string: path)
+                urlString = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=\(card.multiverseid)&type=card"
+            }
+        }
+
+        if let urlString = urlString {
+            if let okUrlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+                url = URL(string: okUrlString)
             }
         }
         

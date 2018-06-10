@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import ManaKit
 import UIKit
 
 extension UIImage {
@@ -16,7 +15,7 @@ extension UIImage {
         
         if let set = card.set {
             if set.code == "LEA" {
-                radius = 32
+                radius = 34
             } else if set.code == "CEI" ||
                 set.code == "CED" {
                 return self

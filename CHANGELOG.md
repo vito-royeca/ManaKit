@@ -1,3 +1,6 @@
+**Version 2.3.9** @ 10.06.2018
+- Fixed Scryfall number of split cards.
+
 **Version 2.3.8** @ 10.06.2018
 - Now returns rounded corner card images.
 

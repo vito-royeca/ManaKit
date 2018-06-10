@@ -27,7 +27,7 @@ class DatabaseMaintainer: NSObject {
     static let sharedInstance = DatabaseMaintainer()
     
     // MARK: Constants
-    let setCodesForProcessing:[String]? = nil//["APC"]
+    let setCodesForProcessing:[String]? = ["TSB", "PLC", "DDJ", "DDH"]
     let printMilestone = 1000
     
     // MARK: Variables
@@ -1421,7 +1421,7 @@ class DatabaseMaintainer: NSObject {
         if let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
             var promises = [Promise<URL?>]()
             for set in sets {
-                var willUpdate = false
+                var willUpdate = true/*false
                 if let cards = set.cards?.allObjects as? [CMCard] {
                     for card in cards {
                         if card.scryfallNumber == nil {
@@ -1429,7 +1429,7 @@ class DatabaseMaintainer: NSObject {
                             break
                         }
                     }
-                }
+                }*/
                 
                 if willUpdate {
                     let code = set.scryfallCode ?? set.code
@@ -1486,9 +1486,19 @@ class DatabaseMaintainer: NSObject {
                             let multiverseIDs = e["multiverse_ids"] as? [Int],
                             let artist = e["artist"] as? String,
                             let name = e["name"] as? String,
-                            let collectorNumber = e["collector_number"] as? String {
+//                            let collectorNumber = e["collector_number"] as? String,
+                            let imageURIs = e["image_uris"] as? [String: String] {
 
                             var found = false
+                            var collectorNumber: String? = nil
+                            
+                            if let normal = imageURIs["normal"] {
+                                let url = URL(string: normal)
+                                if let lastPath = url?.lastPathComponent {
+                                    let comps = lastPath.components(separatedBy: ".")
+                                    collectorNumber = comps.first
+                                }
+                            }
                             
                             // match with multiverseID
                             for mid in multiverseIDs {
@@ -1497,10 +1507,8 @@ class DatabaseMaintainer: NSObject {
                                 
                                 if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) as? [CMCard] {
                                     for card in cards {
-                                        if card.scryfallNumber == nil {
-                                            card.scryfallNumber = collectorNumber
-                                            found = true
-                                        }
+                                        card.scryfallNumber = collectorNumber
+                                        found = true
                                     }
                                 }
                             }
@@ -1515,60 +1523,20 @@ class DatabaseMaintainer: NSObject {
                                 
                                 if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) as? [CMCard] {
                                     for card in cards {
-                                        if card.scryfallNumber == nil {
-                                            card.scryfallNumber = collectorNumber
-                                            found = true
-                                        }
+                                        card.scryfallNumber = collectorNumber
+                                        found = true
                                     }
                                 } else {
                                     request.predicate = NSPredicate(format: "set.scryfallCode = [cd] %@ AND artist_.name = %@ AND name CONTAINS[cd] %@", set, artist, name)
 
                                     if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) as? [CMCard] {
                                         for card in cards {
-                                            if card.scryfallNumber == nil {
-                                                card.scryfallNumber = collectorNumber
-                                                found = true
-                                            }
+                                            card.scryfallNumber = collectorNumber
+                                            found = true
                                         }
                                     }
                                 }
                             }
-
-//                            // match with number
-//                            if !found {
-//                                var objectFinder = ["set.code": set,
-//                                                    "number": collectorNumber] as [String : AnyObject]
-//                                
-//                                if let card = ManaKit.sharedInstance.findObject("CMCard", objectFinder: objectFinder, createIfNotFound: false) as? CMCard {
-//                                    card.scryfallNumber = collectorNumber
-//                                    found = true
-//                                } else {
-//                                    objectFinder = ["set.scryfallCode": set,
-//                                                    "number": collectorNumber] as [String : AnyObject]
-//                                    if let card = ManaKit.sharedInstance.findObject("CMCard", objectFinder: objectFinder, createIfNotFound: false) as? CMCard {
-//                                        card.scryfallNumber = collectorNumber
-//                                        found = true
-//                                    }
-//                                }
-//                            }
-//                            
-//                            // match with mciNumber
-//                            if !found {
-//                                var objectFinder = ["set.code": set,
-//                                                    "mciNumber": collectorNumber] as [String : AnyObject]
-//                                
-//                                if let card = ManaKit.sharedInstance.findObject("CMCard", objectFinder: objectFinder, createIfNotFound: false) as? CMCard {
-//                                    card.scryfallNumber = collectorNumber
-//                                    found = true
-//                                } else {
-//                                    objectFinder = ["set.scryfallCode": set,
-//                                                    "mciNumber": collectorNumber] as [String : AnyObject]
-//                                    if let card = ManaKit.sharedInstance.findObject("CMCard", objectFinder: objectFinder, createIfNotFound: false) as? CMCard {
-//                                        card.scryfallNumber = collectorNumber
-//                                        found = true
-//                                    }
-//                                }
-//                            }
                         }
                     }
                     try! ManaKit.sharedInstance.dataStack?.mainContext.save()
