@@ -1,3 +1,6 @@
+**Version 2.4.0** @ 12.06.2018
+- Added CMCard.ratings property.
+
 **Version 2.3.9** @ 10.06.2018
 - Fixed Scryfall number of split cards.
 
