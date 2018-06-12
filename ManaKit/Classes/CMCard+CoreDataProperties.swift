@@ -44,6 +44,7 @@ extension CMCard {
     @NSManaged public var printings: Data?
     @NSManaged public var rarity: String?
     @NSManaged public var rating: Double
+    @NSManaged public var ratings: Int32
     @NSManaged public var releaseDate: String?
     @NSManaged public var reserved: Bool
     @NSManaged public var rulings: Data?

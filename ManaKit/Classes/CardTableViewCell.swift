@@ -86,14 +86,15 @@ open class CardTableViewCell: UITableViewCell {
                 firstly {
                     ManaKit.sharedInstance.downloadImage(ofCard: card, imageType: .artCrop)
                 }.done { (image: UIImage?) in
-                    UIView.transition(with: self.thumbnailImage,
-                                      duration: 1.0,
-                                      options: .transitionCrossDissolve,
-                                      animations: {
-                                        self.thumbnailImage.image = image
-                                      },
-                                      completion: nil)
-                    
+                    // disable animation to speed up scrolling in UITableView?
+//                    UIView.transition(with: self.thumbnailImage,
+//                                      duration: 1.0,
+//                                      options: .transitionCrossDissolve,
+//                                      animations: {
+//                                        self.thumbnailImage.image = image
+//                                      },
+//                                      completion: nil)
+                    self.thumbnailImage.image = image
                     self.updateCastingCost()
                     
                 }.catch { error in
