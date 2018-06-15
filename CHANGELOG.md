@@ -1,3 +1,6 @@
+**Version 2.4.1** @ 16.06.2018
+- Changed the color of card pricing in CardTableViewCell.
+
 **Version 2.4.0** @ 12.06.2018
 - Added CMCard.ratings property.
 

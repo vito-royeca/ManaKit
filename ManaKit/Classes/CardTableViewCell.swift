@@ -13,14 +13,22 @@ public let kCardTableViewCellHeight = CGFloat(88)
 
 open class CardTableViewCell: UITableViewCell {
 
-    // Variables
-    open var card:CMCard?
+    // MARK: Constants
     let preEightEditionFont      = UIFont(name: "Magic:the Gathering", size: 17.0)
     let preEightEditionFontSmall = UIFont(name: "Magic:the Gathering", size: 15.0)
     let eightEditionFont         = UIFont(name: "Matrix-Bold", size: 17.0)
     let eightEditionFontSmall    = UIFont(name: "Matrix-Bold", size: 15.0)
     let magic2015Font            = UIFont(name: "Beleren", size: 17.0)
     let magic2015FontSmall       = UIFont(name: "Beleren", size: 15.0)
+    
+    let lowPriceColor  = UIColor.red
+    let midPriceColor  = UIColor.blue
+    let highPriceColor = UIColor(red:0.00, green:0.50, blue:0.00, alpha:1.0)
+    let foilPriceColor = UIColor(red:0.60, green:0.51, blue:0.00, alpha:1.0)
+    let normalColor = UIColor.black
+    
+    // Variables
+    open var card:CMCard?
     
     // MARK: Outlets
     @IBOutlet weak var thumbnailImage: UIImageView!
@@ -165,21 +173,42 @@ open class CardTableViewCell: UITableViewCell {
                 }.done { (pricing: CMCardPricing?) in
                     if let pricing = pricing {
                         self.lowPriceLabel.text = pricing.low > 0 ? String(format: "$%.2f", pricing.low) : "NA"
+                        self.lowPriceLabel.textColor = pricing.low > 0 ? self.lowPriceColor : self.normalColor
+                        
                         self.midPriceLabel.text = pricing.average > 0 ? String(format: "$%.2f", pricing.average) : "NA"
+                        self.midPriceLabel.textColor = pricing.average > 0 ? self.midPriceColor : self.normalColor
+                        
                         self.highPriceLabel.text = pricing.high > 0 ? String(format: "$%.2f", pricing.high) : "NA"
+                        self.highPriceLabel.textColor = pricing.high > 0 ? self.highPriceColor : self.normalColor
+                        
                         self.foilPriceLabel.text = pricing.foil > 0 ? String(format: "$%.2f", pricing.foil) : "NA"
+                        self.foilPriceLabel.textColor = pricing.foil > 0 ? self.foilPriceColor : self.normalColor
                     }
                 }.catch { error in
                     self.lowPriceLabel.text = "NA"
+                    self.lowPriceLabel.textColor = self.normalColor
+                    
                     self.midPriceLabel.text = "NA"
+                    self.midPriceLabel.textColor = self.normalColor
+                    
                     self.highPriceLabel.text = "NA"
+                    self.highPriceLabel.textColor = self.normalColor
+                    
                     self.foilPriceLabel.text = "NA"
+                    self.foilPriceLabel.textColor = self.normalColor
                 }
             } else {
                 self.lowPriceLabel.text = "NA"
+                self.lowPriceLabel.textColor = normalColor
+                
                 self.midPriceLabel.text = "NA"
+                self.midPriceLabel.textColor = normalColor
+                
                 self.highPriceLabel.text = "NA"
+                self.highPriceLabel.textColor = normalColor
+                
                 self.foilPriceLabel.text = "NA"
+                self.foilPriceLabel.textColor = normalColor
             }
         }
     }
