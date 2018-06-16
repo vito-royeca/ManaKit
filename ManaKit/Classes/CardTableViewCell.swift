@@ -169,7 +169,7 @@ open class CardTableViewCell: UITableViewCell {
             }
             if willFetchPricing {
                 firstly {
-                    ManaKit.sharedInstance.fetchTCGPlayerPricing(card: card)
+                    ManaKit.sharedInstance.fetchTCGPlayerCardPricing(card: card)
                 }.done { (pricing: CMCardPricing?) in
                     if let pricing = pricing {
                         self.lowPriceLabel.text = pricing.low > 0 ? String(format: "$%.2f", pricing.low) : "NA"

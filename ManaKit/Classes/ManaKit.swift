@@ -627,7 +627,7 @@ open class ManaKit: NSObject {
         tcgPlayerPrivateKey = privateKey
     }
     
-    open func fetchTCGPlayerPricing(card: CMCard) -> Promise<CMCardPricing?> {
+    open func fetchTCGPlayerCardPricing(card: CMCard) -> Promise<CMCardPricing?> {
         return Promise { seal  in
             if let pricing = findObject("CMCardPricing", objectFinder: ["card.id": card.id as AnyObject], createIfNotFound: true) as? CMCardPricing {
                 var willFetch = false
@@ -688,6 +688,81 @@ open class ManaKit: NSObject {
                 }
             } else {
                 seal.fulfill(nil)
+            }
+        }
+    }
+    
+    open func fetchTCGPlayerStorePricing(card: CMCard) -> Promise<Void> {
+        return Promise { seal  in
+            var willFetch = false
+            
+            if let lastUpdate = card.storePricingLastUpdate {
+                if let diff = Calendar.current.dateComponents([.hour], from: lastUpdate as Date, to: Date()).hour, diff >= kTCGPlayerPricingAge {
+                    willFetch = true
+                }
+            } else {
+                willFetch = true
+            }
+            
+            if willFetch {
+                if let tcgPlayerPartnerKey = tcgPlayerPartnerKey,
+                    let tcgPlayerSetName = card.set?.tcgPlayerName,
+                    let cardName = card.name {
+
+                    // remove existing supplier, if there is any
+                    let suppliers = card.mutableSetValue(forKey: "suppliers")
+                    for supplier in suppliers {
+                        suppliers.remove(supplier)
+                    }
+                    try! dataStack?.mainContext.save()
+                    
+                    
+                    if let urlString = "http://partner.tcgplayer.com/x3/pv.asmx/p?pk=\(tcgPlayerPartnerKey)&s=\(tcgPlayerSetName)&p=\(cardName)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+                        
+                        if let url = URL(string: urlString) {
+                            var rq = URLRequest(url: url)
+                            rq.httpMethod = "GET"
+                            
+                            firstly {
+                                URLSession.shared.dataTask(.promise, with: rq)
+                            }.map {
+                                try! XML(xml: $0.data, encoding: .utf8)
+                            }.done { xml in
+                                for supplier in xml.xpath("//supplier") {
+                                    if let name = supplier.xpath("name").first?.text,
+                                        let condition = supplier.xpath("condition").first?.text,
+                                        let qty = supplier.xpath("qty").first?.text,
+                                        let price = supplier.xpath("price").first?.text,
+                                        let link = supplier.xpath("link").first?.text {
+                                        
+                                        let id = "\(card.id!)_name"
+                                        if let supplier = self.findObject("CMSupplier", objectFinder: ["id": id as AnyObject], createIfNotFound: true) as? CMSupplier {
+                                        
+                                            supplier.name = name
+                                            supplier.condition = condition
+                                            supplier.qty = Int32(qty)!
+                                            supplier.price = Double(price)!
+                                            supplier.link = link
+                                        }
+                                    }
+                                }
+                                if let note = xml.xpath("//note").first?.text {
+                                    card.storePricingNote = note
+                                }
+                                card.storePricingLastUpdate = Date()
+                                
+                                
+                                try! self.dataStack?.mainContext.save()
+                                seal.fulfill()
+                                    
+                            }.catch { error in
+                                seal.reject(error)
+                            }
+                        }
+                    }
+                }
+            } else {
+                seal.fulfill()
             }
         }
     }
