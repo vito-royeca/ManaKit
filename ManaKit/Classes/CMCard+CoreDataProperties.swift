@@ -51,6 +51,8 @@ extension CMCard {
     @NSManaged public var scryfallNumber: String?
     @NSManaged public var source: String?
     @NSManaged public var starter: Bool
+    @NSManaged public var storePricingLastUpdate: Date?
+    @NSManaged public var storePricingNote: String?
     @NSManaged public var subtypes: Data?
     @NSManaged public var supertypes: Data?
     @NSManaged public var text: String?
@@ -76,6 +78,7 @@ extension CMCard {
     @NSManaged public var set: CMSet?
     @NSManaged public var subtypes_: NSSet?
     @NSManaged public var supertypes_: NSSet?
+    @NSManaged public var suppliers: NSSet?
     @NSManaged public var type_: CMCardType?
     @NSManaged public var types_: NSSet?
     @NSManaged public var variations_: NSSet?
@@ -236,6 +239,24 @@ extension CMCard {
     @NSManaged public func removeFromSupertypes_(_ values: NSSet)
 
 }
+
+// MARK: Generated accessors for suppliers
+extension CMCard {
+    
+    @objc(addSuppliers_Object:)
+    @NSManaged public func addToSuppliers(_ value: CMSupplier)
+    
+    @objc(removeSupplierss_Object:)
+    @NSManaged public func removeFromSuppliers_(_ value: CMSupplier)
+    
+    @objc(addSuppliers:)
+    @NSManaged public func addToSuppliers(_ values: NSSet)
+    
+    @objc(removeSuppliers:)
+    @NSManaged public func removeFromSuppliers(_ values: NSSet)
+    
+}
+
 
 // MARK: Generated accessors for types_
 extension CMCard {
