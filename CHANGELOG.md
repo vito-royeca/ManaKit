@@ -1,3 +1,7 @@
+**Version 2.4.2** @ 17.06.2018
+- Added property: CMCard.suppliers for TCGPlayer Store Pricing API
+- Updated the SQLite database to MTGJSON version 3.17
+
 **Version 2.4.1** @ 16.06.2018
 - Changed the color of card pricing in CardTableViewCell.
 
