@@ -27,11 +27,59 @@ class DatabaseMaintainer: NSObject {
     static let sharedInstance = DatabaseMaintainer()
     
     // MARK: Constants
-    let setCodesForProcessing:[String]? = ["TSB", "PLC", "DDJ", "DDH"]
+    let setCodesForProcessing:[String]? = nil//["TSB", "PLC", "DDJ", "DDH"]
     let printMilestone = 1000
     
     // MARK: Variables
     var dateStart = Date()
+    fileprivate var _oldDataStack:DataStack?
+    open var oldDataStack:DataStack? {
+        get {
+            if _oldDataStack == nil {
+                guard let bundleURL = Bundle(for: ManaKit.self).url(forResource: "ManaKit", withExtension: "bundle") else { return nil }
+                guard let bundle = Bundle(url: bundleURL) else { return nil }
+                _oldDataStack = DataStack(modelName: "ManaKit", bundle: bundle, storeType: .sqLite, storeName: "ManaKit_Old")
+            }
+            return _oldDataStack
+        }
+        set {
+            _oldDataStack = newValue
+        }
+    }
+    
+    // MARK: old database
+    func copyOldDatabaseFile() {
+        let bundle = Bundle(for: ManaKit.self)
+        
+        if let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle") {
+            let resourceBundle = Bundle(url: bundleURL)
+            
+            if let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first,
+                let sourcePath = resourceBundle?.path(forResource: "ManaKit.sqlite", ofType: "zip") {
+                
+                let targetPath = "\(docsPath)/ManaKit_Old.sqlite"
+                
+                // Remove old database files
+                for file in try! FileManager.default.contentsOfDirectory(atPath: docsPath) {
+                    let path = "\(docsPath)/\(file)"
+                    if file.hasPrefix("ManaKit_Old") {
+                        try! FileManager.default.removeItem(atPath: path)
+                    }
+                }
+                    
+                // Unzip
+                SSZipArchive.unzipFile(atPath: sourcePath, toDestination: docsPath)
+                
+                // rename
+                try! FileManager.default.moveItem(atPath: "\(docsPath)/ManaKit.sqlite", toPath: targetPath)
+            }
+        }
+        
+        let request:NSFetchRequest<CMSystem> = CMSystem.fetchRequest() as! NSFetchRequest<CMSystem>
+        if let system = try! oldDataStack?.mainContext.fetch(request).first {
+            print("old database version: \(system.version!)")
+        }
+    }
     
     // MARK: Core Data updates 1
     func json2CoreData() {
@@ -1270,6 +1318,42 @@ class DatabaseMaintainer: NSObject {
         return
     }
 
+    func copyOldMCIAndScryfallData() {
+        dateStart = Date()
+        
+        copyOldDatabaseFile()
+        
+        let request:NSFetchRequest<CMCard> = CMCard.fetchRequest() as! NSFetchRequest<CMCard>
+        
+        if let oldCards = try! oldDataStack?.mainContext.fetch(request) {
+            var count = 0
+            print("Updating OLD data: \(count)/\(oldCards.count) \(Date())")
+            
+            for oldCard in oldCards {
+                let newRequest:NSFetchRequest<CMCard> = CMCard.fetchRequest() as! NSFetchRequest<CMCard>
+                newRequest.predicate = NSPredicate(format: "id = %@", oldCard.id!)
+                
+                if let card = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(newRequest).first {
+                    card.mciNumber = oldCard.mciNumber
+                    card.numberOrder = oldCard.numberOrder
+                    card.set!.scryfallCode = oldCard.set!.scryfallCode
+                    card.scryfallNumber = oldCard.scryfallNumber
+                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                }
+                
+                count += 1
+                if count % printMilestone == 0 {
+                    print("Updating OLD data: \(count)/\(oldCards.count) \(Date())")
+                }
+            }
+        }
+        
+        let dateEnd = Date()
+        let timeDifference = dateEnd.timeIntervalSince(dateStart)
+        print("Total Time Elapsed: \(dateStart) - \(dateEnd) = \(self.format(timeDifference))")
+        print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
+    }
+        
     /**
       * Updates the `CMCard.mciNumber` value from http://magiccards.info/
       *
@@ -1421,7 +1505,8 @@ class DatabaseMaintainer: NSObject {
         if let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
             var promises = [Promise<URL?>]()
             for set in sets {
-                var willUpdate = true/*false
+                var willUpdate = false
+                
                 if let cards = set.cards?.allObjects as? [CMCard] {
                     for card in cards {
                         if card.scryfallNumber == nil {
@@ -1429,7 +1514,7 @@ class DatabaseMaintainer: NSObject {
                             break
                         }
                     }
-                }*/
+                }
                 
                 if willUpdate {
                     let code = set.scryfallCode ?? set.code
@@ -1513,6 +1598,11 @@ class DatabaseMaintainer: NSObject {
                                 }
                             }
                             
+                            // match with mciNumber and number
+                            if !found {
+                                
+                            }
+                            
                             // match with name and artist
                             if !found {
                                 let request:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CMCard")
@@ -1520,7 +1610,7 @@ class DatabaseMaintainer: NSObject {
                                 request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true),
                                                            NSSortDescriptor(key: "number", ascending: true),
                                                            NSSortDescriptor(key: "mciNumber", ascending: true)]
-                                
+
                                 if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) as? [CMCard] {
                                     for card in cards {
                                         card.scryfallNumber = collectorNumber

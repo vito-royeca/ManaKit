@@ -15,8 +15,8 @@ import SSZipArchive
 import Sync
 
 
-public let kMTGJSONVersion      = "3.16 C"
-public let kMTGJSONDate         = "Jun 2, 2018"
+public let kMTGJSONVersion      = "3.17"
+public let kMTGJSONDate         = "Jun 15, 2018"
 public let kMTGJSONVersionKey   = "kMTGJSONVersionKey"
 public let kImagesVersionKey    = "kImagesVersionKey"
 public let kCardImageSource     = "http://magiccards.info/scans/en"
@@ -278,7 +278,7 @@ open class ManaKit: NSObject {
                 willCopy = !FileManager.default.fileExists(atPath: targetPath)
                 
                 // Check if we saved the version number
-                if let version = databaseVersion() /*UserDefaults.standard.object(forKey: kMTGJSONVersionKey) as? String*/ {
+                if let version = databaseVersion() {
                     willCopy = version != kMTGJSONVersion
                 } else {
                     willCopy = true
@@ -717,7 +717,7 @@ open class ManaKit: NSObject {
                     try! dataStack?.mainContext.save()
                     
                     
-                    if let urlString = "http://partner.tcgplayer.com/x3/pv.asmx/p?pk=\(tcgPlayerPartnerKey)&s=\(tcgPlayerSetName)&p=\(cardName)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+                    if let urlString = "http://partner.tcgplayer.com/x3/pv.asmx/p?pk=\(tcgPlayerPartnerKey)&s=\(tcgPlayerSetName)&p=\(cardName)&v=8".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
                         
                         if let url = URL(string: urlString) {
                             var rq = URLRequest(url: url)
@@ -735,14 +735,17 @@ open class ManaKit: NSObject {
                                         let price = supplier.xpath("price").first?.text,
                                         let link = supplier.xpath("link").first?.text {
                                         
-                                        let id = "\(card.id!)_name"
+                                        let id = "\(name)_\(condition)_\(qty)_\(price)"
                                         if let supplier = self.findObject("CMSupplier", objectFinder: ["id": id as AnyObject], createIfNotFound: true) as? CMSupplier {
                                         
+                                            supplier.id = id
                                             supplier.name = name
                                             supplier.condition = condition
                                             supplier.qty = Int32(qty)!
                                             supplier.price = Double(price)!
                                             supplier.link = link
+                                            supplier.card = card
+                                            card.addToSuppliers(supplier)
                                         }
                                     }
                                 }
@@ -750,7 +753,6 @@ open class ManaKit: NSObject {
                                     card.storePricingNote = note
                                 }
                                 card.storePricingLastUpdate = Date()
-                                
                                 
                                 try! self.dataStack?.mainContext.save()
                                 seal.fulfill()
