@@ -230,6 +230,7 @@ open class CardTableViewCell: UITableViewCell {
             
             let nameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: x + CGFloat(17), height: nameAndCCView.frame.size.height))
             nameLabel.text = card.name
+
             if let releaseDate = card.set!.releaseDate {
                 let isModern = ManaKit.sharedInstance.isModern(card)
                 let formatter = DateFormatter()

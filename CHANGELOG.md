@@ -1,3 +1,6 @@
+**Version 2.4.4** @ 17.06.2018
+- Fixed warning: automatically Adjusts Font requires using a Dynamic Type text style.
+
 **Version 2.4.3** @ 17.06.2018
 - Fixed error: use of undeclared type 'CMSupplier'.
 
