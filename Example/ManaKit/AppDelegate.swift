@@ -29,6 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        DatabaseMaintainer.sharedInstance.copyOldMCIAndScryfallData()
 //        DatabaseMaintainer.sharedInstance.updateMCINumbers()
 //        DatabaseMaintainer.sharedInstance.updateScryfallNumbers()
+        DatabaseMaintainer.sharedInstance.updateSystem()
         
 //        Core Data updates 2
 //        //DatabaseMaintainer.sharedInstance.updateForeignNames()
@@ -38,8 +39,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          // Temporary updates
         
           // Normal run
-        ManaKit.sharedInstance.setupResources()
-        ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "ManaGuide", publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720", privateKey: nil)
+//        ManaKit.sharedInstance.setupResources()
+//        ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "ManaGuide", publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720", privateKey: nil)
         
         return true
     }

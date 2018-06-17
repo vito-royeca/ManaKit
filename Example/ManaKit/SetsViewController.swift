@@ -59,7 +59,7 @@ class SetsViewController: UIViewController {
             request = fetchRequest
         } else {
             request = NSFetchRequest(entityName: "CMSet")
-            request!.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+            request!.sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: false)]
         }
         
         let dataSource = DATASource(tableView: tableView, cellIdentifier: "SetCell", fetchRequest: request!, mainContext: ManaKit.sharedInstance.dataStack!.mainContext, configuration: { cell, item, indexPath in

@@ -232,7 +232,7 @@ class DatabaseMaintainer: NSObject {
             }
         }
         
-        request.predicate = NSPredicate(format: "keyruneCode == nil")
+//        request.predicate = NSPredicate(format: "keyruneCode == nil")
         request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         if let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
             print("Updating Keyrune codes: \(sets.count)")

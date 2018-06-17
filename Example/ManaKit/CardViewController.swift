@@ -30,7 +30,7 @@ class CardViewController: UIViewController {
         super.viewDidAppear(animated)
         
         // to fix casting cost placement
-        tableView.reloadData()
+        tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .none)
     }
 }
 
