@@ -1,8 +1,8 @@
 //
 //  CMSupplier+CoreDataProperties.swift
-//  Pods
+//  ManaKit
 //
-//  Created by Jovito Royeca on 16/06/2018.
+//  Created by Jovito Royeca on 17/06/2018.
 //
 //
 
@@ -12,16 +12,16 @@ import CoreData
 
 extension CMSupplier {
 
-    @nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
-        return NSFetchRequest<CMSupplier>(entityName: "CMSupplier") as! NSFetchRequest<NSFetchRequestResult>
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMSupplier> {
+        return NSFetchRequest<CMSupplier>(entityName: "CMSupplier")
     }
 
-    @NSManaged public var id: String?
-    @NSManaged public var name: String?
     @NSManaged public var condition: String?
-    @NSManaged public var qty: Int32
-    @NSManaged public var price: Double
+    @NSManaged public var id: String?
     @NSManaged public var link: String?
+    @NSManaged public var name: String?
+    @NSManaged public var price: Double
+    @NSManaged public var qty: Int32
     @NSManaged public var card: CMCard?
 
 }

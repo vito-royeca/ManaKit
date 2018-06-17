@@ -1,15 +1,15 @@
 //
 //  CMSupplier+CoreDataClass.swift
-//  Pods
+//  ManaKit
 //
-//  Created by Jovito Royeca on 16/06/2018.
+//  Created by Jovito Royeca on 17/06/2018.
 //
 //
 
 import Foundation
 import CoreData
 
-@objc(CMSuplier)
+@objc(CMSupplier)
 public class CMSupplier: NSManagedObject {
 
 }

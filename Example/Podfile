@@ -1,12 +1,11 @@
 platform :ios, "9.0"
 use_frameworks!
 
-target 'ManaKit_Example' do
-    pod 'ManaKit', :path => '../'
-
-  target 'ManaKit_Tests' do
+def default_pods
     inherit! :search_paths
-
+    
+    pod 'ManaKit', :path => '../'
+    
     pod 'Sync'#, '~> 2'
     pod 'DATASource'#, '~> 5.8'
     pod 'DATAStack'#, '~> 6'
@@ -15,6 +14,12 @@ target 'ManaKit_Example' do
     pod 'Reachability'
     pod 'SSZipArchive'
     pod 'SDWebImage', '~> 4.0'
+end
 
-  end
+target 'ManaKit_Example' do
+    default_pods
+end
+
+target 'ManaKit_Tests' do
+    default_pods
 end

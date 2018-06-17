@@ -243,11 +243,11 @@ extension CMCard {
 // MARK: Generated accessors for suppliers
 extension CMCard {
     
-    @objc(addSuppliers_Object:)
+    @objc(addSuppliersObject:)
     @NSManaged public func addToSuppliers(_ value: CMSupplier)
     
-    @objc(removeSupplierss_Object:)
-    @NSManaged public func removeFromSuppliers_(_ value: CMSupplier)
+    @objc(removeSuppliersObject:)
+    @NSManaged public func removeFromSuppliers(_ value: CMSupplier)
     
     @objc(addSuppliers:)
     @NSManaged public func addToSuppliers(_ values: NSSet)

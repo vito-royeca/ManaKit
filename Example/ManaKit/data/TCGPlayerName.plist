@@ -210,6 +210,8 @@
 	<string>Game Day Promos</string>
 	<key>GTC</key>
 	<string>Gatecrash</string>
+	<key>GS1</key>
+	<string>Global Series Jiang Yanggu &amp; Mu Yanling</string>
 	<key>pGPX</key>
 	<string>Grand Prix Promos</string>
 	<key>pGTW</key>
@@ -366,6 +368,8 @@
 	<string>Shadows over Innistrad</string>
 	<key>ALA</key>
 	<string>Shards of Alara</string>
+	<key>SS1</key>
+	<string>Signature Spellbook: Jace</string>
 	<key>pHHO</key>
 	<string>Special Occasion</string>
 	<key>pCEL</key>

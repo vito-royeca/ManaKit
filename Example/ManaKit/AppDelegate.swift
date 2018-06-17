@@ -7,7 +7,9 @@
 //
 
 import UIKit
+import Sync
 import ManaKit
+import PromiseKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -24,9 +26,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        DatabaseMaintainer.sharedInstance.json2CoreData()
 //        DatabaseMaintainer.sharedInstance.updateTCGPlayerName()
 //        DatabaseMaintainer.sharedInstance.updateKeyruneCode()
+//        DatabaseMaintainer.sharedInstance.copyOldMCIAndScryfallData()
 //        DatabaseMaintainer.sharedInstance.updateMCINumbers()
 //        DatabaseMaintainer.sharedInstance.updateScryfallNumbers()
-//        DatabaseMaintainer.sharedInstance.updateSystem()
         
 //        Core Data updates 2
 //        //DatabaseMaintainer.sharedInstance.updateForeignNames()
