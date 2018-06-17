@@ -1,3 +1,6 @@
+**Version 2.4.3** @ 17.06.2018
+- Fixed error: use of undeclared type 'CMSupplier'.
+
 **Version 2.4.2** @ 17.06.2018
 - Added property: CMCard.suppliers for TCGPlayer Store Pricing API
 - Updated the SQLite database to MTGJSON version 3.17
