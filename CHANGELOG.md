@@ -1,3 +1,7 @@
+**Version 2.4.5** @ 20.06.2018
+- Now using Swift "guard" code
+- Mana Cost in CardTableViewCel is now rendered via NSAttributedString.
+
 **Version 2.4.4** @ 17.06.2018
 - Fixed warning: automatically Adjusts Font requires using a Dynamic Type text style.
 

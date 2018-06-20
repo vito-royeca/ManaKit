@@ -135,46 +135,46 @@ open class ManaKit: NSObject {
      */
     open func imageFromFramework(imageName: ImageName) -> UIImage? {
         let bundle = Bundle(for: ManaKit.self)
-        
-        if let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle") {
-            let resourceBundle = Bundle(url: bundleURL)
-            return UIImage(named: imageName.rawValue, in: resourceBundle, compatibleWith: nil)
+        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
+            let resourceBundle = Bundle(url: bundleURL) else {
+            return nil
         }
         
-        return nil
+        return UIImage(named: imageName.rawValue, in: resourceBundle, compatibleWith: nil)
     }
     
     open func manaImages(manaCost: String) -> [[String:UIImage]] {
         let bundle = Bundle(for: ManaKit.self)
-        
         var array = [[String:UIImage]]()
+        
+        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
+            let resourceBundle = Bundle(url: bundleURL) else {
+            return array
+        }
+        
         let mc = manaCost.replacingOccurrences(of: "{", with: "")
             .replacingOccurrences(of: "}", with: " ")
             .replacingOccurrences(of: "/", with: "")
-        
-        if let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle") {
-            let resourceBundle = Bundle(url: bundleURL)
-            let manaArray = mc.components(separatedBy: " ")
+        let manaArray = mc.components(separatedBy: " ")
 
-            for mana in manaArray {
-                if mana.count == 0 {
-                    continue
-                }
-                
-                var image = UIImage(named: "\(mana)", in: resourceBundle, compatibleWith: nil)
-                
-                // fix for dual manas
-                if image == nil {
-                    if mana.count > 1 {
-                        let reversedMana = String(mana.reversed())
+        for mana in manaArray {
+            if mana.count == 0 {
+                continue
+            }
+            
+            var image = UIImage(named: "\(mana)", in: resourceBundle, compatibleWith: nil)
+            
+            // fix for dual manas
+            if image == nil {
+                if mana.count > 1 {
+                    let reversedMana = String(mana.reversed())
 
-                        image = UIImage(named: "\(reversedMana)", in: resourceBundle, compatibleWith: nil)
-                    }
+                    image = UIImage(named: "\(reversedMana)", in: resourceBundle, compatibleWith: nil)
                 }
-                
-                if let image = image {
-                    array.append([mana:image])
-                }
+            }
+            
+            if let image = image {
+                array.append([mana:image])
             }
         }
         
@@ -183,14 +183,12 @@ open class ManaKit: NSObject {
     
     open func symbolImage(name: String) -> UIImage? {
         let bundle = Bundle(for: ManaKit.self)
-        
-        if let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle") {
-            let resourceBundle = Bundle(url: bundleURL)
-            
-            return UIImage(named: name, in: resourceBundle, compatibleWith: nil)
+        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
+            let resourceBundle = Bundle(url: bundleURL) else {
+            return nil
         }
         
-        return nil
+        return UIImage(named: name, in: resourceBundle, compatibleWith: nil)
     }
     
     open func symbolHTML(name: String) -> String? {
@@ -212,43 +210,42 @@ open class ManaKit: NSObject {
             }
         }
         
-        if let image = image {
-            if let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first {
-                let targetDir = "\(cachePath)/symbols"
-                let targetPath = "\(targetDir)/\(cleanName).png"
-                
-                if !FileManager.default.fileExists(atPath: targetPath) {
-                    // create targetDir
-                    if !FileManager.default.fileExists(atPath: targetDir) {
-                        try! FileManager.default.createDirectory(atPath: targetDir, withIntermediateDirectories: true, attributes: nil)
-                    }
-                
-                    try! UIImagePNGRepresentation(image)?.write(to: URL(fileURLWithPath: targetPath))
-                }
-                var width = "25"
-                if cleanName == "100" {
-                    width = "50"
-                } else if cleanName == "1000000" {
-                    width = "75"
-                }
-                
-                html = "<img src='\(targetPath)' width='\(width)' height='25' />"
-            }
+        guard let img = image,
+            let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
+            return html
         }
         
+        let targetDir = "\(cachePath)/symbols"
+        let targetPath = "\(targetDir)/\(cleanName).png"
+        
+        if !FileManager.default.fileExists(atPath: targetPath) {
+            // create targetDir
+            if !FileManager.default.fileExists(atPath: targetDir) {
+                try! FileManager.default.createDirectory(atPath: targetDir, withIntermediateDirectories: true, attributes: nil)
+            }
+        
+            try! UIImagePNGRepresentation(img)?.write(to: URL(fileURLWithPath: targetPath))
+        }
+        var width = "25"
+        if cleanName == "100" {
+            width = "50"
+        } else if cleanName == "1000000" {
+            width = "75"
+        }
+        
+        html = "<img src='\(targetPath)' width='\(width)' height='25' />"
+            
         return html
     }
     
     open func nibFromBundle(_ name: String) -> UINib? {
         let bundle = Bundle(for: ManaKit.self)
-        
-        if let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle") {
-            let resourceBundle = Bundle(url: bundleURL)
-            
-            return UINib(nibName: name, bundle: resourceBundle)
+        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
+            let resourceBundle = Bundle(url: bundleURL) else {
+            return nil
         }
         
-        return nil
+        return UINib(nibName: name, bundle: resourceBundle)
     }
     
     open func setupResources() {
@@ -263,79 +260,76 @@ open class ManaKit: NSObject {
     
     func copyDatabaseFile() {
         let bundle = Bundle(for: ManaKit.self)
+        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
+            let resourceBundle = Bundle(url: bundleURL),
+            let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first,
+            let sourcePath = resourceBundle.path(forResource: "ManaKit.sqlite", ofType: "zip"),
+            let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String else {
+            return
+        }
         
-        if let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle") {
-            let resourceBundle = Bundle(url: bundleURL)
-            
-            if let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first,
-                let sourcePath = resourceBundle?.path(forResource: "ManaKit.sqlite", ofType: "zip"),
-                let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String {
-                
-                var willCopy = true
+        var willCopy = true
 
-                // Check if we have old files
-                let targetPath = "\(docsPath)/\(bundleName).sqlite"
-                willCopy = !FileManager.default.fileExists(atPath: targetPath)
-                
-                // Check if we saved the version number
-                if let version = databaseVersion() {
-                    willCopy = version != kMTGJSONVersion
-                } else {
-                    willCopy = true
-                }
-                
-                if willCopy {
-                    // Shutdown database
-                    dataStack = nil
-                    
-                    // Remove old database files
-                    for file in try! FileManager.default.contentsOfDirectory(atPath: docsPath) {
-                        let path = "\(docsPath)/\(file)"
-                        if file.hasPrefix(bundleName) {
-                            try! FileManager.default.removeItem(atPath: path)
-                        }
-                    }
-                    
-                    // Unzip
-                    SSZipArchive.unzipFile(atPath: sourcePath, toDestination: docsPath)
-                    
-                    // rename
-                    try! FileManager.default.moveItem(atPath: "\(docsPath)/ManaKit.sqlite", toPath: targetPath)
-                    
-                    // skip from iCloud backups!
-                    var targetURL = URL(fileURLWithPath: targetPath)
-                    var resourceValues = URLResourceValues()
-                    resourceValues.isExcludedFromBackup = true
-                    try! targetURL.setResourceValues(resourceValues)
-                    
-                    // Save the version
-                    UserDefaults.standard.set(kMTGJSONVersion, forKey: kMTGJSONVersionKey)
-                    UserDefaults.standard.synchronize()
+        // Check if we have old files
+        let targetPath = "\(docsPath)/\(bundleName).sqlite"
+        willCopy = !FileManager.default.fileExists(atPath: targetPath)
+        
+        // Check if we saved the version number
+        if let version = databaseVersion() {
+            willCopy = version != kMTGJSONVersion
+        } else {
+            willCopy = true
+        }
+        
+        if willCopy {
+            // Shutdown database
+            dataStack = nil
+            
+            // Remove old database files
+            for file in try! FileManager.default.contentsOfDirectory(atPath: docsPath) {
+                let path = "\(docsPath)/\(file)"
+                if file.hasPrefix(bundleName) {
+                    try! FileManager.default.removeItem(atPath: path)
                 }
             }
+            
+            // Unzip
+            SSZipArchive.unzipFile(atPath: sourcePath, toDestination: docsPath)
+            
+            // rename
+            try! FileManager.default.moveItem(atPath: "\(docsPath)/ManaKit.sqlite", toPath: targetPath)
+            
+            // skip from iCloud backups!
+            var targetURL = URL(fileURLWithPath: targetPath)
+            var resourceValues = URLResourceValues()
+            resourceValues.isExcludedFromBackup = true
+            try! targetURL.setResourceValues(resourceValues)
+            
+            // Save the version
+            UserDefaults.standard.set(kMTGJSONVersion, forKey: kMTGJSONVersionKey)
+            UserDefaults.standard.synchronize()
         }
     }
     
     func loadCustomFonts() {
         let bundle = Bundle(for: ManaKit.self)
+        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
+            let resourceBundle = Bundle(url: bundleURL),
+            let urls = resourceBundle.urls(forResourcesWithExtension: "ttf", subdirectory: "fonts") else {
+            return
+        }
         
-        if let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle") {
-            let resourceBundle = Bundle(url: bundleURL)
-            
-            if let urls = resourceBundle?.urls(forResourcesWithExtension: "ttf", subdirectory: "fonts") {
-                for url in urls {
-                    let data = try! Data(contentsOf: url)
-                    let error: UnsafeMutablePointer<Unmanaged<CFError>?>? = nil
+        for url in urls {
+            let data = try! Data(contentsOf: url)
+            let error: UnsafeMutablePointer<Unmanaged<CFError>?>? = nil
 
-                    if let provider = CGDataProvider(data: data as CFData) {
-                        let font = CGFont(provider)
-                        
-                        if !CTFontManagerRegisterGraphicsFont(font, error) {
-                            if let unmanagedError = error?.pointee {
-                                if let errorDescription = CFErrorCopyDescription(unmanagedError.takeUnretainedValue()) {
-                                    print("Failed to load font: \(errorDescription)")
-                                }
-                            }
+            if let provider = CGDataProvider(data: data as CFData) {
+                let font = CGFont(provider)
+                
+                if !CTFontManagerRegisterGraphicsFont(font, error) {
+                    if let unmanagedError = error?.pointee {
+                        if let errorDescription = CFErrorCopyDescription(unmanagedError.takeUnretainedValue()) {
+                            print("Failed to load font: \(errorDescription)")
                         }
                     }
                 }
@@ -386,91 +380,89 @@ open class ManaKit: NSObject {
     }
     
     open func databaseVersion() -> String? {
-        var version:String?
-        
         let objectFinder = ["version": kMTGJSONVersion] as [String: AnyObject]
-        if let object = ManaKit.sharedInstance.findObject("CMSystem", objectFinder: objectFinder, createIfNotFound: true) as? CMSystem {
-            version = object.version
+        guard let object = ManaKit.sharedInstance.findObject("CMSystem", objectFinder: objectFinder, createIfNotFound: true) as? CMSystem else {
+            return nil
         }
         
-        return version
+        return object.version
     }
     
     // MARK: Miscellaneous methods
     open func downloadImage(ofCard card: CMCard, imageType: ImageType) -> Promise<UIImage?> {
         return Promise { seal  in
-            
-            if let url = imageURL(ofCard: card, imageType: imageType) {
-                if let image = self.cardImage(card, imageType: imageType) {
-                    seal.fulfill(image)
-                } else {
-                    let downloader = SDWebImageDownloader.shared()
-                    let cacheKey = url.absoluteString
-                    let completion = { (image: UIImage?, data: Data?, error: Error?, finished: Bool) in
-                        if let error = error {
-                            seal.reject(error)
-                        } else {
-                            if let image = image {
-                                let imageCache = SDImageCache.init()
-                                imageCache.store(image, forKey: cacheKey, toDisk: true, completion: nil)
-                                
-                                if imageType == .artCrop {
-                                    if let _ = card.scryfallNumber {
-                                        seal.fulfill(image)
-                                    } else {
-                                        seal.fulfill(self.crop(image, ofCard: card))
-                                    }
-                                } else {
-                                    // return rounded corners
-                                    let roundCornered = image.roundCornered(card: card)
-                                    seal.fulfill(roundCornered)
-                                }
-                                
-                            } else {
-                                seal.fulfill(nil)
-                            }
-                        }
-                    }
-                    
-                    downloader.downloadImage(with: url, options: .lowPriority, progress: nil, completed: completion)
-                }
+            guard let url = imageURL(ofCard: card, imageType: imageType) else {
+                let error = NSError(domain: NSURLErrorDomain, code: 404, userInfo: [NSLocalizedDescriptionKey: "No valid URL for image"])
+                seal.reject(error)
+                return
             }
             
+            if let image = self.cardImage(card, imageType: imageType) {
+                seal.fulfill(image)
+            } else {
+                let downloader = SDWebImageDownloader.shared()
+                let cacheKey = url.absoluteString
+                let completion = { (image: UIImage?, data: Data?, error: Error?, finished: Bool) in
+                    if let error = error {
+                        seal.reject(error)
+                    } else {
+                        if let image = image {
+                            let imageCache = SDImageCache.init()
+                            imageCache.store(image, forKey: cacheKey, toDisk: true, completion: nil)
+                            
+                            if imageType == .artCrop {
+                                if let _ = card.scryfallNumber {
+                                    seal.fulfill(image)
+                                } else {
+                                    seal.fulfill(self.crop(image, ofCard: card))
+                                }
+                            } else {
+                                // return rounded corners
+                                let roundCornered = image.roundCornered(card: card)
+                                seal.fulfill(roundCornered)
+                            }
+                            
+                        } else {
+                            seal.fulfill(nil)
+                        }
+                    }
+                }
+                
+                downloader.downloadImage(with: url, options: .lowPriority, progress: nil, completed: completion)
+            }
         }
     }
     
     open func crop(_ image: UIImage, ofCard card: CMCard) -> UIImage? {
-        if let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first {
-            let path = "\(dir)/crop/\(card.set!.code!)"
-            
-            if let id = card.id {
-                let cropPath = "\(path)/\(id).jpg"
-                
-                if FileManager.default.fileExists(atPath: cropPath) {
-                    return UIImage(contentsOfFile: cropPath)
-                } else {
-                    let width = image.size.width * 3/4
-                    let rect = CGRect(x: (image.size.width-width) / 2,
-                                      y: isModern(card) ? 47 : 40,
-                                      width: width,
-                                      height: width-60)
-                    
-                    let imageRef = image.cgImage!.cropping(to: rect)
-                    let croppedImage = UIImage(cgImage: imageRef!, scale: image.scale, orientation: image.imageOrientation)
-                    
-                    
-                    // write to file
-                    if !FileManager.default.fileExists(atPath: path)  {
-                        try! FileManager.default.createDirectory(atPath: path, withIntermediateDirectories: true, attributes: nil)
-                    }
-                    try! UIImageJPEGRepresentation(croppedImage, 1.0)?.write(to: URL(fileURLWithPath: cropPath))
-                    
-                    return UIImage(contentsOfFile: cropPath)
-                }
-            }
+        guard let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first,
+            let id = card.id else {
+            return nil
         }
         
-        return nil
+        let path = "\(dir)/crop/\(card.set!.code!)"
+        let cropPath = "\(path)/\(id).jpg"
+            
+        if FileManager.default.fileExists(atPath: cropPath) {
+            return UIImage(contentsOfFile: cropPath)
+        } else {
+            let width = image.size.width * 3/4
+            let rect = CGRect(x: (image.size.width-width) / 2,
+                              y: isModern(card) ? 47 : 40,
+                              width: width,
+                              height: width-60)
+            
+            let imageRef = image.cgImage!.cropping(to: rect)
+            let croppedImage = UIImage(cgImage: imageRef!, scale: image.scale, orientation: image.imageOrientation)
+            
+            
+            // write to file
+            if !FileManager.default.fileExists(atPath: path)  {
+                try! FileManager.default.createDirectory(atPath: path, withIntermediateDirectories: true, attributes: nil)
+            }
+            try! UIImageJPEGRepresentation(croppedImage, 1.0)?.write(to: URL(fileURLWithPath: cropPath))
+            
+            return UIImage(contentsOfFile: cropPath)
+        }
     }
     
     open func cardImage(_ card: CMCard, imageType: ImageType) -> UIImage? {
@@ -488,25 +480,20 @@ open class ManaKit: NSObject {
         }
         
         if willGetFromCache {
-            if let url = imageURL(ofCard: card, imageType: imageType) {
-                let imageCache = SDImageCache.init()
-                let cacheKey = url.absoluteString
-                
-//                let semaphore = DispatchSemaphore(value: 0)
-//                let cacheQueryCompletion = { (image: UIImage?, data: Data?, cacheType: SDImageCacheType) in
-//                    cardImage = image
-//                    semaphore.signal()
-//                }
-//
-//                imageCache.queryCacheOperation(forKey: cacheKey, options: .queryDiskSync, done: cacheQueryCompletion)
-//                semaphore.wait()
-                cardImage = imageCache.imageFromDiskCache(forKey: cacheKey)
-                
-                // return roundCornered image
-                if let c = cardImage {
-                    cardImage = c.roundCornered(card: card)
-                }
+            guard let url = imageURL(ofCard: card, imageType: imageType) else {
+                return nil
             }
+            
+            let imageCache = SDImageCache.init()
+            let cacheKey = url.absoluteString
+            
+            cardImage = imageCache.imageFromDiskCache(forKey: cacheKey)
+            
+            // return roundCornered image
+            if let c = cardImage {
+                cardImage = c.roundCornered(card: card)
+            }
+            
         }
         
         return cardImage
@@ -528,16 +515,16 @@ open class ManaKit: NSObject {
         if let _ = card.scryfallNumber {
             image = cardImage(card, imageType: .artCrop)
         } else {
-            if let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first {
-                let path = "\(dir)/crop/\(card.set!.code!)"
-                
-                if let id = card.id {
-                    let cropPath = "\(path)/\(id).jpg"
+            guard let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first,
+                let id = card.id else {
+                return nil
+            }
+            
+            let path = "\(dir)/crop/\(card.set!.code!)"
+            let cropPath = "\(path)/\(id).jpg"
                     
-                    if FileManager.default.fileExists(atPath: cropPath) {
-                        image = UIImage(contentsOfFile: cropPath)
-                    }
-                }
+            if FileManager.default.fileExists(atPath: cropPath) {
+                image = UIImage(contentsOfFile: cropPath)
             }
         }
         
@@ -576,7 +563,6 @@ open class ManaKit: NSObject {
             if let set = card.set {
                 if let number = card.scryfallNumber,
                     let scryfallCode = set.scryfallCode ?? set.code {
-//                    url = URL(string: "https://img.scryfall.com/cards/\(dir)/en/\(scryfallCode.lowercased())/\(number).\(ext)")
                     urlString = "https://img.scryfall.com/cards/\(dir)/en/\(scryfallCode.lowercased())/\(number).\(ext)"
                 }
             }
@@ -605,19 +591,20 @@ open class ManaKit: NSObject {
     }
     
     open func isModern(_ card: CMCard) -> Bool {
-        var isModern = false
-        
-        if let releaseDate = card.set!.releaseDate {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd"
-            if let eightEditionDate = formatter.date(from: kEightEditionRelease),
-                let setReleaseDate = formatter.date(from: releaseDate) {
-                isModern = setReleaseDate.compare(eightEditionDate) == .orderedDescending ||
-                    setReleaseDate.compare(eightEditionDate) == .orderedSame
-            }
+        guard let releaseDate = card.set!.releaseDate else {
+            return false
         }
         
-        return isModern
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+    
+        if let eightEditionDate = formatter.date(from: kEightEditionRelease),
+            let setReleaseDate = formatter.date(from: releaseDate) {
+            return setReleaseDate.compare(eightEditionDate) == .orderedDescending ||
+                setReleaseDate.compare(eightEditionDate) == .orderedSame
+        }
+        
+        return false
     }
 
     // MARK: TCGPlayer
@@ -629,65 +616,66 @@ open class ManaKit: NSObject {
     
     open func fetchTCGPlayerCardPricing(card: CMCard) -> Promise<CMCardPricing?> {
         return Promise { seal  in
-            if let pricing = findObject("CMCardPricing", objectFinder: ["card.id": card.id as AnyObject], createIfNotFound: true) as? CMCardPricing {
-                var willFetch = false
-                
-                if let lastUpdate = pricing.lastUpdate {
-                    if let diff = Calendar.current.dateComponents([.hour], from: lastUpdate as Date, to: Date()).hour, diff >= kTCGPlayerPricingAge {
-                        willFetch = true
-                    }
-                } else {
+            guard let pricing = findObject("CMCardPricing", objectFinder: ["card.id": card.id as AnyObject], createIfNotFound: true) as? CMCardPricing else {
+                seal.fulfill(nil)
+                return
+            }
+            
+            var willFetch = false
+            
+            if let lastUpdate = pricing.lastUpdate {
+                if let diff = Calendar.current.dateComponents([.hour], from: lastUpdate as Date, to: Date()).hour, diff >= kTCGPlayerPricingAge {
                     willFetch = true
                 }
+            } else {
+                willFetch = true
+            }
+            
+            if willFetch {
+                guard let tcgPlayerPartnerKey = tcgPlayerPartnerKey,
+                    let tcgPlayerSetName = card.set?.tcgPlayerName,
+                    let cardName = card.name,
+                    let urlString = "http://partner.tcgplayer.com/x3/phl.asmx/p?pk=\(tcgPlayerPartnerKey)&s=\(tcgPlayerSetName)&p=\(cardName)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+                    let url = URL(string: urlString) else {
+                    
+                    seal.fulfill(nil)
+                    return
+                }
                 
-                if willFetch {
-                    if let tcgPlayerPartnerKey = tcgPlayerPartnerKey,
-                        let tcgPlayerSetName = card.set?.tcgPlayerName,
-                        let cardName = card.name {
-                        
-                        if let urlString = "http://partner.tcgplayer.com/x3/phl.asmx/p?pk=\(tcgPlayerPartnerKey)&s=\(tcgPlayerSetName)&p=\(cardName)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-                            
-                            if let url = URL(string: urlString) {
-                                var rq = URLRequest(url: url)
-                                rq.httpMethod = "GET"
-                                
-                                firstly {
-                                    URLSession.shared.dataTask(.promise, with: rq)
-                                }.map {
-                                    try! XML(xml: $0.data, encoding: .utf8)
-                                }.done { xml in
-                                    for product in xml.xpath("//product") {
-                                        if let id = product.xpath("id").first?.text,
-                                            let hiprice = product.xpath("hiprice").first?.text,
-                                            let lowprice = product.xpath("lowprice").first?.text,
-                                            let avgprice = product.xpath("avgprice").first?.text,
-                                            let foilavgprice = product.xpath("foilavgprice").first?.text,
-                                            let link = product.xpath("link").first?.text {
-                                            pricing.id = Int64(id)!
-                                            pricing.high = Double(hiprice)!
-                                            pricing.low = Double(lowprice)!
-                                            pricing.average = Double(avgprice)!
-                                            pricing.foil = Double(foilavgprice)!
-                                            pricing.link = link
-                                        }
-                                    }
-                                    pricing.lastUpdate = NSDate()
-                                    pricing.card = card
-                                    
-                                    try! self.dataStack?.mainContext.save()
-                                    seal.fulfill(pricing)
-                                        
-                                }.catch { error in
-                                        seal.reject(error)
-                                }
-                            }
+                var rq = URLRequest(url: url)
+                rq.httpMethod = "GET"
+                
+                firstly {
+                    URLSession.shared.dataTask(.promise, with: rq)
+                }.map {
+                    try! XML(xml: $0.data, encoding: .utf8)
+                }.done { xml in
+                    for product in xml.xpath("//product") {
+                        if let id = product.xpath("id").first?.text,
+                            let hiprice = product.xpath("hiprice").first?.text,
+                            let lowprice = product.xpath("lowprice").first?.text,
+                            let avgprice = product.xpath("avgprice").first?.text,
+                            let foilavgprice = product.xpath("foilavgprice").first?.text,
+                            let link = product.xpath("link").first?.text {
+                            pricing.id = Int64(id)!
+                            pricing.high = Double(hiprice)!
+                            pricing.low = Double(lowprice)!
+                            pricing.average = Double(avgprice)!
+                            pricing.foil = Double(foilavgprice)!
+                            pricing.link = link
                         }
                     }
-                } else {
+                    pricing.lastUpdate = NSDate()
+                    pricing.card = card
+                    
+                    try! self.dataStack?.mainContext.save()
                     seal.fulfill(pricing)
+                    
+                }.catch { error in
+                    seal.reject(error)
                 }
             } else {
-                seal.fulfill(nil)
+                seal.fulfill(pricing)
             }
         }
     }
@@ -705,63 +693,62 @@ open class ManaKit: NSObject {
             }
             
             if willFetch {
-                if let tcgPlayerPartnerKey = tcgPlayerPartnerKey,
+                guard let tcgPlayerPartnerKey = tcgPlayerPartnerKey,
                     let tcgPlayerSetName = card.set?.tcgPlayerName,
-                    let cardName = card.name {
+                    let cardName = card.name,
+                    let urlString = "http://partner.tcgplayer.com/x3/pv.asmx/p?pk=\(tcgPlayerPartnerKey)&s=\(tcgPlayerSetName)&p=\(cardName)&v=8".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+                    let url = URL(string: urlString) else {
+                    
+                    seal.fulfill()
+                    return
+                }
 
-                    // remove existing supplier, if there is any
-                    let suppliers = card.mutableSetValue(forKey: "suppliers")
-                    for supplier in suppliers {
-                        suppliers.remove(supplier)
-                    }
-                    try! dataStack?.mainContext.save()
-                    
-                    
-                    if let urlString = "http://partner.tcgplayer.com/x3/pv.asmx/p?pk=\(tcgPlayerPartnerKey)&s=\(tcgPlayerSetName)&p=\(cardName)&v=8".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-                        
-                        if let url = URL(string: urlString) {
-                            var rq = URLRequest(url: url)
-                            rq.httpMethod = "GET"
+                // remove existing supplier, if there is any
+                let suppliers = card.mutableSetValue(forKey: "suppliers")
+                for supplier in suppliers {
+                    suppliers.remove(supplier)
+                }
+                try! dataStack?.mainContext.save()
+            
+                var rq = URLRequest(url: url)
+                rq.httpMethod = "GET"
+            
+                firstly {
+                    URLSession.shared.dataTask(.promise, with: rq)
+                }.map {
+                    try! XML(xml: $0.data, encoding: .utf8)
+                }.done { xml in
+                    for supplier in xml.xpath("//supplier") {
+                        if let name = supplier.xpath("name").first?.text,
+                            let condition = supplier.xpath("condition").first?.text,
+                            let qty = supplier.xpath("qty").first?.text,
+                            let price = supplier.xpath("price").first?.text,
+                            let link = supplier.xpath("link").first?.text {
                             
-                            firstly {
-                                URLSession.shared.dataTask(.promise, with: rq)
-                            }.map {
-                                try! XML(xml: $0.data, encoding: .utf8)
-                            }.done { xml in
-                                for supplier in xml.xpath("//supplier") {
-                                    if let name = supplier.xpath("name").first?.text,
-                                        let condition = supplier.xpath("condition").first?.text,
-                                        let qty = supplier.xpath("qty").first?.text,
-                                        let price = supplier.xpath("price").first?.text,
-                                        let link = supplier.xpath("link").first?.text {
-                                        
-                                        let id = "\(name)_\(condition)_\(qty)_\(price)"
-                                        if let supplier = self.findObject("CMSupplier", objectFinder: ["id": id as AnyObject], createIfNotFound: true) as? CMSupplier {
-                                        
-                                            supplier.id = id
-                                            supplier.name = name
-                                            supplier.condition = condition
-                                            supplier.qty = Int32(qty)!
-                                            supplier.price = Double(price)!
-                                            supplier.link = link
-                                            supplier.card = card
-                                            card.addToSuppliers(supplier)
-                                        }
-                                    }
-                                }
-                                if let note = xml.xpath("//note").first?.text {
-                                    card.storePricingNote = note
-                                }
-                                card.storePricingLastUpdate = Date()
-                                
-                                try! self.dataStack?.mainContext.save()
-                                seal.fulfill()
-                                    
-                            }.catch { error in
-                                seal.reject(error)
+                            let id = "\(name)_\(condition)_\(qty)_\(price)"
+                            if let supplier = self.findObject("CMSupplier", objectFinder: ["id": id as AnyObject], createIfNotFound: true) as? CMSupplier {
+                            
+                                supplier.id = id
+                                supplier.name = name
+                                supplier.condition = condition
+                                supplier.qty = Int32(qty)!
+                                supplier.price = Double(price)!
+                                supplier.link = link
+                                supplier.card = card
+                                card.addToSuppliers(supplier)
                             }
                         }
                     }
+                    if let note = xml.xpath("//note").first?.text {
+                        card.storePricingNote = note
+                    }
+                    card.storePricingLastUpdate = Date()
+                    
+                    try! self.dataStack?.mainContext.save()
+                    seal.fulfill()
+                    
+                }.catch { error in
+                    seal.reject(error)
                 }
             } else {
                 seal.fulfill()
@@ -790,43 +777,21 @@ open class ManaKit: NSObject {
         var color:UIColor?
         
         if rarity.name == "Common" {
-            color = hexStringToUIColor(hex: "1A1718")
+            color = UIColor(hex: "1A1718")
         } else if rarity.name == "Uncommon" {
-            color = hexStringToUIColor(hex: "707883")
+            color = UIColor(hex: "707883")
         } else if rarity.name == "Rare" {
-            color = hexStringToUIColor(hex: "A58E4A")
+            color = UIColor(hex: "A58E4A")
         } else if rarity.name == "Mythic Rare" {
-            color = hexStringToUIColor(hex: "BF4427")
+            color = UIColor(hex: "BF4427")
         } else if rarity.name == "Special" {
-            color = hexStringToUIColor(hex: "BF4427")
+            color = UIColor(hex: "BF4427")
         } else if rarity.name == "Timeshifted" {
-            color = hexStringToUIColor(hex: "652978")
+            color = UIColor(hex: "652978")
         } else if rarity.name == "Basic Land" {
-            color = hexStringToUIColor(hex: "000000")
+            color = UIColor(hex: "000000")
         }
         
         return color
-    }
-        
-    open func hexStringToUIColor (hex:String) -> UIColor {
-        var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
-        
-        if (cString.hasPrefix("#")) {
-            cString.remove(at: cString.startIndex)
-        }
-        
-        if ((cString.count) != 6) {
-            return UIColor.gray
-        }
-        
-        var rgbValue:UInt32 = 0
-        Scanner(string: cString).scanHexInt32(&rgbValue)
-        
-        return UIColor(
-            red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
-            green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
-            blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
-            alpha: CGFloat(1.0)
-        )
     }
 }
