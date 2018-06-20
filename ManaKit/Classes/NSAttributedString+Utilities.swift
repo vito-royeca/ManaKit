@@ -8,8 +8,8 @@
 import UIKit
 import Kanna
 
-extension NSAttributedString {
-    func addSymbols(pointSize: CGFloat) -> NSMutableAttributedString {
+public extension NSAttributedString {
+    public func addSymbols(pointSize: CGFloat) -> NSMutableAttributedString {
         let newAttributedString = NSMutableAttributedString()
         let text = self.string.trimmingCharacters(in: CharacterSet.whitespaces)
         var fragmentText = NSMutableString()
@@ -86,7 +86,7 @@ extension NSAttributedString {
         return newAttributedString
     }
     
-    func convertToHtml() -> NSMutableAttributedString? {
+    public func convertToHtml() -> NSMutableAttributedString? {
         let style = "<style>" +
             "body { font-family: -apple-system; font-size:15; } " +
         "</style>"
