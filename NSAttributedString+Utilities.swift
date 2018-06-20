@@ -11,7 +11,7 @@ import Kanna
 extension NSAttributedString {
     func addSymbols(pointSize: CGFloat) -> NSMutableAttributedString {
         let newAttributedString = NSMutableAttributedString()
-        let text = self.string
+        let text = self.string.trimmingCharacters(in: CharacterSet.whitespaces)
         var fragmentText = NSMutableString()
         var offset = 0
         
