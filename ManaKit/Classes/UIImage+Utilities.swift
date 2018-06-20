@@ -9,8 +9,8 @@
 import Foundation
 import UIKit
 
-extension UIImage {
-    func roundCornered(card: CMCard) -> UIImage {
+public extension UIImage {
+    public func roundCornered(card: CMCard) -> UIImage {
         var radius = CGFloat(22)
         
         if let set = card.set {
