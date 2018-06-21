@@ -38,10 +38,12 @@ class SetViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showCard" {
-            if let dest = segue.destination as? CardViewController,
-                let card = sender as? CMCard {
-                    dest.card = card
+            guard let dest = segue.destination as? CardViewController,
+                let card = sender as? CMCard else {
+                return
             }
+            
+            dest.card = card
         }
     }
 
@@ -52,7 +54,7 @@ class SetViewController: UIViewController {
         if let fetchRequest = fetchRequest {
             request = fetchRequest
         } else {
-            request = NSFetchRequest(entityName: "CMCard")
+            request = CMCard.fetchRequest()
             request!.predicate = NSPredicate(format: "set.code = %@", set!.code!)
             request!.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true),
                                         NSSortDescriptor(key: "number", ascending: true),
@@ -60,12 +62,13 @@ class SetViewController: UIViewController {
         }
         
         let dataSource = DATASource(tableView: tableView, cellIdentifier: "CardCell", fetchRequest: request!, mainContext: ManaKit.sharedInstance.dataStack!.mainContext, configuration: { cell, item, indexPath in
-            if let card = item as? CMCard,
-                let cardCell = cell as? CardTableViewCell {
-                
-                cardCell.card = card
-                cardCell.updateDataDisplay()
+            guard let card = item as? CMCard,
+                let cardCell = cell as? CardTableViewCell else {
+                return
             }
+            
+            cardCell.card = card
+            cardCell.updateDataDisplay()
         })
         
         return dataSource

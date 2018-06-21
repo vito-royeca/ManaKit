@@ -42,12 +42,13 @@ class SetsViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showSet" {
-            if let dest = segue.destination as? SetViewController,
-                let set = sender as? CMSet {
-                
-                dest.set = set
-                dest.title = set.name
+            guard let dest = segue.destination as? SetViewController,
+                let set = sender as? CMSet else {
+                return
             }
+            
+            dest.set = set
+            dest.title = set.name
         }
     }
     
@@ -58,24 +59,25 @@ class SetsViewController: UIViewController {
         if let fetchRequest = fetchRequest {
             request = fetchRequest
         } else {
-            request = NSFetchRequest(entityName: "CMSet")
+            request = CMSet.fetchRequest()
             request!.sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: false)]
         }
         
         let dataSource = DATASource(tableView: tableView, cellIdentifier: "SetCell", fetchRequest: request!, mainContext: ManaKit.sharedInstance.dataStack!.mainContext, configuration: { cell, item, indexPath in
-            if let set = item as? CMSet,
-                let commonRarity = self.commonRarity {
+            guard let set = item as? CMSet,
+                let commonRarity = self.commonRarity else {
+                return
+            }
 
-                if let label = cell.contentView.viewWithTag(100) as? UILabel {
-                    label.text = ManaKit.sharedInstance.keyruneUnicode(forSet: set)
-                    label.textColor = ManaKit.sharedInstance.keyruneColor(forRarity: commonRarity)
-                }
-                if let label = cell.contentView.viewWithTag(200) as? UILabel {
-                    label.text = set.name
-                }
-                if let label = cell.contentView.viewWithTag(300) as? UILabel {
-                    label.text = set.code
-                }
+            if let label = cell.contentView.viewWithTag(100) as? UILabel {
+                label.text = ManaKit.sharedInstance.keyruneUnicode(forSet: set)
+                label.textColor = ManaKit.sharedInstance.keyruneColor(forRarity: commonRarity)
+            }
+            if let label = cell.contentView.viewWithTag(200) as? UILabel {
+                label.text = set.name
+            }
+            if let label = cell.contentView.viewWithTag(300) as? UILabel {
+                label.text = set.code
             }
         })
         
@@ -114,7 +116,7 @@ class SetsViewController: UIViewController {
         }
         
         if let filteredSets = filteredSets {
-            request = NSFetchRequest(entityName: "CMSet")
+            request = CMSet.fetchRequest()
             request!.predicate = NSPredicate(format: "code in %@", filteredSets.map { $0.code })
             request!.sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: false)]
         }

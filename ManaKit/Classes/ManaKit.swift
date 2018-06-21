@@ -17,13 +17,14 @@ import Sync
 
 public let kMTGJSONVersion      = "3.17 B"
 public let kMTGJSONDate         = "Jun 15, 2018"
+public let kKeyruneVersion      = "3.2.1"
 public let kMTGJSONVersionKey   = "kMTGJSONVersionKey"
 public let kImagesVersionKey    = "kImagesVersionKey"
 public let kCardImageSource     = "http://magiccards.info/scans/en"
 public let kEightEditionRelease = "2003-07-28"
 public let kBasicRulesFile      = "2003-07-28"
 
-public let kTCGPlayerPricingAge = 24*3 // 3 days
+public let kTCGPlayerPricingAge = 24 * 3 // 3 days
 
 // Notification events
 public let kNotificationCardImageDownloaded = "kNotificationCardImageDownloaded"

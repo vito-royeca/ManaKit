@@ -38,41 +38,43 @@ extension CardViewController : UITableViewDataSource {
         
         switch indexPath.row {
         case 0:
-            if let c = tableView.dequeueReusableCell(withIdentifier: "CardCell") as? CardTableViewCell {
-                c.card = card
-                c.updateDataDisplay()
-                cell = c
+            guard let c = tableView.dequeueReusableCell(withIdentifier: "CardCell") as? CardTableViewCell else {
+                return UITableViewCell(frame: CGRect.zero)
             }
+            
+            c.card = card
+            c.updateDataDisplay()
+            cell = c
+            
         case 1:
-            if let c = tableView.dequeueReusableCell(withIdentifier: "ImageCell") {
-                if let imageView = c.viewWithTag(100) as? UIImageView,
-                    let card = card {
-                    
-                    imageView.backgroundColor = UIColor.lightGray
-                    
-                    if let cardImage = ManaKit.sharedInstance.cardImage(card, imageType: .normal) {
-                        imageView.image = cardImage
-                    } else {
-                        imageView.image = ManaKit.sharedInstance.cardBack(card)
-
-                        firstly {
-                            ManaKit.sharedInstance.downloadImage(ofCard: card, imageType: .normal)
-                        }.done { (image: UIImage?) in
-                            UIView.transition(with: imageView,
-                                              duration: 1.0,
-                                              options: .transitionFlipFromRight,
-                                              animations: {
-                                                imageView.image = image
-                                              },
-                                              completion: nil)
-                        }.catch { error in
-                                
-                        }
-                    }
-                }
-                
-                cell = c
+            guard let c = tableView.dequeueReusableCell(withIdentifier: "ImageCell"),
+                let imageView = c.viewWithTag(100) as? UIImageView,
+                let card = card else {
+                return UITableViewCell(frame: CGRect.zero)
             }
+            
+            if let cardImage = ManaKit.sharedInstance.cardImage(card, imageType: .normal) {
+                imageView.image = cardImage
+            } else {
+                imageView.image = ManaKit.sharedInstance.cardBack(card)
+
+                firstly {
+                    ManaKit.sharedInstance.downloadImage(ofCard: card, imageType: .normal)
+                }.done { (image: UIImage?) in
+                    UIView.transition(with: imageView,
+                                      duration: 1.0,
+                                      options: .transitionFlipFromRight,
+                                      animations: {
+                                        imageView.image = image
+                                      },
+                                      completion: nil)
+                }.catch { error in
+                    
+                }
+            }
+                
+            cell = c
+            
         default:
             ()
         }
