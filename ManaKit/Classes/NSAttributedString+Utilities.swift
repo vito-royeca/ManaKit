@@ -15,6 +15,10 @@ public extension NSAttributedString {
         var fragmentText = NSMutableString()
         var sentinel = 0
         
+        if text.count == 0 {
+            return newAttributedString
+        }
+
         repeat {
             for i in sentinel...text.count - 1 {
                 let c = text[text.index(text.startIndex, offsetBy: i)]
@@ -57,7 +61,7 @@ public extension NSAttributedString {
             .replacingOccurrences(of: "}", with: "")
             .replacingOccurrences(of: "/", with: "")
         
-        if cleanSymbol == "CHAOS" {
+        if cleanSymbol.lowercased() == "chaos" {
             cleanSymbol = "Chaos"
         }
         
