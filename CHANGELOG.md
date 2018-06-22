@@ -1,4 +1,4 @@
-**Version 2.5.0** @ 21.06.2018
+**Version 2.5.1** @ 21.06.2018
 - Now using Swift "guard" code
 - Mana Cost in CardTableViewCel is now rendered via NSAttributedString.
 

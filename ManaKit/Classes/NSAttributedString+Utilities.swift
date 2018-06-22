@@ -9,14 +9,15 @@ import UIKit
 import Kanna
 
 public extension NSAttributedString {
-    public func addSymbols(pointSize: CGFloat) -> NSMutableAttributedString {
+    public convenience init(symbol: String, pointSize: CGFloat) {
         let newAttributedString = NSMutableAttributedString()
-        let text = self.string.trimmingCharacters(in: CharacterSet.whitespaces)
+        let text = symbol.trimmingCharacters(in: CharacterSet.whitespaces)
         var fragmentText = NSMutableString()
         var sentinel = 0
         
         if text.count == 0 {
-            return newAttributedString
+            self.init(string: symbol)
+            return
         }
 
         repeat {
@@ -24,11 +25,11 @@ public extension NSAttributedString {
                 let c = text[text.index(text.startIndex, offsetBy: i)]
                 
                 if c == "{" {
-                    let symbol = NSMutableString()
+                    let code = NSMutableString()
                     
                     for j in i...text.count - 1 {
                         let cc = text[text.index(text.startIndex, offsetBy: j)]
-                        symbol.append(String(cc))
+                        code.append(String(cc))
                         
                         if cc == "}" {
                             sentinel = j + 1
@@ -36,9 +37,44 @@ public extension NSAttributedString {
                         }
                     }
                     
+                    var cleanCode = code.replacingOccurrences(of: "{", with: "")
+                        .replacingOccurrences(of: "}", with: "")
+                        .replacingOccurrences(of: "/", with: "")
+                    
+                    if cleanCode.lowercased() == "chaos" {
+                        cleanCode = "Chaos"
+                    }
+                    
+                    guard let image = ManaKit.sharedInstance.symbolImage(name: cleanCode as String) else {
+                        self.init(string: symbol)
+                        return
+                    }
+                    
+                    let imageAttachment =  NSTextAttachment()
+                    imageAttachment.image = image
+                    
+                    var width = CGFloat(16)
+                    let height = CGFloat(16)
+                    var imageOffsetY = CGFloat(0)
+                    
+                    if cleanCode == "100" {
+                        width = 35
+                    } else if cleanCode == "1000000" {
+                        width = 60
+                    }
+                    
+                    if height > pointSize {
+                        imageOffsetY = -(height - pointSize) / 2.0
+                    } else {
+                        imageOffsetY = -(pointSize - height) / 2.0
+                    }
+                    imageAttachment.bounds = CGRect(x: 0, y: imageOffsetY, width: width, height: height)
+
+                    let attachmentString = NSAttributedString(attachment: imageAttachment)
                     let attributedString = NSMutableAttributedString(string: fragmentText as String)
-                    attributedString.append(NSAttributedString(symbol: symbol as String, pointSize: pointSize))
+                    attributedString.append(attachmentString)
                     newAttributedString.append(attributedString)
+                    
                     fragmentText = NSMutableString()
                     break
                    
@@ -52,56 +88,19 @@ public extension NSAttributedString {
         
         let attributedString = NSMutableAttributedString(string: fragmentText as String)
         newAttributedString.append(attributedString)
-        
-        return newAttributedString
+        self.init(attributedString: newAttributedString)
     }
     
-    public convenience init(symbol: String, pointSize: CGFloat) {
-        var cleanSymbol = symbol.replacingOccurrences(of: "{", with: "")
-            .replacingOccurrences(of: "}", with: "")
-            .replacingOccurrences(of: "/", with: "")
-        
-        if cleanSymbol.lowercased() == "chaos" {
-            cleanSymbol = "Chaos"
-        }
-        
-        guard let image = ManaKit.sharedInstance.symbolImage(name: cleanSymbol as String) else {
-            self.init()
-            return
-        }
-        
-        let imageAttachment =  NSTextAttachment()
-        imageAttachment.image = image
-        
-        var width = CGFloat(16)
-        let height = CGFloat(16)
-        var imageOffsetY = CGFloat(0)
-        
-        if cleanSymbol == "100" {
-            width = 35
-        } else if cleanSymbol == "1000000" {
-            width = 60
-        }
-        
-        if height > pointSize {
-            imageOffsetY = -(height - pointSize) / 2.0
-        } else {
-            imageOffsetY = -(pointSize - height) / 2.0
-        }
-        
-        imageAttachment.bounds = CGRect(x: 0, y: imageOffsetY, width: width, height: height)
-        self.init(attachment: imageAttachment)
-    }
-    
-    public func convertToHtml() -> NSMutableAttributedString? {
+    public convenience init(html: String) {
         let style = "<style>" +
             "body { font-family: -apple-system; font-size:15; } " +
         "</style>"
-        let html = "\(style)\(self.string)"
+        let html = "\(style)\(html)"
         var links = [[String: Any]]()
         
         guard let doc = try? HTML(html: html, encoding: .utf16) else {
-            return nil
+            self.init(string: html)
+            return
         }
         
         // Search for links
@@ -113,13 +112,16 @@ public extension NSAttributedString {
         }
         
         guard let data = html.data(using: String.Encoding.utf16) else {
-            return nil
+            self.init(string: html)
+            return
         }
+        
         guard let attributedString = try? NSMutableAttributedString(
             data: data,
             options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType],
             documentAttributes: nil) else {
-                return nil
+                self.init(string: html)
+                return
         }
         
         // add tappble links
@@ -133,7 +135,8 @@ public extension NSAttributedString {
                 }
             }
         }
-        return attributedString
+        
+        self.init(attributedString: attributedString)
     }
 }
 
