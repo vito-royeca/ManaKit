@@ -266,7 +266,6 @@ open class CardTableViewCell: UITableViewCell {
         }
         
         let pointSize = castingCostLabel.font.pointSize
-        let attributedString = NSAttributedString(string: manaCost)
-        castingCostLabel.attributedText =  attributedString.addSymbols(pointSize: pointSize)
+        castingCostLabel.attributedText = NSAttributedString(symbol: " ", pointSize: pointSize)
     }
 }
