@@ -1,3 +1,6 @@
+**Version 2.5.2** @ 24.06.2018
+- Refactored Core Data to use background thread in saving.
+
 **Version 2.5.1** @ 21.06.2018
 - Now using Swift "guard" code
 - Mana Cost in CardTableViewCel is now rendered via NSAttributedString.

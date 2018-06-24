@@ -389,6 +389,23 @@ open class ManaKit: NSObject {
         return object.version
     }
     
+    open func saveContext() {
+        guard let dataStack = dataStack else {
+            return
+        }
+        
+        if dataStack.mainContext.hasChanges {
+            do {
+                try dataStack.mainContext.save()
+            } catch {
+                // Replace this implementation with code to handle the error appropriately.
+                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                let nserror = error as NSError
+                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+            }
+        }
+    }
+    
     // MARK: Miscellaneous methods
     open func downloadImage(ofCard card: CMCard, imageType: ImageType) -> Promise<UIImage?> {
         return Promise { seal  in
@@ -669,9 +686,10 @@ open class ManaKit: NSObject {
                     pricing.lastUpdate = NSDate()
                     pricing.card = card
                     
-                    try! self.dataStack?.mainContext.save()
-                    seal.fulfill(pricing)
-                    
+                    self.dataStack?.performInNewBackgroundContext { backgroundContext in
+                        try! backgroundContext.save()
+                        seal.fulfill(nil)
+                    }
                 }.catch { error in
                     seal.reject(error)
                 }
@@ -745,8 +763,10 @@ open class ManaKit: NSObject {
                     }
                     card.storePricingLastUpdate = Date()
                     
-                    try! self.dataStack?.mainContext.save()
-                    seal.fulfill()
+                    self.dataStack?.performInNewBackgroundContext { backgroundContext in
+                        try! backgroundContext.save()
+                        seal.fulfill()
+                    }
                     
                 }.catch { error in
                     seal.reject(error)

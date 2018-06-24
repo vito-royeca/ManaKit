@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 import PromiseKit
 
 public let kCardTableViewCellHeight = CGFloat(88)
@@ -53,6 +54,14 @@ open class CardTableViewCell: UITableViewCell {
         setImage.layer.cornerRadius = setImage.frame.height / 2
         annotationLabel.layer.cornerRadius = setImage.frame.height / 2
         removeAnnotation()
+        
+        NotificationCenter.default.removeObserver(self,
+                                                  name: NSNotification.Name.NSManagedObjectContextObjectsDidChange,
+                                                  object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(changeNotification(_:)),
+                                               name: NSNotification.Name.NSManagedObjectContextObjectsDidChange,
+                                               object: nil)
     }
 
     override open func setSelected(_ selected: Bool, animated: Bool) {
@@ -69,10 +78,7 @@ open class CardTableViewCell: UITableViewCell {
         castingCostLabel.text = nil
         typeLabel.text = nil
         setImage.text = nil
-        lowPriceLabel.text  = "NA"
-        midPriceLabel.text  = "NA"
-        highPriceLabel.text = "NA"
-        foilPriceLabel.text = "NA"
+        updatePricing(nil)
     }
     
     // MARK: Custom methods
@@ -96,7 +102,7 @@ open class CardTableViewCell: UITableViewCell {
                 ManaKit.sharedInstance.downloadImage(ofCard: card, imageType: .artCrop)
             }.done { (image: UIImage?) in
                 UIView.transition(with: self.thumbnailImage,
-                                  duration: 0.5,
+                                  duration: 1.0,
                                   options: .transitionCrossDissolve,
                                   animations: {
                                     self.thumbnailImage.image = image
@@ -169,46 +175,13 @@ open class CardTableViewCell: UITableViewCell {
             firstly {
                 ManaKit.sharedInstance.fetchTCGPlayerCardPricing(card: card)
             }.done { (pricing: CMCardPricing?) in
-                if let pricing = pricing {
-                    self.lowPriceLabel.text = pricing.low > 0 ? String(format: "$%.2f", pricing.low) : "NA"
-                    self.lowPriceLabel.textColor = pricing.low > 0 ? self.lowPriceColor : self.normalColor
-                    
-                    self.midPriceLabel.text = pricing.average > 0 ? String(format: "$%.2f", pricing.average) : "NA"
-                    self.midPriceLabel.textColor = pricing.average > 0 ? self.midPriceColor : self.normalColor
-                    
-                    self.highPriceLabel.text = pricing.high > 0 ? String(format: "$%.2f", pricing.high) : "NA"
-                    self.highPriceLabel.textColor = pricing.high > 0 ? self.highPriceColor : self.normalColor
-                    
-                    self.foilPriceLabel.text = pricing.foil > 0 ? String(format: "$%.2f", pricing.foil) : "NA"
-                    self.foilPriceLabel.textColor = pricing.foil > 0 ? self.foilPriceColor : self.normalColor
-                }
+                self.updatePricing(pricing)
             }.catch { error in
-                self.lowPriceLabel.text = "NA"
-                self.lowPriceLabel.textColor = self.normalColor
-                
-                self.midPriceLabel.text = "NA"
-                self.midPriceLabel.textColor = self.normalColor
-                
-                self.highPriceLabel.text = "NA"
-                self.highPriceLabel.textColor = self.normalColor
-                
-                self.foilPriceLabel.text = "NA"
-                self.foilPriceLabel.textColor = self.normalColor
+                self.updatePricing(nil)
             }
         } else {
-            self.lowPriceLabel.text = "NA"
-            self.lowPriceLabel.textColor = normalColor
-            
-            self.midPriceLabel.text = "NA"
-            self.midPriceLabel.textColor = normalColor
-            
-            self.highPriceLabel.text = "NA"
-            self.highPriceLabel.textColor = normalColor
-            
-            self.foilPriceLabel.text = "NA"
-            self.foilPriceLabel.textColor = normalColor
+            self.updatePricing(nil)
         }
-        
     }
     
     open func add(annotation: Int) {
@@ -266,6 +239,53 @@ open class CardTableViewCell: UITableViewCell {
         }
         
         let pointSize = castingCostLabel.font.pointSize
-        castingCostLabel.attributedText = NSAttributedString(symbol: " ", pointSize: pointSize)
+        castingCostLabel.attributedText = NSAttributedString(symbol: manaCost, pointSize: pointSize)
+    }
+    
+    open func updatePricing(_ pricing: CMCardPricing?) {
+        if let pricing = pricing {
+            lowPriceLabel.text = pricing.low > 0 ? String(format: "$%.2f", pricing.low) : "NA"
+            lowPriceLabel.textColor = pricing.low > 0 ? lowPriceColor : normalColor
+            
+            midPriceLabel.text = pricing.average > 0 ? String(format: "$%.2f", pricing.average) : "NA"
+            midPriceLabel.textColor = pricing.average > 0 ? midPriceColor : normalColor
+            
+            highPriceLabel.text = pricing.high > 0 ? String(format: "$%.2f", pricing.high) : "NA"
+            highPriceLabel.textColor = pricing.high > 0 ? highPriceColor : normalColor
+            
+            foilPriceLabel.text = pricing.foil > 0 ? String(format: "$%.2f", pricing.foil) : "NA"
+            foilPriceLabel.textColor = pricing.foil > 0 ? foilPriceColor : normalColor
+        } else {
+            lowPriceLabel.text = "NA"
+            lowPriceLabel.textColor = normalColor
+            
+            midPriceLabel.text = "NA"
+            midPriceLabel.textColor = normalColor
+            
+            highPriceLabel.text = "NA"
+            highPriceLabel.textColor = normalColor
+            
+            foilPriceLabel.text = "NA"
+            foilPriceLabel.textColor = normalColor
+        }
+    }
+    
+    // MARK: Core Data notifications
+    func changeNotification(_ notification: Notification) {
+        guard let card = card else {
+            return
+        }
+        
+        if let updatedObjects = notification.userInfo?[NSUpdatedObjectsKey] {
+            if let set = updatedObjects as? NSSet {
+                for o in set.allObjects {
+                    if let pricing = o as? CMCardPricing {
+                        if pricing.card?.id == card.id {
+                            updatePricing(pricing)
+                        }
+                    }
+                }
+            }
+        }
     }
 }
