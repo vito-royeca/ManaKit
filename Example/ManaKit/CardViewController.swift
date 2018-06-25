@@ -7,13 +7,14 @@
 //
 
 import UIKit
+import CoreData
 import ManaKit
 import PromiseKit
 
 class CardViewController: UIViewController {
 
     // MARK: Variables
-    var card:CMCard?
+    var cardMID: NSManagedObjectID?
     
     // MARK: Outlets
     @IBOutlet weak var tableView: UITableView!
@@ -42,14 +43,15 @@ extension CardViewController : UITableViewDataSource {
                 return UITableViewCell(frame: CGRect.zero)
             }
             
-            c.card = card
+            c.cardMID = cardMID
             c.updateDataDisplay()
             cell = c
             
         case 1:
             guard let c = tableView.dequeueReusableCell(withIdentifier: "ImageCell"),
                 let imageView = c.viewWithTag(100) as? UIImageView,
-                let card = card else {
+                let cardMID = cardMID,
+                let card = ManaKit.sharedInstance.dataStack?.mainContext.object(with: cardMID) as? CMCard else {
                 return UITableViewCell(frame: CGRect.zero)
             }
             
@@ -65,7 +67,7 @@ extension CardViewController : UITableViewDataSource {
                                       duration: 1.0,
                                       options: .transitionFlipFromRight,
                                       animations: {
-                                        imageView.image = image
+                                          imageView.image = image
                                       },
                                       completion: nil)
                 }.catch { error in

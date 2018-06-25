@@ -29,7 +29,7 @@ open class CardTableViewCell: UITableViewCell {
     let normalColor = UIColor.black
     
     // Variables
-    open var card:CMCard?
+    open var cardMID: NSManagedObjectID?
     
     // MARK: Outlets
     @IBOutlet weak var thumbnailImage: UIImageView!
@@ -71,7 +71,7 @@ open class CardTableViewCell: UITableViewCell {
     }
     
     override open func prepareForReuse() {
-        thumbnailImage.image = UIImage(named: ImageName.cardBackCropped.rawValue)
+        thumbnailImage.image = ManaKit.sharedInstance.imageFromFramework(imageName: .cardBackCropped)
         symbolImage.image = nil
         removeAnnotation()
         nameLabel.text = nil
@@ -83,16 +83,52 @@ open class CardTableViewCell: UITableViewCell {
     
     // MARK: Custom methods
     open func updateDataDisplay() {
-        guard let card = card else {
+        guard let cardMID = cardMID,
+            let card = ManaKit.sharedInstance.dataStack?.mainContext.object(with: cardMID) as? CMCard else {
             prepareForReuse()
             return
         }
         
-        // name and casting cost
-        updateName()
-        updateCastingCost()
+        // name
+        nameLabel.text = card.name
+        if let releaseDate = card.set!.releaseDate {
+            let isModern = ManaKit.sharedInstance.isModern(card)
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            
+            if let m15Date = formatter.date(from: "2014-07-18"),
+                let setReleaseDate = formatter.date(from: releaseDate) {
+                
+                var shadowColor:UIColor?
+                var shadowOffset = CGSize(width: 0, height: -1)
+                
+                if setReleaseDate.compare(m15Date) == .orderedSame ||
+                    setReleaseDate.compare(m15Date) == .orderedDescending {
+                    nameLabel.font = magic2015Font
+                    
+                } else {
+                    nameLabel.font = isModern ? eightEditionFont : preEightEditionFont
+                    
+                    if !isModern {
+                        shadowColor = UIColor.darkGray
+                        shadowOffset = CGSize(width: 1, height: 1)
+                    }
+                }
+                
+                nameLabel.shadowColor = shadowColor
+                nameLabel.shadowOffset = shadowOffset
+            }
+        }
         
-        // thumbnail image and casting cost
+        // casting cost
+        if let manaCost = card.manaCost {
+            let pointSize = castingCostLabel.font.pointSize
+            castingCostLabel.attributedText = NSAttributedString(symbol: manaCost, pointSize: pointSize)
+        } else {
+            castingCostLabel.text = nil
+        }
+        
+        // thumbnail image
         if let croppedImage = ManaKit.sharedInstance.croppedImage(card) {
             thumbnailImage.image = croppedImage
         } else {
@@ -194,54 +230,6 @@ open class CardTableViewCell: UITableViewCell {
         annotationLabel.text = ""
     }
     
-    open func updateName() {
-        guard let card = card else {
-            return
-        }
-        
-        nameLabel.text = card.name
-
-        if let releaseDate = card.set!.releaseDate {
-            let isModern = ManaKit.sharedInstance.isModern(card)
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd"
-            
-            if let m15Date = formatter.date(from: "2014-07-18"),
-                let setReleaseDate = formatter.date(from: releaseDate) {
-                
-                var shadowColor:UIColor?
-                var shadowOffset = CGSize(width: 0, height: -1)
-                
-                if setReleaseDate.compare(m15Date) == .orderedSame ||
-                    setReleaseDate.compare(m15Date) == .orderedDescending {
-                    nameLabel.font = magic2015Font
-                    
-                } else {
-                    nameLabel.font = isModern ? eightEditionFont : preEightEditionFont
-                    
-                    if !isModern {
-                        shadowColor = UIColor.darkGray
-                        shadowOffset = CGSize(width: 1, height: 1)
-                    }
-                }
-                
-                nameLabel.shadowColor = shadowColor
-                nameLabel.shadowOffset = shadowOffset
-            }
-        }
-    }
-    
-    open func updateCastingCost() {
-        guard let card = card,
-            let manaCost = card.manaCost else {
-                castingCostLabel.text = nil
-            return
-        }
-        
-        let pointSize = castingCostLabel.font.pointSize
-        castingCostLabel.attributedText = NSAttributedString(symbol: manaCost, pointSize: pointSize)
-    }
-    
     open func updatePricing(_ pricing: CMCardPricing?) {
         if let pricing = pricing {
             lowPriceLabel.text = pricing.low > 0 ? String(format: "$%.2f", pricing.low) : "NA"
@@ -272,8 +260,9 @@ open class CardTableViewCell: UITableViewCell {
     
     // MARK: Core Data notifications
     func changeNotification(_ notification: Notification) {
-        guard let card = card else {
-            return
+        guard let cardMID = cardMID,
+            let card = ManaKit.sharedInstance.dataStack?.mainContext.object(with: cardMID) as? CMCard else {
+                return
         }
         
         if let updatedObjects = notification.userInfo?[NSUpdatedObjectsKey] {

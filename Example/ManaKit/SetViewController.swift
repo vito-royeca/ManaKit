@@ -43,7 +43,7 @@ class SetViewController: UIViewController {
                 return
             }
             
-            dest.card = card
+            dest.cardMID = card.objectID
         }
     }
 
@@ -67,7 +67,7 @@ class SetViewController: UIViewController {
                 return
             }
             
-            cardCell.card = card
+            cardCell.cardMID = card.objectID
             cardCell.updateDataDisplay()
         })
         

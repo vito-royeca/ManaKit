@@ -1,3 +1,6 @@
+**Version 2.5.3** @ 25.06.2018
+- Refactored Core Data to use managed object IDs.
+
 **Version 2.5.2** @ 24.06.2018
 - Refactored Core Data to use background thread in saving.
 
