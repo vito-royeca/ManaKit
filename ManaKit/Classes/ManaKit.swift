@@ -144,44 +144,6 @@ open class ManaKit: NSObject {
         return UIImage(named: imageName.rawValue, in: resourceBundle, compatibleWith: nil)
     }
     
-    open func manaImages(manaCost: String) -> [[String:UIImage]] {
-        let bundle = Bundle(for: ManaKit.self)
-        var array = [[String:UIImage]]()
-        
-        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
-            let resourceBundle = Bundle(url: bundleURL) else {
-            return array
-        }
-        
-        let mc = manaCost.replacingOccurrences(of: "{", with: "")
-            .replacingOccurrences(of: "}", with: " ")
-            .replacingOccurrences(of: "/", with: "")
-        let manaArray = mc.components(separatedBy: " ")
-
-        for mana in manaArray {
-            if mana.count == 0 {
-                continue
-            }
-            
-            var image = UIImage(named: "\(mana)", in: resourceBundle, compatibleWith: nil)
-            
-            // fix for dual manas
-            if image == nil {
-                if mana.count > 1 {
-                    let reversedMana = String(mana.reversed())
-
-                    image = UIImage(named: "\(reversedMana)", in: resourceBundle, compatibleWith: nil)
-                }
-            }
-            
-            if let image = image {
-                array.append([mana:image])
-            }
-        }
-        
-        return array
-    }
-    
     open func symbolImage(name: String) -> UIImage? {
         let bundle = Bundle(for: ManaKit.self)
         guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
@@ -190,53 +152,6 @@ open class ManaKit: NSObject {
         }
         
         return UIImage(named: name, in: resourceBundle, compatibleWith: nil)
-    }
-    
-    open func symbolHTML(name: String) -> String? {
-        let cleanName = name.replacingOccurrences(of: "{", with: "")
-            .replacingOccurrences(of: "}", with: "")
-            .replacingOccurrences(of: "/", with: "")
-        var image: UIImage?
-        var html: String?
-        
-        if name.contains("E") ||
-            name.contains("Q") ||
-            name.contains("T") {
-            image = symbolImage(name: cleanName)
-        } else {
-            for array in manaImages(manaCost: name) {
-                for (_,value) in array {
-                    image = value
-                }
-            }
-        }
-        
-        guard let img = image,
-            let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
-            return html
-        }
-        
-        let targetDir = "\(cachePath)/symbols"
-        let targetPath = "\(targetDir)/\(cleanName).png"
-        
-        if !FileManager.default.fileExists(atPath: targetPath) {
-            // create targetDir
-            if !FileManager.default.fileExists(atPath: targetDir) {
-                try! FileManager.default.createDirectory(atPath: targetDir, withIntermediateDirectories: true, attributes: nil)
-            }
-        
-            try! UIImagePNGRepresentation(img)?.write(to: URL(fileURLWithPath: targetPath))
-        }
-        var width = "25"
-        if cleanName == "100" {
-            width = "50"
-        } else if cleanName == "1000000" {
-            width = "75"
-        }
-        
-        html = "<img src='\(targetPath)' width='\(width)' height='25' />"
-            
-        return html
     }
     
     open func nibFromBundle(_ name: String) -> UINib? {
@@ -250,11 +165,6 @@ open class ManaKit: NSObject {
     }
     
     open func setupResources() {
-        // unpack the image symbols
-        for (_,v) in Symbols {
-            let _ = ManaKit.sharedInstance.symbolHTML(name: v)
-        }
-        
         copyDatabaseFile()
         loadCustomFonts()
     }
@@ -632,9 +542,10 @@ open class ManaKit: NSObject {
         tcgPlayerPrivateKey = privateKey
     }
     
-    open func fetchTCGPlayerCardPricing(card: CMCard) -> Promise<CMCardPricing?> {
+    open func fetchTCGPlayerCardPricing(cardMID: NSManagedObjectID) -> Promise<NSManagedObjectID?> {
         return Promise { seal  in
-            guard let pricing = findObject("CMCardPricing", objectFinder: ["card.id": card.id as AnyObject], createIfNotFound: true) as? CMCardPricing else {
+            guard let card = dataStack?.mainContext.object(with: cardMID) as? CMCard,
+                let pricing = findObject("CMCardPricing", objectFinder: ["card.id": card.id as AnyObject], createIfNotFound: true) as? CMCardPricing else {
                 seal.fulfill(nil)
                 return
             }
@@ -694,13 +605,18 @@ open class ManaKit: NSObject {
                     seal.reject(error)
                 }
             } else {
-                seal.fulfill(pricing)
+                seal.fulfill(pricing.objectID)
             }
         }
     }
     
-    open func fetchTCGPlayerStorePricing(card: CMCard) -> Promise<Void> {
+    open func fetchTCGPlayerStorePricing(cardMID: NSManagedObjectID) -> Promise<Void> {
         return Promise { seal  in
+            guard let card = dataStack?.mainContext.object(with: cardMID) as? CMCard else {
+                seal.fulfill()
+                return
+            }
+            
             var willFetch = false
             
             if let lastUpdate = card.storePricingLastUpdate {

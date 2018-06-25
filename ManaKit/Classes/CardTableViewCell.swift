@@ -209,9 +209,9 @@ open class CardTableViewCell: UITableViewCell {
         }
         if willFetchPricing {
             firstly {
-                ManaKit.sharedInstance.fetchTCGPlayerCardPricing(card: card)
-            }.done { (pricing: CMCardPricing?) in
-                self.updatePricing(pricing)
+                ManaKit.sharedInstance.fetchTCGPlayerCardPricing(cardMID: card.objectID)
+            }.done { (pricingMID: NSManagedObjectID?) in
+                self.updatePricing(pricingMID)
             }.catch { error in
                 self.updatePricing(nil)
             }
@@ -230,8 +230,12 @@ open class CardTableViewCell: UITableViewCell {
         annotationLabel.text = ""
     }
     
-    open func updatePricing(_ pricing: CMCardPricing?) {
-        if let pricing = pricing {
+    open func updatePricing(_ pricingMID: NSManagedObjectID?) {
+        if let pricingMID = pricingMID {
+            guard let pricing = ManaKit.sharedInstance.dataStack?.mainContext.object(with: pricingMID) as? CMCardPricing else {
+                return
+            }
+            
             lowPriceLabel.text = pricing.low > 0 ? String(format: "$%.2f", pricing.low) : "NA"
             lowPriceLabel.textColor = pricing.low > 0 ? lowPriceColor : normalColor
             
@@ -269,8 +273,8 @@ open class CardTableViewCell: UITableViewCell {
             if let set = updatedObjects as? NSSet {
                 for o in set.allObjects {
                     if let pricing = o as? CMCardPricing {
-                        if pricing.card?.id == card.id {
-                            updatePricing(pricing)
+                        if pricing.card?.objectID == card.objectID {
+                            updatePricing(pricing.objectID)
                         }
                     }
                 }
