@@ -137,12 +137,17 @@ open class CardTableViewCell: UITableViewCell {
             firstly {
                 ManaKit.sharedInstance.downloadImage(ofCard: card, imageType: .artCrop)
             }.done { (image: UIImage?) in
+                guard let image = image else {
+                    return
+                }
+                
+                let animations = {
+                    self.thumbnailImage.image = image
+                }
                 UIView.transition(with: self.thumbnailImage,
                                   duration: 1.0,
                                   options: .transitionCrossDissolve,
-                                  animations: {
-                                    self.thumbnailImage.image = image
-                                  },
+                                  animations: animations,
                                   completion: nil)
             }.catch { error in
                 
@@ -233,6 +238,17 @@ open class CardTableViewCell: UITableViewCell {
     open func updatePricing(_ pricingMID: NSManagedObjectID?) {
         if let pricingMID = pricingMID {
             guard let pricing = ManaKit.sharedInstance.dataStack?.mainContext.object(with: pricingMID) as? CMCardPricing else {
+                lowPriceLabel.text = "NA"
+                lowPriceLabel.textColor = normalColor
+                
+                midPriceLabel.text = "NA"
+                midPriceLabel.textColor = normalColor
+                
+                highPriceLabel.text = "NA"
+                highPriceLabel.textColor = normalColor
+                
+                foilPriceLabel.text = "NA"
+                foilPriceLabel.textColor = normalColor
                 return
             }
             

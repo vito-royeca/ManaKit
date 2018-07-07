@@ -63,12 +63,17 @@ extension CardViewController : UITableViewDataSource {
                 firstly {
                     ManaKit.sharedInstance.downloadImage(ofCard: card, imageType: .normal)
                 }.done { (image: UIImage?) in
+                    guard let image = image else {
+                        return
+                    }
+                    
+                    let animations = {
+                        imageView.image = image
+                    }
                     UIView.transition(with: imageView,
                                       duration: 1.0,
                                       options: .transitionFlipFromRight,
-                                      animations: {
-                                          imageView.image = image
-                                      },
+                                      animations: animations,
                                       completion: nil)
                 }.catch { error in
                     
