@@ -1,3 +1,6 @@
+**Version 2.6.0** @ 07.07.2018
+- Updated the SQLite database to MTGJSON version 3.18.
+
 **Version 2.5.4** @ 25.06.2018
 - Refactored Core Data to use managed object IDs.
 
