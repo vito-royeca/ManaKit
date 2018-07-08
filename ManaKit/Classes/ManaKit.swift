@@ -317,7 +317,7 @@ open class ManaKit: NSObject {
     }
     
     // MARK: Miscellaneous methods
-    open func downloadImage(ofCard card: CMCard, imageType: ImageType) -> Promise<UIImage?> {
+    open func downloadImage(ofCard card: CMCard, imageType: ImageType) -> Promise<Void> {
         return Promise { seal  in
             guard let url = imageURL(ofCard: card, imageType: imageType) else {
                 let error = NSError(domain: NSURLErrorDomain, code: 404, userInfo: [NSLocalizedDescriptionKey: "No valid URL for image"])
@@ -325,8 +325,8 @@ open class ManaKit: NSObject {
                 return
             }
             
-            if let image = self.cardImage(card, imageType: imageType) {
-                seal.fulfill(image)
+            if let _ = self.cardImage(card, imageType: imageType) {
+                seal.fulfill()
             } else {
                 let downloader = SDWebImageDownloader.shared()
                 let cacheKey = url.absoluteString
@@ -336,22 +336,22 @@ open class ManaKit: NSObject {
                     } else {
                         if let image = image {
                             let imageCache = SDImageCache.init()
-                            imageCache.store(image, forKey: cacheKey, toDisk: true, completion: nil)
-                            
-                            if imageType == .artCrop {
-                                if let _ = card.scryfallNumber {
-                                    seal.fulfill(image)
+                            imageCache.store(image, forKey: cacheKey, toDisk: true, completion: {
+                                if imageType == .artCrop {
+                                    if let _ = card.scryfallNumber {
+                                        seal.fulfill()
+                                    } else {
+                                        let _ = self.crop(image, ofCard: card)
+                                        seal.fulfill()
+                                    }
                                 } else {
-                                    seal.fulfill(self.crop(image, ofCard: card))
+                                    seal.fulfill()
                                 }
-                            } else {
-                                // return rounded corners
-                                let roundCornered = image.roundCornered(card: card)
-                                seal.fulfill(roundCornered)
-                            }
+                            })
                             
                         } else {
-                            seal.fulfill(nil)
+                            let error = NSError(domain: NSURLErrorDomain, code: 404, userInfo: [NSLocalizedDescriptionKey: "Image not found: \(url)"])
+                            seal.reject(error)
                         }
                     }
                 }

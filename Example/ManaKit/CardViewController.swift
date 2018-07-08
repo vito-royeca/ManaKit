@@ -62,8 +62,8 @@ extension CardViewController : UITableViewDataSource {
 
                 firstly {
                     ManaKit.sharedInstance.downloadImage(ofCard: card, imageType: .normal)
-                }.done { (image: UIImage?) in
-                    guard let image = image else {
+                }.done {
+                    guard let image = ManaKit.sharedInstance.cardImage(card, imageType: .normal) else {
                         return
                     }
                     
