@@ -1,3 +1,6 @@
+**Version 2.6.1** @ 08.07.2018
+- Fixed downloading of images.
+
 **Version 2.6.0** @ 07.07.2018
 - Updated the SQLite database to MTGJSON version 3.18.
 

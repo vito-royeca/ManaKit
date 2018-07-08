@@ -136,8 +136,8 @@ open class CardTableViewCell: UITableViewCell {
             
             firstly {
                 ManaKit.sharedInstance.downloadImage(ofCard: card, imageType: .artCrop)
-            }.done { (image: UIImage?) in
-                guard let image = image else {
+            }.done {
+                guard let image = ManaKit.sharedInstance.croppedImage(card) else {
                     return
                 }
                 
