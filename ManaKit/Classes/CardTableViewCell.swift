@@ -12,22 +12,20 @@ import PromiseKit
 
 public let kCardTableViewCellHeight = CGFloat(88)
 
-open class CardTableViewCell: UITableViewCell {
+public let kPreEightEditionFont      = UIFont(name: "Magic:the Gathering", size: 17.0)
+public let kPreEightEditionFontSmall = UIFont(name: "Magic:the Gathering", size: 15.0)
+public let kEightEditionFont         = UIFont(name: "Matrix-Bold", size: 17.0)
+public let kEightEditionFontSmall    = UIFont(name: "Matrix-Bold", size: 15.0)
+public let kMagic2015Font            = UIFont(name: "Beleren", size: 17.0)
+public let kMagic2015FontSmall       = UIFont(name: "Beleren", size: 15.0)
 
-    // MARK: Constants
-    let preEightEditionFont      = UIFont(name: "Magic:the Gathering", size: 17.0)
-    let preEightEditionFontSmall = UIFont(name: "Magic:the Gathering", size: 15.0)
-    let eightEditionFont         = UIFont(name: "Matrix-Bold", size: 17.0)
-    let eightEditionFontSmall    = UIFont(name: "Matrix-Bold", size: 15.0)
-    let magic2015Font            = UIFont(name: "Beleren", size: 17.0)
-    let magic2015FontSmall       = UIFont(name: "Beleren", size: 15.0)
-    
-    let lowPriceColor  = UIColor.red
-    let midPriceColor  = UIColor.blue
-    let highPriceColor = UIColor(red:0.00, green:0.50, blue:0.00, alpha:1.0)
-    let foilPriceColor = UIColor(red:0.60, green:0.51, blue:0.00, alpha:1.0)
-    let normalColor = UIColor.black
-    
+public let kLowPriceColor  = UIColor.red
+public let kMidPriceColor  = UIColor.blue
+public let kHighPriceColor = UIColor(red:0.00, green:0.50, blue:0.00, alpha:1.0)
+public let kFoilPriceColor = UIColor(red:0.60, green:0.51, blue:0.00, alpha:1.0)
+public let kNormalColor    = UIColor.black
+
+open class CardTableViewCell: UITableViewCell {
     // Variables
     open var cardMID: NSManagedObjectID?
     
@@ -71,6 +69,7 @@ open class CardTableViewCell: UITableViewCell {
     }
     
     override open func prepareForReuse() {
+        cardMID = nil
         thumbnailImage.image = ManaKit.sharedInstance.imageFromFramework(imageName: .cardBackCropped)
         symbolImage.image = nil
         removeAnnotation()
@@ -78,7 +77,7 @@ open class CardTableViewCell: UITableViewCell {
         castingCostLabel.text = nil
         typeLabel.text = nil
         setImage.text = nil
-        updatePricing(nil)
+        updatePricing()
     }
     
     // MARK: Custom methods
@@ -104,10 +103,10 @@ open class CardTableViewCell: UITableViewCell {
                 
                 if setReleaseDate.compare(m15Date) == .orderedSame ||
                     setReleaseDate.compare(m15Date) == .orderedDescending {
-                    nameLabel.font = magic2015Font
+                    nameLabel.font = kMagic2015Font
                     
                 } else {
-                    nameLabel.font = isModern ? eightEditionFont : preEightEditionFont
+                    nameLabel.font = isModern ? kEightEditionFont : kPreEightEditionFont
                     
                     if !isModern {
                         shadowColor = UIColor.darkGray
@@ -215,13 +214,13 @@ open class CardTableViewCell: UITableViewCell {
         if willFetchPricing {
             firstly {
                 ManaKit.sharedInstance.fetchTCGPlayerCardPricing(cardMID: card.objectID)
-            }.done { (pricingMID: NSManagedObjectID?) in
-                self.updatePricing(pricingMID)
+            }.done {
+                self.updatePricing()
             }.catch { error in
-                self.updatePricing(nil)
+                self.updatePricing()
             }
         } else {
-            self.updatePricing(nil)
+            self.updatePricing()
         }
     }
     
@@ -235,64 +234,50 @@ open class CardTableViewCell: UITableViewCell {
         annotationLabel.text = ""
     }
     
-    open func updatePricing(_ pricingMID: NSManagedObjectID?) {
-        if let pricingMID = pricingMID {
-            guard let pricing = ManaKit.sharedInstance.dataStack?.mainContext.object(with: pricingMID) as? CMCardPricing else {
+    open func updatePricing() {
+        guard let cardMID = cardMID,
+            let card = ManaKit.sharedInstance.dataStack?.mainContext.object(with: cardMID) as? CMCard,
+            let pricing = ManaKit.sharedInstance.findObject("CMCardPricing", objectFinder: ["card.id": card.id as AnyObject], createIfNotFound: true) as? CMCardPricing else {
                 lowPriceLabel.text = "NA"
-                lowPriceLabel.textColor = normalColor
+                lowPriceLabel.textColor = kNormalColor
                 
                 midPriceLabel.text = "NA"
-                midPriceLabel.textColor = normalColor
+                midPriceLabel.textColor = kNormalColor
                 
                 highPriceLabel.text = "NA"
-                highPriceLabel.textColor = normalColor
+                highPriceLabel.textColor = kNormalColor
                 
                 foilPriceLabel.text = "NA"
-                foilPriceLabel.textColor = normalColor
+                foilPriceLabel.textColor = kNormalColor
                 return
-            }
-            
-            lowPriceLabel.text = pricing.low > 0 ? String(format: "$%.2f", pricing.low) : "NA"
-            lowPriceLabel.textColor = pricing.low > 0 ? lowPriceColor : normalColor
-            
-            midPriceLabel.text = pricing.average > 0 ? String(format: "$%.2f", pricing.average) : "NA"
-            midPriceLabel.textColor = pricing.average > 0 ? midPriceColor : normalColor
-            
-            highPriceLabel.text = pricing.high > 0 ? String(format: "$%.2f", pricing.high) : "NA"
-            highPriceLabel.textColor = pricing.high > 0 ? highPriceColor : normalColor
-            
-            foilPriceLabel.text = pricing.foil > 0 ? String(format: "$%.2f", pricing.foil) : "NA"
-            foilPriceLabel.textColor = pricing.foil > 0 ? foilPriceColor : normalColor
-        } else {
-            lowPriceLabel.text = "NA"
-            lowPriceLabel.textColor = normalColor
-            
-            midPriceLabel.text = "NA"
-            midPriceLabel.textColor = normalColor
-            
-            highPriceLabel.text = "NA"
-            highPriceLabel.textColor = normalColor
-            
-            foilPriceLabel.text = "NA"
-            foilPriceLabel.textColor = normalColor
         }
+        
+        lowPriceLabel.text = pricing.low > 0 ? String(format: "$%.2f", pricing.low) : "NA"
+        lowPriceLabel.textColor = pricing.low > 0 ? kLowPriceColor : kNormalColor
+        
+        midPriceLabel.text = pricing.average > 0 ? String(format: "$%.2f", pricing.average) : "NA"
+        midPriceLabel.textColor = pricing.average > 0 ? kMidPriceColor : kNormalColor
+        
+        highPriceLabel.text = pricing.high > 0 ? String(format: "$%.2f", pricing.high) : "NA"
+        highPriceLabel.textColor = pricing.high > 0 ? kHighPriceColor : kNormalColor
+        
+        foilPriceLabel.text = pricing.foil > 0 ? String(format: "$%.2f", pricing.foil) : "NA"
+        foilPriceLabel.textColor = pricing.foil > 0 ? kFoilPriceColor : kNormalColor
     }
     
     // MARK: Core Data notifications
     func changeNotification(_ notification: Notification) {
         guard let cardMID = cardMID,
-            let card = ManaKit.sharedInstance.dataStack?.mainContext.object(with: cardMID) as? CMCard else {
+            let card = ManaKit.sharedInstance.dataStack?.mainContext.object(with: cardMID) as? CMCard,
+            let updatedObjects = notification.userInfo?[NSUpdatedObjectsKey],
+            let set = updatedObjects as? NSSet else {
                 return
         }
         
-        if let updatedObjects = notification.userInfo?[NSUpdatedObjectsKey] {
-            if let set = updatedObjects as? NSSet {
-                for o in set.allObjects {
-                    if let pricing = o as? CMCardPricing {
-                        if pricing.card?.objectID == card.objectID {
-                            updatePricing(pricing.objectID)
-                        }
-                    }
+        for o in set.allObjects {
+            if let pricing = o as? CMCardPricing {
+                if pricing.card?.objectID == card.objectID {
+                    updatePricing()
                 }
             }
         }

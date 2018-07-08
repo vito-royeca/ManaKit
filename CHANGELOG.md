@@ -1,3 +1,6 @@
+**Version 2.6.2** @ 08.07.2018
+- Fixed downloading TCGPlayer pricing.
+
 **Version 2.6.1** @ 08.07.2018
 - Fixed downloading of images.
 
