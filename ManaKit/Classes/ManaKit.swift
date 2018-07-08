@@ -542,11 +542,11 @@ open class ManaKit: NSObject {
         tcgPlayerPrivateKey = privateKey
     }
     
-    open func fetchTCGPlayerCardPricing(cardMID: NSManagedObjectID) -> Promise<NSManagedObjectID?> {
+    open func fetchTCGPlayerCardPricing(cardMID: NSManagedObjectID) -> Promise<Void> {
         return Promise { seal  in
             guard let card = dataStack?.mainContext.object(with: cardMID) as? CMCard,
                 let pricing = findObject("CMCardPricing", objectFinder: ["card.id": card.id as AnyObject], createIfNotFound: true) as? CMCardPricing else {
-                seal.fulfill(nil)
+                seal.fulfill()
                 return
             }
             
@@ -567,7 +567,7 @@ open class ManaKit: NSObject {
                     let urlString = "http://partner.tcgplayer.com/x3/phl.asmx/p?pk=\(tcgPlayerPartnerKey)&s=\(tcgPlayerSetName)&p=\(cardName)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                     let url = URL(string: urlString) else {
                     
-                    seal.fulfill(nil)
+                    seal.fulfill()
                     return
                 }
                 
@@ -599,13 +599,13 @@ open class ManaKit: NSObject {
                     
                     self.dataStack?.performInNewBackgroundContext { backgroundContext in
                         try! backgroundContext.save()
-                        seal.fulfill(nil)
+                        seal.fulfill()
                     }
                 }.catch { error in
                     seal.reject(error)
                 }
             } else {
-                seal.fulfill(pricing.objectID)
+                seal.fulfill()
             }
         }
     }
