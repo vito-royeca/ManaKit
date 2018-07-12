@@ -15,7 +15,7 @@ import SSZipArchive
 import Sync
 
 
-public let kMTGJSONVersion      = "3.18"
+public let kMTGJSONVersion      = "3.18 B"
 public let kMTGJSONDate         = "Jul 5, 2018"
 public let kKeyruneVersion      = "3.2.1"
 public let kMTGJSONVersionKey   = "kMTGJSONVersionKey"
@@ -710,23 +710,32 @@ open class ManaKit: NSObject {
         return unicode
     }
         
-    open func keyruneColor(forRarity rarity: CMRarity) -> UIColor? {
+    open func keyruneColor(forCard card: CMCard) -> UIColor? {
+        guard let set = card.set,
+            let rarity = card.rarity_ else {
+            return nil
+        }
+        
         var color:UIColor?
         
-        if rarity.name == "Common" {
-            color = UIColor(hex: "1A1718")
-        } else if rarity.name == "Uncommon" {
-            color = UIColor(hex: "707883")
-        } else if rarity.name == "Rare" {
-            color = UIColor(hex: "A58E4A")
-        } else if rarity.name == "Mythic Rare" {
-            color = UIColor(hex: "BF4427")
-        } else if rarity.name == "Special" {
-            color = UIColor(hex: "BF4427")
-        } else if rarity.name == "Timeshifted" {
-            color = UIColor(hex: "652978")
-        } else if rarity.name == "Basic Land" {
-            color = UIColor(hex: "000000")
+        if set.code == "TSB" {
+            color = UIColor(hex: "652978") // purple
+        } else {
+            if rarity.name == "Common" {
+                color = UIColor(hex: "1A1718")
+            } else if rarity.name == "Uncommon" {
+                color = UIColor(hex: "707883")
+            } else if rarity.name == "Rare" {
+                color = UIColor(hex: "A58E4A")
+            } else if rarity.name == "Mythic Rare" {
+                color = UIColor(hex: "BF4427")
+            } else if rarity.name == "Special" {
+                color = UIColor(hex: "BF4427")
+            } else if rarity.name == "Timeshifted" {
+                color = UIColor(hex: "652978")
+            } else if rarity.name == "Basic Land" {
+                color = UIColor(hex: "000000")
+            }
         }
         
         return color

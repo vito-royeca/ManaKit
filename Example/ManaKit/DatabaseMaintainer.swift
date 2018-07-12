@@ -577,7 +577,9 @@ class DatabaseMaintainer: NSObject {
                 if let object = cachedRarities.first(where: { $0.name == rarity }) {
                     card.rarity_ = object
                 } else {
+                    // purple for timeshifted cards
                     let objectFinder = ["name": rarity] as [String: AnyObject]
+                    
                     if let object = ManaKit.sharedInstance.findObject("CMRarity", objectFinder: objectFinder, createIfNotFound: true) as? CMRarity {
                         object.name = rarity
                         card.rarity_ = object
