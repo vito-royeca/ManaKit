@@ -154,10 +154,9 @@ open class CardTableViewCell: UITableViewCell {
         }
         
         // set symbol
-        if let rarity = card.rarity_,
-            let set = card.set {
+        if let set = card.set {
             setImage.text = ManaKit.sharedInstance.keyruneUnicode(forSet: set)
-            setImage.textColor = ManaKit.sharedInstance.keyruneColor(forRarity: rarity)
+            setImage.textColor = ManaKit.sharedInstance.keyruneColor(forCard: card)
         }
 
         // type symbol

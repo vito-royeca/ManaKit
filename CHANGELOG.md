@@ -1,3 +1,6 @@
+**Version 2.6.3** @ 12.07.2018
+- Updated the Timespiral Timeshifted (TSB) set icon.
+
 **Version 2.6.2** @ 08.07.2018
 - Fixed downloading TCGPlayer pricing.
 

@@ -17,7 +17,6 @@ class SetsViewController: UIViewController {
     
     // MARK: Variables
     var dataSource: DATASource?
-    var commonRarity: CMRarity?
     
     // MARK: Outlets
     @IBOutlet weak var tableView: UITableView!
@@ -33,11 +32,6 @@ class SetsViewController: UIViewController {
         searchController.dimsBackgroundDuringPresentation = false
         definesPresentationContext = true
         tableView.tableHeaderView = searchController.searchBar
-        
-        let objectFinder = ["name": "Common"] as [String: AnyObject]
-        if let object = ManaKit.sharedInstance.findObject("CMRarity", objectFinder: objectFinder, createIfNotFound: false) as? CMRarity {
-            commonRarity = object
-        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -64,14 +58,13 @@ class SetsViewController: UIViewController {
         }
         
         let dataSource = DATASource(tableView: tableView, cellIdentifier: "SetCell", fetchRequest: request!, mainContext: ManaKit.sharedInstance.dataStack!.mainContext, configuration: { cell, item, indexPath in
-            guard let set = item as? CMSet,
-                let commonRarity = self.commonRarity else {
+            guard let set = item as? CMSet else {
                 return
             }
 
             if let label = cell.contentView.viewWithTag(100) as? UILabel {
                 label.text = ManaKit.sharedInstance.keyruneUnicode(forSet: set)
-                label.textColor = ManaKit.sharedInstance.keyruneColor(forRarity: commonRarity)
+                label.textColor = UIColor.black
             }
             if let label = cell.contentView.viewWithTag(200) as? UILabel {
                 label.text = set.name
