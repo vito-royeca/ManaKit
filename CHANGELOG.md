@@ -1,5 +1,6 @@
-**Version 2.6.4** @ 14.07.2018
+**Version 2.6.5** @ 14.07.2018
 - Refactor: now using card as CMCard instead of objectID.
+- Optimized loading of CardTableViewCell.
 
 **Version 2.6.3** @ 12.07.2018
 - Updated the Timespiral Timeshifted (TSB) set icon.
