@@ -27,7 +27,7 @@ public let kNormalColor    = UIColor.black
 
 open class CardTableViewCell: UITableViewCell {
     // Variables
-    open var cardMID: NSManagedObjectID?
+    open var card: CMCard?
     
     // MARK: Outlets
     @IBOutlet weak var thumbnailImage: UIImageView!
@@ -69,7 +69,7 @@ open class CardTableViewCell: UITableViewCell {
     }
     
     override open func prepareForReuse() {
-        cardMID = nil
+        card = nil
         thumbnailImage.image = ManaKit.sharedInstance.imageFromFramework(imageName: .cardBackCropped)
         symbolImage.image = nil
         removeAnnotation()
@@ -82,8 +82,7 @@ open class CardTableViewCell: UITableViewCell {
     
     // MARK: Custom methods
     open func updateDataDisplay() {
-        guard let cardMID = cardMID,
-            let card = ManaKit.sharedInstance.dataStack?.mainContext.object(with: cardMID) as? CMCard else {
+        guard let card = card else {
             prepareForReuse()
             return
         }
@@ -212,7 +211,7 @@ open class CardTableViewCell: UITableViewCell {
         }
         if willFetchPricing {
             firstly {
-                ManaKit.sharedInstance.fetchTCGPlayerCardPricing(cardMID: card.objectID)
+                ManaKit.sharedInstance.fetchTCGPlayerCardPricing(card: card)
             }.done {
                 self.updatePricing()
             }.catch { error in
@@ -234,8 +233,7 @@ open class CardTableViewCell: UITableViewCell {
     }
     
     open func updatePricing() {
-        guard let cardMID = cardMID,
-            let card = ManaKit.sharedInstance.dataStack?.mainContext.object(with: cardMID) as? CMCard,
+        guard let card = card,
             let pricing = ManaKit.sharedInstance.findObject("CMCardPricing", objectFinder: ["card.id": card.id as AnyObject], createIfNotFound: true) as? CMCardPricing else {
                 lowPriceLabel.text = "NA"
                 lowPriceLabel.textColor = kNormalColor
@@ -266,8 +264,7 @@ open class CardTableViewCell: UITableViewCell {
     
     // MARK: Core Data notifications
     func changeNotification(_ notification: Notification) {
-        guard let cardMID = cardMID,
-            let card = ManaKit.sharedInstance.dataStack?.mainContext.object(with: cardMID) as? CMCard,
+        guard let card = card,
             let updatedObjects = notification.userInfo?[NSUpdatedObjectsKey],
             let set = updatedObjects as? NSSet else {
                 return

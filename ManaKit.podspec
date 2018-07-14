@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ManaKit'
-  s.version          = '2.6.3'
+  s.version          = '2.6.4'
   s.summary          = 'Core Data implementation of MTGJSON.com.'
 
 # This description is used to generate tags and improve search results.
