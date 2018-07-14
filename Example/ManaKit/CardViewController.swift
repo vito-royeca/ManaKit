@@ -14,7 +14,7 @@ import PromiseKit
 class CardViewController: UIViewController {
 
     // MARK: Variables
-    var cardMID: NSManagedObjectID?
+    var card: CMCard?
     
     // MARK: Outlets
     @IBOutlet weak var tableView: UITableView!
@@ -39,19 +39,19 @@ extension CardViewController : UITableViewDataSource {
         
         switch indexPath.row {
         case 0:
-            guard let c = tableView.dequeueReusableCell(withIdentifier: "CardCell") as? CardTableViewCell else {
+            guard let c = tableView.dequeueReusableCell(withIdentifier: "CardCell") as? CardTableViewCell,
+                let card = card else {
                 return UITableViewCell(frame: CGRect.zero)
             }
             
-            c.cardMID = cardMID
+            c.card = card
             c.updateDataDisplay()
             cell = c
             
         case 1:
             guard let c = tableView.dequeueReusableCell(withIdentifier: "ImageCell"),
                 let imageView = c.viewWithTag(100) as? UIImageView,
-                let cardMID = cardMID,
-                let card = ManaKit.sharedInstance.dataStack?.mainContext.object(with: cardMID) as? CMCard else {
+                let card = card else {
                 return UITableViewCell(frame: CGRect.zero)
             }
             

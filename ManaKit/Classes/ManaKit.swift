@@ -131,9 +131,6 @@ open class ManaKit: NSObject {
     fileprivate var tcgPlayerPrivateKey: String?
     
     // MARK: Resource methods
-    /*
-     * Example path: "/images/set/2ED/C/48.png"
-     */
     open func imageFromFramework(imageName: ImageName) -> UIImage? {
         let bundle = Bundle(for: ManaKit.self)
         guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
@@ -542,10 +539,9 @@ open class ManaKit: NSObject {
         tcgPlayerPrivateKey = privateKey
     }
     
-    open func fetchTCGPlayerCardPricing(cardMID: NSManagedObjectID) -> Promise<Void> {
+    open func fetchTCGPlayerCardPricing(card: CMCard) -> Promise<Void> {
         return Promise { seal  in
-            guard let card = dataStack?.mainContext.object(with: cardMID) as? CMCard,
-                let pricing = findObject("CMCardPricing", objectFinder: ["card.id": card.id as AnyObject], createIfNotFound: true) as? CMCardPricing else {
+            guard let pricing = findObject("CMCardPricing", objectFinder: ["card.id": card.id as AnyObject], createIfNotFound: true) as? CMCardPricing else {
                 seal.fulfill()
                 return
             }
@@ -610,13 +606,8 @@ open class ManaKit: NSObject {
         }
     }
     
-    open func fetchTCGPlayerStorePricing(cardMID: NSManagedObjectID) -> Promise<Void> {
+    open func fetchTCGPlayerStorePricing(card: CMCard) -> Promise<Void> {
         return Promise { seal  in
-            guard let card = dataStack?.mainContext.object(with: cardMID) as? CMCard else {
-                seal.fulfill()
-                return
-            }
-            
             var willFetch = false
             
             if let lastUpdate = card.storePricingLastUpdate {

@@ -38,7 +38,7 @@ class Tests: XCTestCase {
         
         if let card = ManaKit.sharedInstance.findObject("CMCard", objectFinder: objectFinder, createIfNotFound: false) as? CMCard {
             firstly {
-                ManaKit.sharedInstance.fetchTCGPlayerStorePricing(cardMID: card.objectID)
+                ManaKit.sharedInstance.fetchTCGPlayerStorePricing(card: card)
             }.done {
                 if let suppliers = card.suppliers {
                     for supplier in suppliers.allObjects {
