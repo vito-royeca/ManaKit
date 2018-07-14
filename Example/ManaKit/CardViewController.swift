@@ -45,7 +45,6 @@ extension CardViewController : UITableViewDataSource {
             }
             
             c.card = card
-            c.updateDataDisplay()
             cell = c
             
         case 1:

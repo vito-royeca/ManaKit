@@ -27,7 +27,11 @@ public let kNormalColor    = UIColor.black
 
 open class CardTableViewCell: UITableViewCell {
     // Variables
-    open var card: CMCard?
+    open var card: CMCard? {
+        didSet {
+            updateDataDisplay()
+        }
+    }
     
     // MARK: Outlets
     @IBOutlet weak var thumbnailImage: UIImageView!
@@ -52,14 +56,6 @@ open class CardTableViewCell: UITableViewCell {
         setImage.layer.cornerRadius = setImage.frame.height / 2
         annotationLabel.layer.cornerRadius = setImage.frame.height / 2
         removeAnnotation()
-        
-        NotificationCenter.default.removeObserver(self,
-                                                  name: NSNotification.Name.NSManagedObjectContextObjectsDidChange,
-                                                  object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(changeNotification(_:)),
-                                               name: NSNotification.Name.NSManagedObjectContextObjectsDidChange,
-                                               object: nil)
     }
 
     override open func setSelected(_ selected: Bool, animated: Bool) {
@@ -68,8 +64,7 @@ open class CardTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    override open func prepareForReuse() {
-        card = nil
+    open func clearDataDisplay() {
         thumbnailImage.image = ManaKit.sharedInstance.imageFromFramework(imageName: .cardBackCropped)
         symbolImage.image = nil
         removeAnnotation()
@@ -77,13 +72,24 @@ open class CardTableViewCell: UITableViewCell {
         castingCostLabel.text = nil
         typeLabel.text = nil
         setImage.text = nil
-        updatePricing()
+        
+        lowPriceLabel.text = "NA"
+        lowPriceLabel.textColor = kNormalColor
+        
+        midPriceLabel.text = "NA"
+        midPriceLabel.textColor = kNormalColor
+        
+        highPriceLabel.text = "NA"
+        highPriceLabel.textColor = kNormalColor
+        
+        foilPriceLabel.text = "NA"
+        foilPriceLabel.textColor = kNormalColor
     }
     
     // MARK: Custom methods
-    open func updateDataDisplay() {
+    private func updateDataDisplay() {
         guard let card = card else {
-            prepareForReuse()
+            clearDataDisplay()
             return
         }
         
@@ -131,14 +137,14 @@ open class CardTableViewCell: UITableViewCell {
             thumbnailImage.image = croppedImage
         } else {
             thumbnailImage.image = ManaKit.sharedInstance.imageFromFramework(imageName: .cardBackCropped)
-            
+
             firstly {
                 ManaKit.sharedInstance.downloadImage(ofCard: card, imageType: .artCrop)
             }.done {
                 guard let image = ManaKit.sharedInstance.croppedImage(card) else {
                     return
                 }
-                
+
                 let animations = {
                     self.thumbnailImage.image = image
                 }
@@ -148,7 +154,7 @@ open class CardTableViewCell: UITableViewCell {
                                   animations: animations,
                                   completion: nil)
             }.catch { error in
-                
+
             }
         }
         
@@ -218,7 +224,7 @@ open class CardTableViewCell: UITableViewCell {
                 self.updatePricing()
             }
         } else {
-            self.updatePricing()
+            updatePricing()
         }
     }
     
@@ -260,22 +266,5 @@ open class CardTableViewCell: UITableViewCell {
         
         foilPriceLabel.text = pricing.foil > 0 ? String(format: "$%.2f", pricing.foil) : "NA"
         foilPriceLabel.textColor = pricing.foil > 0 ? kFoilPriceColor : kNormalColor
-    }
-    
-    // MARK: Core Data notifications
-    func changeNotification(_ notification: Notification) {
-        guard let card = card,
-            let updatedObjects = notification.userInfo?[NSUpdatedObjectsKey],
-            let set = updatedObjects as? NSSet else {
-                return
-        }
-        
-        for o in set.allObjects {
-            if let pricing = o as? CMCardPricing {
-                if pricing.card?.objectID == card.objectID {
-                    updatePricing()
-                }
-            }
-        }
     }
 }

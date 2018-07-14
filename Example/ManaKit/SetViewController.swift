@@ -25,15 +25,14 @@ class SetViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         tableView.register(ManaKit.sharedInstance.nibFromBundle("CardTableViewCell"), forCellReuseIdentifier: "CardCell")
-        
-        dataSource = getDataSource(nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        // to fix casting cost placement
-        tableView.reloadData()
+        if dataSource == nil {
+            dataSource = getDataSource()
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -48,30 +47,25 @@ class SetViewController: UIViewController {
     }
 
     // MARK: Custom methods
-    func getDataSource(_ fetchRequest: NSFetchRequest<NSFetchRequestResult>?) -> DATASource? {
-        var request:NSFetchRequest<NSFetchRequestResult>?
-        
-        if let fetchRequest = fetchRequest {
-            request = fetchRequest
-        } else {
-            request = CMCard.fetchRequest()
-            request!.predicate = NSPredicate(format: "set.code = %@", set!.code!)
-            request!.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true),
-                                        NSSortDescriptor(key: "number", ascending: true),
-                                        NSSortDescriptor(key: "mciNumber", ascending: true)]
+    func getDataSource() -> DATASource? {
+        guard let set = set,
+            let code = set.code else {
+            return nil
         }
         
-        let dataSource = DATASource(tableView: tableView, cellIdentifier: "CardCell", fetchRequest: request!, mainContext: ManaKit.sharedInstance.dataStack!.mainContext, configuration: { cell, item, indexPath in
-            guard let card = item as? CMCard,
-                let cardCell = cell as? CardTableViewCell else {
-                return
-            }
-            
-            cardCell.card = card
-            cardCell.updateDataDisplay()
-        })
+        let request = CMCard.fetchRequest()
+        request.predicate = NSPredicate(format: "set.code = %@", code)
+        request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true),
+                                   NSSortDescriptor(key: "number", ascending: true),
+                                   NSSortDescriptor(key: "mciNumber", ascending: true)]
         
-        return dataSource
+        let ds = DATASource(tableView: tableView,
+                            cellIdentifier: "CardCell",
+                            fetchRequest: request,
+                            mainContext: ManaKit.sharedInstance.dataStack!.mainContext)
+        ds.delegate = self
+        
+        return ds
     }
 }
 
@@ -86,12 +80,18 @@ extension SetViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return kCardTableViewCellHeight
     }
-    
-//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        if let cardCell = cell as? CardTableViewCell {
-//            cardCell.updateDataDisplay()
-//        }
-//    }
+}
+
+// MARK: DATASourceDelegate
+extension SetViewController : DATASourceDelegate {
+    func dataSource(_ dataSource: DATASource, configureTableViewCell cell: UITableViewCell, withItem item: NSManagedObject, atIndexPath indexPath: IndexPath) {
+        guard let card = item as? CMCard,
+            let cardCell = cell as? CardTableViewCell else {
+                return
+        }
+        
+        cardCell.card = card
+    }
 }
 
 
