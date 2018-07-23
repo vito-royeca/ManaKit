@@ -1,4 +1,4 @@
-**Version 2.6.7** @ 23.07.2018
+**Version 2.6.8** @ 23.07.2018
 - Updated Keyrune to v3.2.2.
 
 **Version 2.6.5** @ 14.07.2018
