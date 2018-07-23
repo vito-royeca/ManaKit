@@ -186,6 +186,8 @@
 	<string>e63c</string>
 	<key>gpt</key>
 	<string>e638</string>
+	<key>gs1</key>
+	<string>e945</string>
 	<key>gtc</key>
 	<string>e64e</string>
 	<key>h09</key>
@@ -356,6 +358,8 @@
 	<string>e636</string>
 	<key>som</key>
 	<string>e647</string>
+	<key>ss1</key>
+	<string>e944</string>
 	<key>sth</key>
 	<string>e620</string>
 	<key>td2</key>
