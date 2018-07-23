@@ -17,7 +17,7 @@ import Sync
 
 public let kMTGJSONVersion      = "3.18 B"
 public let kMTGJSONDate         = "Jul 5, 2018"
-public let kKeyruneVersion      = "3.2.1"
+public let kKeyruneVersion      = "3.2.2"
 public let kMTGJSONVersionKey   = "kMTGJSONVersionKey"
 public let kImagesVersionKey    = "kImagesVersionKey"
 public let kCardImageSource     = "http://magiccards.info/scans/en"
@@ -171,15 +171,24 @@ open class ManaKit: NSObject {
         guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
             let resourceBundle = Bundle(url: bundleURL),
             let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first,
+            let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first,
             let sourcePath = resourceBundle.path(forResource: "ManaKit.sqlite", ofType: "zip"),
             let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String else {
             return
         }
         
+        // Remove old database files in documents directory
+        for file in try! FileManager.default.contentsOfDirectory(atPath: docsPath) {
+            let path = "\(docsPath)/\(file)"
+            if file.hasPrefix(bundleName) {
+                try! FileManager.default.removeItem(atPath: path)
+            }
+        }
+        
         var willCopy = true
 
         // Check if we have old files
-        let targetPath = "\(docsPath)/\(bundleName).sqlite"
+        let targetPath = "\(cachePath)/\(bundleName).sqlite"
         willCopy = !FileManager.default.fileExists(atPath: targetPath)
         
         // Check if we saved the version number
@@ -193,19 +202,19 @@ open class ManaKit: NSObject {
             // Shutdown database
             dataStack = nil
             
-            // Remove old database files
-            for file in try! FileManager.default.contentsOfDirectory(atPath: docsPath) {
-                let path = "\(docsPath)/\(file)"
+            // Remove old database files in caches directory
+            for file in try! FileManager.default.contentsOfDirectory(atPath: cachePath) {
+                let path = "\(cachePath)/\(file)"
                 if file.hasPrefix(bundleName) {
                     try! FileManager.default.removeItem(atPath: path)
                 }
             }
             
             // Unzip
-            SSZipArchive.unzipFile(atPath: sourcePath, toDestination: docsPath)
+            SSZipArchive.unzipFile(atPath: sourcePath, toDestination: cachePath)
             
             // rename
-            try! FileManager.default.moveItem(atPath: "\(docsPath)/ManaKit.sqlite", toPath: targetPath)
+            try! FileManager.default.moveItem(atPath: "\(cachePath)/ManaKit.sqlite", toPath: targetPath)
             
             // skip from iCloud backups!
             var targetURL = URL(fileURLWithPath: targetPath)

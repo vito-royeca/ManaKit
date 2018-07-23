@@ -1,3 +1,6 @@
+**Version 2.6.6** @ 23.07.2018
+- Updated Keyrune to v3.2.2.
+
 **Version 2.6.5** @ 14.07.2018
 - Refactor: now using card as CMCard instead of objectID.
 - Optimized loading of CardTableViewCell.
