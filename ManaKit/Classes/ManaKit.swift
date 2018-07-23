@@ -15,7 +15,7 @@ import SSZipArchive
 import Sync
 
 
-public let kMTGJSONVersion      = "3.18 D"
+public let kMTGJSONVersion      = "3.18 E"
 public let kMTGJSONDate         = "Jul 5, 2018"
 public let kKeyruneVersion      = "3.2.2"
 public let kMTGJSONVersionKey   = "kMTGJSONVersionKey"
