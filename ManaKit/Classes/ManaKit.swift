@@ -15,102 +15,45 @@ import SSZipArchive
 import Sync
 
 
-public let kMTGJSONVersion      = "3.18 E"
-public let kMTGJSONDate         = "Jul 5, 2018"
-public let kKeyruneVersion      = "3.2.2"
-public let kMTGJSONVersionKey   = "kMTGJSONVersionKey"
-public let kImagesVersionKey    = "kImagesVersionKey"
-public let kCardImageSource     = "http://magiccards.info/scans/en"
-public let kEightEditionRelease = "2003-07-28"
-public let kBasicRulesFile      = "2003-07-28"
-
-public let kTCGPlayerPricingAge = 24 * 3 // 3 days
-
-// Notification events
-public let kNotificationCardImageDownloaded = "kNotificationCardImageDownloaded"
-
-public enum ImageName: String {
-    case cardCircles       = "images/Card_Circles",
-    cardBackCropped        = "images/cardback-crop-hq",
-    cardBack               = "images/cardback-hq",
-    collectorsCardBack     = "images/collectorscardback-hq",
-    cropBack               = "images/cropback-hq",
-    grayPatterned          = "images/Gray_Patterned_BG",
-    intlCollectorsCardBack = "images/internationalcollectorscardback-hq"
-}
-
-public let Symbols = [
-    "∞": "{∞}",
-    "0": "{0}",
-    "1": "{1}",
-    "2": "{2}",
-    "3": "{3}",
-    "4": "{4}",
-    "5": "{5}",
-    "6": "{6}",
-    "7": "{7}",
-    "8": "{8}",
-    "9": "{9}",
-    "10": "{10}",
-    "11": "{11}",
-    "12": "{12}",
-    "13": "{13}",
-    "14": "{14}",
-    "15": "{15}",
-    "16": "{16}",
-    "17": "{17}",
-    "18": "{18}",
-    "19": "{19}",
-    "20": "{20}",
-    "100": "{100}",
-    "1000000": "{1000000}",
-    "B": "{B}",
-    "BG": "{B/G}",
-    "BP": "{B/P}",
-    "BR": "{B/R}",
-    "C": "{C}",
-    "G": "{G}",
-    "GP": "{G/P}",
-    "GU": "{G/U}",
-    "GW": "{G/W}",
-    "R": "{R}",
-    "RG": "{R/G}",
-    "RP": "{R/P}",
-    "RW": "{R/W}",
-    "S": "{S}",
-    "U": "{U}",
-    "UB": "{U/B}",
-    "UP": "{U/P}",
-    "UR": "{U/R}",
-    "W": "{W}",
-    "WB": "{W/B}",
-    "WP": "{W/P}",
-    "WU": "{W/U}",
-    "X": "{X}",
-    "Y": "{Y}",
-    "Z": "{Z}",
-    "E": "{E}",
-    "Q": "{Q}",
-    "T": "{T}"
-]
-
-public enum ImageType: Int {
-    case png
-    case borderCrop
-    case artCrop
-    case large
-    case normal
-    case small
-}
-
 @objc(ManaKit)
-open class ManaKit: NSObject {
+public class ManaKit: NSObject {
+    public enum Constants {
+        public static let MTGJSONVersion      = "3.18 E"
+        public static let MTGJSONDate         = "Jul 5, 2018"
+        public static let KeyruneVersion      = "3.2.2"
+        public static let EightEditionRelease = "2003-07-28"
+        public static let TCGPlayerPricingAge = 24 * 3 // 3 days
+    }
+    
+    public enum ImageName: String {
+        case cardCircles       = "images/Card_Circles",
+        cardBackCropped        = "images/cardback-crop-hq",
+        cardBack               = "images/cardback-hq",
+        collectorsCardBack     = "images/collectorscardback-hq",
+        cropBack               = "images/cropback-hq",
+        grayPatterned          = "images/Gray_Patterned_BG",
+        intlCollectorsCardBack = "images/internationalcollectorscardback-hq"
+    }
+    
+    public enum ImageType: Int {
+        case png
+        case borderCrop
+        case artCrop
+        case large
+        case normal
+        case small
+    }
+    
+    public enum UserDefaultsKeys {
+        public static let MTGJSONVersionKey   = "kMTGJSONVersionKey"
+    }
+    
     // MARK: - Shared Instance
-    open static let sharedInstance = ManaKit()
+    public static let sharedInstance = ManaKit()
     
     // MARK: Variables
-    fileprivate var _dataStack:DataStack?
-    open var dataStack:DataStack? {
+    private var _dataStack:DataStack?
+    public var dataStack:DataStack? {
         get {
             if _dataStack == nil {
                 guard let bundleURL = Bundle(for: ManaKit.self).url(forResource: "ManaKit", withExtension: "bundle") else { return nil }
@@ -131,7 +74,7 @@ open class ManaKit: NSObject {
     fileprivate var tcgPlayerPrivateKey: String?
     
     // MARK: Resource methods
-    open func imageFromFramework(imageName: ImageName) -> UIImage? {
+    public func imageFromFramework(imageName: ImageName) -> UIImage? {
         let bundle = Bundle(for: ManaKit.self)
         guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
             let resourceBundle = Bundle(url: bundleURL) else {
@@ -141,7 +84,7 @@ open class ManaKit: NSObject {
         return UIImage(named: imageName.rawValue, in: resourceBundle, compatibleWith: nil)
     }
     
-    open func symbolImage(name: String) -> UIImage? {
+    public func symbolImage(name: String) -> UIImage? {
         let bundle = Bundle(for: ManaKit.self)
         guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
             let resourceBundle = Bundle(url: bundleURL) else {
@@ -151,7 +94,7 @@ open class ManaKit: NSObject {
         return UIImage(named: name, in: resourceBundle, compatibleWith: nil)
     }
     
-    open func nibFromBundle(_ name: String) -> UINib? {
+    public func nibFromBundle(_ name: String) -> UINib? {
         let bundle = Bundle(for: ManaKit.self)
         guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
             let resourceBundle = Bundle(url: bundleURL) else {
@@ -161,7 +104,7 @@ open class ManaKit: NSObject {
         return UINib(nibName: name, bundle: resourceBundle)
     }
     
-    open func setupResources() {
+    public func setupResources() {
         copyDatabaseFile()
         loadCustomFonts()
     }
@@ -193,7 +136,7 @@ open class ManaKit: NSObject {
         
         // Check if we saved the version number
         if let version = databaseVersion() {
-            willCopy = version != kMTGJSONVersion
+            willCopy = version != Constants.MTGJSONVersion
         } else {
             willCopy = true
         }
@@ -223,7 +166,7 @@ open class ManaKit: NSObject {
             try! targetURL.setResourceValues(resourceValues)
             
             // Save the version
-            UserDefaults.standard.set(kMTGJSONVersion, forKey: kMTGJSONVersionKey)
+            UserDefaults.standard.set(Constants.MTGJSONVersion, forKey: UserDefaultsKeys.MTGJSONVersionKey)
             UserDefaults.standard.synchronize()
         }
     }
@@ -255,7 +198,7 @@ open class ManaKit: NSObject {
     }
     
     // MARK: Database methods
-    open func findObject(_ entityName: String, objectFinder: [String: AnyObject]?, createIfNotFound: Bool) -> NSManagedObject? {
+    public func findObject(_ entityName: String, objectFinder: [String: AnyObject]?, createIfNotFound: Bool) -> NSManagedObject? {
         var object:NSManagedObject?
         var predicate:NSPredicate?
         var fetchRequest:NSFetchRequest<NSFetchRequestResult>?
@@ -296,8 +239,8 @@ open class ManaKit: NSObject {
         return object
     }
     
-    open func databaseVersion() -> String? {
-        let objectFinder = ["version": kMTGJSONVersion] as [String: AnyObject]
+    public func databaseVersion() -> String? {
+        let objectFinder = ["version": Constants.MTGJSONVersion] as [String: AnyObject]
         guard let object = ManaKit.sharedInstance.findObject("CMSystem", objectFinder: objectFinder, createIfNotFound: true) as? CMSystem else {
             return nil
         }
@@ -305,7 +248,7 @@ open class ManaKit: NSObject {
         return object.version
     }
     
-    open func saveContext() {
+    public func saveContext() {
         guard let dataStack = dataStack else {
             return
         }
@@ -322,8 +265,8 @@ open class ManaKit: NSObject {
         }
     }
     
-    // MARK: Miscellaneous methods
-    open func downloadImage(ofCard card: CMCard, imageType: ImageType) -> Promise<Void> {
+    // MARK: Image methods
+    public func downloadImage(ofCard card: CMCard, imageType: ImageType) -> Promise<Void> {
         return Promise { seal  in
             guard let url = imageURL(ofCard: card, imageType: imageType) else {
                 let error = NSError(domain: NSURLErrorDomain, code: 404, userInfo: [NSLocalizedDescriptionKey: "No valid URL for image"])
@@ -367,7 +310,7 @@ open class ManaKit: NSObject {
         }
     }
     
-    open func crop(_ image: UIImage, ofCard card: CMCard) -> UIImage? {
+    public func crop(_ image: UIImage, ofCard card: CMCard) -> UIImage? {
         guard let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first,
             let id = card.id else {
             return nil
@@ -399,7 +342,7 @@ open class ManaKit: NSObject {
         }
     }
     
-    open func cardImage(_ card: CMCard, imageType: ImageType) -> UIImage? {
+    public func cardImage(_ card: CMCard, imageType: ImageType) -> UIImage? {
         var cardImage: UIImage?
         var willGetFromCache = false
         
@@ -433,7 +376,7 @@ open class ManaKit: NSObject {
         return cardImage
     }
     
-    open func cardBack(_ card: CMCard) -> UIImage? {
+    public func cardBack(_ card: CMCard) -> UIImage? {
         if card.set!.code == "CED" {
             return imageFromFramework(imageName: .collectorsCardBack)
         } else if card.set!.code == "CEI" {
@@ -443,7 +386,7 @@ open class ManaKit: NSObject {
         }
     }
     
-    open func croppedImage(_ card: CMCard) -> UIImage? {
+    public func croppedImage(_ card: CMCard) -> UIImage? {
         var image: UIImage?
         
         if let _ = card.scryfallNumber {
@@ -465,7 +408,7 @@ open class ManaKit: NSObject {
         return image
     }
     
-    open func imageURL(ofCard card: CMCard, imageType: ImageType) -> URL? {
+    public func imageURL(ofCard card: CMCard, imageType: ImageType) -> URL? {
         var url:URL?
         var urlString: String?
         
@@ -506,7 +449,7 @@ open class ManaKit: NSObject {
                 if let set = card.set {
                     if let code = set.magicCardsInfoCode ?? set.code,
                         let number = card.mciNumber ?? card.number {
-                        urlString = "\(kCardImageSource)/\(code.lowercased())/\(number).jpg"
+                        urlString = "http://magiccards.info/scans/en/\(code.lowercased())/\(number).jpg"
                     }
                 }
                 
@@ -524,7 +467,8 @@ open class ManaKit: NSObject {
         return url
     }
     
-    open func isModern(_ card: CMCard) -> Bool {
+    // MARK: Miscellaneous methods
+    public func isModern(_ card: CMCard) -> Bool {
         guard let releaseDate = card.set!.releaseDate else {
             return false
         }
@@ -532,7 +476,7 @@ open class ManaKit: NSObject {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
     
-        if let eightEditionDate = formatter.date(from: kEightEditionRelease),
+        if let eightEditionDate = formatter.date(from: Constants.EightEditionRelease),
             let setReleaseDate = formatter.date(from: releaseDate) {
             return setReleaseDate.compare(eightEditionDate) == .orderedDescending ||
                 setReleaseDate.compare(eightEditionDate) == .orderedSame
@@ -542,13 +486,13 @@ open class ManaKit: NSObject {
     }
 
     // MARK: TCGPlayer
-    open func configureTCGPlayer(partnerKey: String, publicKey: String?, privateKey: String?) {
+    public func configureTCGPlayer(partnerKey: String, publicKey: String?, privateKey: String?) {
         tcgPlayerPartnerKey = partnerKey
         tcgPlayerPublicKey = publicKey
         tcgPlayerPrivateKey = privateKey
     }
     
-    open func fetchTCGPlayerCardPricing(card: CMCard) -> Promise<Void> {
+    public func fetchTCGPlayerCardPricing(card: CMCard) -> Promise<Void> {
         return Promise { seal  in
             guard let pricing = findObject("CMCardPricing", objectFinder: ["card.id": card.id as AnyObject], createIfNotFound: true) as? CMCardPricing else {
                 seal.fulfill()
@@ -558,7 +502,7 @@ open class ManaKit: NSObject {
             var willFetch = false
             
             if let lastUpdate = pricing.lastUpdate {
-                if let diff = Calendar.current.dateComponents([.hour], from: lastUpdate as Date, to: Date()).hour, diff >= kTCGPlayerPricingAge {
+                if let diff = Calendar.current.dateComponents([.hour], from: lastUpdate as Date, to: Date()).hour, diff >= Constants.TCGPlayerPricingAge {
                     willFetch = true
                 }
             } else {
@@ -615,12 +559,12 @@ open class ManaKit: NSObject {
         }
     }
     
-    open func fetchTCGPlayerStorePricing(card: CMCard) -> Promise<Void> {
+    public func fetchTCGPlayerStorePricing(card: CMCard) -> Promise<Void> {
         return Promise { seal  in
             var willFetch = false
             
             if let lastUpdate = card.storePricingLastUpdate {
-                if let diff = Calendar.current.dateComponents([.hour], from: lastUpdate as Date, to: Date()).hour, diff >= kTCGPlayerPricingAge {
+                if let diff = Calendar.current.dateComponents([.hour], from: lastUpdate as Date, to: Date()).hour, diff >= Constants.TCGPlayerPricingAge {
                     willFetch = true
                 }
             } else {
@@ -694,7 +638,7 @@ open class ManaKit: NSObject {
     }
     
     // MARK: Keyrune
-    open func keyruneUnicode(forSet set: CMSet) -> String? {
+    public func keyruneUnicode(forSet set: CMSet) -> String? {
         var unicode:String?
         
         if let keyruneCode = set.keyruneCode {
@@ -710,7 +654,7 @@ open class ManaKit: NSObject {
         return unicode
     }
         
-    open func keyruneColor(forCard card: CMCard) -> UIColor? {
+    public func keyruneColor(forCard card: CMCard) -> UIColor? {
         guard let set = card.set,
             let rarity = card.rarity_ else {
             return nil

@@ -265,7 +265,7 @@ class DatabaseMaintainer: NSObject {
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: request )
         try! ManaKit.sharedInstance.dataStack?.persistentStoreCoordinator.execute(deleteRequest, with: (ManaKit.sharedInstance.dataStack?.mainContext)!)
         
-        let objectFinder = ["version": kMTGJSONVersion] as [String: AnyObject]
+        let objectFinder = ["version": ManaKit.Constants.MTGJSONVersion] as [String: AnyObject]
         guard let system = ManaKit.sharedInstance.findObject("CMSystem", objectFinder: objectFinder, createIfNotFound: true) as? CMSystem else {
             return
         }
@@ -273,8 +273,8 @@ class DatabaseMaintainer: NSObject {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         
-        system.version = kMTGJSONVersion
-        system.date = NSDate(timeIntervalSince1970: formatter.date(from: kMTGJSONDate)!.timeIntervalSince1970)
+        system.version = ManaKit.Constants.MTGJSONVersion
+        system.date = NSDate(timeIntervalSince1970: formatter.date(from: ManaKit.Constants.MTGJSONDate)!.timeIntervalSince1970)
         try! ManaKit.sharedInstance.dataStack?.mainContext.save()
         
     }
