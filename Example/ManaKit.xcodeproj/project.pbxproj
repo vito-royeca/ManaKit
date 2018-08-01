@@ -39,9 +39,6 @@
 		115151B81F1E24130061C270 /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = data; sourceTree = "<group>"; };
 		115151BA1F1E25470061C270 /* SetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetViewController.swift; sourceTree = "<group>"; };
 		115151BC1F1E256A0061C270 /* CardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardViewController.swift; sourceTree = "<group>"; };
-		11B1044E2105FA97006833F0 /* css */ = {isa = PBXFileReference; lastKnownFileType = folder; name = css; path = ../ManaKit/Assets/css; sourceTree = "<group>"; };
-		11B1044F2105FA97006833F0 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; name = images; path = ../ManaKit/Assets/images; sourceTree = "<group>"; };
-		11B104502105FA97006833F0 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = fonts; path = ../ManaKit/Assets/fonts; sourceTree = "<group>"; };
 		1F8A6A3006839651BED01AC8 /* Pods-ManaKit_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit_Tests/Pods-ManaKit_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		214271945F84D9EB3A6B8CF1 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		2D89F6B01AAE12E2ACA0565E /* Pods-ManaKit_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit_Example/Pods-ManaKit_Example.release.xcconfig"; sourceTree = "<group>"; };
@@ -123,9 +120,6 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
-				11B1044E2105FA97006833F0 /* css */,
-				11B104502105FA97006833F0 /* fonts */,
-				11B1044F2105FA97006833F0 /* images */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD21AFB9204008FA782 /* Example for ManaKit */,
 				607FACE81AFB9204008FA782 /* Tests */,

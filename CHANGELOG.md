@@ -1,3 +1,6 @@
+**Version 2.7.0** @ 01.08.2018
+- Refactored to use namespaces.
+
 **Version 2.6.9** @ 23.07.2018
 - Updated Keyrune to v3.2.2.
 
