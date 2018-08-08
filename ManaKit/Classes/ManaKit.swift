@@ -114,7 +114,6 @@ public class ManaKit: NSObject {
         guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
             let resourceBundle = Bundle(url: bundleURL),
             let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first,
-            let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first,
             let sourcePath = resourceBundle.path(forResource: "ManaKit.sqlite", ofType: "zip"),
             let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String else {
             return
@@ -131,7 +130,7 @@ public class ManaKit: NSObject {
         var willCopy = true
 
         // Check if we have old files
-        let targetPath = "\(cachePath)/\(bundleName).sqlite"
+        let targetPath = "\(docsPath)/\(bundleName).sqlite"
         willCopy = !FileManager.default.fileExists(atPath: targetPath)
         
         // Check if we saved the version number
@@ -146,18 +145,18 @@ public class ManaKit: NSObject {
             dataStack = nil
             
             // Remove old database files in caches directory
-            for file in try! FileManager.default.contentsOfDirectory(atPath: cachePath) {
-                let path = "\(cachePath)/\(file)"
+            for file in try! FileManager.default.contentsOfDirectory(atPath: docsPath) {
+                let path = "\(docsPath)/\(file)"
                 if file.hasPrefix(bundleName) {
                     try! FileManager.default.removeItem(atPath: path)
                 }
             }
             
             // Unzip
-            SSZipArchive.unzipFile(atPath: sourcePath, toDestination: cachePath)
+            SSZipArchive.unzipFile(atPath: sourcePath, toDestination: docsPath)
             
             // rename
-            try! FileManager.default.moveItem(atPath: "\(cachePath)/ManaKit.sqlite", toPath: targetPath)
+            try! FileManager.default.moveItem(atPath: "\(docsPath)/ManaKit.sqlite", toPath: targetPath)
             
             // skip from iCloud backups!
             var targetURL = URL(fileURLWithPath: targetPath)

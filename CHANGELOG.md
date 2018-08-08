@@ -1,3 +1,6 @@
+**Version 2.7.1** @ 08.08.2018
+- SQlite database file is back to Documents directory.
+
 **Version 2.7.0** @ 01.08.2018
 - Refactored to use namespaces.
 
