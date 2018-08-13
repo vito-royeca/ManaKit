@@ -24,18 +24,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Core Data updates 1
 //        DatabaseMaintainer.sharedInstance.json2CoreData()
+
+//        Core Data updates 2
 //        DatabaseMaintainer.sharedInstance.updateTCGPlayerName()
 //        DatabaseMaintainer.sharedInstance.updateKeyruneCode()
 //        DatabaseMaintainer.sharedInstance.copyOldMCIAndScryfallData()
 //        DatabaseMaintainer.sharedInstance.updateMCINumbers()
 //        DatabaseMaintainer.sharedInstance.updateScryfallNumbers()
-//        DatabaseMaintainer.sharedInstance.updateSystem()
-        
-//        Core Data updates 2
+//        //DatabaseMaintainer.sharedInstance.updateSystem()
+
+//        Core Data updates 3
 //        //DatabaseMaintainer.sharedInstance.updateForeignNames()
 //        DatabaseMaintainer.sharedInstance.updateLegalities()
 //        DatabaseMaintainer.sharedInstance.rules2CoreData()
-        
+
           // Normal run
         ManaKit.sharedInstance.setupResources()
         ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "ManaGuide", publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720", privateKey: nil)

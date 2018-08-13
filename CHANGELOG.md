@@ -1,3 +1,6 @@
+**Version 2.7.2** @ 13.08.2018
+- Updated the SQLite database to MTGJSON version 3.19.1
+
 **Version 2.7.1** @ 08.08.2018
 - SQlite database file is back to Documents directory.
 
