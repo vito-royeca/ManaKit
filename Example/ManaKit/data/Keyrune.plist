@@ -70,6 +70,8 @@
 	<string>e910</string>
 	<key>c17</key>
 	<string>e934</string>
+	<key>c18</key>
+	<string>e946</string>
 	<key>ced</key>
 	<string>e926</string>
 	<key>cei</key>
@@ -92,6 +94,12 @@
 	<string>e904</string>
 	<key>con</key>
 	<string>e642</string>
+	<key>cp1</key>
+	<string>e687</string>
+	<key>cp2</key>
+	<string>e687</string>
+	<key>cp3</key>
+	<string>e687</string>
 	<key>csp</key>
 	<string>e61b</string>
 	<key>dd2</key>
@@ -294,6 +302,8 @@
 	<string>e62e</string>
 	<key>ori</key>
 	<string>e697</string>
+	<key>p2HG</key>
+	<string>e688</string>
 	<key>p02</key>
 	<string>e665</string>
 	<key>palp</key>
@@ -328,10 +338,16 @@
 	<string>e664</string>
 	<key>ppod</key>
 	<string>e664</string>
+	<key>pPRO</key>
+	<string>e687</string>
 	<key>pSUM</key>
 	<string>e605</string>
+	<key>pSUS</key>
+	<string>e688</string>
 	<key>ptk</key>
 	<string>e666</string>
+	<key>pWCQ</key>
+	<string>e687</string>
 	<key>rav</key>
 	<string>e637</string>
 	<key>rix</key>

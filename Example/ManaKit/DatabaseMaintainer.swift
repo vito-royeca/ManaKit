@@ -1021,7 +1021,7 @@ class DatabaseMaintainer: NSObject {
     func rules2CoreData() {
         dateStart = Date()
         
-        guard let path = Bundle.main.path(forResource: "MagicCompRules 20180413", ofType: "txt", inDirectory: "data") else {
+        guard let path = Bundle.main.path(forResource: "MagicCompRules 20180810", ofType: "txt", inDirectory: "data") else {
             return
         }
         
@@ -1373,14 +1373,15 @@ class DatabaseMaintainer: NSObject {
                 card.numberOrder = oldCard.numberOrder
                 card.set!.scryfallCode = oldCard.set!.scryfallCode
                 card.scryfallNumber = oldCard.scryfallNumber
-                try! ManaKit.sharedInstance.dataStack?.mainContext.save()
             }
             
             count += 1
             if count % printMilestone == 0 {
                 print("Updating OLD data: \(count)/\(oldCards.count) \(Date())")
+                try! ManaKit.sharedInstance.dataStack?.mainContext.save()
             }
         }
+        try! ManaKit.sharedInstance.dataStack?.mainContext.save()
         let dateEnd = Date()
         let timeDifference = dateEnd.timeIntervalSince(dateStart)
         print("Total Time Elapsed: \(dateStart) - \(dateEnd) = \(self.format(timeDifference))")

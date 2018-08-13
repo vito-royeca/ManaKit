@@ -2,6 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>C18</key>
+	<string>C18</string>
+	<key>C17</key>
+	<string>C17</string>
+	<key>CP1</key>
+	<string>CP1</string>
+	<key>CP2</key>
+	<string>CP2</string>
 	<key>DD3_DVD</key>
 	<string>DVD</string>
 	<key>DD3_EVG</key>
@@ -14,6 +22,12 @@
 	<string>DD1</string>
 	<key>FRF_UGIN</key>
 	<string>UGIN</string>
+	<key>GS1</key>
+	<string>GS1</string>
+	<key>CM2</key>
+	<string>CM2</string>
+	<key>M19</key>
+	<string>M19</string>
 	<key>MPS_AKH</key>
 	<string>MP2</string>
 	<key>NMS</key>
@@ -26,6 +40,18 @@
 	<string>MPR</string>
 	<key>PO2</key>
 	<string>P02</string>
+	<key>pPOD</key>
+	<string>PPOD</string>
+	<key>pSUM</key>
+	<string>SUM</string>
+	<key>RQS</key>
+	<string>RQS</string>
+	<key>SS1</key>
+	<string>SS1</string>
+	<key>TPR</key>
+	<string>TPR</string>
+	<key>UST</key>
+	<string>UST</string>
 	<key>VAN</key>
 	<string>PVAN</string>
 </dict>
