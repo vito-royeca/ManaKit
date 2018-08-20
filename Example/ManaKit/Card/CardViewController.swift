@@ -41,7 +41,7 @@ extension CardViewController : UITableViewDataSource {
         case 0:
             guard let c = tableView.dequeueReusableCell(withIdentifier: "CardCell") as? CardTableViewCell,
                 let card = card else {
-                return UITableViewCell(frame: CGRect.zero)
+                fatalError("Unexpected indexPath: \(indexPath)")
             }
             
             c.card = card
@@ -51,7 +51,7 @@ extension CardViewController : UITableViewDataSource {
             guard let c = tableView.dequeueReusableCell(withIdentifier: "ImageCell"),
                 let imageView = c.viewWithTag(100) as? UIImageView,
                 let card = card else {
-                return UITableViewCell(frame: CGRect.zero)
+                fatalError("Unexpected indexPath: \(indexPath)")
             }
             
             if let cardImage = ManaKit.sharedInstance.cardImage(card, imageType: .normal) {
@@ -82,7 +82,7 @@ extension CardViewController : UITableViewDataSource {
             cell = c
             
         default:
-            ()
+            cell = UITableViewCell(frame: CGRect.zero)
         }
         
         return cell!
