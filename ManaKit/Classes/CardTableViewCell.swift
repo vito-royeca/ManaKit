@@ -26,6 +26,8 @@ public let kFoilPriceColor = UIColor(red:0.60, green:0.51, blue:0.00, alpha:1.0)
 public let kNormalColor    = UIColor.black
 
 open class CardTableViewCell: UITableViewCell {
+    open static let reuseIdentifier = "CardCell"
+    
     // Variables
     open var card: CMCard? {
         didSet {
