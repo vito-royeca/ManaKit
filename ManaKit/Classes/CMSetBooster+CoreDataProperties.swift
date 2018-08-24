@@ -12,8 +12,8 @@ import CoreData
 
 extension CMSetBooster {
 
-    @nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
-        return NSFetchRequest<CMSetBooster>(entityName: "CMSetBooster") as! NSFetchRequest<NSFetchRequestResult>
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMSetBooster> {
+        return NSFetchRequest<CMSetBooster>(entityName: "CMSetBooster")
     }
 
     @NSManaged public var count: Int32

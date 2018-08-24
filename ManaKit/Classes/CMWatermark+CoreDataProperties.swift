@@ -12,8 +12,8 @@ import CoreData
 
 extension CMWatermark {
 
-    @nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
-        return NSFetchRequest<CMWatermark>(entityName: "CMWatermark") as! NSFetchRequest<NSFetchRequestResult>
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMWatermark> {
+        return NSFetchRequest<CMWatermark>(entityName: "CMWatermark")
     }
 
     @NSManaged public var name: String?

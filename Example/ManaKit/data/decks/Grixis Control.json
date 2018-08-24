@@ -1,0 +1,199 @@
+{
+  "name": "Grixis Control",
+  "nameSection": "G",
+  "mainboard": 60,
+  "sideboard": 15,
+  "colors": "{U}{B}{R}",
+  "format": "Legacy",
+  "heroCardId": "PCA_Baleful Strix_baleful strix",
+  "cards": [
+      {
+        "id": "PCA_Baleful Strix_baleful strix",
+        "quantity": 4,
+        "mainboard": true,
+        "sideboard": false
+      },
+      {
+        "id": "ISD_Snapcaster Mage_snapcaster mage",
+        "quantity": 3,
+        "mainboard": true,
+        "sideboard": false
+      },
+      {
+        "id": "FRF_Gurmag Angler_gurmag angler",
+        "quantity": 2,
+        "mainboard": true,
+        "sideboard": false
+      },
+      {
+        "id": "EMN_Liliana, the Last Hope_liliana, the last hope",
+        "quantity": 1,
+        "mainboard": true,
+        "sideboard": false
+      },
+      {
+        "id": "WWK_Jace, the Mind Sculptor_jace, the mind sculptor",
+        "quantity": 2,
+        "mainboard": true,
+        "sideboard": false
+      },
+      {
+        "id": "ICE_Brainstorm_brainstorm",
+        "quantity": 4,
+        "mainboard": true,
+        "sideboard": false
+      },
+      {
+        "id": "AER_Fatal Push_fatal push",
+        "quantity": 3,
+        "mainboard": true,
+        "sideboard": false
+      },
+      {
+        "id": "LEA_Lightning Bolt_lightning bolt",
+        "quantity": 2,
+        "mainboard": true,
+        "sideboard": false
+      },
+      {
+        "id": "LRW_Ponder_ponder",
+        "quantity": 4,
+        "mainboard": true,
+        "sideboard": false
+      },
+      {
+        "id": "LRW_Thoughtseize_thoughtseize",
+        "quantity": 2,
+        "mainboard": true,
+        "sideboard": false
+      },
+      {
+        "id": "TMP_Diabolic Edict_diabolic edict",
+        "quantity": 2,
+        "mainboard": true,
+        "sideboard": false
+      },
+      {
+        "id": "FEM_Hymn to Tourach_hymn to tourach1",
+        "quantity": 3,
+        "mainboard": true,
+        "sideboard": false
+      },
+      {
+        "id": "DTK_Kolaghan's Command_kolaghan's command",
+        "quantity": 3,
+        "mainboard": true,
+        "sideboard": false
+      },
+      {
+        "id": "ALL_Force of Will_force of will",
+        "quantity": 4,
+        "mainboard": true,
+        "sideboard": false
+      },
+      {
+        "id": "LEA_Badlands_badlands",
+        "quantity": 2,
+        "mainboard": true,
+        "sideboard": false
+      },
+      {
+        "id": "ONS_Bloodstained Mire_bloodstained mire",
+        "quantity": 3,
+        "mainboard": true,
+        "sideboard": false
+      },
+      {
+        "id": "LEA_Island_island1",
+        "quantity": 2,
+        "mainboard": true,
+        "sideboard": false
+      },
+      {
+        "id": "ONS_Polluted Delta_polluted delta",
+        "quantity": 4,
+        "mainboard": true,
+        "sideboard": false
+      },
+      {
+        "id": "ZEN_Scalding Tarn_scalding tarn",
+        "quantity": 3,
+        "mainboard": true,
+        "sideboard": false
+      },
+      {
+        "id": "LEA_Swamp_swamp1",
+        "quantity": 1,
+        "mainboard": true,
+        "sideboard": false
+      },
+      {
+        "id": "3ED_Underground Sea_underground sea",
+        "quantity": 4,
+        "mainboard": true,
+        "sideboard": false
+      },
+      {
+        "id": "3ED_Volcanic Island_volcanic island",
+        "quantity": 2,
+        "mainboard": true,
+        "sideboard": false
+      },
+      {
+        "id": "5DN_Engineered Explosives_engineered explosives",
+        "quantity": 1,
+        "mainboard": false,
+        "sideboard": true
+      },
+      {
+        "id": "CMD_Flusterstorm_flusterstorm",
+        "quantity": 2,
+        "mainboard": false,
+        "sideboard": true
+      },
+      {
+        "id": "ICE_Hydroblast_hydroblast",
+        "quantity": 1,
+        "mainboard": false,
+        "sideboard": true
+      },
+      {
+        "id": "HOU_Liliana's Defeat_liliana's defeat",
+        "quantity": 2,
+        "mainboard": false,
+        "sideboard": true
+      },
+      {
+        "id": "SOK_Pithing Needle_pithing needle",
+        "quantity": 2,
+        "mainboard": false,
+        "sideboard": true
+      },
+      {
+        "id": "ICE_Pyroblast_pyroblast",
+        "quantity": 2,
+        "mainboard": false,
+        "sideboard": true
+      },
+      {
+        "id": "3ED_Red Elemental Blast_red elemental blast",
+        "quantity": 1,
+        "mainboard": false,
+        "sideboard": true
+      },
+      {
+        "id": "NPH_Surgical Extraction_surgical extraction",
+        "quantity": 3,
+        "mainboard": false,
+        "sideboard": true
+      },
+      {
+        "id": "STH_Ensnaring Bridge_ensnaring bridge",
+        "quantity": 1,
+        "mainboard": false,
+        "sideboard": true
+      }
+      
+  ]
+  
+}

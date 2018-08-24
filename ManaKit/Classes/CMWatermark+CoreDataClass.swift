@@ -10,6 +10,6 @@ import Foundation
 import CoreData
 
 @objc(CMWatermark)
-open class CMWatermark: NSManagedObject {
+public class CMWatermark: NSManagedObject {
 
 }

@@ -11,8 +11,8 @@ import CoreData
 
 
 extension CMSystem {
-    @nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
-        return NSFetchRequest<CMSystem>(entityName: "CMSystem") as! NSFetchRequest<NSFetchRequestResult>
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMSystem> {
+        return NSFetchRequest<CMSystem>(entityName: "CMSystem")
     }
     
     @NSManaged public var version: String?

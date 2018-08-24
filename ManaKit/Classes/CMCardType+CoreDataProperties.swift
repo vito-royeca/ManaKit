@@ -12,8 +12,8 @@ import CoreData
 
 extension CMCardType {
 
-    @nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
-        return NSFetchRequest<CMCardType>(entityName: "CMCardType") as! NSFetchRequest<NSFetchRequestResult>
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMCardType> {
+        return NSFetchRequest<CMCardType>(entityName: "CMCardType")
     }
 
     @NSManaged public var name: String?

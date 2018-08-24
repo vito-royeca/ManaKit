@@ -12,8 +12,8 @@ import CoreData
 
 extension CMRarity {
 
-    @nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
-        return NSFetchRequest<CMRarity>(entityName: "CMRarity") as! NSFetchRequest<NSFetchRequestResult>
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMRarity> {
+        return NSFetchRequest<CMRarity>(entityName: "CMRarity")
     }
 
     @NSManaged public var name: String?

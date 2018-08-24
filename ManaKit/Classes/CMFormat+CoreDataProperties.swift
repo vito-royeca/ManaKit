@@ -12,8 +12,8 @@ import CoreData
 
 extension CMFormat {
 
-    @nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
-        return NSFetchRequest<CMFormat>(entityName: "CMFormat") as! NSFetchRequest<NSFetchRequestResult>
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMFormat> {
+        return NSFetchRequest<CMFormat>(entityName: "CMFormat")
     }
 
     @NSManaged public var name: String?

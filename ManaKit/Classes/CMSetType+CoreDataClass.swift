@@ -10,6 +10,6 @@ import Foundation
 import CoreData
 
 @objc(CMSetType)
-open class CMSetType: NSManagedObject {
+public class CMSetType: NSManagedObject {
 
 }

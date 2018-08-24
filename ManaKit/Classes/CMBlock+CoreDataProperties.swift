@@ -12,8 +12,8 @@ import CoreData
 
 extension CMBlock {
 
-    @nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
-        return NSFetchRequest<CMBlock>(entityName: "CMBlock") as! NSFetchRequest<NSFetchRequestResult>
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMBlock> {
+        return NSFetchRequest<CMBlock>(entityName: "CMBlock")
     }
 
     @NSManaged public var name: String?

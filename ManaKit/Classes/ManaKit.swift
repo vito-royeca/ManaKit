@@ -18,7 +18,7 @@ import Sync
 @objc(ManaKit)
 public class ManaKit: NSObject {
     public enum Constants {
-        public static let MTGJSONVersion      = "3.19.1"
+        public static let MTGJSONVersion      = "3.19.1 B"
         public static let MTGJSONDate         = "Aug 10, 2018"
         public static let KeyruneVersion      = "3.2.5"
         public static let EightEditionRelease = "2003-07-28"
@@ -274,7 +274,7 @@ public class ManaKit: NSObject {
             }
             
             if let _ = self.cardImage(card, imageType: imageType) {
-                seal.fulfill()
+                seal.fulfill(())
             } else {
                 let downloader = SDWebImageDownloader.shared()
                 let cacheKey = url.absoluteString
@@ -287,13 +287,13 @@ public class ManaKit: NSObject {
                             imageCache.store(image, forKey: cacheKey, toDisk: true, completion: {
                                 if imageType == .artCrop {
                                     if let _ = card.scryfallNumber {
-                                        seal.fulfill()
+                                        seal.fulfill(())
                                     } else {
                                         let _ = self.crop(image, ofCard: card)
-                                        seal.fulfill()
+                                        seal.fulfill(())
                                     }
                                 } else {
-                                    seal.fulfill()
+                                    seal.fulfill(())
                                 }
                             })
                             
@@ -493,18 +493,28 @@ public class ManaKit: NSObject {
     
     public func fetchTCGPlayerCardPricing(card: CMCard) -> Promise<Void> {
         return Promise { seal  in
-            guard let pricing = findObject("CMCardPricing", objectFinder: ["card.id": card.id as AnyObject], createIfNotFound: true) as? CMCardPricing else {
-                seal.fulfill()
-                return
-            }
-            
+            var pricing = card.pricing
+//            guard let pricing = findObject("CMCardPricing", objectFinder: ["card.id": card.id as AnyObject], createIfNotFound: true) as? CMCardPricing else {
+//                seal.fulfill(())
+//                return
+//            }
             var willFetch = false
-            
-            if let lastUpdate = pricing.lastUpdate {
-                if let diff = Calendar.current.dateComponents([.hour], from: lastUpdate as Date, to: Date()).hour, diff >= Constants.TCGPlayerPricingAge {
+
+            if pricing != nil {
+                if let lastUpdate = pricing!.lastUpdate {
+                    if let diff = Calendar.current.dateComponents([.hour], from: lastUpdate as Date, to: Date()).hour, diff >= Constants.TCGPlayerPricingAge {
+                        willFetch = true
+                    }
+                } else {
                     willFetch = true
                 }
             } else {
+                guard let desc = NSEntityDescription.entity(forEntityName: "CMCardPricing", in: dataStack!.mainContext),
+                    let p = NSManagedObject(entity: desc, insertInto: dataStack?.mainContext) as? CMCardPricing else {
+                    fatalError()
+                }
+                try! dataStack?.mainContext.save()
+                pricing = p
                 willFetch = true
             }
             
@@ -515,7 +525,7 @@ public class ManaKit: NSObject {
                     let urlString = "http://partner.tcgplayer.com/x3/phl.asmx/p?pk=\(tcgPlayerPartnerKey)&s=\(tcgPlayerSetName)&p=\(cardName)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                     let url = URL(string: urlString) else {
                     
-                    seal.fulfill()
+                    seal.fulfill(())
                     return
                 }
                 
@@ -534,26 +544,26 @@ public class ManaKit: NSObject {
                             let avgprice = product.xpath("avgprice").first?.text,
                             let foilavgprice = product.xpath("foilavgprice").first?.text,
                             let link = product.xpath("link").first?.text {
-                            pricing.id = Int64(id)!
-                            pricing.high = Double(hiprice)!
-                            pricing.low = Double(lowprice)!
-                            pricing.average = Double(avgprice)!
-                            pricing.foil = Double(foilavgprice)!
-                            pricing.link = link
+                            pricing!.id = Int64(id)!
+                            pricing!.high = Double(hiprice)!
+                            pricing!.low = Double(lowprice)!
+                            pricing!.average = Double(avgprice)!
+                            pricing!.foil = Double(foilavgprice)!
+                            pricing!.link = link
                         }
                     }
-                    pricing.lastUpdate = NSDate()
-                    pricing.card = card
+                    pricing!.lastUpdate = NSDate()
+                    card.pricing = pricing
                     
                     self.dataStack?.performInNewBackgroundContext { backgroundContext in
                         try! backgroundContext.save()
-                        seal.fulfill()
+                        seal.fulfill(())
                     }
                 }.catch { error in
                     seal.reject(error)
                 }
             } else {
-                seal.fulfill()
+                seal.fulfill(())
             }
         }
     }
@@ -577,7 +587,7 @@ public class ManaKit: NSObject {
                     let urlString = "http://partner.tcgplayer.com/x3/pv.asmx/p?pk=\(tcgPlayerPartnerKey)&s=\(tcgPlayerSetName)&p=\(cardName)&v=8".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                     let url = URL(string: urlString) else {
                     
-                    seal.fulfill()
+                    seal.fulfill(())
                     return
                 }
 
@@ -624,14 +634,14 @@ public class ManaKit: NSObject {
                     
                     self.dataStack?.performInNewBackgroundContext { backgroundContext in
                         try! backgroundContext.save()
-                        seal.fulfill()
+                        seal.fulfill(())
                     }
                     
                 }.catch { error in
                     seal.reject(error)
                 }
             } else {
-                seal.fulfill()
+                seal.fulfill(())
             }
         }
     }

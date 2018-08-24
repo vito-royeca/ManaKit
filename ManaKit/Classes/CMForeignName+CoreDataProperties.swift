@@ -12,8 +12,8 @@ import CoreData
 
 extension CMForeignName {
 
-    @nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
-        return NSFetchRequest<CMForeignName>(entityName: "CMForeignName") as! NSFetchRequest<NSFetchRequestResult>
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMForeignName> {
+        return NSFetchRequest<CMForeignName>(entityName: "CMForeignName")
     }
 
     @NSManaged public var id: Int64

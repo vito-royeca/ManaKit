@@ -10,6 +10,6 @@ import Foundation
 import CoreData
 
 @objc(CMSupplier)
-open class CMSupplier: NSManagedObject {
+public class CMSupplier: NSManagedObject {
 
 }

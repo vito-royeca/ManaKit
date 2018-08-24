@@ -12,8 +12,8 @@ import CoreData
 
 extension CMCard {
 
-    @nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
-        return NSFetchRequest<CMCard>(entityName: "CMCard") as! NSFetchRequest<NSFetchRequestResult>
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMCard> {
+        return NSFetchRequest<CMCard>(entityName: "CMCard")
     }
 
     @NSManaged public var artist: String?
@@ -71,7 +71,7 @@ extension CMCard {
     @NSManaged public var colors_: NSSet?
     @NSManaged public var foreignNames_: NSSet?
     @NSManaged public var layout_: CMLayout?
-    @NSManaged public var pricings_: NSSet?
+    @NSManaged public var pricing: CMCardPricing?
     @NSManaged public var printings_: NSSet?
     @NSManaged public var rarity_: CMRarity?
     @NSManaged public var rulings_: NSSet?
@@ -84,7 +84,9 @@ extension CMCard {
     @NSManaged public var variations_: NSSet?
     @NSManaged public var names_: NSSet?
     @NSManaged public var watermark_: CMWatermark?
-
+    @NSManaged public var deckHeroes: NSSet?
+    @NSManaged public var userFavorites: NSSet?
+    @NSManaged public var inventories: NSSet?
 }
 
 // MARK: Generated accessors for cardLegalities_
@@ -153,23 +155,6 @@ extension CMCard {
     @objc(removeForeignNames_:)
     @NSManaged public func removeFromForeignNames_(_ values: NSSet)
 
-}
-
-// MARK: Generated accessors for pricings_
-extension CMCard {
-    
-    @objc(addPricings_Object:)
-    @NSManaged public func addToPricings_(_ value: CMCardPricing)
-    
-    @objc(removePricings_Object:)
-    @NSManaged public func removeFromPricings_(_ value: CMCardPricing)
-    
-    @objc(addPricings_:)
-    @NSManaged public func addToPricings_(_ values: NSSet)
-    
-    @objc(removePricings_:)
-    @NSManaged public func removeFromPricings_(_ values: NSSet)
-    
 }
 
 // MARK: Generated accessors for printings_
@@ -308,3 +293,56 @@ extension CMCard {
     @NSManaged public func removeFromNames_(_ values: NSSet)
     
 }
+
+// MARK: Generated accessors for cards
+extension CMCard {
+    
+    @objc(addDeckHeroesObject:)
+    @NSManaged public func addToDeckHeroes(_ value: CMDeck)
+    
+    @objc(removeDeckHeroesObject:)
+    @NSManaged public func removeFromDeckHeroes(_ value: CMDeck)
+    
+    @objc(addDeckHeroes:)
+    @NSManaged public func addToDeckHeroes(_ values: NSSet)
+    
+    @objc(removeDeckHeroes:)
+    @NSManaged public func removeFromDeckHeroes(_ values: NSSet)
+    
+}
+
+// MARK: Generated accessors for cards
+extension CMCard {
+    
+    @objc(addUserFavoritesObject:)
+    @NSManaged public func addToUserFavorites(_ value: CMCard)
+    
+    @objc(removeUserFavoritesObject:)
+    @NSManaged public func removeFromUserFavorites(_ value: CMCard)
+    
+    @objc(addUserFavorites:)
+    @NSManaged public func addToUserFavorites(_ values: NSSet)
+    
+    @objc(removeUserFavorites:)
+    @NSManaged public func removeFromUserFavorites(_ values: NSSet)
+    
+}
+
+// MARK: Generated accessors for cards
+extension CMCard {
+    
+    @objc(addInventoriesObject:)
+    @NSManaged public func addToInventories(_ value: CMCard)
+    
+    @objc(removeInventoriesObject:)
+    @NSManaged public func removeFromInventories(_ value: CMCard)
+    
+    @objc(addInventories:)
+    @NSManaged public func addToInventories(_ values: NSSet)
+    
+    @objc(removeInventories:)
+    @NSManaged public func removeFromInventories(_ values: NSSet)
+    
+}
+
+

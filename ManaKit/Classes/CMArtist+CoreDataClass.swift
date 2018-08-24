@@ -10,6 +10,6 @@ import Foundation
 import CoreData
 
 @objc(CMArtist)
-open class CMArtist: NSManagedObject {
+public class CMArtist: NSManagedObject {
 
 }

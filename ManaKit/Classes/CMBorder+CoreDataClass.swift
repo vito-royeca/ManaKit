@@ -10,6 +10,6 @@ import Foundation
 import CoreData
 
 @objc(CMBorder)
-open class CMBorder: NSManagedObject {
+public class CMBorder: NSManagedObject {
 
 }
