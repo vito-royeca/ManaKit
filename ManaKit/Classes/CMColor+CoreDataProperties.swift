@@ -12,8 +12,8 @@ import CoreData
 
 extension CMColor {
 
-    @nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
-        return NSFetchRequest<CMColor>(entityName: "CMColor") as! NSFetchRequest<NSFetchRequestResult>
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMColor> {
+        return NSFetchRequest<CMColor>(entityName: "CMColor")
     }
 
     @NSManaged public var name: String?

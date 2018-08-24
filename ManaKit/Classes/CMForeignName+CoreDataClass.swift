@@ -10,6 +10,6 @@ import Foundation
 import CoreData
 
 @objc(CMForeignName)
-open class CMForeignName: NSManagedObject {
+public class CMForeignName: NSManagedObject {
 
 }

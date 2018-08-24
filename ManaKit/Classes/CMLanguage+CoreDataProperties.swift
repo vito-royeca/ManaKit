@@ -12,8 +12,8 @@ import CoreData
 
 extension CMLanguage {
 
-    @nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
-        return NSFetchRequest<CMLanguage>(entityName: "CMLanguage") as! NSFetchRequest<NSFetchRequestResult>
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMLanguage> {
+        return NSFetchRequest<CMLanguage>(entityName: "CMLanguage")
     }
 
     @NSManaged public var name: String?

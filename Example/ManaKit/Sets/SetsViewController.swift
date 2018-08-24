@@ -55,7 +55,7 @@ class SetsViewController: UIViewController {
             request = fetchRequest
         } else {
             // Create a default fetchRequest
-            request = CMSet.fetchRequest() as? NSFetchRequest<CMSet>
+            request = CMSet.fetchRequest()
             request!.sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: false)]
         }
 
@@ -81,10 +81,11 @@ class SetsViewController: UIViewController {
     }
     
     func doSearch() {
-        guard let text = searchController.searchBar.text,
-            let request: NSFetchRequest<CMSet> = CMSet.fetchRequest() as? NSFetchRequest<CMSet> else {
+        guard let text = searchController.searchBar.text else {
             return
         }
+        
+        let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
         let count = text.count
         
         if count > 0 {

@@ -25,7 +25,7 @@ class SetViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         fetchedResultsController = getFetchedResultsController(with: nil)
-        tableView.register(ManaKit.sharedInstance.nibFromBundle("CardTableViewCell"), forCellReuseIdentifier: "CardCell")
+        tableView.register(ManaKit.sharedInstance.nibFromBundle("CardTableViewCell"), forCellReuseIdentifier: CardTableViewCell.reuseIdentifier)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -53,7 +53,7 @@ class SetViewController: UIViewController {
             request = fetchRequest
         } else {
             // create a default fetchRequest
-            request = CMCard.fetchRequest() as? NSFetchRequest<CMCard>
+            request = CMCard.fetchRequest()
             request!.predicate = NSPredicate(format: "set.code = %@", code)
             request!.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true),
                                        NSSortDescriptor(key: "number", ascending: true),

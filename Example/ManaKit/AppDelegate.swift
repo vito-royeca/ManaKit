@@ -7,9 +7,8 @@
 //
 
 import UIKit
-import Sync
+import Font_Awesome_Swift
 import ManaKit
-import PromiseKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -41,6 +40,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
           // Normal run
         ManaKit.sharedInstance.setupResources()
         ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "ManaGuide", publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720", privateKey: nil)
+
+        DatabaseMaintainer.sharedInstance.createSampleDecks()
+        
+        // change the account icon
+        if let rootVC = window?.rootViewController as? UITabBarController {
+            rootVC.tabBar.items![0].image = UIImage(bgIcon: .FABook,
+                                                    orientation: UIImageOrientation.up,
+                                                    bgTextColor: UIColor.blue,
+                                                    bgBackgroundColor: UIColor.clear,
+                                                    topIcon: .FABook,
+                                                    topTextColor: UIColor.clear,
+                                                    bgLarge: false,
+                                                    size: CGSize(width: 30, height: 30))
+            rootVC.tabBar.items![1].image = UIImage(bgIcon: .FADropbox,
+                                                    orientation: UIImageOrientation.up,
+                                                    bgTextColor: UIColor.blue,
+                                                    bgBackgroundColor: UIColor.clear,
+                                                    topIcon: .FADropbox,
+                                                    topTextColor: UIColor.clear,
+                                                    bgLarge: false,
+                                                    size: CGSize(width: 30, height: 30))
+        }
         
         return true
     }

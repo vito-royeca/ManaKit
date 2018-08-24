@@ -12,8 +12,8 @@ import CoreData
 
 extension CMSet {
 
-    @nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
-        return NSFetchRequest<CMSet>(entityName: "CMSet") as! NSFetchRequest<NSFetchRequestResult>
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMSet> {
+        return NSFetchRequest<CMSet>(entityName: "CMSet")
     }
 
     @NSManaged public var block: String?

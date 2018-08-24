@@ -12,8 +12,8 @@ import CoreData
 
 extension CMRuling {
 
-    @nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
-        return NSFetchRequest<CMRuling>(entityName: "CMRuling") as! NSFetchRequest<NSFetchRequestResult>
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMRuling> {
+        return NSFetchRequest<CMRuling>(entityName: "CMRuling")
     }
 
     @NSManaged public var date: String?

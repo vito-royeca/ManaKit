@@ -9,6 +9,7 @@ def default_pods
     pod 'Sync'#, '~> 2'
     pod 'DATASource'#, '~> 5.8'
     pod 'DATAStack'#, '~> 6'
+    pod 'Font-Awesome-Swift', :git => 'https://github.com/Vaberer/Font-Awesome-Swift', :branch => 'swift-3'
     pod 'Kanna', :git => 'https://github.com/tid-kijyun/Kanna', :branch => 'feature/v3.0.0'
     pod 'PromiseKit', '~> 6.0'
     pod 'Reachability'

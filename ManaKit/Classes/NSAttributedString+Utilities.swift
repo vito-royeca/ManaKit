@@ -116,10 +116,10 @@ public extension NSAttributedString {
             return
         }
         
-        guard let attributedString = try? NSMutableAttributedString(
-            data: data,
-            options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType],
-            documentAttributes: nil) else {
+        let options =  [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType]
+        guard let attributedString = try? NSMutableAttributedString(data: data,
+                                                                    options: options,
+                                                                    documentAttributes: nil) else {
                 self.init(string: html)
                 return
         }
@@ -129,6 +129,7 @@ public extension NSAttributedString {
             for (k,v) in link {
                 let foundRange = attributedString.mutableString.range(of: k)
                 if foundRange.location != NSNotFound {
+                    
                     attributedString.addAttribute(NSLinkAttributeName, value: v, range: foundRange)
 //                    attributedString.addAttribute(NSForegroundColorAttributeName, value: kGlobalTintColor, range: foundRange)
 //                    attributedString.addAttribute(NSUnderlineColorAttributeName, value: kGlobalTintColor, range: foundRange)

@@ -25,11 +25,11 @@ public let kHighPriceColor = UIColor(red:0.00, green:0.50, blue:0.00, alpha:1.0)
 public let kFoilPriceColor = UIColor(red:0.60, green:0.51, blue:0.00, alpha:1.0)
 public let kNormalColor    = UIColor.black
 
-open class CardTableViewCell: UITableViewCell {
-    open static let reuseIdentifier = "CardCell"
+public class CardTableViewCell: UITableViewCell {
+    public static let reuseIdentifier = "CardCell"
     
     // Variables
-    open var card: CMCard? {
+    public var card: CMCard? {
         didSet {
             updateDataDisplay()
         }
@@ -49,7 +49,7 @@ open class CardTableViewCell: UITableViewCell {
     @IBOutlet weak var foilPriceLabel: UILabel!
 
     // MARK: Overrides
-    override open func awakeFromNib() {
+    override public func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         
@@ -60,13 +60,14 @@ open class CardTableViewCell: UITableViewCell {
         removeAnnotation()
     }
 
-    override open func setSelected(_ selected: Bool, animated: Bool) {
+    override public func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
     }
     
-    open func clearDataDisplay() {
+    // MARK: Custom methods
+    public func clearDataDisplay() {
         thumbnailImage.image = ManaKit.sharedInstance.imageFromFramework(imageName: .cardBackCropped)
         symbolImage.image = nil
         removeAnnotation()
@@ -88,7 +89,6 @@ open class CardTableViewCell: UITableViewCell {
         foilPriceLabel.textColor = kNormalColor
     }
     
-    // MARK: Custom methods
     private func updateDataDisplay() {
         guard let card = card else {
             clearDataDisplay()
@@ -230,19 +230,19 @@ open class CardTableViewCell: UITableViewCell {
         }
     }
     
-    open func add(annotation: Int) {
+    public func add(annotation: Int) {
         annotationLabel.backgroundColor = UIColor.red
         annotationLabel.text = "\(annotation)"
     }
     
-    open func removeAnnotation() {
+    public func removeAnnotation() {
         annotationLabel.backgroundColor = UIColor.clear
         annotationLabel.text = ""
     }
     
-    open func updatePricing() {
+    public func updatePricing() {
         guard let card = card,
-            let pricing = ManaKit.sharedInstance.findObject("CMCardPricing", objectFinder: ["card.id": card.id as AnyObject], createIfNotFound: true) as? CMCardPricing else {
+            let pricing = card.pricing else {
                 lowPriceLabel.text = "NA"
                 lowPriceLabel.textColor = kNormalColor
                 

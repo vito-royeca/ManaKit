@@ -10,6 +10,6 @@ import Foundation
 import CoreData
 
 @objc(CMRuling)
-open class CMRuling: NSManagedObject {
+public class CMRuling: NSManagedObject {
 
 }

@@ -12,8 +12,8 @@ import CoreData
 
 extension CMArtist {
 
-    @nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
-        return NSFetchRequest<CMArtist>(entityName: "CMArtist") as! NSFetchRequest<NSFetchRequestResult>
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMArtist> {
+        return NSFetchRequest<CMArtist>(entityName: "CMArtist")
     }
 
     @NSManaged public var firstName: String?

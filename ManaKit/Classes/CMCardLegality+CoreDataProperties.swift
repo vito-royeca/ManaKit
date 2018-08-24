@@ -1,8 +1,8 @@
 //
 //  CMCardLegality+CoreDataProperties.swift
-//  Pods
+//  ManaKit
 //
-//  Created by Jovito Royeca on 15/04/2017.
+//  Created by Jovito Royeca on 23.08.18.
 //
 //
 
@@ -12,8 +12,8 @@ import CoreData
 
 extension CMCardLegality {
 
-    @nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
-        return NSFetchRequest<CMCardLegality>(entityName: "CMCardLegality") as! NSFetchRequest<NSFetchRequestResult>
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMCardLegality> {
+        return NSFetchRequest<CMCardLegality>(entityName: "CMCardLegality")
     }
 
     @NSManaged public var id: Int64

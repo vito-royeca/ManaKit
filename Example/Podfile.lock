@@ -1,6 +1,7 @@
 PODS:
   - DATASource (7.0.2)
   - DATAStack (8.0.2)
+  - Font-Awesome-Swift (1.6.4)
   - Kanna (3.0.0)
   - ManaKit (2.7.2):
     - DATASource
@@ -11,14 +12,14 @@ PODS:
     - SDWebImage
     - SSZipArchive
     - Sync
-  - PromiseKit (6.3.4):
-    - PromiseKit/CorePromise (= 6.3.4)
-    - PromiseKit/Foundation (= 6.3.4)
-    - PromiseKit/UIKit (= 6.3.4)
-  - PromiseKit/CorePromise (6.3.4)
-  - PromiseKit/Foundation (6.3.4):
+  - PromiseKit (6.4.0):
+    - PromiseKit/CorePromise (= 6.4.0)
+    - PromiseKit/Foundation (= 6.4.0)
+    - PromiseKit/UIKit (= 6.4.0)
+  - PromiseKit/CorePromise (6.4.0)
+  - PromiseKit/Foundation (6.4.0):
     - PromiseKit/CorePromise
-  - PromiseKit/UIKit (6.3.4):
+  - PromiseKit/UIKit (6.4.0):
     - PromiseKit/CorePromise
   - Reachability (3.2)
   - SDWebImage (4.4.2):
@@ -30,6 +31,7 @@ PODS:
 DEPENDENCIES:
   - DATASource
   - DATAStack
+  - Font-Awesome-Swift (from `https://github.com/Vaberer/Font-Awesome-Swift`, branch `swift-3`)
   - Kanna (from `https://github.com/tid-kijyun/Kanna`, branch `feature/v3.0.0`)
   - ManaKit (from `../`)
   - PromiseKit (~> 6.0)
@@ -49,6 +51,9 @@ SPEC REPOS:
     - Sync
 
 EXTERNAL SOURCES:
+  Font-Awesome-Swift:
+    :branch: swift-3
+    :git: https://github.com/Vaberer/Font-Awesome-Swift
   Kanna:
     :branch: feature/v3.0.0
     :git: https://github.com/tid-kijyun/Kanna
@@ -56,6 +61,9 @@ EXTERNAL SOURCES:
     :path: "../"
 
 CHECKOUT OPTIONS:
+  Font-Awesome-Swift:
+    :commit: a1fa6a2529e0d4fe2f0cc735f6d907612e1b7535
+    :git: https://github.com/Vaberer/Font-Awesome-Swift
   Kanna:
     :commit: 50b2fa6c8d2341a693b5256624257c58c4502142
     :git: https://github.com/tid-kijyun/Kanna
@@ -63,14 +71,15 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   DATASource: b86db74542b5b27d4d2af43ae698022f19507379
   DATAStack: 9c415f6e7733eafb9cf5c076613bfb5958c407cb
+  Font-Awesome-Swift: 4820aea879741d76968a89653715b375ec0cf99e
   Kanna: 93a9af3643d46425e48899a8b033a2da44af2b49
   ManaKit: 1aa8dc3981aaf4685962beda28eaec47e5617007
-  PromiseKit: e1425568123ec844a944c93f2bcb29d511d39cf5
+  PromiseKit: ae3616f45d7bb9bf4ff1e91abc9b7a8c48a340e0
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
   SSZipArchive: 51a800ebb77f95a8329b6ced1faaff394b47f509
   Sync: 6942ea9f8b67bade5a7efd90d0b8a56119ec6342
 
-PODFILE CHECKSUM: 0cd7a3f2026681ec9fbeeb8828b951505ce6a2b0
+PODFILE CHECKSUM: 0c08a043a0f51746e27a67d3b12cd697f7c3fe16
 
 COCOAPODS: 1.5.3

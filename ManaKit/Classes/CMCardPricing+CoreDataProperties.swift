@@ -12,8 +12,8 @@ import CoreData
 
 extension CMCardPricing {
 
-    @nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
-        return NSFetchRequest<CMCardPricing>(entityName: "CMCardPricing") as! NSFetchRequest<NSFetchRequestResult>
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMCardPricing> {
+        return NSFetchRequest<CMCardPricing>(entityName: "CMCardPricing")
     }
     
     @NSManaged public var id: Int64
@@ -23,6 +23,23 @@ extension CMCardPricing {
     @NSManaged public var foil: Double
     @NSManaged public var lastUpdate: NSDate?
     @NSManaged public var link: String?
-    @NSManaged public var card: CMCard?
+    @NSManaged public var cards: NSSet?
+    
+}
 
+// MARK: Generated accessors for cards
+extension CMCardPricing {
+    
+    @objc(addCardsObject:)
+    @NSManaged public func addToCards(_ value: CMCard)
+    
+    @objc(removeCardsObject:)
+    @NSManaged public func removeFromCards(_ value: CMCard)
+    
+    @objc(addCards:)
+    @NSManaged public func addToCards(_ values: NSSet)
+    
+    @objc(removeCards:)
+    @NSManaged public func removeFromCards(_ values: NSSet)
+    
 }

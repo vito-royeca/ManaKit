@@ -75,8 +75,8 @@ class DatabaseMaintainer: NSObject {
         try! FileManager.default.moveItem(atPath: "\(docsPath)/ManaKit.sqlite", toPath: targetPath)
         
         
-        let request = CMSystem.fetchRequest()
-        guard let system = try! oldDataStack?.mainContext.fetch(request).first as? CMSystem else {
+        let request: NSFetchRequest<CMSystem> = CMSystem.fetchRequest()
+        guard let system = try! oldDataStack?.mainContext.fetch(request).first else {
             return
         }
         print("old database version: \(system.version!)")
@@ -205,11 +205,11 @@ class DatabaseMaintainer: NSObject {
             return
         }
 
-        let request = CMSet.fetchRequest()
+        let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
         request.predicate = NSPredicate(format: "tcgPlayerName == nil")
         request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         
-        guard let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) as? [CMSet] else {
+        guard let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) else {
             return
         }
         
@@ -238,10 +238,10 @@ class DatabaseMaintainer: NSObject {
             return
         }
         
-        let request = CMSet.fetchRequest()
+        let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         
-        guard let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) as? [CMSet] else {
+        guard let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) else {
             return
         }
         
@@ -261,8 +261,8 @@ class DatabaseMaintainer: NSObject {
     
     public func updateSystem() {
         // delete existing data first
-        let request = CMSystem.fetchRequest()
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: request )
+        let request: NSFetchRequest<CMSystem> = CMSystem.fetchRequest()
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: request as! NSFetchRequest<NSFetchRequestResult>)
         try! ManaKit.sharedInstance.dataStack?.persistentStoreCoordinator.execute(deleteRequest, with: (ManaKit.sharedInstance.dataStack?.mainContext)!)
         
         let objectFinder = ["version": ManaKit.Constants.MTGJSONVersion] as [String: AnyObject]
@@ -280,9 +280,9 @@ class DatabaseMaintainer: NSObject {
     }
     
     public func updateSets() {
-        let request = CMSet.fetchRequest()
+        let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
         
-        guard let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) as? [CMSet] else {
+        guard let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) else {
             return
         }
         
@@ -372,9 +372,9 @@ class DatabaseMaintainer: NSObject {
     }
     
     public func updateCards() {
-        let request = CMCard.fetchRequest()
+        let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
         
-        guard let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) as? [CMCard] else {
+        guard let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) else {
             return
         }
         
@@ -697,14 +697,14 @@ class DatabaseMaintainer: NSObject {
     }
 
     func updateVariations() {
-        let request = CMCard.fetchRequest()
+        let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
         let predicate = NSPredicate(format: "variations != nil")
         let sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
                                NSSortDescriptor(key: "name", ascending: true)]
         request.predicate = predicate
         request.sortDescriptors = sortDescriptors
         
-        guard let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) as? [CMCard] else {
+        guard let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) else {
             return
         }
         
@@ -738,16 +738,16 @@ class DatabaseMaintainer: NSObject {
     }
 
     func updatePrintings() {
-        let setRequest = CMSet.fetchRequest()
-        let cardRequest = CMCard.fetchRequest()
+        let setRequest: NSFetchRequest<CMSet> = CMSet.fetchRequest()
+        let cardRequest: NSFetchRequest<CMCard> = CMCard.fetchRequest()
         let predicate = NSPredicate(format: "printings != nil")
         let sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
                                NSSortDescriptor(key: "name", ascending: true)]
         cardRequest.predicate = predicate
         cardRequest.sortDescriptors = sortDescriptors
         
-        guard let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(cardRequest) as? [CMCard],
-            let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(setRequest) as? [CMSet] else {
+        guard let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(cardRequest),
+            let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(setRequest) else {
             return
         }
         
@@ -781,14 +781,14 @@ class DatabaseMaintainer: NSObject {
     }
 
     func updateRulings() {
-        let request = CMCard.fetchRequest()
+        let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
         let predicate = NSPredicate(format: "rulings != nil")
         let sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
                                NSSortDescriptor(key: "name", ascending: true)]
         request.predicate = predicate
         request.sortDescriptors = sortDescriptors
         
-        guard let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) as? [CMCard] else {
+        guard let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) else {
             return
         }
         
@@ -825,9 +825,9 @@ class DatabaseMaintainer: NSObject {
     }
     
     func updateNames() {
-        let request = CMCard.fetchRequest()
+        let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
         
-        guard let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) as? [CMCard] else {
+        guard let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) else {
             return
         }
         
@@ -862,14 +862,14 @@ class DatabaseMaintainer: NSObject {
     func updateForeignNames() {
         dateStart = Date()
         
-        let request = CMCard.fetchRequest()
+        let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
         let predicate = NSPredicate(format: "foreignNames != nil")
         let sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
                                NSSortDescriptor(key: "name", ascending: true)]
         request.predicate = predicate
         request.sortDescriptors = sortDescriptors
         
-        guard let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) as? [CMCard] else {
+        guard let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) else {
             return
         }
         
@@ -933,14 +933,14 @@ class DatabaseMaintainer: NSObject {
     func updateLegalities() {
         dateStart = Date()
         
-        let request = CMCard.fetchRequest()
+        let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
         let predicate = NSPredicate(format: "legalities != nil")
         let sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
                                NSSortDescriptor(key: "name", ascending: true)]
         request.predicate = predicate
         request.sortDescriptors = sortDescriptors
         
-        guard  let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) as? [CMCard] else {
+        guard  let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) else {
             return
         }
         
@@ -1028,7 +1028,7 @@ class DatabaseMaintainer: NSObject {
         print("Updating comprehensive rules: \(dateStart)")
         
         // delete existing data first
-        let request:NSFetchRequest<CMRule> = CMRule.fetchRequest() as! NSFetchRequest<CMRule>
+        let request: NSFetchRequest<CMRule> = CMRule.fetchRequest()
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: request as! NSFetchRequest<NSFetchRequestResult>)
         try! ManaKit.sharedInstance.dataStack?.persistentStoreCoordinator.execute(deleteRequest, with: (ManaKit.sharedInstance.dataStack?.mainContext)!)
         
@@ -1355,9 +1355,9 @@ class DatabaseMaintainer: NSObject {
         dateStart = Date()
         
         copyOldDatabaseFile()
-        let request = CMCard.fetchRequest()
+        let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
 
-        guard let oldCards = try! oldDataStack?.mainContext.fetch(request) as? [CMCard] else {
+        guard let oldCards = try! oldDataStack?.mainContext.fetch(request) else {
             return
         }
         
@@ -1365,7 +1365,7 @@ class DatabaseMaintainer: NSObject {
         
         print("Updating OLD data: \(count)/\(oldCards.count) \(Date())")
         for oldCard in oldCards {
-            let newRequest:NSFetchRequest<CMCard> = CMCard.fetchRequest() as! NSFetchRequest<CMCard>
+            let newRequest: NSFetchRequest<CMCard> = CMCard.fetchRequest()
             newRequest.predicate = NSPredicate(format: "id = %@", oldCard.id!)
             
             if let card = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(newRequest).first {
@@ -1395,7 +1395,7 @@ class DatabaseMaintainer: NSObject {
     func updateMCINumbers() {
         dateStart = Date()
         
-        let request = CMCard.fetchRequest()
+        let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
         var predicate = NSPredicate(format: "mciNumber == nil AND number == nil")
         let sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
                                NSSortDescriptor(key: "name", ascending: true)]
@@ -1407,7 +1407,7 @@ class DatabaseMaintainer: NSObject {
         request.predicate = predicate
         request.sortDescriptors = sortDescriptors
         
-        guard let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) as? [CMCard] else {
+        guard let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) else {
             return
         }
         
@@ -1502,7 +1502,7 @@ class DatabaseMaintainer: NSObject {
     func updateScryfallNumbers() {
         dateStart = Date()
         
-        var request = CMSet.fetchRequest()
+        var request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
         
         guard let path = Bundle.main.path(forResource: "Scryfall", ofType: "plist", inDirectory: "data"),
             FileManager.default.fileExists(atPath: path) else {
@@ -1517,7 +1517,7 @@ class DatabaseMaintainer: NSObject {
         
         request.predicate = NSPredicate(format: "scryfallCode == nil")
         request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
-        guard let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) as? [CMSet] else {
+        guard let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) else {
             return
         }
         
@@ -1540,7 +1540,7 @@ class DatabaseMaintainer: NSObject {
         request.predicate = predicate
         request.sortDescriptors = sortDescriptors
         
-        guard let sets2 = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) as? [CMSet] else {
+        guard let sets2 = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) else {
             return
         }
         
@@ -1691,6 +1691,77 @@ class DatabaseMaintainer: NSObject {
         }
     }
     
+    // MARK: Deck
+    func createSampleDecks() {
+        for path in Bundle.main.paths(forResourcesOfType: "json", inDirectory: "data/decks") {
+            let data = try! Data(contentsOf: URL(fileURLWithPath: path))
+            
+            guard let dict = try! JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any],
+                let name = dict["name"] as? String,
+                let nameSection = dict["nameSection"] as? String,
+                let mainboard = dict["mainboard"] as? Int,
+                let sideboard = dict["sideboard"] as? Int,
+                let colors = dict["colors"] as? String,
+                let format = dict["format"] as? String,
+                let heroCardId = dict["heroCardId"] as? String,
+                let cards = dict["cards"] as? [[String: Any]] else {
+                continue
+            }
+            
+            if let deck = ManaKit.sharedInstance.findObject("CMDeck",
+                                                            objectFinder: ["name": name] as [String: AnyObject],
+                                                            createIfNotFound: true) as? CMDeck {
+                let date = NSDate()
+                deck.name = name
+                deck.nameSection = nameSection
+                deck.mainboard = Int32(mainboard)
+                deck.sideboard = Int32(sideboard)
+                deck.colors = colors
+                deck.createdOn = date
+                deck.updatedOn = date
+                
+                if let format = ManaKit.sharedInstance.findObject("CMFormat",
+                                                                  objectFinder: ["name": format] as [String: AnyObject],
+                                                                  createIfNotFound: true) as? CMFormat {
+                    deck.format = format
+                }
+                if let heroC = ManaKit.sharedInstance.findObject("CMCard",
+                                                                  objectFinder: ["id": heroCardId] as [String: AnyObject],
+                                                                  createIfNotFound: true) as? CMCard {
+                    deck.heroCard = heroC
+                }
+                try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                
+                // add the cards
+                for card in cards {
+                    guard let id = card["id"] as? String,
+                        let quantity = card["quantity"] as? Int,
+                        let mb = card["mainboard"] as? Bool,
+                        let sb = card["sideboard"] as? Bool else {
+                            continue
+                    }
+                    
+                    if let c = ManaKit.sharedInstance.findObject("CMCard",
+                                                                 objectFinder: ["id": id] as [String: AnyObject],
+                                                                 createIfNotFound: true) as? CMCard {
+                        
+                        if let inventory = ManaKit.sharedInstance.findObject("CMCardInventory",
+                                                                             objectFinder: ["card": c, "deck": deck] as [String: AnyObject],
+                                                                             createIfNotFound: true) as? CMCardInventory {
+                            inventory.card = c
+                            inventory.deck = deck
+                            inventory.quantity = Int32(quantity)
+                            inventory.mainboard = mb
+                            inventory.sideboard = sb
+                        }
+                    }
+                }
+                try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+            }
+        }
+    }
+    
+    
     // MARK: Custom methods
     func changeNotification(_ notification: Notification) {
         if let updatedObjects = notification.userInfo?[NSUpdatedObjectsKey] {
@@ -1765,9 +1836,9 @@ class DatabaseMaintainer: NSObject {
     func updateArtist() {
         dateStart = Date()
         
-        let request = CMArtist.fetchRequest()
+        let request: NSFetchRequest<CMArtist> = CMArtist.fetchRequest()
         
-        guard let artists = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) as? [CMArtist] else {
+        guard let artists = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) else {
             return
         }
         
