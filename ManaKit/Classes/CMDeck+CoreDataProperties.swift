@@ -27,6 +27,7 @@ extension CMDeck {
     @NSManaged public var mainboard: Int32
     @NSManaged public var pricing: CMCardPricing?
     @NSManaged public var sideboard: Int32
+    @NSManaged public var views: Int32
     @NSManaged public var user: CMUser?
     @NSManaged public var cards: NSSet?
 

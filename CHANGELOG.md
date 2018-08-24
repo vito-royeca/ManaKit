@@ -1,3 +1,6 @@
+**Version 2.7.3** @ 24.08.2018
+- Added User, Deck, and List managed objects.
+
 **Version 2.7.2** @ 13.08.2018
 - Updated the SQLite database to MTGJSON version 3.19.1
 
