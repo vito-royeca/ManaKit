@@ -34,7 +34,7 @@
                         </userDefinedRuntimeAttributes>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kXP-dk-0C1">
-                        <rect key="frame" x="11" y="11" width="20" height="20"/>
+                        <rect key="frame" x="6" y="6" width="20" height="20"/>
                         <color key="backgroundColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="N3E-XE-Mu3"/>
@@ -230,18 +230,18 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="y9M-ig-dNi" firstAttribute="leading" secondItem="rgs-66-M0A" secondAttribute="trailing" constant="13" id="3wF-6U-pDY"/>
+                    <constraint firstItem="kXP-dk-0C1" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="6" id="9fZ-uA-9tr"/>
                     <constraint firstItem="5jo-XN-ep7" firstAttribute="top" secondItem="y9M-ig-dNi" secondAttribute="bottom" id="HrG-lQ-C34"/>
                     <constraint firstAttribute="trailing" secondItem="y9M-ig-dNi" secondAttribute="trailing" constant="16" id="KpY-dv-Nhe"/>
                     <constraint firstItem="ekL-yh-NLf" firstAttribute="top" secondItem="g8i-jA-6bh" secondAttribute="bottom" id="MfO-g3-gNt"/>
-                    <constraint firstItem="kXP-dk-0C1" firstAttribute="leading" secondItem="rgs-66-M0A" secondAttribute="leading" id="RF8-wP-cUg"/>
                     <constraint firstAttribute="trailing" secondItem="ekL-yh-NLf" secondAttribute="trailing" constant="16" id="U10-cO-EjA"/>
                     <constraint firstItem="Kbw-1w-5Bx" firstAttribute="trailing" secondItem="rgs-66-M0A" secondAttribute="trailing" id="VSh-br-jhC"/>
                     <constraint firstAttribute="trailing" secondItem="5jo-XN-ep7" secondAttribute="trailing" constant="16" id="bai-go-gph"/>
                     <constraint firstItem="rgs-66-M0A" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="11" id="c8q-Vo-Xmg"/>
-                    <constraint firstItem="kXP-dk-0C1" firstAttribute="top" secondItem="rgs-66-M0A" secondAttribute="top" id="fwx-nK-rzG"/>
                     <constraint firstAttribute="trailing" secondItem="g8i-jA-6bh" secondAttribute="trailing" constant="16" id="hY2-Rh-i35"/>
                     <constraint firstItem="5jo-XN-ep7" firstAttribute="leading" secondItem="rgs-66-M0A" secondAttribute="trailing" constant="13" id="hqN-Rz-GKX"/>
                     <constraint firstItem="g8i-jA-6bh" firstAttribute="leading" secondItem="rgs-66-M0A" secondAttribute="trailing" constant="13" id="jv3-h4-Mg6"/>
+                    <constraint firstItem="kXP-dk-0C1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="6" id="lPd-v1-Rbl"/>
                     <constraint firstItem="g8i-jA-6bh" firstAttribute="top" secondItem="5jo-XN-ep7" secondAttribute="bottom" id="mRV-Ti-wql"/>
                     <constraint firstItem="rgs-66-M0A" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="n3o-cr-YiB"/>
                     <constraint firstItem="y9M-ig-dNi" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="oje-Yv-jf8"/>

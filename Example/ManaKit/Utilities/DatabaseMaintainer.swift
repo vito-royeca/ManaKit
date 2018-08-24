@@ -1716,6 +1716,7 @@ class DatabaseMaintainer: NSObject {
                 deck.nameSection = nameSection
                 deck.mainboard = Int32(mainboard)
                 deck.sideboard = Int32(sideboard)
+                deck.views = 0
                 deck.colors = colors
                 deck.createdOn = date
                 deck.updatedOn = date

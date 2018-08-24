@@ -74,13 +74,11 @@
                     <constraint firstItem="eoL-mX-F29" firstAttribute="leading" secondItem="gSb-sW-rnq" secondAttribute="trailing" constant="8" id="30H-Nk-Kre"/>
                     <constraint firstItem="gSb-sW-rnq" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="11" id="4TM-4o-BD4"/>
                     <constraint firstItem="uwM-J3-fGY" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="6zM-dZ-flF"/>
-                    <constraint firstAttribute="bottom" secondItem="gSb-sW-rnq" secondAttribute="bottom" constant="10.5" id="F2Y-Ya-eR3"/>
                     <constraint firstItem="uwM-J3-fGY" firstAttribute="top" secondItem="Jgd-nh-tdd" secondAttribute="bottom" constant="5" id="JS0-t4-BS0"/>
                     <constraint firstItem="Jgd-nh-tdd" firstAttribute="leading" secondItem="gSb-sW-rnq" secondAttribute="trailing" constant="8" id="LgU-0Z-mCq"/>
                     <constraint firstItem="Jgd-nh-tdd" firstAttribute="top" secondItem="lO5-wz-Xqb" secondAttribute="bottom" constant="2.5" id="Mgh-EI-jcN"/>
                     <constraint firstItem="6z8-x5-qf4" firstAttribute="width" secondItem="Jgd-nh-tdd" secondAttribute="width" id="N3Z-I7-59o"/>
                     <constraint firstItem="6z8-x5-qf4" firstAttribute="top" secondItem="lO5-wz-Xqb" secondAttribute="bottom" constant="2.5" id="OdY-B7-22j"/>
-                    <constraint firstItem="eoL-mX-F29" firstAttribute="top" secondItem="Jgd-nh-tdd" secondAttribute="bottom" constant="5" id="Okn-lD-xHh"/>
                     <constraint firstItem="6z8-x5-qf4" firstAttribute="leading" secondItem="Jgd-nh-tdd" secondAttribute="trailing" id="QQ2-m3-ajy"/>
                     <constraint firstItem="eoL-mX-F29" firstAttribute="bottom" secondItem="H2p-sc-9uM" secondAttribute="bottomMargin" id="S1U-9w-EGb"/>
                     <constraint firstItem="gSb-sW-rnq" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="11" id="T46-hG-7U5"/>
