@@ -36,31 +36,47 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        //DatabaseMaintainer.sharedInstance.updateForeignNames()
 //        DatabaseMaintainer.sharedInstance.updateLegalities()
 //        DatabaseMaintainer.sharedInstance.rules2CoreData()
+//        DatabaseMaintainer.sharedInstance.createSampleDecks()
 
           // Normal run
         ManaKit.sharedInstance.setupResources()
         ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "ManaGuide", publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720", privateKey: nil)
-
         DatabaseMaintainer.sharedInstance.createSampleDecks()
-        
+
         // change the account icon
-        if let rootVC = window?.rootViewController as? UITabBarController {
-            rootVC.tabBar.items![0].image = UIImage(bgIcon: .FABook,
-                                                    orientation: UIImageOrientation.up,
-                                                    bgTextColor: UIColor.blue,
-                                                    bgBackgroundColor: UIColor.clear,
-                                                    topIcon: .FABook,
-                                                    topTextColor: UIColor.clear,
-                                                    bgLarge: false,
-                                                    size: CGSize(width: 30, height: 30))
-            rootVC.tabBar.items![1].image = UIImage(bgIcon: .FADropbox,
-                                                    orientation: UIImageOrientation.up,
-                                                    bgTextColor: UIColor.blue,
-                                                    bgBackgroundColor: UIColor.clear,
-                                                    topIcon: .FADropbox,
-                                                    topTextColor: UIColor.clear,
-                                                    bgLarge: false,
-                                                    size: CGSize(width: 30, height: 30))
+        if let rootVC = window?.rootViewController as? UITabBarController,
+            let viewControllers = rootVC.viewControllers,
+            let items = rootVC.tabBar.items {
+            
+            for vc in viewControllers {
+                if let nvc = vc as? UINavigationController {
+                    for child in nvc.viewControllers {
+                        if let setsVC = child as? SetsViewController {
+                            setsVC.viewModel = SetsViewModel()
+                        } else if let decksVC = child as? DecksViewController {
+                            decksVC.viewModel = DecksViewModel()
+                        }
+                    }
+                }
+            }
+            
+            
+            items[0].image = UIImage(bgIcon: .FABook,
+                                     orientation: UIImageOrientation.up,
+                                     bgTextColor: UIColor.blue,
+                                     bgBackgroundColor: UIColor.clear,
+                                     topIcon: .FABook,
+                                     topTextColor: UIColor.clear,
+                                     bgLarge: false,
+                                     size: CGSize(width: 30, height: 30))
+            items[1].image = UIImage(bgIcon: .FADropbox,
+                                     orientation: UIImageOrientation.up,
+                                     bgTextColor: UIColor.blue,
+                                     bgBackgroundColor: UIColor.clear,
+                                     topIcon: .FADropbox,
+                                     topTextColor: UIColor.clear,
+                                     bgLarge: false,
+                                     size: CGSize(width: 30, height: 30))
         }
         
         return true

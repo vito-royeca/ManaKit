@@ -13,8 +13,8 @@ import ManaKit
 class SetViewController: UIViewController {
 
     // MARK: Variables
-    var set:CMSet?
-    var fetchedResultsController: NSFetchedResultsController<CMCard>?
+    let searchController = UISearchController(searchResultsController: nil)
+    var viewModel: SetViewModel!
     
     // MARK: Outlets
     @IBOutlet weak var tableView: UITableView!
@@ -24,8 +24,15 @@ class SetViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        fetchedResultsController = getFetchedResultsController(with: nil)
+        definesPresentationContext = true
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        
+        tableView.tableHeaderView = searchController.searchBar
         tableView.register(ManaKit.sharedInstance.nibFromBundle("CardTableViewCell"), forCellReuseIdentifier: CardTableViewCell.reuseIdentifier)
+        
+        title = viewModel.objectTitle()
+        viewModel.performSearch()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -36,87 +43,48 @@ class SetViewController: UIViewController {
             }
             
             dest.card = card
+            dest.title = card.name
         }
-    }
-
-    // MARK: Custom methods
-    func getFetchedResultsController(with fetchRequest: NSFetchRequest<CMCard>?) -> NSFetchedResultsController<CMCard> {
-        guard let set = set,
-            let code = set.code else {
-            fatalError("Set is nil")
-        }
-        
-        let context = ManaKit.sharedInstance.dataStack!.viewContext
-        var request: NSFetchRequest<CMCard>?
-        
-        if let fetchRequest = fetchRequest {
-            request = fetchRequest
-        } else {
-            // create a default fetchRequest
-            request = CMCard.fetchRequest()
-            request!.predicate = NSPredicate(format: "set.code = %@", code)
-            request!.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true),
-                                       NSSortDescriptor(key: "number", ascending: true),
-                                       NSSortDescriptor(key: "mciNumber", ascending: true)]
-        }
-        
-        // Create Fetched Results Controller
-        let frc = NSFetchedResultsController(fetchRequest: request!,
-                                             managedObjectContext: context,
-                                             sectionNameKeyPath: nil,
-                                             cacheName: nil)
-        
-        // Configure Fetched Results Controller
-        frc.delegate = self
-        
-        // perform fetch
-        do {
-            try frc.performFetch()
-        } catch {
-            let fetchError = error as NSError
-            print("Unable to Perform Fetch Request")
-            print("\(fetchError), \(fetchError.localizedDescription)")
-        }
-        
-        return frc
     }
 }
 
 // MARK: UITableViewDataSource
 extension SetViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let fetchedResultsController = fetchedResultsController,
-            let cards = fetchedResultsController.fetchedObjects else {
-                return 0
-        }
-        
-        return cards.count
+        return viewModel.tableViewNumberOfRows(inSection: section)
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return viewModel.tableViewNumberOfSections()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let fetchedResultsController = fetchedResultsController,
-            let cell = tableView.dequeueReusableCell(withIdentifier: CardTableViewCell.reuseIdentifier,
-                                                     for: indexPath) as? CardTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CardTableViewCell.reuseIdentifier,
+                                                       for: indexPath) as? CardTableViewCell else {
             fatalError("Unexpected indexPath: \(indexPath)")
         }
         
-        let card = fetchedResultsController.object(at: indexPath)
-        
-        // Configure Cell
-        cell.card = card
-        
+        cell.card = viewModel.object(forRowAt: indexPath)
         return cell
+    }
+    
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return viewModel.tableViewSectionIndexTitles()
+    }
+    
+    func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        return viewModel.tableViewSectionForSectionIndexTitle(title: title, at: index)
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return viewModel.tableViewTitleForHeaderInSection(section: section)
     }
 }
 
 // MARK: UITableViewDelegate
 extension SetViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let fetchedResultsController = fetchedResultsController else {
-            return
-        }
-        
-        let card = fetchedResultsController.object(at: indexPath)
+        let card = viewModel.object(forRowAt: indexPath)
         performSegue(withIdentifier: "showCard", sender: card)
     }
     
@@ -125,8 +93,16 @@ extension SetViewController : UITableViewDelegate {
     }
 }
 
-// MARK: NSFetchedResultsControllerDelegate
-extension SetViewController : NSFetchedResultsControllerDelegate {
-    
+// MARK: UISearchResultsUpdating
+extension SetViewController : UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let text = searchController.searchBar.text else {
+            return
+        }
+        
+        viewModel.queryString = text
+        viewModel.performSearch()
+        tableView.reloadData()
+    }
 }
 

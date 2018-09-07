@@ -21,6 +21,7 @@ extension CMUser {
     @NSManaged public var id: String?
     @NSManaged public var decks: NSSet?
     @NSManaged public var favorites: NSSet?
+    @NSManaged public var ratings: NSSet?
     @NSManaged public var lists: NSSet?
 
 }
@@ -57,6 +58,23 @@ extension CMUser {
     @objc(removeFavorites:)
     @NSManaged public func removeFromFavorites(_ values: NSSet)
 
+}
+
+// MARK: Generated accessors for favorites
+extension CMUser {
+    
+    @objc(addRatingsObject:)
+    @NSManaged public func addToRatings(_ value: CMCardRating)
+    
+    @objc(removeRatingsObject:)
+    @NSManaged public func removeFromRatings(_ value: CMCardRating)
+    
+    @objc(addRatings:)
+    @NSManaged public func addToRatings(_ values: NSSet)
+    
+    @objc(removeRatings:)
+    @NSManaged public func removeFromRatings(_ values: NSSet)
+    
 }
 
 // MARK: Generated accessors for lists

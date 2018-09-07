@@ -86,6 +86,7 @@ extension CMCard {
     @NSManaged public var watermark_: CMWatermark?
     @NSManaged public var deckHeroes: NSSet?
     @NSManaged public var userFavorites: NSSet?
+    @NSManaged public var userRatings: NSSet?
     @NSManaged public var inventories: NSSet?
 }
 
@@ -325,6 +326,23 @@ extension CMCard {
     
     @objc(removeUserFavorites:)
     @NSManaged public func removeFromUserFavorites(_ values: NSSet)
+    
+}
+
+// MARK: Generated accessors for favorites
+extension CMCard {
+    
+    @objc(addRatingsObject:)
+    @NSManaged public func addToRatings(_ value: CMCardRating)
+    
+    @objc(removeRatingsObject:)
+    @NSManaged public func removeFromRatings(_ value: CMCardRating)
+    
+    @objc(addRatings:)
+    @NSManaged public func addToRatings(_ values: NSSet)
+    
+    @objc(removeRatings:)
+    @NSManaged public func removeFromRatings(_ values: NSSet)
     
 }
 

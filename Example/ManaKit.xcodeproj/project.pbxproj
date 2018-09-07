@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		113D40C02139BC70000D08FA /* SetsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D40BF2139BC70000D08FA /* SetsViewModel.swift */; };
+		114282922141C84C0091F074 /* SetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114282912141C84C0091F074 /* SetViewModel.swift */; };
+		114282952142165A0091F074 /* DecksViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114282942142165A0091F074 /* DecksViewModel.swift */; };
+		1142829721423B4A0091F074 /* DeckMainboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1142829621423B4A0091F074 /* DeckMainboardViewModel.swift */; };
+		1142829921424C0C0091F074 /* DeckHeroTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1142829821424C0C0091F074 /* DeckHeroTableViewCell.swift */; };
+		1142829B21424E410091F074 /* DeckSideboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1142829A21424E410091F074 /* DeckSideboardViewModel.swift */; };
 		1143683E212FB13900A5E008 /* DecksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1143683D212FB13900A5E008 /* DecksViewController.swift */; };
 		1143684A212FD84B00A5E008 /* DeckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11436849212FD84B00A5E008 /* DeckViewController.swift */; };
 		115151A51F1E1C690061C270 /* DatabaseMaintainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115151A41F1E1C690061C270 /* DatabaseMaintainer.swift */; };
@@ -14,8 +20,7 @@
 		115151B91F1E24130061C270 /* data in Resources */ = {isa = PBXBuildFile; fileRef = 115151B81F1E24130061C270 /* data */; };
 		115151BB1F1E25470061C270 /* SetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115151BA1F1E25470061C270 /* SetViewController.swift */; };
 		115151BD1F1E256A0061C270 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115151BC1F1E256A0061C270 /* CardViewController.swift */; };
-		119588E12125E63600B5D7C4 /* SetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119588E02125E63600B5D7C4 /* SetTableViewCell.swift */; };
-		119588E22125E63600B5D7C4 /* SetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119588E02125E63600B5D7C4 /* SetTableViewCell.swift */; };
+		119588E12125E63600B5D7C4 /* SetsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119588E02125E63600B5D7C4 /* SetsTableViewCell.swift */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
@@ -37,6 +42,12 @@
 
 /* Begin PBXFileReference section */
 		1112EB861FBDCC07007BFCBA /* ManaKit_Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ManaKit_Example-Bridging-Header.h"; sourceTree = "<group>"; };
+		113D40BF2139BC70000D08FA /* SetsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetsViewModel.swift; sourceTree = "<group>"; };
+		114282912141C84C0091F074 /* SetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetViewModel.swift; sourceTree = "<group>"; };
+		114282942142165A0091F074 /* DecksViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecksViewModel.swift; sourceTree = "<group>"; };
+		1142829621423B4A0091F074 /* DeckMainboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckMainboardViewModel.swift; sourceTree = "<group>"; };
+		1142829821424C0C0091F074 /* DeckHeroTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckHeroTableViewCell.swift; sourceTree = "<group>"; };
+		1142829A21424E410091F074 /* DeckSideboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckSideboardViewModel.swift; sourceTree = "<group>"; };
 		1143683D212FB13900A5E008 /* DecksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecksViewController.swift; sourceTree = "<group>"; };
 		11436849212FD84B00A5E008 /* DeckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckViewController.swift; sourceTree = "<group>"; };
 		115151A41F1E1C690061C270 /* DatabaseMaintainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseMaintainer.swift; sourceTree = "<group>"; };
@@ -44,7 +55,7 @@
 		115151B81F1E24130061C270 /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = data; sourceTree = "<group>"; };
 		115151BA1F1E25470061C270 /* SetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetViewController.swift; sourceTree = "<group>"; };
 		115151BC1F1E256A0061C270 /* CardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardViewController.swift; sourceTree = "<group>"; };
-		119588E02125E63600B5D7C4 /* SetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetTableViewCell.swift; sourceTree = "<group>"; };
+		119588E02125E63600B5D7C4 /* SetsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetsTableViewCell.swift; sourceTree = "<group>"; };
 		1F8A6A3006839651BED01AC8 /* Pods-ManaKit_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit_Tests/Pods-ManaKit_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		214271945F84D9EB3A6B8CF1 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		2D89F6B01AAE12E2ACA0565E /* Pods-ManaKit_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit_Example/Pods-ManaKit_Example.release.xcconfig"; sourceTree = "<group>"; };
@@ -85,37 +96,43 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1143683C212FB07500A5E008 /* Decks */ = {
+		114282932142162A0091F074 /* Deck */ = {
 			isa = PBXGroup;
 			children = (
-				1143683D212FB13900A5E008 /* DecksViewController.swift */,
-			);
-			path = Decks;
-			sourceTree = "<group>";
-		};
-		1143684B212FD8E100A5E008 /* Deck */ = {
-			isa = PBXGroup;
-			children = (
+				1142829821424C0C0091F074 /* DeckHeroTableViewCell.swift */,
+				1142829621423B4A0091F074 /* DeckMainboardViewModel.swift */,
+				1142829A21424E410091F074 /* DeckSideboardViewModel.swift */,
 				11436849212FD84B00A5E008 /* DeckViewController.swift */,
 			);
 			path = Deck;
 			sourceTree = "<group>";
 		};
-		119588DA2125DC9600B5D7C4 /* Sets */ = {
+		1143683C212FB07500A5E008 /* Decks */ = {
 			isa = PBXGroup;
 			children = (
-				115151A81F1E221C0061C270 /* SetsViewController.swift */,
-				119588E02125E63600B5D7C4 /* SetTableViewCell.swift */,
+				1143683D212FB13900A5E008 /* DecksViewController.swift */,
+				114282942142165A0091F074 /* DecksViewModel.swift */,
 			);
-			path = Sets;
+			path = Decks;
 			sourceTree = "<group>";
 		};
-		119588DC2125E23F00B5D7C4 /* Set */ = {
+		114A53B0213F954C0046CC82 /* Set */ = {
 			isa = PBXGroup;
 			children = (
 				115151BA1F1E25470061C270 /* SetViewController.swift */,
+				114282912141C84C0091F074 /* SetViewModel.swift */,
 			);
 			path = Set;
+			sourceTree = "<group>";
+		};
+		119588DA2125DC9600B5D7C4 /* Sets */ = {
+			isa = PBXGroup;
+			children = (
+				119588E02125E63600B5D7C4 /* SetsTableViewCell.swift */,
+				115151A81F1E221C0061C270 /* SetsViewController.swift */,
+				113D40BF2139BC70000D08FA /* SetsViewModel.swift */,
+			);
+			path = Sets;
 			sourceTree = "<group>";
 		};
 		119588DD2125E24F00B5D7C4 /* Card */ = {
@@ -169,12 +186,12 @@
 		607FACD21AFB9204008FA782 /* Example for ManaKit */ = {
 			isa = PBXGroup;
 			children = (
-				119588DF2125E2A000B5D7C4 /* Utilities */,
 				119588DD2125E24F00B5D7C4 /* Card */,
 				119588DA2125DC9600B5D7C4 /* Sets */,
-				119588DC2125E23F00B5D7C4 /* Set */,
+				114A53B0213F954C0046CC82 /* Set */,
 				1143683C212FB07500A5E008 /* Decks */,
-				1143684B212FD8E100A5E008 /* Deck */,
+				114282932142162A0091F074 /* Deck */,
+				119588DF2125E2A000B5D7C4 /* Utilities */,
 				115151B81F1E24130061C270 /* data */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
@@ -367,6 +384,9 @@
 				"${BUILT_PRODUCTS_DIR}/ManaKit/ManaKit.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Reachability/Reachability.framework",
+				"${BUILT_PRODUCTS_DIR}/ReactiveCocoa/ReactiveCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/ReactiveSwift/ReactiveSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
 				"${BUILT_PRODUCTS_DIR}/Sync/Sync.framework",
@@ -380,6 +400,9 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ManaKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveCocoa.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sync.framework",
@@ -403,6 +426,9 @@
 				"${BUILT_PRODUCTS_DIR}/ManaKit/ManaKit.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Reachability/Reachability.framework",
+				"${BUILT_PRODUCTS_DIR}/ReactiveCocoa/ReactiveCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/ReactiveSwift/ReactiveSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
 				"${BUILT_PRODUCTS_DIR}/Sync/Sync.framework",
@@ -416,6 +442,9 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ManaKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveCocoa.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sync.framework",
@@ -450,14 +479,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				119588E12125E63600B5D7C4 /* SetTableViewCell.swift in Sources */,
+				119588E12125E63600B5D7C4 /* SetsTableViewCell.swift in Sources */,
 				1143684A212FD84B00A5E008 /* DeckViewController.swift in Sources */,
 				115151A51F1E1C690061C270 /* DatabaseMaintainer.swift in Sources */,
+				1142829B21424E410091F074 /* DeckSideboardViewModel.swift in Sources */,
 				1143683E212FB13900A5E008 /* DecksViewController.swift in Sources */,
+				114282952142165A0091F074 /* DecksViewModel.swift in Sources */,
 				115151BB1F1E25470061C270 /* SetViewController.swift in Sources */,
+				1142829921424C0C0091F074 /* DeckHeroTableViewCell.swift in Sources */,
+				114282922141C84C0091F074 /* SetViewModel.swift in Sources */,
 				115151A91F1E221C0061C270 /* SetsViewController.swift in Sources */,
 				115151BD1F1E256A0061C270 /* CardViewController.swift in Sources */,
+				1142829721423B4A0091F074 /* DeckMainboardViewModel.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				113D40C02139BC70000D08FA /* SetsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -465,7 +500,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				119588E22125E63600B5D7C4 /* SetTableViewCell.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
