@@ -16,6 +16,8 @@ extension CMCardInventory {
         return NSFetchRequest<CMCardInventory>(entityName: "CMCardInventory")
     }
 
+    @NSManaged public var condition: String?
+    @NSManaged public var foil: Bool
     @NSManaged public var mainboard: Bool
     @NSManaged public var sideboard: Bool
     @NSManaged public var quantity: Int32

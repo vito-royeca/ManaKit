@@ -7,17 +7,14 @@
 //
 
 import UIKit
-import CoreData
 import ManaKit
 
 class SetsViewController: UIViewController {
 
-    // MARK: Constants
-    let searchController = UISearchController(searchResultsController: nil)
-    
     // MARK: Variables
-    var fetchedResultsController: NSFetchedResultsController<CMSet>?
-    
+    let searchController = UISearchController(searchResultsController: nil)
+    var viewModel: SetsViewModel!
+
     // MARK: Outlets
     @IBOutlet weak var tableView: UITableView!
     
@@ -26,12 +23,13 @@ class SetsViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        fetchedResultsController = getFetchedResultsController(with: nil)
-        
+        definesPresentationContext = true
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
-        definesPresentationContext = true
+        
         tableView.tableHeaderView = searchController.searchBar
+        
+        viewModel.performSearch()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -41,105 +39,49 @@ class SetsViewController: UIViewController {
                 return
             }
             
-            dest.set = set
-            dest.title = set.name
+            let viewModel = SetViewModel(withSet: set)
+            dest.viewModel = viewModel
         }
-    }
-    
-    // MARK: Custom methods
-    func getFetchedResultsController(with fetchRequest: NSFetchRequest<CMSet>?) -> NSFetchedResultsController<CMSet> {
-        let context = ManaKit.sharedInstance.dataStack!.viewContext
-        var request: NSFetchRequest<CMSet>?
-        
-        if let fetchRequest = fetchRequest {
-            request = fetchRequest
-        } else {
-            // Create a default fetchRequest
-            request = CMSet.fetchRequest()
-            request!.sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: false)]
-        }
-
-        // Create Fetched Results Controller
-        let frc = NSFetchedResultsController(fetchRequest: request!,
-                                             managedObjectContext: context,
-                                             sectionNameKeyPath: nil,
-                                             cacheName: nil)
-        
-        // Configure Fetched Results Controller
-        frc.delegate = self
-        
-        // perform fetch
-        do {
-            try frc.performFetch()
-        } catch {
-            let fetchError = error as NSError
-            print("Unable to Perform Fetch Request")
-            print("\(fetchError), \(fetchError.localizedDescription)")
-        }
-        
-        return frc
-    }
-    
-    func doSearch() {
-        guard let text = searchController.searchBar.text else {
-            return
-        }
-        
-        let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
-        let count = text.count
-        
-        if count > 0 {
-            if count == 1 {
-                request.predicate = NSPredicate(format: "name BEGINSWITH[cd] %@ OR code BEGINSWITH[cd] %@", text, text)
-            } else {
-                request.predicate = NSPredicate(format: "name CONTAINS[cd] %@ OR code CONTAINS[cd] %@", text, text)
-            }
-        }
-        request.sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: false)]
-        
-        fetchedResultsController = getFetchedResultsController(with: request)
-        tableView.reloadData()
     }
 }
 
 // MARK: UITableViewDataSource
 extension SetsViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let fetchedResultsController = fetchedResultsController,
-            let sets = fetchedResultsController.fetchedObjects else {
-            return 0
-        }
-        
-        return sets.count
+        return viewModel.tableViewNumberOfRows(inSection: section)
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return viewModel.tableViewNumberOfSections()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let fetchedResultsController = fetchedResultsController,
-            let cell = tableView.dequeueReusableCell(withIdentifier: SetTableViewCell.reuseIdentifier,
-                                                       for: indexPath) as? SetTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SetsTableViewCell.reuseIdentifier,
+                                                       for: indexPath) as? SetsTableViewCell else {
             fatalError("Unexpected indexPath: \(indexPath)")
         }
         
-        let set = fetchedResultsController.object(at: indexPath)
-        
-        // Configure Cell
-        cell.setLogo.text = ManaKit.sharedInstance.keyruneUnicode(forSet: set)
-        cell.setLogo.textColor = UIColor.black
-        cell.setName.text = set.name
-        cell.setCode.text = set.code
-        
+        cell.set = viewModel.object(forRowAt: indexPath)
         return cell
+    }
+    
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return viewModel.tableViewSectionIndexTitles()
+    }
+
+    func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        return viewModel.tableViewSectionForSectionIndexTitle(title: title, at: index)
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return viewModel.tableViewTitleForHeaderInSection(section: section)
     }
 }
 
 // MARK: UITableViewDelegate
 extension SetsViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let fetchedResultsController = fetchedResultsController else {
-            return
-        }
-        
-        let set = fetchedResultsController.object(at: indexPath)
+        let set = viewModel.object(forRowAt: indexPath)
         performSegue(withIdentifier: "showSet", sender: set)
     }
     
@@ -151,13 +93,15 @@ extension SetsViewController : UITableViewDelegate {
 // MARK: UISearchResultsUpdating
 extension SetsViewController : UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        doSearch()
+        guard let text = searchController.searchBar.text else {
+            return
+        }
+        
+        viewModel.queryString = text
+        viewModel.performSearch()
+        tableView.reloadData()
     }
 }
 
-// MARK: NSFetchedResultsControllerDelegate
-extension SetsViewController : NSFetchedResultsControllerDelegate {
-    
-}
 
 

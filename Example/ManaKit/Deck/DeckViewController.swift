@@ -13,105 +13,198 @@ import ManaKit
 class DeckViewController: UIViewController {
 
     // MARK: Variables
-    var deck: CMDeck?
-    var fetchedResultsController: NSFetchedResultsController<CMCardInventory>?
+    var mainboardViewModel: DeckMainboardViewModel!
+    var sideboardViewModel: DeckSideboardViewModel!
     
     // MARK: Outlets
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var tableView: UITableView!
+
+    // MARK: Actions
+    @IBAction func segmentedAction(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+            mainboardViewModel.performSearch()
+            tableView.reloadData()
+        case 1:
+            sideboardViewModel.performSearch()
+            tableView.reloadData()
+        default:
+            ()
+        }
+    }
     
     // MARK: Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        fetchedResultsController = getFetchedResultsController(with: nil)
         tableView.register(ManaKit.sharedInstance.nibFromBundle("CardTableViewCell"), forCellReuseIdentifier: CardTableViewCell.reuseIdentifier)
+        
+//        title = mainboardViewModel.objectTitle()
+        mainboardViewModel.performSearch()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    // MARK: Custom methods
-    func getFetchedResultsController(with fetchRequest: NSFetchRequest<CMCardInventory>?) -> NSFetchedResultsController<CMCardInventory> {
-        guard let deck = deck else {
-            fatalError("Set is nil")
-        }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        let context = ManaKit.sharedInstance.dataStack!.viewContext
-        var request: NSFetchRequest<CMCardInventory>?
-        
-        if let fetchRequest = fetchRequest {
-            request = fetchRequest
+        if #available(iOS 11.0, *) {
+            navigationController?.navigationBar.prefersLargeTitles = false
         } else {
-            // create a default fetchRequest
-            request = CMCardInventory.fetchRequest()
-            request!.predicate = NSPredicate(format: "deck = %@", deck)
-            request!.sortDescriptors = [NSSortDescriptor(key: "card.name", ascending: true)]
+            // Fallback on earlier versions
         }
-        
-        // Create Fetched Results Controller
-        let frc = NSFetchedResultsController(fetchRequest: request!,
-                                             managedObjectContext: context,
-                                             sectionNameKeyPath: nil,
-                                             cacheName: nil)
-        
-        // Configure Fetched Results Controller
-        frc.delegate = self
-        
-        // perform fetch
-        do {
-            try frc.performFetch()
-        } catch {
-            let fetchError = error as NSError
-            print("Unable to Perform Fetch Request")
-            print("\(fetchError), \(fetchError.localizedDescription)")
-        }
-        
-        return frc
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if #available(iOS 11.0, *) {
+            navigationController?.navigationBar.prefersLargeTitles = true
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showCard" {
+            guard let dest = segue.destination as? CardViewController,
+                let card = sender as? CMCard else {
+                    return
+            }
+            
+            dest.card = card
+            dest.title = card.name
+        }
+    }
 }
 
 // MARK: UITableViewDataSource
 extension DeckViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let fetchedResultsController = fetchedResultsController,
-            let cardInventories = fetchedResultsController.fetchedObjects else {
-                return 0
+        var rows = 0
+        
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
+            rows = mainboardViewModel.tableViewNumberOfRows(inSection: section)
+        case 1:
+            rows = sideboardViewModel.tableViewNumberOfRows(inSection: section)
+        default:
+            ()
         }
         
-        return cardInventories.count
+        return rows
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        var sections = 0
+        
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
+            sections = mainboardViewModel.tableViewNumberOfSections()
+        case 1:
+            sections = sideboardViewModel.tableViewNumberOfSections()
+        default:
+            ()
+        }
+        
+        return sections
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let fetchedResultsController = fetchedResultsController,
-            let cell = tableView.dequeueReusableCell(withIdentifier: CardTableViewCell.reuseIdentifier,
-                                                     for: indexPath) as? CardTableViewCell else {
-                                                        fatalError("Unexpected indexPath: \(indexPath)")
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CardTableViewCell.reuseIdentifier,
+                                                       for: indexPath) as? CardTableViewCell else {
+            fatalError("Unexpected indexPath: \(indexPath)")
         }
         
-        let cardInventory = fetchedResultsController.object(at: indexPath)
+        var cardInventory: CMCardInventory?
         
-        // Configure Cell
-        cell.card = cardInventory.card
-        cell.add(annotation: Int(cardInventory.quantity))
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
+            cardInventory = mainboardViewModel.object(forRowAt: indexPath)
+        case 1:
+            cardInventory = sideboardViewModel.object(forRowAt: indexPath)
+        default:
+            ()
+        }
+        
+        guard let ci = cardInventory else {
+            fatalError("Unexpected indexPath: \(indexPath)")
+        }
+        
+        cell.card = ci.card
+        cell.add(annotation: Int(ci.quantity))
 
         return cell
+    }
+    
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        var array: [String]?
+        
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
+            array = mainboardViewModel.tableViewSectionIndexTitles()
+        case 1:
+            array = sideboardViewModel.tableViewSectionIndexTitles()
+        default:
+            ()
+        }
+        
+        return array
+    }
+    
+    func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        var section = 0
+        
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
+            section = mainboardViewModel.tableViewSectionForSectionIndexTitle(title: title, at: index)
+        case 1:
+            section = sideboardViewModel.tableViewSectionForSectionIndexTitle(title: title, at: index)
+        default:
+            ()
+        }
+        
+        return section
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        var string: String?
+        
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
+            string = mainboardViewModel.tableViewTitleForHeaderInSection(section: section)
+        case 1:
+            string = sideboardViewModel.tableViewTitleForHeaderInSection(section: section)
+        default:
+            ()
+        }
+        
+        return string
     }
 }
 
 // MARK: UITableViewDelegate
 extension DeckViewController : UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        var cardInventory: CMCardInventory?
+        
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
+            cardInventory = mainboardViewModel.object(forRowAt: indexPath)
+        case 1:
+            cardInventory = sideboardViewModel.object(forRowAt: indexPath)
+        default:
+            ()
+        }
+        
+        guard let ci = cardInventory else {
+            return
+        }
+        performSegue(withIdentifier: "showCard", sender: ci.card)
+    }
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return kCardTableViewCellHeight
     }
 }
-
-// MARK: NSFetchedResultsControllerDelegate
-extension DeckViewController : NSFetchedResultsControllerDelegate {
-    
-}
-
 
