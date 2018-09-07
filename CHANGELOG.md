@@ -1,3 +1,6 @@
+**Version 2.7.4** @ 07.09.2018
+- Refactored from MVC to MVVM.
+
 **Version 2.7.3** @ 24.08.2018
 - Added User, Deck, and List managed objects.
 
