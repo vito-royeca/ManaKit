@@ -28,10 +28,14 @@ class DeckSideboardViewModel: NSObject {
     func tableViewNumberOfRows(inSection section: Int) -> Int {
         guard let fetchedResultsController = fetchedResultsController,
             let sections = fetchedResultsController.sections else {
-                return 0
+            return 0
         }
         
-        return sections[section].numberOfObjects
+        if section == 0 {
+            return 1
+        } else {
+            return sections[section - 1].numberOfObjects
+        }
     }
     
     func tableViewNumberOfSections() -> Int {
@@ -40,7 +44,7 @@ class DeckSideboardViewModel: NSObject {
                 return 0
         }
         
-        return sections.count
+        return sections.count + 1
     }
     
     func tableViewSectionIndexTitles() -> [String]? {
@@ -52,12 +56,7 @@ class DeckSideboardViewModel: NSObject {
     }
     
     func tableViewTitleForHeaderInSection(section: Int) -> String? {
-        guard let fetchedResultsController = fetchedResultsController,
-            let sections = fetchedResultsController.sections else {
-                return nil
-        }
-        
-        return sections[section].name
+        return nil
     }
     
     // MARK: Custom methods
@@ -65,7 +64,7 @@ class DeckSideboardViewModel: NSObject {
         guard let fetchedResultsController = fetchedResultsController else {
             fatalError("fetchedResultsController is nil")
         }
-        return fetchedResultsController.object(at: indexPath)
+        return fetchedResultsController.object(at: IndexPath(row: indexPath.row, section: indexPath.section - 1))
     }
     
     func objectTitle() -> String? {

@@ -39,6 +39,7 @@ class DeckViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+//        tableView.register(DeckHeroTableViewCell.self, forCellReuseIdentifier: DeckHeroTableViewCell.reuseIdentifier)
         tableView.register(ManaKit.sharedInstance.nibFromBundle("CardTableViewCell"), forCellReuseIdentifier: CardTableViewCell.reuseIdentifier)
         
 //        title = mainboardViewModel.objectTitle()
@@ -111,30 +112,40 @@ extension DeckViewController : UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CardTableViewCell.reuseIdentifier,
-                                                       for: indexPath) as? CardTableViewCell else {
-            fatalError("Unexpected indexPath: \(indexPath)")
-        }
-        
-        var cardInventory: CMCardInventory?
-        
-        switch segmentedControl.selectedSegmentIndex {
-        case 0:
-            cardInventory = mainboardViewModel.object(forRowAt: indexPath)
-        case 1:
-            cardInventory = sideboardViewModel.object(forRowAt: indexPath)
-        default:
-            ()
-        }
-        
-        guard let ci = cardInventory else {
-            fatalError("Unexpected indexPath: \(indexPath)")
-        }
-        
-        cell.card = ci.card
-        cell.add(annotation: Int(ci.quantity))
+        if indexPath.section == 0 {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DeckHeroTableViewCell.reuseIdentifier,
+                                                           for: indexPath) as? DeckHeroTableViewCell else {
+                fatalError("Unexpected indexPath: \(indexPath)")
+            }
+            cell.deck = mainboardViewModel.deck
+            return cell
+            
+        } else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: CardTableViewCell.reuseIdentifier,
+                                                           for: indexPath) as? CardTableViewCell else {
+                fatalError("Unexpected indexPath: \(indexPath)")
+            }
+            
+            var cardInventory: CMCardInventory?
+            
+            switch segmentedControl.selectedSegmentIndex {
+            case 0:
+                cardInventory = mainboardViewModel.object(forRowAt: indexPath)
+            case 1:
+                cardInventory = sideboardViewModel.object(forRowAt: indexPath)
+            default:
+                ()
+            }
+            
+            guard let ci = cardInventory else {
+                fatalError("Unexpected indexPath: \(indexPath)")
+            }
+            
+            cell.card = ci.card
+            cell.add(annotation: Int(ci.quantity))
 
-        return cell
+            return cell
+        }
     }
     
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
@@ -204,7 +215,11 @@ extension DeckViewController : UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return kCardTableViewCellHeight
+        if indexPath.section == 0 {
+            return 176
+        } else {
+            return kCardTableViewCellHeight
+        }
     }
 }
 
