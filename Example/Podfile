@@ -12,9 +12,6 @@ def default_pods
     pod 'Font-Awesome-Swift', :git => 'https://github.com/Vaberer/Font-Awesome-Swift', :branch => 'swift-3'
     pod 'Kanna', :git => 'https://github.com/tid-kijyun/Kanna', :branch => 'feature/v3.0.0'
     pod 'PromiseKit', '~> 6.0'
-    pod 'Reachability'
-    pod 'ReactiveCocoa', '~> 7.0'
-    pod 'ReactiveSwift', '~> 3.0'
     pod 'SSZipArchive'
     pod 'SDWebImage', '~> 4.0'
 end

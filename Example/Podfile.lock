@@ -8,9 +8,6 @@ PODS:
     - DATAStack
     - Kanna (~> 3)
     - PromiseKit
-    - Reachability
-    - ReactiveCocoa
-    - ReactiveSwift
     - SDWebImage
     - SSZipArchive
     - Sync
@@ -23,12 +20,6 @@ PODS:
     - PromiseKit/CorePromise
   - PromiseKit/UIKit (6.4.0):
     - PromiseKit/CorePromise
-  - Reachability (3.2)
-  - ReactiveCocoa (7.2.0):
-    - ReactiveSwift (~> 3.1)
-  - ReactiveSwift (3.1.0):
-    - Result (~> 3.2)
-  - Result (3.2.4)
   - SDWebImage (4.4.2):
     - SDWebImage/Core (= 4.4.2)
   - SDWebImage/Core (4.4.2)
@@ -42,9 +33,6 @@ DEPENDENCIES:
   - Kanna (from `https://github.com/tid-kijyun/Kanna`, branch `feature/v3.0.0`)
   - ManaKit (from `../`)
   - PromiseKit (~> 6.0)
-  - Reachability
-  - ReactiveCocoa (~> 7.0)
-  - ReactiveSwift (~> 3.0)
   - SDWebImage (~> 4.0)
   - SSZipArchive
   - Sync
@@ -54,10 +42,6 @@ SPEC REPOS:
     - DATASource
     - DATAStack
     - PromiseKit
-    - Reachability
-    - ReactiveCocoa
-    - ReactiveSwift
-    - Result
     - SDWebImage
     - SSZipArchive
     - Sync
@@ -85,16 +69,12 @@ SPEC CHECKSUMS:
   DATAStack: 9c415f6e7733eafb9cf5c076613bfb5958c407cb
   Font-Awesome-Swift: 4820aea879741d76968a89653715b375ec0cf99e
   Kanna: 93a9af3643d46425e48899a8b033a2da44af2b49
-  ManaKit: a44662a084bfbd246872ee573e202a940f1c5c2b
+  ManaKit: 45f961f906f129430d9eb62671495ecfabb2ac48
   PromiseKit: ae3616f45d7bb9bf4ff1e91abc9b7a8c48a340e0
-  Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  ReactiveCocoa: 476dae7ca790f40d30d186a1bd7ebae4290395d5
-  ReactiveSwift: 5b26d2e988fe0eed2daf48c4054d1de74db50184
-  Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
   SSZipArchive: 41455d4b8d2b6ab93990820b50dc697c2554a322
   Sync: c74a51b04f67eef7b4999322baebbaa16267d569
 
-PODFILE CHECKSUM: cebf9e89fdaa851a5196ab5f9bcec560c01a2ef4
+PODFILE CHECKSUM: 402bfc88fcc242001ec2f35bf2a1d885121c877b
 
 COCOAPODS: 1.5.3

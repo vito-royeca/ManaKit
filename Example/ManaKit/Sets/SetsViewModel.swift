@@ -8,8 +8,6 @@
 
 import CoreData
 import ManaKit
-import ReactiveSwift
-import Result
 
 class SetsViewModel: NSObject {
     // MARK: Variables

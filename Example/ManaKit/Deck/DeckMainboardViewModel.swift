@@ -11,7 +11,7 @@ import ManaKit
 
 class DeckMainboardViewModel: NSObject {
     // MARK: Variables
-    private var deck: CMDeck?
+    var deck: CMDeck?
     private var sectionIndexTitles = [String]()
     private var sectionTitles = [String]()
     private var fetchedResultsController: NSFetchedResultsController<CMCardInventory>?
@@ -31,19 +31,23 @@ class DeckMainboardViewModel: NSObject {
     func tableViewNumberOfRows(inSection section: Int) -> Int {
         guard let fetchedResultsController = fetchedResultsController,
             let sections = fetchedResultsController.sections else {
-                return 0
+            return 0
         }
         
-        return sections[section].numberOfObjects
+        if section == 0 {
+            return 1
+        } else {
+            return sections[section - 1].numberOfObjects
+        }
     }
     
     func tableViewNumberOfSections() -> Int {
         guard let fetchedResultsController = fetchedResultsController,
             let sections = fetchedResultsController.sections else {
-                return 0
+            return 0
         }
         
-        return sections.count
+        return sections.count + 1
     }
     
     func tableViewSectionIndexTitles() -> [String]? {
@@ -60,23 +64,27 @@ class DeckMainboardViewModel: NSObject {
             }
         }
         
-        return sectionIndex
+        return sectionIndex + 1
     }
     
     func tableViewTitleForHeaderInSection(section: Int) -> String? {
-        guard let fetchedResultsController = fetchedResultsController,
-            let sections = fetchedResultsController.sections else {
-                return nil
-        }
-        
-        var count = 0
-        if let objects = sections[section].objects as? [CMCardInventory] {
-            for cardInventory in objects {
-                count += Int(cardInventory.quantity)
+        if section == 0 {
+            return nil
+        } else {
+            guard let fetchedResultsController = fetchedResultsController,
+                let sections = fetchedResultsController.sections else {
+                    return nil
             }
+            
+            var count = 0
+            if let objects = sections[section - 1].objects as? [CMCardInventory] {
+                for cardInventory in objects {
+                    count += Int(cardInventory.quantity)
+                }
+            }
+            
+            return "\(sections[section - 1].name): \(count)"
         }
-        
-        return "\(sections[section].name): \(count)"
     }
     
     // MARK: Custom methods
@@ -84,7 +92,7 @@ class DeckMainboardViewModel: NSObject {
         guard let fetchedResultsController = fetchedResultsController else {
             fatalError("fetchedResultsController is nil")
         }
-        return fetchedResultsController.object(at: indexPath)
+        return fetchedResultsController.object(at: IndexPath(row: indexPath.row, section: indexPath.section - 1))
     }
     
     func objectTitle() -> String? {
