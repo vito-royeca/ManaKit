@@ -3,7 +3,7 @@ PODS:
   - DATAStack (8.0.2)
   - Font-Awesome-Swift (1.6.4)
   - Kanna (3.0.0)
-  - ManaKit (2.7.3):
+  - ManaKit (2.7.4):
     - DATASource
     - DATAStack
     - Kanna (~> 3)
@@ -24,7 +24,7 @@ PODS:
     - SDWebImage/Core (= 4.4.2)
   - SDWebImage/Core (4.4.2)
   - SSZipArchive (2.1.4)
-  - Sync (5.0.0)
+  - Sync (5.0.1)
 
 DEPENDENCIES:
   - DATASource
@@ -69,11 +69,11 @@ SPEC CHECKSUMS:
   DATAStack: 9c415f6e7733eafb9cf5c076613bfb5958c407cb
   Font-Awesome-Swift: 4820aea879741d76968a89653715b375ec0cf99e
   Kanna: 93a9af3643d46425e48899a8b033a2da44af2b49
-  ManaKit: 45f961f906f129430d9eb62671495ecfabb2ac48
+  ManaKit: 200af24ad8208da47df6fb7e60038dae026a6837
   PromiseKit: ae3616f45d7bb9bf4ff1e91abc9b7a8c48a340e0
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
   SSZipArchive: 41455d4b8d2b6ab93990820b50dc697c2554a322
-  Sync: c74a51b04f67eef7b4999322baebbaa16267d569
+  Sync: 5281923838f0f60e1d34063ac9ab692b6e012038
 
 PODFILE CHECKSUM: 402bfc88fcc242001ec2f35bf2a1d885121c877b
 

@@ -13,13 +13,13 @@ class SetsViewModel: NSObject {
     // MARK: Variables
     var queryString = ""
     
-    private var sectionIndexTitles = [String]()
-    private var sectionTitles = [String]()
-    private var fetchedResultsController: NSFetchedResultsController<CMSet>?
+    private var _sectionIndexTitles = [String]()
+    private var _sectionTitles = [String]()
+    private var _fetchedResultsController: NSFetchedResultsController<CMSet>?
     
     // MARK: Settings
-    private let sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
-    private var sectionName = "nameSection"
+    private let _sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+    private var _sectionName = "nameSection"
     
     // MARK: Overrides
     override init() {
@@ -27,8 +27,8 @@ class SetsViewModel: NSObject {
     }
 
     // MARK: UITableView methods
-    func tableViewNumberOfRows(inSection section: Int) -> Int {
-        guard let fetchedResultsController = fetchedResultsController,
+    func numberOfRows(inSection section: Int) -> Int {
+        guard let fetchedResultsController = _fetchedResultsController,
             let sections = fetchedResultsController.sections else {
             return 0
         }
@@ -36,8 +36,8 @@ class SetsViewModel: NSObject {
         return sections[section].numberOfObjects
     }
     
-    func tableViewNumberOfSections() -> Int {
-        guard let fetchedResultsController = fetchedResultsController,
+    func numberOfSections() -> Int {
+        guard let fetchedResultsController = _fetchedResultsController,
             let sections = fetchedResultsController.sections else {
                 return 0
         }
@@ -45,15 +45,15 @@ class SetsViewModel: NSObject {
         return sections.count
     }
     
-    func tableViewSectionIndexTitles() -> [String]? {
-        return sectionIndexTitles
+    func sectionIndexTitles() -> [String]? {
+        return _sectionIndexTitles
     }
     
-    func tableViewSectionForSectionIndexTitle(title: String, at index: Int) -> Int {
+    func sectionForSectionIndexTitle(title: String, at index: Int) -> Int {
         var sectionIndex = 0
         
-        for i in 0...sectionTitles.count - 1 {
-            if sectionTitles[i].hasPrefix(title) {
+        for i in 0..._sectionTitles.count - 1 {
+            if _sectionTitles[i].hasPrefix(title) {
                 sectionIndex = i
                 break
             }
@@ -62,8 +62,8 @@ class SetsViewModel: NSObject {
         return sectionIndex
     }
     
-    func tableViewTitleForHeaderInSection(section: Int) -> String? {
-        guard let fetchedResultsController = fetchedResultsController,
+    func titleForHeaderInSection(section: Int) -> String? {
+        guard let fetchedResultsController = _fetchedResultsController,
             let sections = fetchedResultsController.sections else {
                 return nil
         }
@@ -73,13 +73,13 @@ class SetsViewModel: NSObject {
     
     // MARK: Custom methods
     func object(forRowAt indexPath: IndexPath) -> CMSet {
-        guard let fetchedResultsController = fetchedResultsController else {
+        guard let fetchedResultsController = _fetchedResultsController else {
             fatalError("fetchedResultsController is nil")
         }
         return fetchedResultsController.object(at: indexPath)
     }
     
-    func performSearch() {
+    func fetchData() {
         let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
         let count = queryString.count
         
@@ -90,9 +90,9 @@ class SetsViewModel: NSObject {
                 request.predicate = NSPredicate(format: "name CONTAINS[cd] %@ OR code CONTAINS[cd] %@", queryString, queryString)
             }
         }
-        request.sortDescriptors = sortDescriptors
+        request.sortDescriptors = _sortDescriptors
         
-        fetchedResultsController = getFetchedResultsController(with: request)
+        _fetchedResultsController = getFetchedResultsController(with: request)
         updateSections()
     }
     
@@ -105,13 +105,13 @@ class SetsViewModel: NSObject {
         } else {
             // Create a default fetchRequest
             request = CMSet.fetchRequest()
-            request!.sortDescriptors = sortDescriptors
+            request!.sortDescriptors = _sortDescriptors
         }
         
         // Create Fetched Results Controller
         let frc = NSFetchedResultsController(fetchRequest: request!,
                                              managedObjectContext: context,
-                                             sectionNameKeyPath: sectionName,
+                                             sectionNameKeyPath: _sectionName,
                                              cacheName: nil)
         
         // Configure Fetched Results Controller
@@ -130,19 +130,19 @@ class SetsViewModel: NSObject {
     }
     
     private func updateSections() {
-        guard let fetchedResultsController = fetchedResultsController,
+        guard let fetchedResultsController = _fetchedResultsController,
             let sets = fetchedResultsController.fetchedObjects,
             let sections = fetchedResultsController.sections else {
                 return
         }
         
-        sectionIndexTitles = [String]()
-        sectionTitles = [String]()
+        _sectionIndexTitles = [String]()
+        _sectionTitles = [String]()
         
         for set in sets {
             if let nameSection = set.nameSection {
-                if !sectionIndexTitles.contains(nameSection) {
-                    sectionIndexTitles.append(nameSection)
+                if !_sectionIndexTitles.contains(nameSection) {
+                    _sectionIndexTitles.append(nameSection)
                 }
             }
         }
@@ -151,13 +151,13 @@ class SetsViewModel: NSObject {
         if count > 0 {
             for i in 0...count - 1 {
                 if let sectionTitle = sections[i].indexTitle {
-                    sectionTitles.append(sectionTitle)
+                    _sectionTitles.append(sectionTitle)
                 }
             }
         }
         
-        sectionIndexTitles.sort()
-        sectionTitles.sort()
+        _sectionIndexTitles.sort()
+        _sectionTitles.sort()
     }
 }
 

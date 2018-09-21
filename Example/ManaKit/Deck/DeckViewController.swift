@@ -24,10 +24,10 @@ class DeckViewController: UIViewController {
     @IBAction func segmentedAction(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
         case 0:
-            mainboardViewModel.performSearch()
+            mainboardViewModel.fetchData()
             tableView.reloadData()
         case 1:
-            sideboardViewModel.performSearch()
+            sideboardViewModel.fetchData()
             tableView.reloadData()
         default:
             ()
@@ -39,11 +39,10 @@ class DeckViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-//        tableView.register(DeckHeroTableViewCell.self, forCellReuseIdentifier: DeckHeroTableViewCell.reuseIdentifier)
         tableView.register(ManaKit.sharedInstance.nibFromBundle("CardTableViewCell"), forCellReuseIdentifier: CardTableViewCell.reuseIdentifier)
         
 //        title = mainboardViewModel.objectTitle()
-        mainboardViewModel.performSearch()
+        mainboardViewModel.fetchData()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -86,9 +85,9 @@ extension DeckViewController : UITableViewDataSource {
         
         switch segmentedControl.selectedSegmentIndex {
         case 0:
-            rows = mainboardViewModel.tableViewNumberOfRows(inSection: section)
+            rows = mainboardViewModel.numberOfRows(inSection: section)
         case 1:
-            rows = sideboardViewModel.tableViewNumberOfRows(inSection: section)
+            rows = sideboardViewModel.numberOfRows(inSection: section)
         default:
             ()
         }
@@ -101,9 +100,9 @@ extension DeckViewController : UITableViewDataSource {
         
         switch segmentedControl.selectedSegmentIndex {
         case 0:
-            sections = mainboardViewModel.tableViewNumberOfSections()
+            sections = mainboardViewModel.numberOfSections()
         case 1:
-            sections = sideboardViewModel.tableViewNumberOfSections()
+            sections = sideboardViewModel.numberOfSections()
         default:
             ()
         }
@@ -153,9 +152,9 @@ extension DeckViewController : UITableViewDataSource {
         
         switch segmentedControl.selectedSegmentIndex {
         case 0:
-            array = mainboardViewModel.tableViewSectionIndexTitles()
+            array = mainboardViewModel.sectionIndexTitles()
         case 1:
-            array = sideboardViewModel.tableViewSectionIndexTitles()
+            array = sideboardViewModel.sectionIndexTitles()
         default:
             ()
         }
@@ -168,9 +167,9 @@ extension DeckViewController : UITableViewDataSource {
         
         switch segmentedControl.selectedSegmentIndex {
         case 0:
-            section = mainboardViewModel.tableViewSectionForSectionIndexTitle(title: title, at: index)
+            section = mainboardViewModel.sectionForSectionIndexTitle(title: title, at: index)
         case 1:
-            section = sideboardViewModel.tableViewSectionForSectionIndexTitle(title: title, at: index)
+            section = sideboardViewModel.sectionForSectionIndexTitle(title: title, at: index)
         default:
             ()
         }
@@ -183,9 +182,9 @@ extension DeckViewController : UITableViewDataSource {
         
         switch segmentedControl.selectedSegmentIndex {
         case 0:
-            string = mainboardViewModel.tableViewTitleForHeaderInSection(section: section)
+            string = mainboardViewModel.titleForHeaderInSection(section: section)
         case 1:
-            string = sideboardViewModel.tableViewTitleForHeaderInSection(section: section)
+            string = sideboardViewModel.titleForHeaderInSection(section: section)
         default:
             ()
         }

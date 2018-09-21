@@ -43,11 +43,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "ManaGuide", publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720", privateKey: nil)
         DatabaseMaintainer.sharedInstance.createSampleDecks()
 
-        // change the account icon
         if let rootVC = window?.rootViewController as? UITabBarController,
             let viewControllers = rootVC.viewControllers,
             let items = rootVC.tabBar.items {
             
+            // setup the ViewModels
             for vc in viewControllers {
                 if let nvc = vc as? UINavigationController {
                     for child in nvc.viewControllers {
@@ -60,7 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
             
-            
+            // change the account icons
             items[0].image = UIImage(bgIcon: .FABook,
                                      orientation: UIImageOrientation.up,
                                      bgTextColor: UIColor.blue,

@@ -12,14 +12,15 @@ import ManaKit
 class DeckMainboardViewModel: NSObject {
     // MARK: Variables
     var deck: CMDeck?
-    private var sectionIndexTitles = [String]()
-    private var sectionTitles = [String]()
-    private var fetchedResultsController: NSFetchedResultsController<CMCardInventory>?
+    
+    private var _sectionIndexTitles = [String]()
+    private var _sectionTitles = [String]()
+    private var _fetchedResultsController: NSFetchedResultsController<CMCardInventory>?
     
     // MARK: Settings
-    private let sortDescriptors = [NSSortDescriptor(key: "card.typeSection", ascending: true),
+    private let _sortDescriptors = [NSSortDescriptor(key: "card.typeSection", ascending: true),
                                    NSSortDescriptor(key: "card.name", ascending: true)]
-    private var sectionName = "card.typeSection"
+    private var _sectionName = "card.typeSection"
     
     // MARK: Overrides
     init(withDeck deck: CMDeck) {
@@ -28,8 +29,8 @@ class DeckMainboardViewModel: NSObject {
     }
     
     // MARK: UITableView methods
-    func tableViewNumberOfRows(inSection section: Int) -> Int {
-        guard let fetchedResultsController = fetchedResultsController,
+    func numberOfRows(inSection section: Int) -> Int {
+        guard let fetchedResultsController = _fetchedResultsController,
             let sections = fetchedResultsController.sections else {
             return 0
         }
@@ -41,8 +42,8 @@ class DeckMainboardViewModel: NSObject {
         }
     }
     
-    func tableViewNumberOfSections() -> Int {
-        guard let fetchedResultsController = fetchedResultsController,
+    func numberOfSections() -> Int {
+        guard let fetchedResultsController = _fetchedResultsController,
             let sections = fetchedResultsController.sections else {
             return 0
         }
@@ -50,15 +51,15 @@ class DeckMainboardViewModel: NSObject {
         return sections.count + 1
     }
     
-    func tableViewSectionIndexTitles() -> [String]? {
-        return sectionIndexTitles.map({ String($0.prefix(1)) })
+    func sectionIndexTitles() -> [String]? {
+        return _sectionIndexTitles.map({ String($0.prefix(1)) })
     }
     
-    func tableViewSectionForSectionIndexTitle(title: String, at index: Int) -> Int {
+    func sectionForSectionIndexTitle(title: String, at index: Int) -> Int {
         var sectionIndex = 0
         
-        for i in 0...sectionTitles.count - 1 {
-            if sectionTitles[i].hasPrefix(title) {
+        for i in 0..._sectionTitles.count - 1 {
+            if _sectionTitles[i].hasPrefix(title) {
                 sectionIndex = i
                 break
             }
@@ -67,11 +68,11 @@ class DeckMainboardViewModel: NSObject {
         return sectionIndex + 1
     }
     
-    func tableViewTitleForHeaderInSection(section: Int) -> String? {
+    func titleForHeaderInSection(section: Int) -> String? {
         if section == 0 {
             return nil
         } else {
-            guard let fetchedResultsController = fetchedResultsController,
+            guard let fetchedResultsController = _fetchedResultsController,
                 let sections = fetchedResultsController.sections else {
                     return nil
             }
@@ -89,7 +90,7 @@ class DeckMainboardViewModel: NSObject {
     
     // MARK: Custom methods
     func object(forRowAt indexPath: IndexPath) -> CMCardInventory {
-        guard let fetchedResultsController = fetchedResultsController else {
+        guard let fetchedResultsController = _fetchedResultsController else {
             fatalError("fetchedResultsController is nil")
         }
         return fetchedResultsController.object(at: IndexPath(row: indexPath.row, section: indexPath.section - 1))
@@ -102,7 +103,7 @@ class DeckMainboardViewModel: NSObject {
         return deck.name
     }
     
-    func performSearch() {
+    func fetchData() {
         guard let deck = deck else {
             return
         }
@@ -111,9 +112,9 @@ class DeckMainboardViewModel: NSObject {
         let predicate = NSPredicate(format: "deck = %@ AND mainboard = YES", deck)
         
         request.predicate = predicate
-        request.sortDescriptors = sortDescriptors
+        request.sortDescriptors = _sortDescriptors
         
-        fetchedResultsController = getFetchedResultsController(with: request)
+        _fetchedResultsController = getFetchedResultsController(with: request)
         updateSections()
     }
     
@@ -126,13 +127,13 @@ class DeckMainboardViewModel: NSObject {
         } else {
             // Create a default fetchRequest
             request = CMCardInventory.fetchRequest()
-            request!.sortDescriptors = sortDescriptors
+            request!.sortDescriptors = _sortDescriptors
         }
         
         // Create Fetched Results Controller
         let frc = NSFetchedResultsController(fetchRequest: request!,
                                              managedObjectContext: context,
-                                             sectionNameKeyPath: sectionName,
+                                             sectionNameKeyPath: _sectionName,
                                              cacheName: nil)
         
         // Configure Fetched Results Controller
@@ -151,20 +152,20 @@ class DeckMainboardViewModel: NSObject {
     }
     
     private func updateSections() {
-        guard let fetchedResultsController = fetchedResultsController,
+        guard let fetchedResultsController = _fetchedResultsController,
             let cardInventories = fetchedResultsController.fetchedObjects,
             let sections = fetchedResultsController.sections else {
                 return
         }
         
-        sectionIndexTitles = [String]()
-        sectionTitles = [String]()
+        _sectionIndexTitles = [String]()
+        _sectionTitles = [String]()
         
         for cardInventory in cardInventories {
             if let card = cardInventory.card,
                 let typeSection = card.typeSection {
-                if !sectionIndexTitles.contains(typeSection) {
-                    sectionIndexTitles.append(typeSection)
+                if !_sectionIndexTitles.contains(typeSection) {
+                    _sectionIndexTitles.append(typeSection)
                 }
             }
         }
@@ -173,13 +174,13 @@ class DeckMainboardViewModel: NSObject {
         if count > 0 {
             for i in 0...count - 1 {
                 if let sectionTitle = sections[i].indexTitle {
-                    sectionTitles.append(sectionTitle)
+                    _sectionTitles.append(sectionTitle)
                 }
             }
         }
         
-        sectionIndexTitles.sort()
-        sectionTitles.sort()
+        _sectionIndexTitles.sort()
+        _sectionTitles.sort()
     }
 }
 

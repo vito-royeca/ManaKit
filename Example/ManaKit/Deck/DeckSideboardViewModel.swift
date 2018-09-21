@@ -11,22 +11,22 @@ import ManaKit
 
 class DeckSideboardViewModel: NSObject {
     // MARK: Variables
-    private var deck: CMDeck?
-    private var fetchedResultsController: NSFetchedResultsController<CMCardInventory>?
+    private var _deck: CMDeck?
+    private var _fetchedResultsController: NSFetchedResultsController<CMCardInventory>?
     
     // MARK: Settings
-    private let sortDescriptors = [NSSortDescriptor(key: "card.name", ascending: true)]
-    private var sectionName: String?
+    private let _sortDescriptors = [NSSortDescriptor(key: "card.name", ascending: true)]
+    private var _sectionName: String?
     
     // MARK: Overrides
     init(withDeck deck: CMDeck) {
         super.init()
-        self.deck = deck
+        _deck = deck
     }
     
     // MARK: UITableView methods
-    func tableViewNumberOfRows(inSection section: Int) -> Int {
-        guard let fetchedResultsController = fetchedResultsController,
+    func numberOfRows(inSection section: Int) -> Int {
+        guard let fetchedResultsController = _fetchedResultsController,
             let sections = fetchedResultsController.sections else {
             return 0
         }
@@ -38,8 +38,8 @@ class DeckSideboardViewModel: NSObject {
         }
     }
     
-    func tableViewNumberOfSections() -> Int {
-        guard let fetchedResultsController = fetchedResultsController,
+    func numberOfSections() -> Int {
+        guard let fetchedResultsController = _fetchedResultsController,
             let sections = fetchedResultsController.sections else {
                 return 0
         }
@@ -47,35 +47,35 @@ class DeckSideboardViewModel: NSObject {
         return sections.count + 1
     }
     
-    func tableViewSectionIndexTitles() -> [String]? {
+    func sectionIndexTitles() -> [String]? {
         return nil
     }
     
-    func tableViewSectionForSectionIndexTitle(title: String, at index: Int) -> Int {
+    func sectionForSectionIndexTitle(title: String, at index: Int) -> Int {
         return 0
     }
     
-    func tableViewTitleForHeaderInSection(section: Int) -> String? {
+    func titleForHeaderInSection(section: Int) -> String? {
         return nil
     }
     
     // MARK: Custom methods
     func object(forRowAt indexPath: IndexPath) -> CMCardInventory {
-        guard let fetchedResultsController = fetchedResultsController else {
+        guard let fetchedResultsController = _fetchedResultsController else {
             fatalError("fetchedResultsController is nil")
         }
         return fetchedResultsController.object(at: IndexPath(row: indexPath.row, section: indexPath.section - 1))
     }
     
     func objectTitle() -> String? {
-        guard let deck = deck else {
+        guard let deck = _deck else {
             return nil
         }
         return deck.name
     }
     
-    func performSearch() {
-        guard let deck = deck else {
+    func fetchData() {
+        guard let deck = _deck else {
             return
         }
         
@@ -83,9 +83,9 @@ class DeckSideboardViewModel: NSObject {
         let predicate = NSPredicate(format: "deck = %@ AND sideboard = YES", deck)
         
         request.predicate = predicate
-        request.sortDescriptors = sortDescriptors
+        request.sortDescriptors = _sortDescriptors
         
-        fetchedResultsController = getFetchedResultsController(with: request)
+        _fetchedResultsController = getFetchedResultsController(with: request)
     }
     
     private func getFetchedResultsController(with fetchRequest: NSFetchRequest<CMCardInventory>?) -> NSFetchedResultsController<CMCardInventory> {
@@ -97,13 +97,13 @@ class DeckSideboardViewModel: NSObject {
         } else {
             // Create a default fetchRequest
             request = CMCardInventory.fetchRequest()
-            request!.sortDescriptors = sortDescriptors
+            request!.sortDescriptors = _sortDescriptors
         }
         
         // Create Fetched Results Controller
         let frc = NSFetchedResultsController(fetchRequest: request!,
                                              managedObjectContext: context,
-                                             sectionNameKeyPath: sectionName,
+                                             sectionNameKeyPath: _sectionName,
                                              cacheName: nil)
         
         // Configure Fetched Results Controller
