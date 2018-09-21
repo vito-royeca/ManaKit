@@ -28,13 +28,27 @@ class SetViewController: UIViewController {
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
         
-        tableView.tableHeaderView = searchController.searchBar
+        if #available(iOS 11.0, *) {
+            navigationItem.searchController = searchController
+            navigationItem.hidesSearchBarWhenScrolling = false
+        } else {
+            tableView.tableHeaderView = searchController.searchBar
+        }
+        tableView.keyboardDismissMode = .onDrag
         tableView.register(ManaKit.sharedInstance.nibFromBundle("CardTableViewCell"), forCellReuseIdentifier: CardTableViewCell.reuseIdentifier)
         
         title = viewModel.objectTitle()
-        viewModel.performSearch()
+        viewModel.fetchData()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if #available(iOS 11.0, *) {
+            navigationItem.hidesSearchBarWhenScrolling = true
+        }
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showCard" {
             guard let dest = segue.destination as? CardViewController,
@@ -51,11 +65,11 @@ class SetViewController: UIViewController {
 // MARK: UITableViewDataSource
 extension SetViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.tableViewNumberOfRows(inSection: section)
+        return viewModel.numberOfRows(inSection: section)
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.tableViewNumberOfSections()
+        return viewModel.numberOfSections()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -69,15 +83,15 @@ extension SetViewController : UITableViewDataSource {
     }
     
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        return viewModel.tableViewSectionIndexTitles()
+        return viewModel.sectionIndexTitles()
     }
     
     func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-        return viewModel.tableViewSectionForSectionIndexTitle(title: title, at: index)
+        return viewModel.sectionForSectionIndexTitle(title: title, at: index)
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return viewModel.tableViewTitleForHeaderInSection(section: section)
+        return viewModel.titleForHeaderInSection(section: section)
     }
 }
 
@@ -101,7 +115,7 @@ extension SetViewController : UISearchResultsUpdating {
         }
         
         viewModel.queryString = text
-        viewModel.performSearch()
+        viewModel.fetchData()
         tableView.reloadData()
     }
 }

@@ -13,25 +13,25 @@ class SetViewModel: NSObject {
     // MARK: Variables
     var queryString = ""
     
-    private var set: CMSet?
-    private var sectionIndexTitles = [String]()
-    private var sectionTitles = [String]()
-    private var fetchedResultsController: NSFetchedResultsController<CMCard>?
+    private var _set: CMSet?
+    private var _sectionIndexTitles = [String]()
+    private var _sectionTitles = [String]()
+    private var _fetchedResultsController: NSFetchedResultsController<CMCard>?
     
     // MARK: Settings
-    private let sortDescriptors = [NSSortDescriptor(key: "name", ascending: true),
+    private let _sortDescriptors = [NSSortDescriptor(key: "name", ascending: true),
                                    NSSortDescriptor(key: "number", ascending: true)]
-    private var sectionName = "nameSection"
+    private var _sectionName = "nameSection"
     
     // MARK: Overrides
     init(withSet set: CMSet) {
         super.init()
-        self.set = set
+        _set = set
     }
     
     // MARK: UITableView methods
-    func tableViewNumberOfRows(inSection section: Int) -> Int {
-        guard let fetchedResultsController = fetchedResultsController,
+    func numberOfRows(inSection section: Int) -> Int {
+        guard let fetchedResultsController = _fetchedResultsController,
             let sections = fetchedResultsController.sections else {
                 return 0
         }
@@ -39,8 +39,8 @@ class SetViewModel: NSObject {
         return sections[section].numberOfObjects
     }
     
-    func tableViewNumberOfSections() -> Int {
-        guard let fetchedResultsController = fetchedResultsController,
+    func numberOfSections() -> Int {
+        guard let fetchedResultsController = _fetchedResultsController,
             let sections = fetchedResultsController.sections else {
                 return 0
         }
@@ -48,15 +48,15 @@ class SetViewModel: NSObject {
         return sections.count
     }
     
-    func tableViewSectionIndexTitles() -> [String]? {
-        return sectionIndexTitles
+    func sectionIndexTitles() -> [String]? {
+        return _sectionIndexTitles
     }
     
-    func tableViewSectionForSectionIndexTitle(title: String, at index: Int) -> Int {
+    func sectionForSectionIndexTitle(title: String, at index: Int) -> Int {
         var sectionIndex = 0
         
-        for i in 0...sectionTitles.count - 1 {
-            if sectionTitles[i].hasPrefix(title) {
+        for i in 0..._sectionTitles.count - 1 {
+            if _sectionTitles[i].hasPrefix(title) {
                 sectionIndex = i
                 break
             }
@@ -65,8 +65,8 @@ class SetViewModel: NSObject {
         return sectionIndex
     }
     
-    func tableViewTitleForHeaderInSection(section: Int) -> String? {
-        guard let fetchedResultsController = fetchedResultsController,
+    func titleForHeaderInSection(section: Int) -> String? {
+        guard let fetchedResultsController = _fetchedResultsController,
             let sections = fetchedResultsController.sections else {
                 return nil
         }
@@ -76,21 +76,21 @@ class SetViewModel: NSObject {
     
     // MARK: Custom methods
     func object(forRowAt indexPath: IndexPath) -> CMCard {
-        guard let fetchedResultsController = fetchedResultsController else {
+        guard let fetchedResultsController = _fetchedResultsController else {
             fatalError("fetchedResultsController is nil")
         }
         return fetchedResultsController.object(at: indexPath)
     }
     
     func objectTitle() -> String? {
-        guard let set = set else {
+        guard let set = _set else {
             return nil
         }
         return set.name
     }
 
-    func performSearch() {
-        guard let set = set else {
+    func fetchData() {
+        guard let set = _set else {
             return
         }
         
@@ -110,9 +110,9 @@ class SetViewModel: NSObject {
             request.predicate = predicate
         }
         
-        request.sortDescriptors = sortDescriptors
+        request.sortDescriptors = _sortDescriptors
         
-        fetchedResultsController = getFetchedResultsController(with: request)
+        _fetchedResultsController = getFetchedResultsController(with: request)
         updateSections()
     }
     
@@ -125,13 +125,13 @@ class SetViewModel: NSObject {
         } else {
             // Create a default fetchRequest
             request = CMCard.fetchRequest()
-            request!.sortDescriptors = sortDescriptors
+            request!.sortDescriptors = _sortDescriptors
         }
         
         // Create Fetched Results Controller
         let frc = NSFetchedResultsController(fetchRequest: request!,
                                              managedObjectContext: context,
-                                             sectionNameKeyPath: sectionName,
+                                             sectionNameKeyPath: _sectionName,
                                              cacheName: nil)
         
         // Configure Fetched Results Controller
@@ -150,19 +150,19 @@ class SetViewModel: NSObject {
     }
     
     private func updateSections() {
-        guard let fetchedResultsController = fetchedResultsController,
+        guard let fetchedResultsController = _fetchedResultsController,
             let sets = fetchedResultsController.fetchedObjects,
             let sections = fetchedResultsController.sections else {
                 return
         }
         
-        sectionIndexTitles = [String]()
-        sectionTitles = [String]()
+        _sectionIndexTitles = [String]()
+        _sectionTitles = [String]()
         
         for set in sets {
             if let nameSection = set.nameSection {
-                if !sectionIndexTitles.contains(nameSection) {
-                    sectionIndexTitles.append(nameSection)
+                if !_sectionIndexTitles.contains(nameSection) {
+                    _sectionIndexTitles.append(nameSection)
                 }
             }
         }
@@ -171,13 +171,13 @@ class SetViewModel: NSObject {
         if count > 0 {
             for i in 0...count - 1 {
                 if let sectionTitle = sections[i].indexTitle {
-                    sectionTitles.append(sectionTitle)
+                    _sectionTitles.append(sectionTitle)
                 }
             }
         }
         
-        sectionIndexTitles.sort()
-        sectionTitles.sort()
+        _sectionIndexTitles.sort()
+        _sectionTitles.sort()
     }
 }
 
