@@ -1,3 +1,6 @@
+**Version 2.7.5** @ 21.09.2018
+- Set and Sets refactored to MVVM.
+
 **Version 2.7.4** @ 07.09.2018
 - Refactored from MVC to MVVM.
 
