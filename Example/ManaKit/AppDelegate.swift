@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        DatabaseMaintainer.sharedInstance.copyOldMCIAndScryfallData()
 //        DatabaseMaintainer.sharedInstance.updateMCINumbers()
 //        DatabaseMaintainer.sharedInstance.updateScryfallNumbers()
-//        //DatabaseMaintainer.sharedInstance.updateSystem()
+//          DatabaseMaintainer.sharedInstance.updateSystem()
 
 //        Core Data updates 3
 //        //DatabaseMaintainer.sharedInstance.updateForeignNames()
