@@ -118,15 +118,6 @@ public class ManaKit: NSObject {
             let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String else {
             return
         }
-        
-        // Remove old database files in documents directory
-        for file in try! FileManager.default.contentsOfDirectory(atPath: docsPath) {
-            let path = "\(docsPath)/\(file)"
-            if file.hasPrefix(bundleName) {
-                try! FileManager.default.removeItem(atPath: path)
-            }
-        }
-        
         var willCopy = true
 
         // Check if we have old files
@@ -144,7 +135,7 @@ public class ManaKit: NSObject {
             // Shutdown database
             dataStack = nil
             
-            // Remove old database files in caches directory
+            // Remove old database files in docs directory
             for file in try! FileManager.default.contentsOfDirectory(atPath: docsPath) {
                 let path = "\(docsPath)/\(file)"
                 if file.hasPrefix(bundleName) {

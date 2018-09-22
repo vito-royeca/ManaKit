@@ -1,3 +1,6 @@
+**Version 2.7.6** @ 22.09.2018
+- Fixed Manakit.setupResources() .
+
 **Version 2.7.5** @ 21.09.2018
 - Set and Sets refactored to MVVM.
 
