@@ -3,7 +3,7 @@ PODS:
   - DATAStack (8.0.2)
   - Font-Awesome-Swift (1.6.4)
   - Kanna (3.0.0)
-  - ManaKit (2.7.4):
+  - ManaKit (2.7.5):
     - DATASource
     - DATAStack
     - Kanna (~> 3)
@@ -69,7 +69,7 @@ SPEC CHECKSUMS:
   DATAStack: 9c415f6e7733eafb9cf5c076613bfb5958c407cb
   Font-Awesome-Swift: 4820aea879741d76968a89653715b375ec0cf99e
   Kanna: 93a9af3643d46425e48899a8b033a2da44af2b49
-  ManaKit: 200af24ad8208da47df6fb7e60038dae026a6837
+  ManaKit: 262439997cfc691f4a5e11ecf4423ae114a17491
   PromiseKit: ae3616f45d7bb9bf4ff1e91abc9b7a8c48a340e0
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
   SSZipArchive: 41455d4b8d2b6ab93990820b50dc697c2554a322
