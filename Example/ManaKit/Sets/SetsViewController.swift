@@ -13,7 +13,7 @@ class SetsViewController: UIViewController {
 
     // MARK: Variables
     let searchController = UISearchController(searchResultsController: nil)
-    var viewModel: SetsViewModel!
+    let viewModel = SetsViewModel()
 
     // MARK: Outlets
     @IBOutlet weak var tableView: UITableView!

@@ -18,8 +18,8 @@ import Sync
 @objc(ManaKit)
 public class ManaKit: NSObject {
     public enum Constants {
-        public static let MTGJSONVersion      = "3.19.1 B"
-        public static let MTGJSONDate         = "Aug 13, 2018"
+        public static let MTGJSONVersion      = "3.19.2"
+        public static let MTGJSONDate         = "Sep 26, 2018"
         public static let KeyruneVersion      = "3.2.5"
         public static let EightEditionRelease = "2003-07-28"
         public static let TCGPlayerPricingAge = 24 * 3 // 3 days

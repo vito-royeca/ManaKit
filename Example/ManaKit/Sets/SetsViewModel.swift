@@ -21,11 +21,6 @@ class SetsViewModel: NSObject {
     private let _sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
     private var _sectionName = "nameSection"
     
-    // MARK: Overrides
-    override init() {
-        super.init()
-    }
-
     // MARK: UITableView methods
     func numberOfRows(inSection section: Int) -> Int {
         guard let fetchedResultsController = _fetchedResultsController,

@@ -1424,26 +1424,40 @@ class DatabaseMaintainer: NSObject {
             } else {
                 if let set = card.set {
                     if let code = set.magicCardsInfoCode ?? set.code {
-                        if let url = URL(string: "http://magiccards.info/\(code)/en.html") {
+                        if let url = URL(string: "https://scryfall.com/sets/\(code.lowercased())?as=checklist") {
+                            
                             do {
                                 let htmlDoc = try HTML(url: url, encoding: .utf8)
                                 array = [[String: Any]]()
                                 
                                 // Search for nodes by XPath
-                                for tr in htmlDoc.xpath("//tr[@class='even']") {
-                                    if let number = tr.xpath("td")[0].text,
-                                        let name = tr.xpath("td")[1].text {
-                                        array!.append(["name": name.replacingOccurrences(of: "Æ", with: "Ae")
-                                                                   .replacingOccurrences(of: "æ", with: "ae"),
-                                                       "number": number])
+                                for tr in htmlDoc.xpath("//tr[@data-component='card-tooltip']") {
+                                    var index = 0
+                                    var number: String?
+                                    var name: String?
+                                    
+                                    for td in tr.xpath("td") {
+                                        switch index {
+                                        case 1:
+                                            number = td.text
+                                        case 2:
+                                            name = td.text
+                                        default:
+                                            ()
+                                        }
+                                        
+                                        index += 1
                                     }
-                                }
-                                for tr in htmlDoc.xpath("//tr[@class='odd']") {
-                                    if let number = tr.xpath("td")[0].text,
-                                        let name = tr.xpath("td")[1].text {
-                                        array!.append(["name": name.replacingOccurrences(of: "Æ", with: "Ae")
-                                                                   .replacingOccurrences(of: "æ", with: "ae"),
-                                                       "number": number])
+                                    
+                                    if let number = number,
+                                        let name = name {
+
+                                        let cleanName = name.replacingOccurrences(of: "Æ", with: "Ae")
+                                            .replacingOccurrences(of: "æ", with: "ae")
+                                        let cleanNumber = number.replacingOccurrences(of: "\n", with: "").trimmingCharacters(in: .whitespaces)
+                                        
+                                        array!.append(["name": cleanName,
+                                                       "number": cleanNumber])
                                     }
                                 }
                                 
