@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        DatabaseMaintainer.sharedInstance.copyOldMCIAndScryfallData()
 //        DatabaseMaintainer.sharedInstance.updateMCINumbers()
 //        DatabaseMaintainer.sharedInstance.updateScryfallNumbers()
-//          DatabaseMaintainer.sharedInstance.updateSystem()
+//        DatabaseMaintainer.sharedInstance.updateSystem()
 
 //        Core Data updates 3
 //        //DatabaseMaintainer.sharedInstance.updateForeignNames()
@@ -46,21 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         DatabaseMaintainer.sharedInstance.createSampleDecks()
 
         if let rootVC = window?.rootViewController as? UITabBarController,
-            let viewControllers = rootVC.viewControllers,
             let items = rootVC.tabBar.items {
-            
-            // setup the ViewModels
-            for vc in viewControllers {
-                if let nvc = vc as? UINavigationController {
-                    for child in nvc.viewControllers {
-                        if let setsVC = child as? SetsViewController {
-                            setsVC.viewModel = SetsViewModel()
-                        } else if let decksVC = child as? DecksViewController {
-                            decksVC.viewModel = DecksViewModel()
-                        }
-                    }
-                }
-            }
             
             // change the account icons
             items[0].image = UIImage(bgIcon: .FABook,

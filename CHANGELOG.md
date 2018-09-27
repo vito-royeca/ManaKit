@@ -1,3 +1,6 @@
+**Version 2.7.8** @ 27.09.2018
+- Updated MTGJSON to v3.19.2.
+
 **Version 2.7.7** @ 22.09.2018
 - Fixed Manakit.setupResources() .
 

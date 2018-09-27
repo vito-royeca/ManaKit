@@ -13,7 +13,7 @@ class DecksViewController: UIViewController {
 
     // MARK: Variables
     let searchController = UISearchController(searchResultsController: nil)
-    var viewModel: DecksViewModel!
+    let viewModel = DecksViewModel()
     
     // MARK: Outlets
     @IBOutlet weak var tableView: UITableView!
