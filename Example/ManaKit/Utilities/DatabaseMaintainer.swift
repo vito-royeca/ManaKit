@@ -27,7 +27,10 @@ class DatabaseMaintainer: NSObject {
     static let sharedInstance = DatabaseMaintainer()
     
     // MARK: Constants
-    let setCodesForProcessing:[String]? = nil//["TSB", "PLC", "DDJ", "DDH"]
+    let setCodesForProcessing:[String]? = [/*"APC", "ATH", "CP2", "CST", "DD2", "DDC", "DDD", "DDE", "DDN",
+                                           "DKM", "DPA", "EVG", "HOP", "INV", "MGB", "UGL", */"VAN"/*,
+                                           "pARL", "pFNM", "pGTW", "pHHO", "pJGP", "pLPA", "pMEI", "pMGD", "pMPR", "pPRE",
+                                           "pSUM", "pWCQ", "pWPN"*/]
     let printMilestone = 1000
     
     // MARK: Variables
@@ -123,7 +126,11 @@ class DatabaseMaintainer: NSObject {
             }
             
             ManaKit.sharedInstance.dataStack?.performInNewBackgroundContext { backgroundContext in
-                NotificationCenter.default.addObserver(self, selector: #selector(DatabaseMaintainer.changeNotification(_:)), name: notifName, object: backgroundContext)
+                NotificationCenter.default.addObserver(self,
+                                                       selector: #selector(DatabaseMaintainer.changeNotification(_:)),
+                                                       name: notifName,
+                                                       object: backgroundContext)
+                
                 Sync.changes(dictionary,
                              inEntityNamed: "CMSet",
                              predicate: nil,
@@ -150,12 +157,13 @@ class DatabaseMaintainer: NSObject {
                                 print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
 
                                 // cards
+                                
                                 tmpDateStart = Date()
                                 self.updateCards()
                                 dateEnd = Date()
                                 timeDifference = dateEnd.timeIntervalSince(tmpDateStart)
                                 print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
-
+                                
                                 // variations
                                 tmpDateStart = Date()
                                 self.updateVariations()
@@ -176,7 +184,7 @@ class DatabaseMaintainer: NSObject {
                                 dateEnd = Date()
                                 timeDifference = dateEnd.timeIntervalSince(tmpDateStart)
                                 print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
-                                
+
                                 // names
                                 tmpDateStart = Date()
                                 self.updateNames()
@@ -191,6 +199,31 @@ class DatabaseMaintainer: NSObject {
                 })
             }
         }
+    }
+    
+    func updateSomeData() {
+        // Chaos / Order (APC)
+        if let card = ManaKit.sharedInstance.findObject("CMCard",
+                                                        objectFinder: ["multiverseid": Int64(27167)] as [String: AnyObject],
+                                                        createIfNotFound: false) as? CMCard {
+            card.multiverseid = Int64(27168)
+        }
+        
+        // Assault / Battery (INV)
+        if let card = ManaKit.sharedInstance.findObject("CMCard",
+                                                        objectFinder: ["multiverseid": Int64(20579)] as [String: AnyObject],
+                                                        createIfNotFound: false) as? CMCard {
+            card.multiverseid = Int64(20580)
+        }
+        
+        // Pain / Suffering (INV)
+        if let card = ManaKit.sharedInstance.findObject("CMCard",
+                                                        objectFinder: ["multiverseid": Int64(20577)] as [String: AnyObject],
+                                                        createIfNotFound: false) as? CMCard {
+            card.multiverseid = Int64(20578)
+        }
+        
+        try! ManaKit.sharedInstance.dataStack?.mainContext.save()
     }
     
     func updateTCGPlayerName() {
@@ -408,14 +441,14 @@ class DatabaseMaintainer: NSObject {
                         cachedLayouts.append(object)
                     }
                 }
-                
+
                 card.layout = nil
             }
-            
+
             // colors
             if let colors = card.colors {
                 let colors_ = card.mutableSetValue(forKey: "colors_")
-                
+
                 if let colorsArray = NSKeyedUnarchiver.unarchiveObject(with: colors as Data) as? [String] {
                     for color in colorsArray {
                         if let object = cachedColors.first(where: { $0.name == color }) {
@@ -425,7 +458,7 @@ class DatabaseMaintainer: NSObject {
                             if let object = ManaKit.sharedInstance.findObject("CMColor", objectFinder: objectFinder, createIfNotFound: true) as? CMColor {
                                 object.name = color
                                 var prefix = String(color.prefix(1))
-                                
+
                                 if color == "Blue" {
                                     prefix = "U"
                                 }
@@ -436,20 +469,20 @@ class DatabaseMaintainer: NSObject {
                         }
                     }
                 }
-                
+
                 card.colors = nil
             }
-            
+
             // colorIdentity
             if let colorIdentity = card.colorIdentity {
                 let colorIdentities_ = card.mutableSetValue(forKey: "colorIdentities_")
-                
+
                 if let coloridentityArray = NSKeyedUnarchiver.unarchiveObject(with: colorIdentity as Data) as? [String] {
                     for symbol in coloridentityArray {
                         if let object = cachedColors.first(where: { $0.symbol == symbol }) {
                             colorIdentities_.add(object)
                         } else {
-                            let objectFinder = ["symbol": colorIdentity] as [String: AnyObject]
+                            let objectFinder = ["symbol": symbol] as [String: AnyObject]
                             if let object = ManaKit.sharedInstance.findObject("CMColor", objectFinder: objectFinder, createIfNotFound: true) as? CMColor {
                                 if symbol == "B" {
                                     object.name = "Black"
@@ -469,10 +502,10 @@ class DatabaseMaintainer: NSObject {
                         }
                     }
                 }
-                
+
                 card.colorIdentity = nil
             }
-            
+
             // type
             if let type = card.type {
                 if let object = cachedCardTypes.first(where: { $0.name == type }) {
@@ -485,14 +518,14 @@ class DatabaseMaintainer: NSObject {
                         cachedCardTypes.append(object)
                     }
                 }
-                
+
                 card.type = nil
             }
-            
+
             // supertypes
             if let supertypes = card.supertypes {
                 let supertypes_ = card.mutableSetValue(forKey: "supertypes_")
-                
+
                 if let supertypesArray = NSKeyedUnarchiver.unarchiveObject(with: supertypes as Data) as? [String] {
                     for supertype in supertypesArray {
                         if let object = cachedCardTypes.first(where: { $0.name == supertype }) {
@@ -507,34 +540,34 @@ class DatabaseMaintainer: NSObject {
                         }
                     }
                 }
-                
+
                 card.supertypes = nil
             }
-            
+
             // types
             if let types = card.types {
                 let types_ = card.mutableSetValue(forKey: "types_")
-                
+
                 if let typesArray = NSKeyedUnarchiver.unarchiveObject(with: types as Data) as? [String] {
                     var typeSection = ""
-                    
+
                     for type in typesArray {
                         if let object = cachedCardTypes.first(where: { $0.name == type }) {
                             types_.add(object)
-                            
+
                             if typeSection.count == 0 {
                                 typeSection.append(object.name!)
                             } else {
                                 typeSection.append(" \(object.name!)")
                             }
-                            
+
                         } else {
                             let objectFinder = ["name": type] as [String: AnyObject]
                             if let object = ManaKit.sharedInstance.findObject("CMCardType", objectFinder: objectFinder, createIfNotFound: true) as? CMCardType {
                                 object.name = type
                                 types_.add(object)
                                 cachedCardTypes.append(object)
-                                
+
                                 if typeSection.count == 0 {
                                     typeSection.append(object.name!)
                                 } else {
@@ -543,17 +576,17 @@ class DatabaseMaintainer: NSObject {
                             }
                         }
                     }
-                    
+
                     card.typeSection = typeSection
                 }
-                
+
                 card.types = nil
             }
-            
+
             // subtypes
             if let subtypes = card.subtypes {
                 let subtypes_ = card.mutableSetValue(forKey: "subtypes_")
-                
+
                 if let subtypesArray = NSKeyedUnarchiver.unarchiveObject(with: subtypes as Data) as? [String] {
                     for subtype in subtypesArray {
                         if let object = cachedCardTypes.first(where: { $0.name == subtype }) {
@@ -568,10 +601,10 @@ class DatabaseMaintainer: NSObject {
                         }
                     }
                 }
-                
+
                 card.subtypes = nil
             }
-            
+
             // rarity
             if let rarity = card.rarity {
                 if let object = cachedRarities.first(where: { $0.name == rarity }) {
@@ -579,17 +612,17 @@ class DatabaseMaintainer: NSObject {
                 } else {
                     // purple for timeshifted cards
                     let objectFinder = ["name": rarity] as [String: AnyObject]
-                    
+
                     if let object = ManaKit.sharedInstance.findObject("CMRarity", objectFinder: objectFinder, createIfNotFound: true) as? CMRarity {
                         object.name = rarity
                         card.rarity_ = object
                         cachedRarities.append(object)
                     }
                 }
-                
+
                 card.rarity = nil
             }
-            
+
             // artist
             if let artist = card.artist {
                 if let object = cachedArtists.first(where: { $0.name == artist }) {
@@ -597,16 +630,16 @@ class DatabaseMaintainer: NSObject {
                 } else {
                     let objectFinder = ["name": artist] as [String: AnyObject]
                     if let object = ManaKit.sharedInstance.findObject("CMArtist", objectFinder: objectFinder, createIfNotFound: true) as? CMArtist {
-                        
+
                         let names = artist.components(separatedBy: " ")
                         var nameSection: String?
-                        
+
                         if names.count > 1 {
                             if let lastName = names.last {
                                 object.lastName = lastName
                                 nameSection = object.lastName
                             }
-                            
+
                             var firstName = ""
                             for i in 0...names.count - 2 {
                                 firstName.append("\(names[i])")
@@ -615,31 +648,31 @@ class DatabaseMaintainer: NSObject {
                                 }
                             }
                             object.firstName = firstName
-                            
+
                         } else {
                             object.firstName = names.first
                             nameSection = object.firstName
                         }
-                        
+
                         if let nameSection = nameSection {
                             var prefix = String(nameSection.prefix(1))
-                            
+
                             if prefix.rangeOfCharacter(from: letters) == nil {
                                 prefix = "#"
                             }
                             object.nameSection = prefix.uppercased().folding(options: .diacriticInsensitive, locale: .current)
                         }
-                        
+
                         object.name = artist
-                        
+
                         card.artist_ = object
                         cachedArtists.append(object)
                     }
                 }
-                
+
                 card.artist = nil
             }
-            
+
             // watermark
             if let watermark = card.watermark {
                 if let object = cachedWatermarks.first(where: { $0.name == watermark }) {
@@ -652,10 +685,10 @@ class DatabaseMaintainer: NSObject {
                         cachedWatermarks.append(object)
                     }
                 }
-                
+
                 card.watermark = nil
             }
-            
+
             // border
             if let border = card.border {
                 if let object = cachedBorders.first(where: { $0.name == border }) {
@@ -668,17 +701,17 @@ class DatabaseMaintainer: NSObject {
                         cachedBorders.append(object)
                     }
                 }
-                
+
                 card.border = nil
             }
-            
+
             // nameSection
             var prefix = String(card.name!.prefix(1))
             if prefix.rangeOfCharacter(from: letters) == nil {
                 prefix = "#"
             }
             card.nameSection = prefix.uppercased().folding(options: .diacriticInsensitive, locale: .current)
-            
+
             // numberOrder
             if let number = card.number ?? card.mciNumber {
                 card.numberOrder = order(of: number)
@@ -943,7 +976,6 @@ class DatabaseMaintainer: NSObject {
         guard  let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) else {
             return
         }
-        
         
         let letters = CharacterSet.letters
         var cachedFormats = [CMFormat]()
@@ -1351,7 +1383,7 @@ class DatabaseMaintainer: NSObject {
         return
     }
 
-    func copyOldMCIAndScryfallData() {
+    func copyOldScryfallData() {
         dateStart = Date()
         
         copyOldDatabaseFile()
@@ -1372,7 +1404,8 @@ class DatabaseMaintainer: NSObject {
                 card.mciNumber = oldCard.mciNumber
                 card.numberOrder = oldCard.numberOrder
                 card.set!.scryfallCode = oldCard.set!.scryfallCode
-                card.scryfallNumber = oldCard.scryfallNumber
+                card.scryfallId = oldCard.scryfallId
+                card.imageURIs = oldCard.imageURIs
             }
             
             count += 1
@@ -1510,10 +1543,10 @@ class DatabaseMaintainer: NSObject {
     }
     
     /**
-     * Updates the `CMCard.scryfallNumber` value from https://api.scryfall.com
+     * Updates the `CMCard.scryfallId and CMCard.imageURIs` value from https://api.scryfall.com
      *
      */
-    func updateScryfallNumbers() {
+    func updateScryfallData() {
         dateStart = Date()
         
         var request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
@@ -1542,7 +1575,6 @@ class DatabaseMaintainer: NSObject {
         }
         try! ManaKit.sharedInstance.dataStack?.mainContext.save()
         
-        
         request = CMSet.fetchRequest()
         var predicate:NSPredicate? = nil
         let sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: true),
@@ -1564,7 +1596,7 @@ class DatabaseMaintainer: NSObject {
             
             if let cards = set.cards?.allObjects as? [CMCard] {
                 for card in cards {
-                    if card.scryfallNumber == nil {
+                    if card.scryfallId == nil {
                         willUpdate = true
                         break
                     }
@@ -1585,7 +1617,7 @@ class DatabaseMaintainer: NSObject {
         
     }
 
-    func loopScryfall(promises: [Promise<URL?>]) {
+    private func loopScryfall(promises: [Promise<URL?>]) {
         firstly {
             when(fulfilled: promises)
         }.done { results in
@@ -1610,7 +1642,7 @@ class DatabaseMaintainer: NSObject {
         }
     }
     
-    func readScryfall(url: URL) -> Promise<URL?> {
+    private func readScryfall(url: URL) -> Promise<URL?> {
         return Promise { seal  in
             var rq = URLRequest(url: url)
             rq.httpMethod = "GET"
@@ -1622,62 +1654,51 @@ class DatabaseMaintainer: NSObject {
             }.done { json in
                 if let data = json["data"] as? [[String: Any]] {
                     for e in data {
-                        if let set = e["set"] as? String,
+                        if let id = e["id"] as? String,
                             let multiverseIDs = e["multiverse_ids"] as? [Int],
-                            let artist = e["artist"] as? String,
-                            let name = e["name"] as? String,
-//                            let collectorNumber = e["collector_number"] as? String,
-                            let imageURIs = e["image_uris"] as? [String: String] {
-
-                            var found = false
-                            var collectorNumber: String? = nil
+                            let setCode = e["set"] as? String {
                             
-                            if let normal = imageURIs["normal"] {
-                                let url = URL(string: normal)
-                                if let lastPath = url?.lastPathComponent {
-                                    let comps = lastPath.components(separatedBy: ".")
-                                    collectorNumber = comps.first
-                                }
-                            }
-                            
-                            // match with multiverseID
-                            for mid in multiverseIDs {
-                                let request:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CMCard")
-                                request.predicate = NSPredicate(format: "multiverseid == %d", mid)
-                                
-                                if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) as? [CMCard] {
-                                    for card in cards {
-                                        card.scryfallNumber = collectorNumber
-                                        found = true
+                            if let imageURIs = e["image_uris"] as? [String: String] {
+                                // match with multiverseid
+                                for mid in multiverseIDs {
+                                    if let card = ManaKit.sharedInstance.findObject("CMCard",
+                                                                                    objectFinder: ["multiverseid": mid as AnyObject],
+                                                                                    createIfNotFound: false) as? CMCard {
+                                        
+                                        // remove the key (?APIKEY) in the url
+                                        var newImageURIs = [String: String]()
+                                        for (k,v) in imageURIs {
+                                            newImageURIs[k] = v.components(separatedBy: "?").first
+                                        }
+                                        let binaryImageURIs = NSKeyedArchiver.archivedData(withRootObject: newImageURIs)
+                                        
+                                        card.scryfallId = id
+                                        card.imageURIs = binaryImageURIs
                                     }
                                 }
-                            }
-                            
-                            // match with mciNumber and number
-                            if !found {
                                 
-                            }
-                            
-                            // match with name and artist
-                            if !found {
-                                let request:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CMCard")
-                                request.predicate = NSPredicate(format: "set.code = [cd] %@ AND artist_.name = %@ AND name CONTAINS[cd] %@", set, artist, name)
-                                request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true),
-                                                           NSSortDescriptor(key: "number", ascending: true),
-                                                           NSSortDescriptor(key: "mciNumber", ascending: true)]
-
-                                if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) as? [CMCard] {
-                                    for card in cards {
-                                        card.scryfallNumber = collectorNumber
-                                        found = true
-                                    }
-                                } else {
-                                    request.predicate = NSPredicate(format: "set.scryfallCode = [cd] %@ AND artist_.name = %@ AND name CONTAINS[cd] %@", set, artist, name)
-
-                                    if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) as? [CMCard] {
-                                        for card in cards {
-                                            card.scryfallNumber = collectorNumber
-                                            found = true
+                            } else if let card_faces = e["card_faces"] as? [[String: Any]] {
+                                // match with name and setCode
+                                for array in card_faces {
+                                    if let name = array["name"],
+                                        let imageURIs = array["image_uris"] as? [String: String] {
+                                        
+                                        let objectFinder = ["name": name,
+                                                            "set.code": setCode] as [String: AnyObject]
+                                        
+                                        if let card = ManaKit.sharedInstance.findObject("CMCard",
+                                                                                        objectFinder: objectFinder,
+                                                                                        createIfNotFound: false) as? CMCard {
+                                            
+                                            // remove the key (?APIKEY) in the url
+                                            var newImageURIs = [String: String]()
+                                            for (k,v) in imageURIs {
+                                                newImageURIs[k] = v.components(separatedBy: "?").first
+                                            }
+                                            let binaryImageURIs = NSKeyedArchiver.archivedData(withRootObject: newImageURIs)
+                                            
+                                            card.scryfallId = id
+                                            card.imageURIs = binaryImageURIs
                                         }
                                     }
                                 }
@@ -1686,7 +1707,7 @@ class DatabaseMaintainer: NSObject {
                     }
                     try! ManaKit.sharedInstance.dataStack?.mainContext.save()
                 }
-                print("Scraped... \(url)")
+                print("Scraping \(url)...")
                 
                 if let hasMore = json["has_more"] as? Bool,
                     let nextPage = json["next_page"] as? String {
@@ -1778,7 +1799,7 @@ class DatabaseMaintainer: NSObject {
     
     
     // MARK: Custom methods
-    func changeNotification(_ notification: Notification) {
+    @objc func changeNotification(_ notification: Notification) {
         if let updatedObjects = notification.userInfo?[NSUpdatedObjectsKey] {
             if let set = updatedObjects as? NSSet {
                 print("updatedObjects: \(set.count)")

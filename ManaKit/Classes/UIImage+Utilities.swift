@@ -12,7 +12,7 @@ import UIKit
 public extension UIImage {
     public func roundCornered(card: CMCard) -> UIImage {
         var radius = CGFloat(22)
-        
+
         if let set = card.set {
             if set.code == "LEA" {
                 radius = 34
@@ -21,13 +21,13 @@ public extension UIImage {
                 return self
             }
         }
-        
+
         UIGraphicsBeginImageContextWithOptions(self.size, false, 0)
         UIBezierPath(roundedRect: CGRect(origin: CGPoint(x: 0, y: 0), size: self.size), cornerRadius: radius).addClip()
         self.draw(in:  CGRect(origin: CGPoint(x: 0, y: 0), size: self.size))
         let result = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        
+
         return result!
     }
 }

@@ -1,3 +1,6 @@
+**Version 2.7.9** @ 27.09.2018
+- Fixed Scryfall image URIs.
+
 **Version 2.7.8** @ 27.09.2018
 - Updated MTGJSON to v3.19.2.
 

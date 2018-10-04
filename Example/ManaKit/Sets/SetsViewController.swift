@@ -25,6 +25,7 @@ class SetsViewController: UIViewController {
         // Do any additional setup after loading the view.
         definesPresentationContext = true
         searchController.searchResultsUpdater = self
+        searchController.searchBar.placeholder = "Filter"
         searchController.dimsBackgroundDuringPresentation = false
         
         if #available(iOS 11.0, *) {
