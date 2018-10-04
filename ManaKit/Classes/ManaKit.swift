@@ -18,9 +18,9 @@ import Sync
 @objc(ManaKit)
 public class ManaKit: NSObject {
     public enum Constants {
-        public static let MTGJSONVersion      = "3.19.2"
+        public static let MTGJSONVersion      = "3.19.2 B"
         public static let MTGJSONDate         = "Sep 26, 2018"
-        public static let KeyruneVersion      = "3.2.5"
+        public static let KeyruneVersion      = "3.3.0"
         public static let EightEditionRelease = "2003-07-28"
         public static let TCGPlayerPricingAge = 24 * 3 // 3 days
     }
@@ -42,6 +42,18 @@ public class ManaKit: NSObject {
         case large
         case normal
         case small
+        
+        var description : String {
+            switch self {
+            
+            case .png: return "png"
+            case .borderCrop: return "border_crop"
+            case .artCrop: return "art_crop"
+            case .large: return "large"
+            case .normal: return "normal"
+            case .small: return "small"
+            }
+        }
     }
     
     public enum UserDefaultsKeys {
@@ -277,7 +289,7 @@ public class ManaKit: NSObject {
                             let imageCache = SDImageCache.init()
                             imageCache.store(image, forKey: cacheKey, toDisk: true, completion: {
                                 if imageType == .artCrop {
-                                    if let _ = card.scryfallNumber {
+                                    if let _ = card.scryfallId {
                                         seal.fulfill(())
                                     } else {
                                         let _ = self.crop(image, ofCard: card)
@@ -337,7 +349,7 @@ public class ManaKit: NSObject {
         var willGetFromCache = false
         
         if imageType == .artCrop {
-            if let _ = card.scryfallNumber {
+            if let _ = card.scryfallId {
                 willGetFromCache = true
             } else {
                 cardImage = croppedImage(card)
@@ -379,7 +391,7 @@ public class ManaKit: NSObject {
     public func croppedImage(_ card: CMCard) -> UIImage? {
         var image: UIImage?
         
-        if let _ = card.scryfallNumber {
+        if let _ = card.scryfallId {
             image = cardImage(card, imageType: .artCrop)
         } else {
             guard let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first,
@@ -402,52 +414,15 @@ public class ManaKit: NSObject {
         var url:URL?
         var urlString: String?
         
-        if let _ = card.scryfallNumber {
-            var dir = ""
-            var ext = ""
-            
-            switch imageType {
-            case .png:
-                dir = "png"
-                ext = "png"
-            case .borderCrop:
-                dir = "border_crop"
-                ext = "jpg"
-            case .artCrop:
-                dir = "art_crop"
-                ext = "jpg"
-            case .large:
-                dir = "large"
-                ext = "jpg"
-            case .normal:
-                dir = "normal"
-                ext = "jpg"
-            case .small:
-                dir = "small"
-                ext = "jpg"
+        
+        if let imageURIs = card.imageURIs {
+            if let dict = NSKeyedUnarchiver.unarchiveObject(with: imageURIs) as? [String: String] {
+                urlString = dict[imageType.description]
             }
-            
-            if let set = card.set {
-                if let number = card.scryfallNumber,
-                    let scryfallCode = set.scryfallCode ?? set.code {
-                    urlString = "https://img.scryfall.com/cards/\(dir)/en/\(scryfallCode.lowercased())/\(number).\(ext)"
-                }
-            }
-            
         } else {
-            if card.multiverseid == 0 {
-                if let set = card.set {
-                    if let code = set.magicCardsInfoCode ?? set.code,
-                        let number = card.mciNumber ?? card.number {
-                        urlString = "http://magiccards.info/scans/en/\(code.lowercased())/\(number).jpg"
-                    }
-                }
-                
-            } else {
-                urlString = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=\(card.multiverseid)&type=card"
-            }
+            urlString = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=\(card.multiverseid)&type=card"
         }
-
+        
         if let urlString = urlString {
             if let okUrlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
                 url = URL(string: okUrlString)
@@ -485,10 +460,6 @@ public class ManaKit: NSObject {
     public func fetchTCGPlayerCardPricing(card: CMCard) -> Promise<Void> {
         return Promise { seal  in
             var pricing = card.pricing
-//            guard let pricing = findObject("CMCardPricing", objectFinder: ["card.id": card.id as AnyObject], createIfNotFound: true) as? CMCardPricing else {
-//                seal.fulfill(())
-//                return
-//            }
             var willFetch = false
 
             if pricing != nil {

@@ -26,6 +26,7 @@ extension CMCard {
     @NSManaged public var hand: Int32
     @NSManaged public var id: String?
     @NSManaged public var imageName: String?
+    @NSManaged public var imageURIs: Data?
     @NSManaged public var layout: String?
     @NSManaged public var legalities: Data?
     @NSManaged public var life: Int32
@@ -48,7 +49,7 @@ extension CMCard {
     @NSManaged public var releaseDate: String?
     @NSManaged public var reserved: Bool
     @NSManaged public var rulings: Data?
-    @NSManaged public var scryfallNumber: String?
+    @NSManaged public var scryfallId: String?
     @NSManaged public var source: String?
     @NSManaged public var starter: Bool
     @NSManaged public var storePricingLastUpdate: Date?

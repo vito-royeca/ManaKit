@@ -22,12 +22,8 @@
 	<string>DD1</string>
 	<key>FRF_UGIN</key>
 	<string>UGIN</string>
-	<key>GS1</key>
-	<string>GS1</string>
-	<key>CM2</key>
-	<string>CM2</string>
-	<key>M19</key>
-	<string>M19</string>
+	<key>MED</key>
+	<string>ME1</string>
 	<key>MPS_AKH</key>
 	<string>MP2</string>
 	<key>NMS</key>
@@ -50,8 +46,6 @@
 	<string>SS1</string>
 	<key>TPR</key>
 	<string>TPR</string>
-	<key>UST</key>
-	<string>UST</string>
 	<key>VAN</key>
 	<string>PVAN</string>
 </dict>

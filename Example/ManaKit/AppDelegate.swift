@@ -16,20 +16,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
         print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
 
         // Core Data updates 1
 //        DatabaseMaintainer.sharedInstance.json2CoreData()
+//        DatabaseMaintainer.sharedInstance.updateSomeData()
 
 //        Core Data updates 2
 //        DatabaseMaintainer.sharedInstance.updateTCGPlayerName()
 //        DatabaseMaintainer.sharedInstance.updateKeyruneCode()
-//        DatabaseMaintainer.sharedInstance.copyOldMCIAndScryfallData()
+//        DatabaseMaintainer.sharedInstance.copyOldScryfallData()
 //        DatabaseMaintainer.sharedInstance.updateMCINumbers()
-//        DatabaseMaintainer.sharedInstance.updateScryfallNumbers()
+//        DatabaseMaintainer.sharedInstance.updateScryfallData()
 //        DatabaseMaintainer.sharedInstance.updateSystem()
 
 //        Core Data updates 3
@@ -43,14 +44,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "ManaGuide",
                                                   publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720",
                                                   privateKey: nil)
-        DatabaseMaintainer.sharedInstance.createSampleDecks()
 
         if let rootVC = window?.rootViewController as? UITabBarController,
             let items = rootVC.tabBar.items {
             
             // change the account icons
             items[0].image = UIImage(bgIcon: .FABook,
-                                     orientation: UIImageOrientation.up,
+                                     orientation: UIImage.Orientation.up,
                                      bgTextColor: UIColor.blue,
                                      bgBackgroundColor: UIColor.clear,
                                      topIcon: .FABook,
@@ -58,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                      bgLarge: false,
                                      size: CGSize(width: 30, height: 30))
             items[1].image = UIImage(bgIcon: .FADropbox,
-                                     orientation: UIImageOrientation.up,
+                                     orientation: UIImage.Orientation.up,
                                      bgTextColor: UIColor.blue,
                                      bgBackgroundColor: UIColor.clear,
                                      topIcon: .FADropbox,

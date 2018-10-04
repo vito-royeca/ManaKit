@@ -18,6 +18,7 @@ extension CMDeck {
 
     @NSManaged public var colors: String?
     @NSManaged public var createdOn: NSDate?
+    @NSManaged public var description_: String?
     @NSManaged public var name: String?
     @NSManaged public var nameSection: String?
     @NSManaged public var originalCreator: String?
