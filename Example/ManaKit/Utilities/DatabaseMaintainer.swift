@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import DATAStack
 import Kanna
 import ManaKit
 import PromiseKit
@@ -203,24 +202,33 @@ class DatabaseMaintainer: NSObject {
     
     func updateSomeData() {
         // Chaos / Order (APC)
-        if let card = ManaKit.sharedInstance.findObject("CMCard",
-                                                        objectFinder: ["multiverseid": Int64(27167)] as [String: AnyObject],
-                                                        createIfNotFound: false) as? CMCard {
-            card.multiverseid = Int64(27168)
+        let sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        let request:NSFetchRequest = CMCard.fetchRequest()
+        
+        request.predicate = NSPredicate(format: "multiverseid = %d", Int64(27167))
+        request.sortDescriptors = sortDescriptors
+        if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
+            for card in cards {
+                card.multiverseid = Int64(27168)
+            }
         }
         
         // Assault / Battery (INV)
-        if let card = ManaKit.sharedInstance.findObject("CMCard",
-                                                        objectFinder: ["multiverseid": Int64(20579)] as [String: AnyObject],
-                                                        createIfNotFound: false) as? CMCard {
-            card.multiverseid = Int64(20580)
+        request.predicate = NSPredicate(format: "multiverseid = %d", Int64(20579))
+        request.sortDescriptors = sortDescriptors
+        if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
+            for card in cards {
+                card.multiverseid = Int64(20580)
+            }
         }
         
         // Pain / Suffering (INV)
-        if let card = ManaKit.sharedInstance.findObject("CMCard",
-                                                        objectFinder: ["multiverseid": Int64(20577)] as [String: AnyObject],
-                                                        createIfNotFound: false) as? CMCard {
-            card.multiverseid = Int64(20578)
+        request.predicate = NSPredicate(format: "multiverseid = %d", Int64(20577))
+        request.sortDescriptors = sortDescriptors
+        if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
+            for card in cards {
+                card.multiverseid = Int64(20578)
+            }
         }
         
         try! ManaKit.sharedInstance.dataStack?.mainContext.save()

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import DATASource
 import Kanna
 import PromiseKit
 import SDWebImage
@@ -368,11 +367,12 @@ public class ManaKit: NSObject {
             
             cardImage = imageCache.imageFromDiskCache(forKey: cacheKey)
             
-            // return roundCornered image
-            if let c = cardImage {
-                cardImage = c.roundCornered(card: card)
+            if let _ = card.imageURIs {
+                // return roundCornered image
+                if let c = cardImage {
+                    cardImage = c.roundCornered(card: card)
+                }
             }
-            
         }
         
         return cardImage
@@ -420,7 +420,15 @@ public class ManaKit: NSObject {
                 urlString = dict[imageType.description]
             }
         } else {
-            urlString = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=\(card.multiverseid)&type=card"
+            if card.multiverseid == 0 {
+                if let set = card.set,
+                    let magicCardsInfoCode = set.magicCardsInfoCode,
+                    let number = card.mciNumber ?? card.number {
+                    urlString = "http://magiccards.info/scans/en/\(magicCardsInfoCode.lowercased())/\(number).jpg"
+                }
+            } else {
+                urlString = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=\(card.multiverseid)&type=card"
+            }
         }
         
         if let urlString = urlString {
