@@ -1,3 +1,9 @@
+**Version 2.8.0** @ 11.10.2018
+- refactor: removed DATASource and DATAStack pods.
+- fix: Missing images of cards without imageURIs.
+- Added CMCollection model.
+- UISearchController no longer clears on cancel.
+
 **Version 2.7.9** @ 27.09.2018
 - Fixed Scryfall image URIs.
 
