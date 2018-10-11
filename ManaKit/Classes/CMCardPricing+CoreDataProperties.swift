@@ -24,6 +24,8 @@ extension CMCardPricing {
     @NSManaged public var lastUpdate: NSDate?
     @NSManaged public var link: String?
     @NSManaged public var cards: NSSet?
+    @NSManaged public var collections: NSSet?
+    @NSManaged public var decks: NSSet?
     
 }
 
@@ -43,3 +45,38 @@ extension CMCardPricing {
     @NSManaged public func removeFromCards(_ values: NSSet)
     
 }
+
+// MARK: Generated accessors for collections
+extension CMCardPricing {
+    
+    @objc(addCollectionsObject:)
+    @NSManaged public func addToCollections(_ value: CMCollection)
+    
+    @objc(removeCollectionsObject:)
+    @NSManaged public func removeFromCollections(_ value: CMCollection)
+    
+    @objc(addCollections:)
+    @NSManaged public func addToCollections(_ values: NSSet)
+    
+    @objc(removeCollections:)
+    @NSManaged public func removeFromCollections(_ values: NSSet)
+    
+}
+
+// MARK: Generated accessors for decks
+extension CMCardPricing {
+    
+    @objc(addDecksObject:)
+    @NSManaged public func addToDecks(_ value: CMDeck)
+    
+    @objc(removeDecksObject:)
+    @NSManaged public func removeFromDecks(_ value: CMDeck)
+    
+    @objc(addDecks:)
+    @NSManaged public func addToDecks(_ values: NSSet)
+    
+    @objc(removevs:)
+    @NSManaged public func removeFromDecks(_ values: NSSet)
+    
+}
+

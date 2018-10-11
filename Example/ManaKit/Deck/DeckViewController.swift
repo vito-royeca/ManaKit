@@ -41,7 +41,6 @@ class DeckViewController: UIViewController {
         // Do any additional setup after loading the view.
         tableView.register(ManaKit.sharedInstance.nibFromBundle("CardTableViewCell"), forCellReuseIdentifier: CardTableViewCell.reuseIdentifier)
         
-//        title = mainboardViewModel.objectTitle()
         mainboardViewModel.fetchData()
     }
 

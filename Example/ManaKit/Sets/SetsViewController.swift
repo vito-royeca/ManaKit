@@ -24,6 +24,7 @@ class SetsViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         definesPresentationContext = true
+        searchController.searchBar.delegate = self
         searchController.searchResultsUpdater = self
         searchController.searchBar.placeholder = "Filter"
         searchController.dimsBackgroundDuringPresentation = false
@@ -118,5 +119,22 @@ extension SetsViewController : UISearchResultsUpdating {
     }
 }
 
-
+// MARK: UISearchResultsUpdating
+extension SetsViewController : UISearchBarDelegate {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        viewModel.searchCancelled = false
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        viewModel.searchCancelled = true
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        if viewModel.searchCancelled {
+            searchBar.text = viewModel.queryString
+        } else {
+            viewModel.queryString = searchBar.text ?? ""
+        }
+    }
+}
 

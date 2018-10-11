@@ -28,5 +28,6 @@ extension CMCardInventory {
     @NSManaged public var card: CMCard?
     @NSManaged public var deck: CMDeck?
     @NSManaged public var list: CMList?
+    @NSManaged public var collection: CMCollection?
 
 }
