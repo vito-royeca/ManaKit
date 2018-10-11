@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Core Data updates 1
 //        DatabaseMaintainer.sharedInstance.json2CoreData()
-//        DatabaseMaintainer.sharedInstance.updateSomeData()
+        DatabaseMaintainer.sharedInstance.updateSomeData()
 
 //        Core Data updates 2
 //        DatabaseMaintainer.sharedInstance.updateTCGPlayerName()

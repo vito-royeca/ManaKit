@@ -1,34 +1,28 @@
 PODS:
-  - DATASource (7.0.2)
-  - DATAStack (8.0.2)
   - Font-Awesome-Swift (1.6.4)
   - Kanna (3.0.0)
-  - ManaKit (2.7.8):
-    - DATASource
-    - DATAStack
+  - ManaKit (2.7.9):
     - Kanna (~> 3)
     - PromiseKit
     - SDWebImage
     - SSZipArchive
     - Sync
-  - PromiseKit (6.4.1):
-    - PromiseKit/CorePromise (= 6.4.1)
-    - PromiseKit/Foundation (= 6.4.1)
-    - PromiseKit/UIKit (= 6.4.1)
-  - PromiseKit/CorePromise (6.4.1)
-  - PromiseKit/Foundation (6.4.1):
+  - PromiseKit (6.5.2):
+    - PromiseKit/CorePromise (= 6.5.2)
+    - PromiseKit/Foundation (= 6.5.2)
+    - PromiseKit/UIKit (= 6.5.2)
+  - PromiseKit/CorePromise (6.5.2)
+  - PromiseKit/Foundation (6.5.2):
     - PromiseKit/CorePromise
-  - PromiseKit/UIKit (6.4.1):
+  - PromiseKit/UIKit (6.5.2):
     - PromiseKit/CorePromise
   - SDWebImage (4.4.2):
     - SDWebImage/Core (= 4.4.2)
   - SDWebImage/Core (4.4.2)
   - SSZipArchive (2.1.4)
-  - Sync (5.0.1)
+  - Sync (5.1.0)
 
 DEPENDENCIES:
-  - DATASource
-  - DATAStack
   - Font-Awesome-Swift (from `https://github.com/Vaberer/Font-Awesome-Swift`, branch `swift-3`)
   - Kanna (from `https://github.com/tid-kijyun/Kanna`, branch `feature/v3.0.0`)
   - ManaKit (from `../`)
@@ -39,8 +33,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - DATASource
-    - DATAStack
     - PromiseKit
     - SDWebImage
     - SSZipArchive
@@ -65,16 +57,14 @@ CHECKOUT OPTIONS:
     :git: https://github.com/tid-kijyun/Kanna
 
 SPEC CHECKSUMS:
-  DATASource: b86db74542b5b27d4d2af43ae698022f19507379
-  DATAStack: 9c415f6e7733eafb9cf5c076613bfb5958c407cb
   Font-Awesome-Swift: 4820aea879741d76968a89653715b375ec0cf99e
   Kanna: 93a9af3643d46425e48899a8b033a2da44af2b49
-  ManaKit: 1a15d01adcc725ecf7a83e9429cc86c34676e85a
-  PromiseKit: 4c76a6506638034e3d7bede97b2ff7743f7bd2dc
+  ManaKit: ff677850d01c3c5041a5a693dafa99295ea7ed39
+  PromiseKit: 27c1601bfb73405871b805bcb8cf7e55c4dad3db
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
   SSZipArchive: 41455d4b8d2b6ab93990820b50dc697c2554a322
-  Sync: 5281923838f0f60e1d34063ac9ab692b6e012038
+  Sync: 0412c2b068eb7cf1a04607e948ef92cbd6114d0f
 
-PODFILE CHECKSUM: 0e3205d6708984cc0d7d993a6f1e5e3c3c08f217
+PODFILE CHECKSUM: 2dcff283c32d810cef27116d1a9851cacd4637e5
 
 COCOAPODS: 1.5.3

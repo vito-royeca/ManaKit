@@ -75,7 +75,7 @@ extension CardViewController : UITableViewDataSource {
                                       animations: animations,
                                       completion: nil)
                 }.catch { error in
-                    
+                    print("\(error)")
                 }
             }
                 
