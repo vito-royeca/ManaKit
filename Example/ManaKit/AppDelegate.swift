@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Core Data updates 1
 //        DatabaseMaintainer.sharedInstance.json2CoreData()
-        DatabaseMaintainer.sharedInstance.updateSomeData()
+//        DatabaseMaintainer.sharedInstance.updateSomeData()
 
 //        Core Data updates 2
 //        DatabaseMaintainer.sharedInstance.updateTCGPlayerName()
@@ -31,13 +31,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        DatabaseMaintainer.sharedInstance.copyOldScryfallData()
 //        DatabaseMaintainer.sharedInstance.updateMCINumbers()
 //        DatabaseMaintainer.sharedInstance.updateScryfallData()
-//        DatabaseMaintainer.sharedInstance.updateSystem()
 
 //        Core Data updates 3
 //        //DatabaseMaintainer.sharedInstance.updateForeignNames()
 //        DatabaseMaintainer.sharedInstance.updateLegalities()
 //        DatabaseMaintainer.sharedInstance.rules2CoreData()
 //        DatabaseMaintainer.sharedInstance.createSampleDecks()
+//        DatabaseMaintainer.sharedInstance.updateSystem()
 
           // Normal run
         ManaKit.sharedInstance.setupResources()

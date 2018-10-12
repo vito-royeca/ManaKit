@@ -17,7 +17,7 @@ import Sync
 @objc(ManaKit)
 public class ManaKit: NSObject {
     public enum Constants {
-        public static let MTGJSONVersion      = "3.19.2 B"
+        public static let MTGJSONVersion      = "3.19.2 C"
         public static let MTGJSONDate         = "Sep 26, 2018"
         public static let KeyruneVersion      = "3.3.0"
         public static let EightEditionRelease = "2003-07-28"
@@ -165,6 +165,10 @@ public class ManaKit: NSObject {
             var resourceValues = URLResourceValues()
             resourceValues.isExcludedFromBackup = true
             try! targetURL.setResourceValues(resourceValues)
+            
+            // delete image cache
+            let imageCache = SDImageCache.init()
+            imageCache.clearDisk(onCompletion: nil)
             
             // Save the version
             UserDefaults.standard.set(Constants.MTGJSONVersion, forKey: UserDefaultsKeys.MTGJSONVersionKey)

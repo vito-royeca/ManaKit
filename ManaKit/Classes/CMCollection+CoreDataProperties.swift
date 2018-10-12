@@ -19,9 +19,11 @@ extension CMCollection {
     @NSManaged public var createdOn: NSDate?
     @NSManaged public var description_: String?
     @NSManaged public var id: String?
+    @NSManaged public var isPrivate: Bool
     @NSManaged public var name: String?
     @NSManaged public var nameSection: String?
     @NSManaged public var updatedOn: NSDate?
+    @NSManaged public var views: Int64
     @NSManaged public var cards: NSSet?
     @NSManaged public var pricing: CMCardPricing?
 

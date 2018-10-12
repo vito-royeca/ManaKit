@@ -1,3 +1,6 @@
+**Version 2.8.1** @ 12.10.2018
+- Deletes cached images when new Core Data database is updated.
+
 **Version 2.8.0** @ 11.10.2018
 - refactor: removed DATASource and DATAStack pods.
 - fix: Missing images of cards without imageURIs.

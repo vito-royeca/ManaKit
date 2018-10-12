@@ -23,9 +23,8 @@ extension CMList {
     @NSManaged public var nameSection: String?
     @NSManaged public var query: Data?
     @NSManaged public var updatedOn: NSDate?
-    @NSManaged public var pricing: CMCardPricing?
+    @NSManaged public var views: Int64
     @NSManaged public var user: CMUser?
-
 }
 
 // MARK: Generated accessors for cards
