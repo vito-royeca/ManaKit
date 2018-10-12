@@ -26,10 +26,10 @@ class DatabaseMaintainer: NSObject {
     static let sharedInstance = DatabaseMaintainer()
     
     // MARK: Constants
-    let setCodesForProcessing:[String]? = [/*"APC", "ATH", "CP2", "CST", "DD2", "DDC", "DDD", "DDE", "DDN",
-                                           "DKM", "DPA", "EVG", "HOP", "INV", "MGB", "UGL", */"VAN"/*,
+    let setCodesForProcessing:[String]? = nil /*["APC", "ATH", "CP2", "CST", "DD2", "DDC", "DDD", "DDE", "DDN",
+                                           "DKM", "DPA", "EVG", "HOP", "INV", "MGB", "UGL", "VAN",
                                            "pARL", "pFNM", "pGTW", "pHHO", "pJGP", "pLPA", "pMEI", "pMGD", "pMPR", "pPRE",
-                                           "pSUM", "pWCQ", "pWPN"*/]
+                                           "pSUM", "pWCQ", "pWPN"]*/
     let printMilestone = 1000
     
     // MARK: Variables

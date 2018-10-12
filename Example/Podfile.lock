@@ -1,7 +1,7 @@
 PODS:
   - Font-Awesome-Swift (1.6.4)
   - Kanna (3.0.0)
-  - ManaKit (2.7.9):
+  - ManaKit (2.8.0):
     - Kanna (~> 3)
     - PromiseKit
     - SDWebImage
@@ -59,7 +59,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Font-Awesome-Swift: 4820aea879741d76968a89653715b375ec0cf99e
   Kanna: 93a9af3643d46425e48899a8b033a2da44af2b49
-  ManaKit: ff677850d01c3c5041a5a693dafa99295ea7ed39
+  ManaKit: 404ac7cd7fac4933938421f07c7439cc6da2833e
   PromiseKit: 27c1601bfb73405871b805bcb8cf7e55c4dad3db
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
   SSZipArchive: 41455d4b8d2b6ab93990820b50dc697c2554a322

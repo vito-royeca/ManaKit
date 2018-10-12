@@ -23,11 +23,11 @@ class SetsViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        definesPresentationContext = true
-        searchController.searchBar.delegate = self
         searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = "Filter"
         searchController.dimsBackgroundDuringPresentation = false
+        definesPresentationContext = true
         
         if #available(iOS 11.0, *) {
             navigationItem.searchController = searchController
