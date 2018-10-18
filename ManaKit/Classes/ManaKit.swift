@@ -30,7 +30,7 @@ public class ManaKit: NSObject {
         cardBack               = "images/cardback-hq",
         collectorsCardBack     = "images/collectorscardback-hq",
         cropBack               = "images/cropback-hq",
-        grayPatterned          = "images/Gray_Patterned_BG",
+//        grayPatterned          = "images/Gray_Patterned_BG",
         intlCollectorsCardBack = "images/internationalcollectorscardback-hq"
     }
     
@@ -158,7 +158,7 @@ public class ManaKit: NSObject {
             // remove the contents of crop directory
             let cropPath = "\(cachePath)/crop/"
             for file in try! FileManager.default.contentsOfDirectory(atPath: cropPath) {
-                let path = "\(docsPath)/\(file)"
+                let path = "\(cropPath)/\(file)"
                 try! FileManager.default.removeItem(atPath: path)
             }
             
