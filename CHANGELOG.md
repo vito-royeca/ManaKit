@@ -1,4 +1,4 @@
-**Version 2.8.3** @ 18.10.2018
+**Version 2.8.4** @ 18.10.2018
 - Updated to Swift 4.2
 - Fixed imageURIs and loading of some images.
 
