@@ -26,10 +26,7 @@ class DatabaseMaintainer: NSObject {
     static let sharedInstance = DatabaseMaintainer()
     
     // MARK: Constants
-    let setCodesForProcessing:[String]? = nil /*["APC", "ATH", "CP2", "CST", "DD2", "DDC", "DDD", "DDE", "DDN",
-                                           "DKM", "DPA", "EVG", "HOP", "INV", "MGB", "UGL", "VAN",
-                                           "pARL", "pFNM", "pGTW", "pHHO", "pJGP", "pLPA", "pMEI", "pMGD", "pMPR", "pPRE",
-                                           "pSUM", "pWCQ", "pWPN"]*/
+    let setCodesForProcessing:[String]? = nil
     let printMilestone = 1000
     
     // MARK: Variables
@@ -1570,7 +1567,7 @@ class DatabaseMaintainer: NSObject {
             return
         }
         
-        request.predicate = NSPredicate(format: "scryfallCode == nil")
+        request.predicate = NSPredicate(format: "scryfallCode = nil")
         request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         guard let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) else {
             return
@@ -1640,6 +1637,31 @@ class DatabaseMaintainer: NSObject {
             if newPromises.count > 0 {
                 self.loopScryfall(promises: newPromises)
             } else {
+                var total = 0
+                let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
+                request.sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: true),
+                                           NSSortDescriptor(key: "name", ascending: true)]
+                guard let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) else {
+                    return
+                }
+                for set in sets {
+                    var count = 0
+                    
+                    if let cards = set.cards?.allObjects as? [CMCard] {
+                        for card in cards {
+                            if card.scryfallId == nil {
+                                count += 1
+                            }
+                        }
+                    }
+                    
+                    if count > 0 {
+                        total += count
+                        print("\(set.code!): \(count)")
+                    }
+                }
+                print("Total: \(total)")
+                
                 let dateEnd = Date()
                 let timeDifference = dateEnd.timeIntervalSince(self.dateStart)
                 print("Total Time Elapsed: \(self.dateStart) - \(dateEnd) = \(self.format(timeDifference))")
@@ -1664,34 +1686,53 @@ class DatabaseMaintainer: NSObject {
                     for e in data {
                         if let id = e["id"] as? String,
                             let multiverseIDs = e["multiverse_ids"] as? [Int],
-                            let setCode = e["set"] as? String {
+                            let setCode = e["set"] as? String,
+                            let name = e["name"] as? String/*,
+                            let collectorNumber = e["collector_number"] as? String*/ {
+                            
+                            var card: CMCard?
                             
                             if let imageURIs = e["image_uris"] as? [String: String] {
                                 // match with multiverseid
                                 for mid in multiverseIDs {
-                                    if let card = ManaKit.sharedInstance.findObject("CMCard",
+                                    if let c = ManaKit.sharedInstance.findObject("CMCard",
                                                                                     objectFinder: ["multiverseid": mid as AnyObject],
                                                                                     createIfNotFound: false) as? CMCard {
-                                        
-                                        // remove the key (?APIKEY) in the url
-                                        var newImageURIs = [String: String]()
-                                        for (k,v) in imageURIs {
-                                            newImageURIs[k] = v.components(separatedBy: "?").first
-                                        }
-                                        let binaryImageURIs = NSKeyedArchiver.archivedData(withRootObject: newImageURIs)
-                                        
-                                        card.scryfallId = id
-                                        card.imageURIs = binaryImageURIs
+                                        card = c
                                     }
+                                }
+                                
+                                // match with set, name, and collectorNumber
+                                if card == nil {
+                                    let objectFinder = ["name": name,
+                                                        "set.code": setCode] as [String: AnyObject]
+                                    
+                                    if let c = ManaKit.sharedInstance.findObject("CMCard",
+                                                                                 objectFinder: objectFinder,
+                                                                                 createIfNotFound: false) as? CMCard {
+                                        card = c
+                                    }
+                                }
+                                
+                                if let card = card {
+                                    // remove the key (?APIKEY) in the url
+                                    var newImageURIs = [String: String]()
+                                    for (k,v) in imageURIs {
+                                        newImageURIs[k] = v.components(separatedBy: "?").first
+                                    }
+                                    let binaryImageURIs = NSKeyedArchiver.archivedData(withRootObject: newImageURIs)
+                                    
+                                    card.scryfallId = id
+                                    card.imageURIs = binaryImageURIs
                                 }
                                 
                             } else if let card_faces = e["card_faces"] as? [[String: Any]] {
                                 // match with name and setCode
                                 for array in card_faces {
-                                    if let name = array["name"],
+                                    if let name2 = array["name"],
                                         let imageURIs = array["image_uris"] as? [String: String] {
                                         
-                                        let objectFinder = ["name": name,
+                                        let objectFinder = ["name": name2,
                                                             "set.code": setCode] as [String: AnyObject]
                                         
                                         if let card = ManaKit.sharedInstance.findObject("CMCard",

@@ -116,9 +116,9 @@ public extension NSAttributedString {
             return
         }
         
-        let options =  [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType]
+        let options =  [convertFromNSAttributedStringDocumentAttributeKey(NSAttributedString.DocumentAttributeKey.documentType): convertFromNSAttributedStringDocumentType(NSAttributedString.DocumentType.html)]
         guard let attributedString = try? NSMutableAttributedString(data: data,
-                                                                    options: options,
+                                                                    options: convertToNSAttributedStringDocumentReadingOptionKeyDictionary(options),
                                                                     documentAttributes: nil) else {
                 self.init(string: html)
                 return
@@ -130,7 +130,7 @@ public extension NSAttributedString {
                 let foundRange = attributedString.mutableString.range(of: k)
                 if foundRange.location != NSNotFound {
                     
-                    attributedString.addAttribute(NSLinkAttributeName, value: v, range: foundRange)
+                    attributedString.addAttribute(NSAttributedString.Key.link, value: v, range: foundRange)
 //                    attributedString.addAttribute(NSForegroundColorAttributeName, value: kGlobalTintColor, range: foundRange)
 //                    attributedString.addAttribute(NSUnderlineColorAttributeName, value: kGlobalTintColor, range: foundRange)
                 }
@@ -142,3 +142,18 @@ public extension NSAttributedString {
 }
 
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSAttributedStringDocumentAttributeKey(_ input: NSAttributedString.DocumentAttributeKey) -> String {
+	return input.rawValue
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSAttributedStringDocumentType(_ input: NSAttributedString.DocumentType) -> String {
+	return input.rawValue
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToNSAttributedStringDocumentReadingOptionKeyDictionary(_ input: [String: Any]) -> [NSAttributedString.DocumentReadingOptionKey: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.DocumentReadingOptionKey(rawValue: key), value)})
+}
