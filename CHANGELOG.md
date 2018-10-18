@@ -1,3 +1,7 @@
+**Version 2.8.2** @ 18.10.2018
+- Updated to Swift 4.2
+- Fixed imageURIs and loading of some images.
+
 **Version 2.8.1** @ 12.10.2018
 - Deletes cached images when new Core Data database is updated.
 

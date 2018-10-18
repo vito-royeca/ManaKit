@@ -17,7 +17,7 @@ import Sync
 @objc(ManaKit)
 public class ManaKit: NSObject {
     public enum Constants {
-        public static let MTGJSONVersion      = "3.19.2 C"
+        public static let MTGJSONVersion      = "3.19.2 D"
         public static let MTGJSONDate         = "Sep 26, 2018"
         public static let KeyruneVersion      = "3.3.0"
         public static let EightEditionRelease = "2003-07-28"
@@ -125,6 +125,7 @@ public class ManaKit: NSObject {
         guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
             let resourceBundle = Bundle(url: bundleURL),
             let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first,
+            let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first,
             let sourcePath = resourceBundle.path(forResource: "ManaKit.sqlite", ofType: "zip"),
             let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String else {
             return
@@ -154,6 +155,17 @@ public class ManaKit: NSObject {
                 }
             }
             
+            // remove the contents of crop directory
+            let cropPath = "\(cachePath)/crop/"
+            for file in try! FileManager.default.contentsOfDirectory(atPath: cropPath) {
+                let path = "\(docsPath)/\(file)"
+                try! FileManager.default.removeItem(atPath: path)
+            }
+            
+            // delete image cache
+            let imageCache = SDImageCache.init()
+            imageCache.clearDisk(onCompletion: nil)
+            
             // Unzip
             SSZipArchive.unzipFile(atPath: sourcePath, toDestination: docsPath)
             
@@ -165,10 +177,6 @@ public class ManaKit: NSObject {
             var resourceValues = URLResourceValues()
             resourceValues.isExcludedFromBackup = true
             try! targetURL.setResourceValues(resourceValues)
-            
-            // delete image cache
-            let imageCache = SDImageCache.init()
-            imageCache.clearDisk(onCompletion: nil)
             
             // Save the version
             UserDefaults.standard.set(Constants.MTGJSONVersion, forKey: UserDefaultsKeys.MTGJSONVersionKey)
@@ -188,8 +196,8 @@ public class ManaKit: NSObject {
             let data = try! Data(contentsOf: url)
             let error: UnsafeMutablePointer<Unmanaged<CFError>?>? = nil
 
-            if let provider = CGDataProvider(data: data as CFData) {
-                let font = CGFont(provider)
+            if let provider = CGDataProvider(data: data as CFData),
+                let font = CGFont(provider) {
                 
                 if !CTFontManagerRegisterGraphicsFont(font, error) {
                     if let unmanagedError = error?.pointee {
@@ -341,7 +349,7 @@ public class ManaKit: NSObject {
             if !FileManager.default.fileExists(atPath: path)  {
                 try! FileManager.default.createDirectory(atPath: path, withIntermediateDirectories: true, attributes: nil)
             }
-            try! UIImageJPEGRepresentation(croppedImage, 1.0)?.write(to: URL(fileURLWithPath: cropPath))
+            try! croppedImage.jpegData(compressionQuality: 1.0)?.write(to: URL(fileURLWithPath: cropPath))
             
             return UIImage(contentsOfFile: cropPath)
         }

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Font_Awesome_Swift
 import ManaKit
 
 @UIApplicationMain
@@ -40,33 +39,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        DatabaseMaintainer.sharedInstance.updateSystem()
 
           // Normal run
-        ManaKit.sharedInstance.setupResources()
-        ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "ManaGuide",
-                                                  publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720",
-                                                  privateKey: nil)
+//        ManaKit.sharedInstance.setupResources()
+//        ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "ManaGuide",
+//                                                  publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720",
+//                                                  privateKey: nil)
 
-        if let rootVC = window?.rootViewController as? UITabBarController,
-            let items = rootVC.tabBar.items {
-            
-            // change the account icons
-            items[0].image = UIImage(bgIcon: .FABook,
-                                     orientation: UIImage.Orientation.up,
-                                     bgTextColor: UIColor.blue,
-                                     bgBackgroundColor: UIColor.clear,
-                                     topIcon: .FABook,
-                                     topTextColor: UIColor.clear,
-                                     bgLarge: false,
-                                     size: CGSize(width: 30, height: 30))
-            items[1].image = UIImage(bgIcon: .FADropbox,
-                                     orientation: UIImage.Orientation.up,
-                                     bgTextColor: UIColor.blue,
-                                     bgBackgroundColor: UIColor.clear,
-                                     topIcon: .FADropbox,
-                                     topTextColor: UIColor.clear,
-                                     bgLarge: false,
-                                     size: CGSize(width: 30, height: 30))
-        }
-        
         return true
     }
 

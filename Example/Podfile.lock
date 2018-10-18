@@ -1,8 +1,8 @@
 PODS:
-  - Font-Awesome-Swift (1.6.4)
-  - Kanna (3.0.0)
-  - ManaKit (2.8.0):
-    - Kanna (~> 3)
+  - FontAwesome.swift (1.4.5)
+  - Kanna (4.0.2)
+  - ManaKit (2.8.1):
+    - Kanna (~> 4.0.0)
     - PromiseKit
     - SDWebImage
     - SSZipArchive
@@ -23,48 +23,36 @@ PODS:
   - Sync (5.1.0)
 
 DEPENDENCIES:
-  - Font-Awesome-Swift (from `https://github.com/Vaberer/Font-Awesome-Swift`, branch `swift-3`)
-  - Kanna (from `https://github.com/tid-kijyun/Kanna`, branch `feature/v3.0.0`)
+  - FontAwesome.swift
+  - Kanna (~> 4.0.0)
   - ManaKit (from `../`)
-  - PromiseKit (~> 6.0)
-  - SDWebImage (~> 4.0)
+  - PromiseKit
+  - SDWebImage
   - SSZipArchive
   - Sync
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - FontAwesome.swift
+    - Kanna
     - PromiseKit
     - SDWebImage
     - SSZipArchive
     - Sync
 
 EXTERNAL SOURCES:
-  Font-Awesome-Swift:
-    :branch: swift-3
-    :git: https://github.com/Vaberer/Font-Awesome-Swift
-  Kanna:
-    :branch: feature/v3.0.0
-    :git: https://github.com/tid-kijyun/Kanna
   ManaKit:
     :path: "../"
 
-CHECKOUT OPTIONS:
-  Font-Awesome-Swift:
-    :commit: a1fa6a2529e0d4fe2f0cc735f6d907612e1b7535
-    :git: https://github.com/Vaberer/Font-Awesome-Swift
-  Kanna:
-    :commit: 50b2fa6c8d2341a693b5256624257c58c4502142
-    :git: https://github.com/tid-kijyun/Kanna
-
 SPEC CHECKSUMS:
-  Font-Awesome-Swift: 4820aea879741d76968a89653715b375ec0cf99e
-  Kanna: 93a9af3643d46425e48899a8b033a2da44af2b49
-  ManaKit: 404ac7cd7fac4933938421f07c7439cc6da2833e
+  FontAwesome.swift: a351dbb86b9fcec9aad6bce2fdd5b95e9a7b8828
+  Kanna: c60b61d72554bf04ed1ee074f9b379855cab4892
+  ManaKit: 75904d01ce46ef3504a9a0ac7c9bf3e18ec08a08
   PromiseKit: 27c1601bfb73405871b805bcb8cf7e55c4dad3db
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
   SSZipArchive: 41455d4b8d2b6ab93990820b50dc697c2554a322
   Sync: 0412c2b068eb7cf1a04607e948ef92cbd6114d0f
 
-PODFILE CHECKSUM: 2dcff283c32d810cef27116d1a9851cacd4637e5
+PODFILE CHECKSUM: 7917c2b1a8999276f4ca9b7356950990d03be088
 
 COCOAPODS: 1.5.3
