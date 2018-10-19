@@ -21,6 +21,10 @@ extension Character {
     }
 }
 
+enum DatabaseMaintainerConstants {
+    static let ComprehensiveRulesFile = "MagicCompRules 20181005"
+}
+
 class DatabaseMaintainer: NSObject {
     // MARK: - Shared Instance
     static let sharedInstance = DatabaseMaintainer()
@@ -1058,7 +1062,9 @@ class DatabaseMaintainer: NSObject {
     func rules2CoreData() {
         dateStart = Date()
         
-        guard let path = Bundle.main.path(forResource: "MagicCompRules 20180810", ofType: "txt", inDirectory: "data") else {
+        guard let path = Bundle.main.path(forResource: DatabaseMaintainerConstants.ComprehensiveRulesFile,
+                                          ofType: "txt",
+                                          inDirectory: "data") else {
             return
         }
         
@@ -1067,7 +1073,8 @@ class DatabaseMaintainer: NSObject {
         // delete existing data first
         let request: NSFetchRequest<CMRule> = CMRule.fetchRequest()
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: request as! NSFetchRequest<NSFetchRequestResult>)
-        try! ManaKit.sharedInstance.dataStack?.persistentStoreCoordinator.execute(deleteRequest, with: (ManaKit.sharedInstance.dataStack?.mainContext)!)
+        try! ManaKit.sharedInstance.dataStack?.persistentStoreCoordinator.execute(deleteRequest,
+                                                                                  with: (ManaKit.sharedInstance.dataStack?.mainContext)!)
         
         let data = try! String(contentsOfFile: path, encoding: .ascii)
         let lines = data.components(separatedBy: .newlines)
@@ -1079,7 +1086,9 @@ class DatabaseMaintainer: NSObject {
         
         // parse the introduction
         objectFinder = ["term": "Introduction"] as [String: AnyObject]
-        if let object = ManaKit.sharedInstance.findObject("CMRule", objectFinder: objectFinder, createIfNotFound: true) as? CMRule {
+        if let object = ManaKit.sharedInstance.findObject("CMRule",
+                                                          objectFinder: objectFinder,
+                                                          createIfNotFound: true) as? CMRule {
             object.term = "Introduction"
             object.order = 0
             object.definition = nil
@@ -1089,7 +1098,11 @@ class DatabaseMaintainer: NSObject {
             endLine = "Contents"
             includeStartLine = true
             includeEndLine = false
-            if let text = parseData(fromLines: lines, startLine: startLine!, endLine: endLine!, includeStartLine: includeStartLine, includeEndLine: includeEndLine) {
+            if let text = parseData(fromLines: lines,
+                                    startLine: startLine!,
+                                    endLine: endLine!,
+                                    includeStartLine: includeStartLine,
+                                    includeEndLine: includeEndLine) {
                 objectFinder = ["parent": object] as [String: AnyObject]
                 
                 if let object2 = ManaKit.sharedInstance.findObject("CMRule", objectFinder: objectFinder, createIfNotFound: true) as? CMRule {
@@ -1231,7 +1244,9 @@ class DatabaseMaintainer: NSObject {
                     }
                     
                     let objectFinder = ["term": term] as [String: AnyObject]
-                    if let object = ManaKit.sharedInstance.findObject("CMRule", objectFinder: objectFinder, createIfNotFound: true) as? CMRule {
+                    if let object = ManaKit.sharedInstance.findObject("CMRule",
+                                                                      objectFinder: objectFinder,
+                                                                      createIfNotFound: true) as? CMRule {
                         object.term = term
                         object.order = order(of: term)
                         object.definition = definition

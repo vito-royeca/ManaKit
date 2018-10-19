@@ -133,7 +133,6 @@
         <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCard" inverseName="inventories" inverseEntity="CMCard" syncable="YES"/>
         <relationship name="collection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCollection" inverseName="cards" inverseEntity="CMCollection" syncable="YES"/>
         <relationship name="deck" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMDeck" inverseName="cards" inverseEntity="CMDeck" syncable="YES"/>
-        <relationship name="list" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMList" syncable="YES"/>
     </entity>
     <entity name="CMCardLegality" representedClassName="CMCardLegality" syncable="YES">
         <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
@@ -427,7 +426,7 @@
         <element name="CMBooster" positionX="0" positionY="162" width="128" height="75"/>
         <element name="CMBorder" positionX="-9" positionY="153" width="128" height="90"/>
         <element name="CMCard" positionX="-54" positionY="72" width="128" height="1140"/>
-        <element name="CMCardInventory" positionX="-27" positionY="135" width="128" height="240"/>
+        <element name="CMCardInventory" positionX="-27" positionY="135" width="128" height="225"/>
         <element name="CMCardLegality" positionX="-27" positionY="135" width="128" height="105"/>
         <element name="CMCardPricing" positionX="-27" positionY="135" width="128" height="195"/>
         <element name="CMCardRating" positionX="-27" positionY="135" width="128" height="90"/>

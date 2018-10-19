@@ -17,7 +17,7 @@ import Sync
 @objc(ManaKit)
 public class ManaKit: NSObject {
     public enum Constants {
-        public static let MTGJSONVersion      = "3.19.2 D"
+        public static let MTGJSONVersion      = "3.19.2 E"
         public static let MTGJSONDate         = "Sep 26, 2018"
         public static let KeyruneVersion      = "3.3.0"
         public static let EightEditionRelease = "2003-07-28"
@@ -30,7 +30,7 @@ public class ManaKit: NSObject {
         cardBack               = "images/cardback-hq",
         collectorsCardBack     = "images/collectorscardback-hq",
         cropBack               = "images/cropback-hq",
-//        grayPatterned          = "images/Gray_Patterned_BG",
+        grayPatterned          = "images/Gray_Patterned_BG",
         intlCollectorsCardBack = "images/internationalcollectorscardback-hq"
     }
     
@@ -130,17 +130,14 @@ public class ManaKit: NSObject {
             let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String else {
             return
         }
+        let targetPath = "\(docsPath)/\(bundleName).sqlite"
         var willCopy = true
 
-        // Check if we have old files
-        let targetPath = "\(docsPath)/\(bundleName).sqlite"
-        willCopy = !FileManager.default.fileExists(atPath: targetPath)
-        
-        // Check if we saved the version number
-        if let version = databaseVersion() {
-            willCopy = version != Constants.MTGJSONVersion
-        } else {
-            willCopy = true
+        if FileManager.default.fileExists(atPath: targetPath) {
+            // Check if we saved the version number
+            if let version = databaseVersion() {
+                willCopy = version != Constants.MTGJSONVersion
+            }
         }
         
         if willCopy {
@@ -157,11 +154,13 @@ public class ManaKit: NSObject {
             
             // remove the contents of crop directory
             let cropPath = "\(cachePath)/crop/"
-            for file in try! FileManager.default.contentsOfDirectory(atPath: cropPath) {
-                let path = "\(cropPath)/\(file)"
-                try! FileManager.default.removeItem(atPath: path)
+            if FileManager.default.fileExists(atPath: cropPath) {
+                for file in try! FileManager.default.contentsOfDirectory(atPath: cropPath) {
+                    let path = "\(cropPath)/\(file)"
+                    try! FileManager.default.removeItem(atPath: path)
+                }
             }
-            
+
             // delete image cache
             let imageCache = SDImageCache.init()
             imageCache.clearDisk(onCompletion: nil)
@@ -254,7 +253,9 @@ public class ManaKit: NSObject {
     
     public func databaseVersion() -> String? {
         let objectFinder = ["version": Constants.MTGJSONVersion] as [String: AnyObject]
-        guard let object = ManaKit.sharedInstance.findObject("CMSystem", objectFinder: objectFinder, createIfNotFound: true) as? CMSystem else {
+        guard let object = ManaKit.sharedInstance.findObject("CMSystem",
+                                                             objectFinder: objectFinder,
+                                                             createIfNotFound: true) as? CMSystem else {
             return nil
         }
         
