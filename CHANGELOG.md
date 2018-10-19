@@ -1,5 +1,6 @@
-**Version 2.8.5** @ 19.10.2018
+**Version 2.8.6** @ 19.10.2018
 - Fixed error in ManaKit.copyDatabaseFiles().
+- Updated the Comprehensive Rules to: 20181005.
 
 **Version 2.8.4** @ 18.10.2018
 - Updated to Swift 4.2

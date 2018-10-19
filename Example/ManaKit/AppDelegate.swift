@@ -39,10 +39,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        DatabaseMaintainer.sharedInstance.updateSystem()
 
           // Normal run
-//        ManaKit.sharedInstance.setupResources()
-//        ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "ManaGuide",
-//                                                  publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720",
-//                                                  privateKey: nil)
+        ManaKit.sharedInstance.setupResources()
+        ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "ManaGuide",
+                                                  publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720",
+                                                  privateKey: nil)
 
         return true
     }
