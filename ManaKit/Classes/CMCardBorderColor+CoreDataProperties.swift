@@ -1,8 +1,8 @@
 //
-//  CMLayout+CoreDataProperties.swift
+//  CMCardBorderColor+CoreDataProperties.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 15/04/2017.
+//  Created by Jovito Royeca on 23/10/2018.
 //
 //
 
@@ -10,10 +10,10 @@ import Foundation
 import CoreData
 
 
-extension CMLayout {
+extension CMCardBorderColor {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMLayout> {
-        return NSFetchRequest<CMLayout>(entityName: "CMLayout")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMCardBorderColor> {
+        return NSFetchRequest<CMCardBorderColor>(entityName: "CMCardBorderColor")
     }
 
     @NSManaged public var name: String?
@@ -22,7 +22,7 @@ extension CMLayout {
 }
 
 // MARK: Generated accessors for cards
-extension CMLayout {
+extension CMCardBorderColor {
 
     @objc(addCardsObject:)
     @NSManaged public func addToCards(_ value: CMCard)

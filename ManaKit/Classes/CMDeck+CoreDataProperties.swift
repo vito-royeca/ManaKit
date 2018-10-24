@@ -1,8 +1,8 @@
 //
 //  CMDeck+CoreDataProperties.swift
-//  ManaKit
+//  Pods
 //
-//  Created by Jovito Royeca on 23.08.18.
+//  Created by Jovito Royeca on 23/10/2018.
 //
 //
 
@@ -19,18 +19,19 @@ extension CMDeck {
     @NSManaged public var colors: String?
     @NSManaged public var createdOn: NSDate?
     @NSManaged public var description_: String?
+    @NSManaged public var id: String?
+    @NSManaged public var mainboard: Int32
     @NSManaged public var name: String?
     @NSManaged public var nameSection: String?
     @NSManaged public var originalCreator: String?
+    @NSManaged public var sideboard: Int32
     @NSManaged public var updatedOn: NSDate?
+    @NSManaged public var views: Int64
+    @NSManaged public var cards: NSSet?
     @NSManaged public var format: CMFormat?
     @NSManaged public var heroCard: CMCard?
-    @NSManaged public var mainboard: Int32
     @NSManaged public var pricing: CMCardPricing?
-    @NSManaged public var sideboard: Int32
-    @NSManaged public var views: Int64
     @NSManaged public var user: CMUser?
-    @NSManaged public var cards: NSSet?
 
 }
 

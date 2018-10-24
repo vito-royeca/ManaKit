@@ -20,7 +20,7 @@ class SetsViewModel: NSObject {
     
     // MARK: Settings
     private let _sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
-    private var _sectionName = "nameSection"
+    private var _sectionName = "myNameSection"
     
     // MARK: UITableView methods
     func numberOfRows(inSection section: Int) -> Int {
@@ -136,7 +136,7 @@ class SetsViewModel: NSObject {
         _sectionTitles = [String]()
         
         for set in sets {
-            if let nameSection = set.nameSection {
+            if let nameSection = set.myNameSection {
                 if !_sectionIndexTitles.contains(nameSection) {
                     _sectionIndexTitles.append(nameSection)
                 }

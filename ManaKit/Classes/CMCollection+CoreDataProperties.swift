@@ -1,8 +1,8 @@
 //
 //  CMCollection+CoreDataProperties.swift
-//  ManaKit
+//  Pods
 //
-//  Created by Jovito Royeca on 10.10.18.
+//  Created by Jovito Royeca on 23/10/2018.
 //
 //
 

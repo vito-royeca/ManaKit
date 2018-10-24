@@ -1,8 +1,8 @@
 //
-//  CMBlock+CoreDataProperties.swift
+//  CMSetBlock+CoreDataProperties.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 15/04/2017.
+//  Created by Jovito Royeca on 23/10/2018.
 //
 //
 
@@ -10,19 +10,21 @@ import Foundation
 import CoreData
 
 
-extension CMBlock {
+extension CMSetBlock {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMBlock> {
-        return NSFetchRequest<CMBlock>(entityName: "CMBlock")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMSetBlock> {
+        return NSFetchRequest<CMSetBlock>(entityName: "CMSetBlock")
     }
 
+    @NSManaged public var code: String?
     @NSManaged public var name: String?
+    @NSManaged public var nameSection: String?
     @NSManaged public var sets: NSSet?
 
 }
 
 // MARK: Generated accessors for sets
-extension CMBlock {
+extension CMSetBlock {
 
     @objc(addSetsObject:)
     @NSManaged public func addToSets(_ value: CMSet)

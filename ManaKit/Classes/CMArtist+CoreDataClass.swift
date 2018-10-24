@@ -2,7 +2,7 @@
 //  CMArtist+CoreDataClass.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 15/04/2017.
+//  Created by Jovito Royeca on 23/10/2018.
 //
 //
 

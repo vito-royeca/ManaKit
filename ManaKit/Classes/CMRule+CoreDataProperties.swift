@@ -1,8 +1,8 @@
 //
 //  CMRule+CoreDataProperties.swift
-//  
+//  Pods
 //
-//  Created by Jovito Royeca on 06/08/2017.
+//  Created by Jovito Royeca on 23/10/2018.
 //
 //
 
@@ -16,13 +16,12 @@ extension CMRule {
         return NSFetchRequest<CMRule>(entityName: "CMRule")
     }
 
-    
     @NSManaged public var definition: String?
     @NSManaged public var order: Double
     @NSManaged public var term: String?
     @NSManaged public var termSection: String?
-    @NSManaged public var parent: CMRule?
     @NSManaged public var children: NSSet?
+    @NSManaged public var parent: CMRule?
 
 }
 

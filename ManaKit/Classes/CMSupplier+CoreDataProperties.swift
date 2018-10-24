@@ -1,8 +1,8 @@
 //
 //  CMSupplier+CoreDataProperties.swift
-//  ManaKit
+//  Pods
 //
-//  Created by Jovito Royeca on 17/06/2018.
+//  Created by Jovito Royeca on 23/10/2018.
 //
 //
 
@@ -22,6 +22,6 @@ extension CMSupplier {
     @NSManaged public var name: String?
     @NSManaged public var price: Double
     @NSManaged public var qty: Int32
-    @NSManaged public var card: CMCard?
+    @NSManaged public var storePricing: CMStorePricing?
 
 }

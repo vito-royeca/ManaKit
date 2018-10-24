@@ -168,7 +168,7 @@ public class CardTableViewCell: UITableViewCell {
 
         // type symbol
         var cardType: CMCardType?
-        if let types = card.types_ {
+        if let types = card.mtgjsonTypes {
             if types.count > 1 {
                 symbolImage.image = ManaKit.sharedInstance.symbolImage(name: "Multiple")
                 cardType = types.allObjects.first as? CMCardType
@@ -194,7 +194,7 @@ public class CardTableViewCell: UITableViewCell {
         }
         
         // type
-        if let type = card.type_,
+        if let type = card.typeLine,
             let cardType = cardType {
             var typeText = ""
             
@@ -215,7 +215,7 @@ public class CardTableViewCell: UITableViewCell {
         // pricing
         var willFetchPricing = false
         if let set = card.set {
-            willFetchPricing = !set.onlineOnly
+            willFetchPricing = !set.isOnlineOnly
         }
         if willFetchPricing {
             firstly {

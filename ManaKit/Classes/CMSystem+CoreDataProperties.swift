@@ -1,8 +1,8 @@
 //
 //  CMSystem+CoreDataProperties.swift
-//  
+//  Pods
 //
-//  Created by Jovito Royeca on 08/12/2017.
+//  Created by Jovito Royeca on 23/10/2018.
 //
 //
 
@@ -11,12 +11,13 @@ import CoreData
 
 
 extension CMSystem {
+
     @nonobjc public class func fetchRequest() -> NSFetchRequest<CMSystem> {
         return NSFetchRequest<CMSystem>(entityName: "CMSystem")
     }
-    
-    @NSManaged public var version: String?
+
     @NSManaged public var date: NSDate?
     @NSManaged public var description_: String?
+    @NSManaged public var version: String?
 
 }

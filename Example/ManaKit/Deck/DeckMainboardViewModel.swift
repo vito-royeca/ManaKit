@@ -163,9 +163,10 @@ class DeckMainboardViewModel: NSObject {
         
         for cardInventory in cardInventories {
             if let card = cardInventory.card,
-                let typeSection = card.typeSection {
-                if !_sectionIndexTitles.contains(typeSection) {
-                    _sectionIndexTitles.append(typeSection)
+                let type = card.typeLine,
+                let nameSection = type.nameSection {
+                if !_sectionIndexTitles.contains(nameSection) {
+                    _sectionIndexTitles.append(nameSection)
                 }
             }
         }

@@ -151,7 +151,7 @@ class DatabaseMaintainer: NSObject {
 
                                 // sets
                                 var tmpDateStart = Date()
-                                self.updateSets()
+//                                self.updateSets()
                                 dateEnd = Date()
                                 timeDifference = dateEnd.timeIntervalSince(tmpDateStart)
                                 print("Time Elapsed: \(tmpDateStart) - \(dateEnd) = \(self.format(timeDifference))")
@@ -321,97 +321,86 @@ class DatabaseMaintainer: NSObject {
         
     }
     
-    public func updateSets() {
-        let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
-        
-        guard let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) else {
-            return
-        }
-        
-        print("Updating sets: \(sets.count)")
-        for set in sets {
-            // border
-            if let border = set.border {
-                let objectFinder = ["name": border] as [String: AnyObject]
-                if let object = ManaKit.sharedInstance.findObject("CMBorder", objectFinder: objectFinder, createIfNotFound: true) as? CMBorder {
-                    object.name = border
-                    set.border = nil
-                    set.border_ = object
-                }
-            }
-            
-            // type
-            if let type = set.type {
-                let objectFinder = ["name": type] as [String: AnyObject]
-                if let object = ManaKit.sharedInstance.findObject("CMSetType", objectFinder: objectFinder, createIfNotFound: true) as? CMSetType {
-                    object.name = type
-                    set.type = nil
-                    set.type_ = object
-                }
-            }
-            
-            // block
-            if let block = set.block {
-                let objectFinder = ["name": block] as [String: AnyObject]
-                if let object = ManaKit.sharedInstance.findObject("CMBlock", objectFinder: objectFinder, createIfNotFound: true) as? CMBlock {
-                    object.name = block
-                    set.block = nil
-                    set.block_ = object
-                }
-            }
-            
-            // booster
-            if let booster = set.booster {
-                if let boosterArray = NSKeyedUnarchiver.unarchiveObject(with: booster as Data) as? [String] {
-                    var boosterDict = [CMBooster: Int]()
-                    
-                    for booster in boosterArray {
-                        let objectFinder = ["name": booster] as [String: AnyObject]
-                        if let object = ManaKit.sharedInstance.findObject("CMBooster", objectFinder: objectFinder, createIfNotFound: true) as? CMBooster {
-                            object.name = booster
-                            
-                            if let value = boosterDict[object] {
-                                boosterDict[object] = value + 1
-                            } else {
-                                boosterDict[object] = 1
-                            }
-                        }
-                    }
-                    
-                    for (key,value) in boosterDict {
-                        if let object = ManaKit.sharedInstance.findObject("CMSetBooster", objectFinder: nil, createIfNotFound: true) as? CMSetBooster {
-                            object.booster = key
-                            object.set = set
-                            object.count = Int32(value)
-                            object.id = Int64("\(key)_\(set.code!)_\(value)".hashValue)
-                        }
-                    }
-                }
-                
-                set.booster = nil
-            }
-            
-            // nameSection
-            let letters = CharacterSet.letters
-            var prefix = String(set.name!.prefix(1))
-            if prefix.rangeOfCharacter(from: letters) == nil {
-                prefix = "#"
-            }
-            set.nameSection = prefix.uppercased().folding(options: .diacriticInsensitive, locale: .current)
-            
-            // typeSection
-            prefix = String(set.type_!.name!.prefix(1))
-            let rest = String(set.type_!.name!.dropFirst())
-            set.typeSection = "\(prefix.uppercased())\(rest)"
-            
-            // yearSection
-            prefix = String(set.releaseDate!.prefix(4))
-            set.yearSection = prefix
-            
-            try! ManaKit.sharedInstance.dataStack?.mainContext.save()
-        }
-        
-    }
+//    public func updateSets() {
+//        let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
+//
+//        guard let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) else {
+//            return
+//        }
+//
+//        print("Updating sets: \(sets.count)")
+//        for set in sets {
+//            // setType
+//            if let type = set.type {
+//                let objectFinder = ["name": type] as [String: AnyObject]
+//                if let object = ManaKit.sharedInstance.findObject("CMSetType", objectFinder: objectFinder, createIfNotFound: true) as? CMSetType {
+//                    object.name = type
+//                    set.setType = object
+//                }
+//            }
+//
+//            // block
+//            if let block = set.block {
+//                let objectFinder = ["name": block] as [String: AnyObject]
+//                if let object = ManaKit.sharedInstance.findObject("CMBlock", objectFinder: objectFinder, createIfNotFound: true) as? CMBlock {
+//                    object.name = block
+//                    set.block = nil
+//                    set.block_ = object
+//                }
+//            }
+//
+//            // booster
+//            if let booster = set.booster {
+//                if let boosterArray = NSKeyedUnarchiver.unarchiveObject(with: booster as Data) as? [String] {
+//                    var boosterDict = [CMBooster: Int]()
+//
+//                    for booster in boosterArray {
+//                        let objectFinder = ["name": booster] as [String: AnyObject]
+//                        if let object = ManaKit.sharedInstance.findObject("CMBooster", objectFinder: objectFinder, createIfNotFound: true) as? CMBooster {
+//                            object.name = booster
+//
+//                            if let value = boosterDict[object] {
+//                                boosterDict[object] = value + 1
+//                            } else {
+//                                boosterDict[object] = 1
+//                            }
+//                        }
+//                    }
+//
+//                    for (key,value) in boosterDict {
+//                        if let object = ManaKit.sharedInstance.findObject("CMSetBooster", objectFinder: nil, createIfNotFound: true) as? CMSetBooster {
+//                            object.booster = key
+//                            object.set = set
+//                            object.count = Int32(value)
+//                            object.id = Int64("\(key)_\(set.code!)_\(value)".hashValue)
+//                        }
+//                    }
+//                }
+//
+//                set.booster = nil
+//            }
+//
+//            // nameSection
+//            let letters = CharacterSet.letters
+//            var prefix = String(set.name!.prefix(1))
+//            if prefix.rangeOfCharacter(from: letters) == nil {
+//                prefix = "#"
+//            }
+//            set.nameSection = prefix.uppercased().folding(options: .diacriticInsensitive, locale: .current)
+//
+//            // typeSection
+//            prefix = String(set.type_!.name!.prefix(1))
+//            let rest = String(set.type_!.name!.dropFirst())
+//            set.typeSection = "\(prefix.uppercased())\(rest)"
+//
+//            // yearSection
+//            prefix = String(set.releaseDate!.prefix(4))
+//            set.yearSection = prefix
+//
+//            try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+//        }
+//
+//    }
     
     public func updateCards() {
         let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
@@ -423,25 +412,23 @@ class DatabaseMaintainer: NSObject {
         
         let letters = CharacterSet.letters
         var cachedLayouts = [CMLayout]()
-        var cachedColors = [CMColor]()
+        var cachedColors = [CMCardColor]()
         var cachedCardTypes = [CMCardType]()
         var cachedRarities = [CMRarity]()
         var cachedArtists = [CMArtist]()
-        var cachedWatermarks = [CMWatermark]()
-        var cachedBorders = [CMBorder]()
         
         var count = 0
         print("Updating cards: \(count)/\(cards.count) \(Date())")
         
         for card in cards {
-            // id
-            let cardID = "\(card.set!.code!)_\(card.name!)_\(card.imageName!)".replacingOccurrences(of: ".", with: "-")
-            card.id = cardID
+            // firebaseID
+//            let cardID = "\(card.set!.code!)_\(card.name!)_\(card.imageName!)".replacingOccurrences(of: ".", with: "-")
+//            card.id = cardID
             
             // layout
             if let layout = card.layout {
                 if let object = cachedLayouts.first(where: { $0.name == layout }) {
-                    card.layout_ = object
+                    card.layout = object
                 } else {
                     let objectFinder = ["name": layout] as [String: AnyObject]
                     if let object = ManaKit.sharedInstance.findObject("CMLayout", objectFinder: objectFinder, createIfNotFound: true) as? CMLayout {
@@ -900,78 +887,6 @@ class DatabaseMaintainer: NSObject {
         }
     }
 
-    // MARK: Core Data updates 2
-    func updateForeignNames() {
-        dateStart = Date()
-        
-        let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
-        let predicate = NSPredicate(format: "foreignNames != nil")
-        let sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
-                               NSSortDescriptor(key: "name", ascending: true)]
-        request.predicate = predicate
-        request.sortDescriptors = sortDescriptors
-        
-        guard let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) else {
-            return
-        }
-        
-        
-        var cachedLanguages = [CMLanguage]()
-        var count = 0
-        
-        print("Updating foreign names: \(count)/\(cards.count) \(Date())")
-        for card in cards {
-            if let foreignNames = card.foreignNames {
-                let foreignNames_ = card.mutableSetValue(forKey: "foreignNames_")
-                
-                if let foreignNamesArray = NSKeyedUnarchiver.unarchiveObject(with: foreignNames as Data) as? [[String: AnyObject]] {
-                    for foreignName in foreignNamesArray {
-                        var language:CMLanguage?
-                        let name = foreignName["language"] as! String
-                        
-                        if let object = cachedLanguages.first(where: { $0.name == name }) {
-                            language = object
-                        } else {
-                            let objectFinder = ["name": name] as [String: AnyObject]
-                            if let object = ManaKit.sharedInstance.findObject("CMLanguage", objectFinder: objectFinder, createIfNotFound: true) as? CMLanguage {
-                                object.name = name
-                                language = object
-                                cachedLanguages.append(language!)
-                            }
-                        }
-                        
-                        if let object = ManaKit.sharedInstance.findObject("CMForeignName", objectFinder: nil, createIfNotFound: true) as? CMForeignName {
-                            object.name = foreignName["name"] as? String
-                            object.language = language
-                            object.card = card
-                            
-                            var id = "\(card.id!)_\(object.name!)_\(object.language!.name!)"
-                            if let multiverseid = foreignName["multiverseid"] as? String {
-                                object.multiverseid = Int64(multiverseid)!
-                                id += "_\(multiverseid)"
-                            }
-                            object.id = Int64(id.hashValue)
-                            foreignNames_.add(object)
-                        }
-                    }
-                }
-                
-                card.foreignNames = nil
-                try! ManaKit.sharedInstance.dataStack?.mainContext.save()
-            }
-            
-            count += 1
-            if count % printMilestone == 0 {
-                print("Updating foreign names: \(count)/\(cards.count) \(Date())")
-            }
-        }
-        
-        let dateEnd = Date()
-        let timeDifference = dateEnd.timeIntervalSince(dateStart)
-        print("Total Time Elapsed: \(dateStart) - \(dateEnd) = \(self.format(timeDifference))")
-        print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
-    }
-    
     func updateLegalities() {
         dateStart = Date()
         

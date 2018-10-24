@@ -1,8 +1,8 @@
 //
 //  CMSupplier+CoreDataClass.swift
-//  ManaKit
+//  Pods
 //
-//  Created by Jovito Royeca on 17/06/2018.
+//  Created by Jovito Royeca on 23/10/2018.
 //
 //
 

@@ -38,11 +38,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        DatabaseMaintainer.sharedInstance.createSampleDecks()
 //        DatabaseMaintainer.sharedInstance.updateSystem()
 
+        let scryfall = ScryfallMaintainer()
+        let keyrune = KeyruneMaintainer()
+        let tcgplayer = TCGPlayerMaintainer()
+        let my = MyMaintainer()
+        
+//        scryfall.fetchSets()
+        scryfall.createCards()
+        
+//        keyrune.updateSetSymbols()
+//        tcgplayer.updateSetTcgPlayerNames()
+//        scryfall.updateCards()
+//        my.updateCards()
+        
           // Normal run
         ManaKit.sharedInstance.setupResources()
-        ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "ManaGuide",
-                                                  publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720",
-                                                  privateKey: nil)
+//        ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "ManaGuide",
+//                                                  publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720",
+//                                                  privateKey: nil)
 
         return true
     }

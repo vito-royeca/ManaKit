@@ -23,7 +23,13 @@ class SetsTableViewCell: UITableViewCell {
         didSet {
             logoLabel.text = ManaKit.sharedInstance.keyruneUnicode(forSet: set)
             nameLabel.text = set.name
-            codeLabel.text = set.code
+            var codeText = "\(set.parent != nil ? "\(set.parent!.code!) <-- " : "")\(set.code!)"
+            if let tcgplayerName = set.tcgplayerName {
+               codeText = "\(codeText) = \(tcgplayerName)"
+            } else {
+               codeText = "\(codeText) = nil"
+            }
+            codeLabel.text = codeText
         }
     }
     

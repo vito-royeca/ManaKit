@@ -1,8 +1,8 @@
 //
 //  CMUser+CoreDataProperties.swift
-//  ManaKit
+//  Pods
 //
-//  Created by Jovito Royeca on 23.08.18.
+//  Created by Jovito Royeca on 23/10/2018.
 //
 //
 
@@ -21,8 +21,8 @@ extension CMUser {
     @NSManaged public var id: String?
     @NSManaged public var decks: NSSet?
     @NSManaged public var favorites: NSSet?
-    @NSManaged public var ratings: NSSet?
     @NSManaged public var lists: NSSet?
+    @NSManaged public var ratings: NSSet?
 
 }
 
@@ -60,23 +60,6 @@ extension CMUser {
 
 }
 
-// MARK: Generated accessors for favorites
-extension CMUser {
-    
-    @objc(addRatingsObject:)
-    @NSManaged public func addToRatings(_ value: CMCardRating)
-    
-    @objc(removeRatingsObject:)
-    @NSManaged public func removeFromRatings(_ value: CMCardRating)
-    
-    @objc(addRatings:)
-    @NSManaged public func addToRatings(_ values: NSSet)
-    
-    @objc(removeRatings:)
-    @NSManaged public func removeFromRatings(_ values: NSSet)
-    
-}
-
 // MARK: Generated accessors for lists
 extension CMUser {
 
@@ -91,5 +74,22 @@ extension CMUser {
 
     @objc(removeLists:)
     @NSManaged public func removeFromLists(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for ratings
+extension CMUser {
+
+    @objc(addRatingsObject:)
+    @NSManaged public func addToRatings(_ value: CMCardRating)
+
+    @objc(removeRatingsObject:)
+    @NSManaged public func removeFromRatings(_ value: CMCardRating)
+
+    @objc(addRatings:)
+    @NSManaged public func addToRatings(_ values: NSSet)
+
+    @objc(removeRatings:)
+    @NSManaged public func removeFromRatings(_ values: NSSet)
 
 }

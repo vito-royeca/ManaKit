@@ -1,8 +1,8 @@
 //
-//  CMWatermark+CoreDataProperties.swift
+//  CMCardLayout+CoreDataProperties.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 15/04/2017.
+//  Created by Jovito Royeca on 23/10/2018.
 //
 //
 
@@ -10,10 +10,10 @@ import Foundation
 import CoreData
 
 
-extension CMWatermark {
+extension CMCardLayout {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMWatermark> {
-        return NSFetchRequest<CMWatermark>(entityName: "CMWatermark")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMCardLayout> {
+        return NSFetchRequest<CMCardLayout>(entityName: "CMCardLayout")
     }
 
     @NSManaged public var name: String?
@@ -22,7 +22,7 @@ extension CMWatermark {
 }
 
 // MARK: Generated accessors for cards
-extension CMWatermark {
+extension CMCardLayout {
 
     @objc(addCardsObject:)
     @NSManaged public func addToCards(_ value: CMCard)

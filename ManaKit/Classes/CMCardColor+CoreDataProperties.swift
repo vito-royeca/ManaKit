@@ -1,8 +1,8 @@
 //
-//  CMColor+CoreDataProperties.swift
+//  CMCardColor+CoreDataProperties.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 15/04/2017.
+//  Created by Jovito Royeca on 23/10/2018.
 //
 //
 
@@ -10,21 +10,22 @@ import Foundation
 import CoreData
 
 
-extension CMColor {
+extension CMCardColor {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMColor> {
-        return NSFetchRequest<CMColor>(entityName: "CMColor")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMCardColor> {
+        return NSFetchRequest<CMCardColor>(entityName: "CMCardColor")
     }
 
     @NSManaged public var name: String?
     @NSManaged public var symbol: String?
     @NSManaged public var cardColors: NSSet?
     @NSManaged public var cardIdentities: NSSet?
+    @NSManaged public var cardIndicators: NSSet?
 
 }
 
 // MARK: Generated accessors for cardColors
-extension CMColor {
+extension CMCardColor {
 
     @objc(addCardColorsObject:)
     @NSManaged public func addToCardColors(_ value: CMCard)
@@ -41,7 +42,7 @@ extension CMColor {
 }
 
 // MARK: Generated accessors for cardIdentities
-extension CMColor {
+extension CMCardColor {
 
     @objc(addCardIdentitiesObject:)
     @NSManaged public func addToCardIdentities(_ value: CMCard)
@@ -54,5 +55,22 @@ extension CMColor {
 
     @objc(removeCardIdentities:)
     @NSManaged public func removeFromCardIdentities(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for cardIndicators
+extension CMCardColor {
+
+    @objc(addCardIndicatorsObject:)
+    @NSManaged public func addToCardIndicators(_ value: CMCard)
+
+    @objc(removeCardIndicatorsObject:)
+    @NSManaged public func removeFromCardIndicators(_ value: CMCard)
+
+    @objc(addCardIndicators:)
+    @NSManaged public func addToCardIndicators(_ values: NSSet)
+
+    @objc(removeCardIndicators:)
+    @NSManaged public func removeFromCardIndicators(_ values: NSSet)
 
 }

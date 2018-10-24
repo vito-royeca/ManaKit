@@ -2,7 +2,7 @@
 //  CMSet+CoreDataProperties.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 15/04/2017.
+//  Created by Jovito Royeca on 23/10/2018.
 //
 //
 
@@ -16,29 +16,24 @@ extension CMSet {
         return NSFetchRequest<CMSet>(entityName: "CMSet")
     }
 
-    @NSManaged public var block: String?
-    @NSManaged public var booster: Data?
-    @NSManaged public var border: String?
+    @NSManaged public var cardCount: Int32
     @NSManaged public var code: String?
-    @NSManaged public var gathererCode: String?
-    @NSManaged public var keyruneCode: String?
-    @NSManaged public var magicCardsInfoCode: String?
+    @NSManaged public var isFoilOnly: Bool
+    @NSManaged public var isOnlineOnly: Bool
+    @NSManaged public var myKeyruneCode: String?
+    @NSManaged public var mtgoCode: String?
     @NSManaged public var name: String?
-    @NSManaged public var nameSection: String?
-    @NSManaged public var oldCode: String?
-    @NSManaged public var onlineOnly: Bool
+    @NSManaged public var myNameSection: String?
     @NSManaged public var releaseDate: String?
-    @NSManaged public var scryfallCode: String?
-    @NSManaged public var tcgPlayerName: String?
-    @NSManaged public var type: String?
-    @NSManaged public var block_: CMBlock?
-    @NSManaged public var border_: CMBorder?
+    @NSManaged public var myYearSection: String?
+    @NSManaged public var tcgplayerName: String?
+    @NSManaged public var block: CMSetBlock?
     @NSManaged public var cards: NSSet?
-    @NSManaged public var typeSection: String?
-    @NSManaged public var yearSection: String?
-    @NSManaged public var printings_: NSSet?
-    @NSManaged public var setBoosters_: NSSet?
-    @NSManaged public var type_: CMSetType?
+    @NSManaged public var children: NSSet?
+    @NSManaged public var languages: NSSet?
+    @NSManaged public var parent: CMSet?
+    @NSManaged public var printings: NSSet?
+    @NSManaged public var setType: CMSetType?
 
 }
 
@@ -59,36 +54,53 @@ extension CMSet {
 
 }
 
-// MARK: Generated accessors for printings_
+// MARK: Generated accessors for children
 extension CMSet {
 
-    @objc(addPrintings_Object:)
-    @NSManaged public func addToPrintings_(_ value: CMCard)
+    @objc(addChildrenObject:)
+    @NSManaged public func addToChildren(_ value: CMSet)
 
-    @objc(removePrintings_Object:)
-    @NSManaged public func removeFromPrintings_(_ value: CMCard)
+    @objc(removeChildrenObject:)
+    @NSManaged public func removeFromChildren(_ value: CMSet)
 
-    @objc(addPrintings_:)
-    @NSManaged public func addToPrintings_(_ values: NSSet)
+    @objc(addChildren:)
+    @NSManaged public func addToChildren(_ values: NSSet)
 
-    @objc(removePrintings_:)
-    @NSManaged public func removeFromPrintings_(_ values: NSSet)
+    @objc(removeChildren:)
+    @NSManaged public func removeFromChildren(_ values: NSSet)
 
 }
 
-// MARK: Generated accessors for setBoosters_
+// MARK: Generated accessors for languages
 extension CMSet {
 
-    @objc(addSetBoosters_Object:)
-    @NSManaged public func addToSetBoosters_(_ value: CMSetBooster)
+    @objc(addLanguagesObject:)
+    @NSManaged public func addToLanguages(_ value: CMLanguage)
 
-    @objc(removeSetBoosters_Object:)
-    @NSManaged public func removeFromSetBoosters_(_ value: CMSetBooster)
+    @objc(removeLanguagesObject:)
+    @NSManaged public func removeFromLanguages(_ value: CMLanguage)
 
-    @objc(addSetBoosters_:)
-    @NSManaged public func addToSetBoosters_(_ values: NSSet)
+    @objc(addLanguages:)
+    @NSManaged public func addToLanguages(_ values: NSSet)
 
-    @objc(removeSetBoosters_:)
-    @NSManaged public func removeFromSetBoosters_(_ values: NSSet)
+    @objc(removeLanguages:)
+    @NSManaged public func removeFromLanguages(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for printings
+extension CMSet {
+
+    @objc(addPrintingsObject:)
+    @NSManaged public func addToPrintings(_ value: CMCard)
+
+    @objc(removePrintingsObject:)
+    @NSManaged public func removeFromPrintings(_ value: CMCard)
+
+    @objc(addPrintings:)
+    @NSManaged public func addToPrintings(_ values: NSSet)
+
+    @objc(removePrintings:)
+    @NSManaged public func removeFromPrintings(_ values: NSSet)
 
 }
