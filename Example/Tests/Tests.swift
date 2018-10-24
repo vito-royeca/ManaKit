@@ -40,8 +40,10 @@ class Tests: XCTestCase {
             firstly {
                 ManaKit.sharedInstance.fetchTCGPlayerStorePricing(card: card)
             }.done {
-                if let suppliers = card.suppliers {
-                    for supplier in suppliers.allObjects {
+                if let storePricing = card.tcgplayerStorePricing,
+                    let suppliers = storePricing.suppliers,
+                    let array = suppliers.allObjects as? [CMSupplier] {
+                    for supplier in array {
                         print("\(supplier)")
                     }
                 }

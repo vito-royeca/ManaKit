@@ -1,8 +1,8 @@
 //
 //  CMCardPricing+CoreDataClass.swift
-//  
+//  Pods
 //
-//  Created by Jovito Royeca on 04/11/2017.
+//  Created by Jovito Royeca on 23/10/2018.
 //
 //
 

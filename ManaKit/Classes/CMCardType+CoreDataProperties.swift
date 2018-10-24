@@ -2,7 +2,7 @@
 //  CMCardType+CoreDataProperties.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 15/04/2017.
+//  Created by Jovito Royeca on 23/10/2018.
 //
 //
 
@@ -17,10 +17,30 @@ extension CMCardType {
     }
 
     @NSManaged public var name: String?
+    @NSManaged public var nameSection: String?
+    @NSManaged public var cardOriginalTypes: NSSet?
     @NSManaged public var cards: NSSet?
     @NSManaged public var cardSubtypes: NSSet?
     @NSManaged public var cardSupertypes: NSSet?
     @NSManaged public var cardTypes: NSSet?
+    @NSManaged public var cardPrintedTypes: CMCard?
+
+}
+
+// MARK: Generated accessors for cardOriginalTypes
+extension CMCardType {
+
+    @objc(addCardOriginalTypesObject:)
+    @NSManaged public func addToCardOriginalTypes(_ value: CMCard)
+
+    @objc(removeCardOriginalTypesObject:)
+    @NSManaged public func removeFromCardOriginalTypes(_ value: CMCard)
+
+    @objc(addCardOriginalTypes:)
+    @NSManaged public func addToCardOriginalTypes(_ values: NSSet)
+
+    @objc(removeCardOriginalTypes:)
+    @NSManaged public func removeFromCardOriginalTypes(_ values: NSSet)
 
 }
 

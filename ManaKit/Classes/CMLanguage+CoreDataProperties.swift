@@ -2,7 +2,7 @@
 //  CMLanguage+CoreDataProperties.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 15/04/2017.
+//  Created by Jovito Royeca on 23/10/2018.
 //
 //
 
@@ -16,24 +16,43 @@ extension CMLanguage {
         return NSFetchRequest<CMLanguage>(entityName: "CMLanguage")
     }
 
+    @NSManaged public var code: String?
     @NSManaged public var name: String?
-    @NSManaged public var foreignNames: NSSet?
+    @NSManaged public var cards: NSSet?
+    @NSManaged public var sets: NSSet?
 
 }
 
-// MARK: Generated accessors for foreignNames
+// MARK: Generated accessors for cards
 extension CMLanguage {
 
-    @objc(addForeignNamesObject:)
-    @NSManaged public func addToForeignNames(_ value: CMForeignName)
+    @objc(addCardsObject:)
+    @NSManaged public func addToCards(_ value: CMCard)
 
-    @objc(removeForeignNamesObject:)
-    @NSManaged public func removeFromForeignNames(_ value: CMForeignName)
+    @objc(removeCardsObject:)
+    @NSManaged public func removeFromCards(_ value: CMCard)
 
-    @objc(addForeignNames:)
-    @NSManaged public func addToForeignNames(_ values: NSSet)
+    @objc(addCards:)
+    @NSManaged public func addToCards(_ values: NSSet)
 
-    @objc(removeForeignNames:)
-    @NSManaged public func removeFromForeignNames(_ values: NSSet)
+    @objc(removeCards:)
+    @NSManaged public func removeFromCards(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for sets
+extension CMLanguage {
+
+    @objc(addSetsObject:)
+    @NSManaged public func addToSets(_ value: CMSet)
+
+    @objc(removeSetsObject:)
+    @NSManaged public func removeFromSets(_ value: CMSet)
+
+    @objc(addSets:)
+    @NSManaged public func addToSets(_ values: NSSet)
+
+    @objc(removeSets:)
+    @NSManaged public func removeFromSets(_ values: NSSet)
 
 }

@@ -1,8 +1,8 @@
 //
 //  CMRule+CoreDataClass.swift
-//  
+//  Pods
 //
-//  Created by Jovito Royeca on 06/08/2017.
+//  Created by Jovito Royeca on 23/10/2018.
 //
 //
 

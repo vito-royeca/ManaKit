@@ -2,7 +2,7 @@
 //  CMFormat+CoreDataProperties.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 15/04/2017.
+//  Created by Jovito Royeca on 23/10/2018.
 //
 //
 
@@ -19,6 +19,7 @@ extension CMFormat {
     @NSManaged public var name: String?
     @NSManaged public var nameSection: String?
     @NSManaged public var cardLegalities: NSSet?
+    @NSManaged public var decks: NSSet?
 
 }
 
@@ -36,5 +37,22 @@ extension CMFormat {
 
     @objc(removeCardLegalities:)
     @NSManaged public func removeFromCardLegalities(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for decks
+extension CMFormat {
+
+    @objc(addDecksObject:)
+    @NSManaged public func addToDecks(_ value: CMDeck)
+
+    @objc(removeDecksObject:)
+    @NSManaged public func removeFromDecks(_ value: CMDeck)
+
+    @objc(addDecks:)
+    @NSManaged public func addToDecks(_ values: NSSet)
+
+    @objc(removeDecks:)
+    @NSManaged public func removeFromDecks(_ values: NSSet)
 
 }

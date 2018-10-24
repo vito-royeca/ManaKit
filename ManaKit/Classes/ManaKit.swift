@@ -19,7 +19,7 @@ public class ManaKit: NSObject {
     public enum Constants {
         public static let MTGJSONVersion      = "3.19.2 E"
         public static let MTGJSONDate         = "Sep 26, 2018"
-        public static let KeyruneVersion      = "3.3.0"
+        public static let KeyruneVersion      = "3.3.1"
         public static let EightEditionRelease = "2003-07-28"
         public static let TCGPlayerPricingAge = 24 * 3 // 3 days
     }
@@ -116,7 +116,7 @@ public class ManaKit: NSObject {
     }
     
     public func setupResources() {
-        copyDatabaseFile()
+//        copyDatabaseFile()
         loadCustomFonts()
     }
     
@@ -301,7 +301,7 @@ public class ManaKit: NSObject {
                             let imageCache = SDImageCache.init()
                             imageCache.store(image, forKey: cacheKey, toDisk: true, completion: {
                                 if imageType == .artCrop {
-                                    if let _ = card.scryfallId {
+                                    if let _ = card.imageURIs {
                                         seal.fulfill(())
                                     } else {
                                         let _ = self.crop(image, ofCard: card)
@@ -361,7 +361,7 @@ public class ManaKit: NSObject {
         var willGetFromCache = false
         
         if imageType == .artCrop {
-            if let _ = card.scryfallId {
+            if let _ = card.imageURIs {
                 willGetFromCache = true
             } else {
                 cardImage = croppedImage(card)
@@ -404,7 +404,7 @@ public class ManaKit: NSObject {
     public func croppedImage(_ card: CMCard) -> UIImage? {
         var image: UIImage?
         
-        if let _ = card.scryfallId {
+        if let _ = card.imageURIs {
             image = cardImage(card, imageType: .artCrop)
         } else {
             guard let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first,
@@ -428,20 +428,12 @@ public class ManaKit: NSObject {
         var urlString: String?
         
         
-        if let imageURIs = card.imageURIs {
-            if let dict = NSKeyedUnarchiver.unarchiveObject(with: imageURIs) as? [String: String] {
-                urlString = dict[imageType.description]
-            }
+        if let imageURIs = card.imageUris,
+            let dict = NSKeyedUnarchiver.unarchiveObject(with: imageURIs as Data) as? [String: String] {
+            
+            urlString = dict[imageType.description]
         } else {
-            if card.multiverseid == 0 {
-                if let set = card.set,
-                    let magicCardsInfoCode = set.magicCardsInfoCode,
-                    let number = card.mciNumber ?? card.number {
-                    urlString = "http://magiccards.info/scans/en/\(magicCardsInfoCode.lowercased())/\(number).jpg"
-                }
-            } else {
-                urlString = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=\(card.multiverseid)&type=card"
-            }
+//            urlString = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=\(card.multiverseIds.first!)&type=card"
         }
         
         if let urlString = urlString {
@@ -503,7 +495,8 @@ public class ManaKit: NSObject {
             
             if willFetch {
                 guard let tcgPlayerPartnerKey = tcgPlayerPartnerKey,
-                    let tcgPlayerSetName = card.set?.tcgPlayerName,
+                    let set = card.set,
+                    let tcgPlayerSetName = set.tcgplayerName,
                     let cardName = card.name,
                     let urlString = "http://partner.tcgplayer.com/x3/phl.asmx/p?pk=\(tcgPlayerPartnerKey)&s=\(tcgPlayerSetName)&p=\(cardName)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                     let url = URL(string: urlString) else {
@@ -553,19 +546,22 @@ public class ManaKit: NSObject {
     
     public func fetchTCGPlayerStorePricing(card: CMCard) -> Promise<Void> {
         return Promise { seal  in
-            var willFetch = false
+            var willFetch = true
             
-            if let lastUpdate = card.storePricingLastUpdate {
-                if let diff = Calendar.current.dateComponents([.hour], from: lastUpdate as Date, to: Date()).hour, diff >= Constants.TCGPlayerPricingAge {
-                    willFetch = true
+            if let storePricing = card.tcgplayerStorePricing {
+                if let lastUpdate = storePricing.lastUpdate {
+                    if let diff = Calendar.current.dateComponents([.hour], from: lastUpdate as Date, to: Date()).hour {
+                        if diff <= Constants.TCGPlayerPricingAge {
+                            willFetch = false
+                        }
+                    }
                 }
-            } else {
-                willFetch = true
             }
             
             if willFetch {
                 guard let tcgPlayerPartnerKey = tcgPlayerPartnerKey,
-                    let tcgPlayerSetName = card.set?.tcgPlayerName,
+                    let set = card.set,
+                    let tcgPlayerSetName = set.tcgplayerName,
                     let cardName = card.name,
                     let urlString = "http://partner.tcgplayer.com/x3/pv.asmx/p?pk=\(tcgPlayerPartnerKey)&s=\(tcgPlayerSetName)&p=\(cardName)&v=8".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                     let url = URL(string: urlString) else {
@@ -574,13 +570,26 @@ public class ManaKit: NSObject {
                     return
                 }
 
-                // remove existing supplier, if there is any
-                let suppliers = card.mutableSetValue(forKey: "suppliers")
-                for supplier in suppliers {
-                    suppliers.remove(supplier)
+                // cleanup existing storePricing, if there is any
+                var storePricing: CMStorePricing?
+                if let sp = card.tcgplayerStorePricing {
+                    let suppliers = sp.mutableSetValue(forKey: "suppliers")
+                    for supplier in suppliers {
+                        suppliers.remove(supplier)
+                    }
+                    sp.notes = nil
+                    sp.lastUpdate = nil
+                    storePricing = sp
+                } else {
+                    if let desc = NSEntityDescription.entity(forEntityName: "CMStorePricing", in: dataStack!.mainContext),
+                        let sp = NSManagedObject(entity: desc, insertInto: dataStack?.mainContext) as? CMStorePricing {
+                        
+                        sp.addToCards(card)
+                        storePricing = sp
+                    }
                 }
                 try! dataStack?.mainContext.save()
-            
+                
                 var rq = URLRequest(url: url)
                 rq.httpMethod = "GET"
             
@@ -597,23 +606,22 @@ public class ManaKit: NSObject {
                             let link = supplier.xpath("link").first?.text {
                             
                             let id = "\(name)_\(condition)_\(qty)_\(price)"
-                            if let supplier = self.findObject("CMSupplier", objectFinder: ["id": id as AnyObject], createIfNotFound: true) as? CMSupplier {
+                            if let sup = self.findObject("CMSupplier", objectFinder: ["id": id as AnyObject], createIfNotFound: true) as? CMSupplier {
                             
-                                supplier.id = id
-                                supplier.name = name
-                                supplier.condition = condition
-                                supplier.qty = Int32(qty)!
-                                supplier.price = Double(price)!
-                                supplier.link = link
-                                supplier.card = card
-                                card.addToSuppliers(supplier)
+                                sup.id = id
+                                sup.name = name
+                                sup.condition = condition
+                                sup.qty = Int32(qty)!
+                                sup.price = Double(price)!
+                                sup.link = link
+                                storePricing!.addToSuppliers(sup)
                             }
                         }
                     }
                     if let note = xml.xpath("//note").first?.text {
-                        card.storePricingNote = note
+                        storePricing!.notes = note
                     }
-                    card.storePricingLastUpdate = Date()
+                    storePricing!.lastUpdate = NSDate()
                     
                     self.dataStack?.performInNewBackgroundContext { backgroundContext in
                         try! backgroundContext.save()
@@ -633,7 +641,7 @@ public class ManaKit: NSObject {
     public func keyruneUnicode(forSet set: CMSet) -> String? {
         var unicode:String?
         
-        if let keyruneCode = set.keyruneCode {
+        if let keyruneCode = set.myKeyruneCode {
             let charAsInt = Int(keyruneCode, radix: 16)!
             let uScalar = UnicodeScalar(charAsInt)!
             unicode = "\(uScalar)"
@@ -648,7 +656,7 @@ public class ManaKit: NSObject {
         
     public func keyruneColor(forCard card: CMCard) -> UIColor? {
         guard let set = card.set,
-            let rarity = card.rarity_ else {
+            let rarity = card.rarity else {
             return nil
         }
         
