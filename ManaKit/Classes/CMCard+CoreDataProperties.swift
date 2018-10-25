@@ -79,6 +79,8 @@ extension CMCard {
     @NSManaged public var rulings: NSSet?
     @NSManaged public var set: CMSet?
     @NSManaged public var tcgplayerStorePricing: CMStorePricing?
+    @NSManaged public var variations: NSSet?
+    @NSManaged public var otherPrintings: NSSet?
     @NSManaged public var mtgjsonSubtypes: NSSet?
     @NSManaged public var mtgjsonSupertypes: NSSet?
     @NSManaged public var typeLine: CMCardType?
@@ -343,4 +345,38 @@ extension CMCard {
     @objc(removeFirebaseUserRatings:)
     @NSManaged public func removeFromFirebaseUserRatings(_ values: NSSet)
 
+}
+
+// MARK: Generated accessors for variations
+extension CMCard {
+    
+    @objc(addVariationsObject:)
+    @NSManaged public func addToVariations(_ value: CMCard)
+    
+    @objc(removeVariationsObject:)
+    @NSManaged public func removeFromVariations(_ value: CMCard)
+    
+    @objc(addVariations:)
+    @NSManaged public func addToVariations(_ values: NSSet)
+    
+    @objc(removeVariations:)
+    @NSManaged public func removeFromVariations(_ values: NSSet)
+    
+}
+
+// MARK: Generated accessors for other printings
+extension CMCard {
+    
+    @objc(addOtherPrintingsObject:)
+    @NSManaged public func addToOtherPrintings(_ value: CMCard)
+    
+    @objc(removeOtherPrintingsObject:)
+    @NSManaged public func removeFromOtherPrintings(_ value: CMCard)
+    
+    @objc(addOtherPrintings:)
+    @NSManaged public func addToOtherPrintings(_ values: NSSet)
+    
+    @objc(removeOtherPrintings:)
+    @NSManaged public func removeFromOtherPrintings(_ values: NSSet)
+    
 }

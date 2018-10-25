@@ -18,7 +18,8 @@ class Maintainer: NSObject {
     var dateStart = Date()
     
     func startActivity(name: String) {
-        
+        dateStart = Date()
+        print("Starting \(name)...")
     }
     
     func endActivity() {
@@ -34,18 +35,14 @@ class Maintainer: NSObject {
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: request as! NSFetchRequest<NSFetchRequestResult>)
         try! ManaKit.sharedInstance.dataStack?.persistentStoreCoordinator.execute(deleteRequest, with: (ManaKit.sharedInstance.dataStack?.mainContext)!)
         
-        let objectFinder = ["version": ManaKit.Constants.MTGJSONVersion] as [String: AnyObject]
+        let objectFinder = ["version": ManaKit.Constants.ScryfallDate] as [String: AnyObject]
         guard let system = ManaKit.sharedInstance.findObject("CMSystem", objectFinder: objectFinder, createIfNotFound: true) as? CMSystem else {
             return
         }
         
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        
-        system.version = ManaKit.Constants.MTGJSONVersion
-        system.date = NSDate(timeIntervalSince1970: formatter.date(from: ManaKit.Constants.MTGJSONDate)!.timeIntervalSince1970)
+        system.version = ManaKit.Constants.ScryfallDate
+        system.date = NSDate()
         try! ManaKit.sharedInstance.dataStack?.mainContext.save()
-        
     }
     
     func sectionFor(name: String) -> String? {
@@ -63,19 +60,33 @@ class Maintainer: NSObject {
     
     func displayFor(name: String) -> String {
         var display = ""
+        let components = name.components(separatedBy: "_")
         
-        for e in name.components(separatedBy: "_") {
-            var cap = e
-            
-            if e != "the" || e != "a" || e != "an" || e != "and" {
-                cap = e.prefix(1).uppercased() + e.dropFirst()
+        if components.count > 1 {
+            for e in components {
+                var cap = e
+                
+                if e != "the" || e != "a" || e != "an" || e != "and" {
+                    cap = e.prefix(1).uppercased() + e.dropFirst()
+                }
+                if display.count > 0 {
+                    display.append(" ")
+                }
+                display.append(cap)
             }
-            if display.count > 0 {
-                display.append(" ")
-            }
-            display.append(cap)
+        } else {
+            display = name
         }
+        
         return display
+    }
+    
+    func capitalize(string: String) -> String {
+        if string.count == 0 {
+            return string
+        } else {
+            return (string.prefix(1).uppercased() + string.dropFirst()).replacingOccurrences(of: "_", with: " ")
+        }
     }
     
     func format(_ interval: TimeInterval) -> String {

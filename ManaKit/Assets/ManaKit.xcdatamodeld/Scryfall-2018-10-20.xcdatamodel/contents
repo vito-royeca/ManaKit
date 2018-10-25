@@ -77,6 +77,7 @@
         <relationship name="mtgjsonSubtypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCardType" inverseName="cardSubtypes" inverseEntity="CMCardType" syncable="YES"/>
         <relationship name="mtgjsonSupertypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCardType" inverseName="cardSupertypes" inverseEntity="CMCardType" syncable="YES"/>
         <relationship name="mtgjsonTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCardType" inverseName="cardTypes" inverseEntity="CMCardType" syncable="YES"/>
+        <relationship name="otherPrintings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="otherPrintings" inverseEntity="CMCard" syncable="YES"/>
         <relationship name="part" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCard" inverseName="parts" inverseEntity="CMCard" syncable="YES"/>
         <relationship name="parts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="part" inverseEntity="CMCard" syncable="YES"/>
         <relationship name="pricing" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCardPricing" inverseName="cards" inverseEntity="CMCardPricing" syncable="YES"/>
@@ -87,6 +88,7 @@
         <relationship name="set" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMSet" inverseName="cards" inverseEntity="CMSet" syncable="YES"/>
         <relationship name="tcgplayerStorePricing" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMStorePricing" inverseName="cards" inverseEntity="CMStorePricing" syncable="YES"/>
         <relationship name="typeLine" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCardType" inverseName="cards" inverseEntity="CMCardType" syncable="YES"/>
+        <relationship name="variations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="variations" inverseEntity="CMCard" syncable="YES"/>
         <relationship name="watermark" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCardWatermark" inverseName="cards" inverseEntity="CMCardWatermark" syncable="YES"/>
     </entity>
     <entity name="CMCardBorderColor" representedClassName="CMCardBorderColor" syncable="YES">
@@ -96,6 +98,7 @@
                 <entry key="sync.isPrimaryKey" value="true"/>
             </userInfo>
         </attribute>
+        <attribute name="nameSection" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="borderColor" inverseEntity="CMCard" syncable="YES"/>
     </entity>
     <entity name="CMCardColor" representedClassName="CMCardColor" syncable="YES">
@@ -117,6 +120,7 @@
                 <entry key="sync.isPrimaryKey" value="value"/>
             </userInfo>
         </attribute>
+        <attribute name="nameSection" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="frame" inverseEntity="CMCard" syncable="YES"/>
     </entity>
     <entity name="CMCardInventory" representedClassName="CMCardInventory" syncable="YES">
@@ -141,6 +145,7 @@
                 <entry key="sync.isPrimaryKey" value="true"/>
             </userInfo>
         </attribute>
+        <attribute name="nameSection" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="layout" inverseEntity="CMCard" syncable="YES"/>
     </entity>
     <entity name="CMCardLegality" representedClassName="CMCardLegality" syncable="YES">
@@ -185,11 +190,12 @@
         </attribute>
         <attribute name="nameSection" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="cardOriginalTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="mtgjsonOriginalType" inverseEntity="CMCard" syncable="YES"/>
-        <relationship name="cardPrintedTypes" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCard" inverseName="printedTypeLine" inverseEntity="CMCard" syncable="YES"/>
+        <relationship name="cardPrintedTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="printedTypeLine" inverseEntity="CMCard" syncable="YES"/>
         <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="typeLine" inverseEntity="CMCard" syncable="YES"/>
         <relationship name="cardSubtypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="mtgjsonSubtypes" inverseEntity="CMCard" syncable="YES"/>
         <relationship name="cardSupertypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="mtgjsonSupertypes" inverseEntity="CMCard" syncable="YES"/>
         <relationship name="cardTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="mtgjsonTypes" inverseEntity="CMCard" syncable="YES"/>
+        <relationship name="language" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMLanguage" inverseName="cardTypes" inverseEntity="CMLanguage" syncable="YES"/>
     </entity>
     <entity name="CMCardWatermark" representedClassName="CMCardWatermark" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES">
@@ -198,6 +204,7 @@
                 <entry key="sync.isPrimaryKey" value="true"/>
             </userInfo>
         </attribute>
+        <attribute name="nameSection" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="watermark" inverseEntity="CMCard" syncable="YES"/>
     </entity>
     <entity name="CMCollection" representedClassName="CMCollection" syncable="YES">
@@ -259,7 +266,9 @@
             </userInfo>
         </attribute>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="nameSection" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="language" inverseEntity="CMCard" syncable="YES"/>
+        <relationship name="cardTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCardType" inverseName="language" inverseEntity="CMCardType" syncable="YES"/>
         <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMSet" inverseName="languages" inverseEntity="CMSet" syncable="YES"/>
     </entity>
     <entity name="CMLegality" representedClassName="CMLegality" syncable="YES">
@@ -269,6 +278,7 @@
                 <entry key="sync.isPrimaryKey" value="true"/>
             </userInfo>
         </attribute>
+        <attribute name="nameSection" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="cardLegalities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCardLegality" inverseName="legality" inverseEntity="CMCardLegality" syncable="YES"/>
     </entity>
     <entity name="CMList" representedClassName="CMList" syncable="YES">
@@ -295,6 +305,7 @@
                 <entry key="sync.isPrimaryKey" value="true"/>
             </userInfo>
         </attribute>
+        <attribute name="nameSection" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="rarity" inverseEntity="CMCard" syncable="YES"/>
     </entity>
     <entity name="CMRule" representedClassName="CMRule" syncable="YES">
@@ -413,24 +424,24 @@
     </entity>
     <elements>
         <element name="CMArtist" positionX="-45" positionY="153" width="128" height="120"/>
-        <element name="CMCard" positionX="-54" positionY="72" width="128" height="1095"/>
-        <element name="CMCardBorderColor" positionX="-9" positionY="153" width="128" height="75"/>
+        <element name="CMCard" positionX="-54" positionY="72" width="128" height="1125"/>
+        <element name="CMCardBorderColor" positionX="-9" positionY="153" width="128" height="90"/>
         <element name="CMCardColor" positionX="18" positionY="180" width="128" height="120"/>
-        <element name="CMCardFrame" positionX="-18" positionY="144" width="128" height="75"/>
+        <element name="CMCardFrame" positionX="-18" positionY="144" width="128" height="90"/>
         <element name="CMCardInventory" positionX="-27" positionY="135" width="128" height="240"/>
-        <element name="CMCardLayout" positionX="9" positionY="171" width="128" height="75"/>
+        <element name="CMCardLayout" positionX="9" positionY="171" width="128" height="90"/>
         <element name="CMCardLegality" positionX="-27" positionY="135" width="128" height="105"/>
         <element name="CMCardPricing" positionX="-27" positionY="135" width="128" height="195"/>
         <element name="CMCardRating" positionX="-27" positionY="135" width="128" height="90"/>
-        <element name="CMCardType" positionX="27" positionY="189" width="128" height="165"/>
-        <element name="CMCardWatermark" positionX="-27" positionY="135" width="128" height="75"/>
+        <element name="CMCardType" positionX="27" positionY="189" width="128" height="180"/>
+        <element name="CMCardWatermark" positionX="-27" positionY="135" width="128" height="90"/>
         <element name="CMCollection" positionX="-27" positionY="135" width="128" height="195"/>
         <element name="CMDeck" positionX="-18" positionY="144" width="128" height="285"/>
         <element name="CMFormat" positionX="18" positionY="189" width="128" height="105"/>
-        <element name="CMLanguage" positionX="-18" positionY="171" width="128" height="105"/>
-        <element name="CMLegality" positionX="9" positionY="180" width="128" height="75"/>
+        <element name="CMLanguage" positionX="-18" positionY="171" width="128" height="135"/>
+        <element name="CMLegality" positionX="9" positionY="180" width="128" height="90"/>
         <element name="CMList" positionX="-27" positionY="135" width="128" height="195"/>
-        <element name="CMRarity" positionX="-27" positionY="135" width="128" height="75"/>
+        <element name="CMRarity" positionX="-27" positionY="135" width="128" height="90"/>
         <element name="CMRule" positionX="0" positionY="162" width="128" height="135"/>
         <element name="CMRuling" positionX="-27" positionY="135" width="128" height="105"/>
         <element name="CMSet" positionX="-63" positionY="-18" width="128" height="315"/>
