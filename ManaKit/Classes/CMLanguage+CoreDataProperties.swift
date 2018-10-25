@@ -18,7 +18,9 @@ extension CMLanguage {
 
     @NSManaged public var code: String?
     @NSManaged public var name: String?
+    @NSManaged public var nameSection: String?
     @NSManaged public var cards: NSSet?
+    @NSManaged public var cardTypes: NSSet?
     @NSManaged public var sets: NSSet?
 
 }
@@ -38,6 +40,23 @@ extension CMLanguage {
     @objc(removeCards:)
     @NSManaged public func removeFromCards(_ values: NSSet)
 
+}
+
+// MARK: Generated accessors for cardTypes
+extension CMLanguage {
+    
+    @objc(addCardTypesObject:)
+    @NSManaged public func addToCardTypes(_ value: CMCard)
+    
+    @objc(removeCardTypesObject:)
+    @NSManaged public func removeFromCardTypes(_ value: CMCard)
+    
+    @objc(addCardTypes:)
+    @NSManaged public func addToCardTypes(_ values: NSSet)
+    
+    @objc(removeCardTypes:)
+    @NSManaged public func removeFromCardTypes(_ values: NSSet)
+    
 }
 
 // MARK: Generated accessors for sets

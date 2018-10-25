@@ -17,6 +17,7 @@ import Sync
 @objc(ManaKit)
 public class ManaKit: NSObject {
     public enum Constants {
+        public static let ScryfallDate        = "2018-10-24 09:49"
         public static let MTGJSONVersion      = "3.19.2 E"
         public static let MTGJSONDate         = "Sep 26, 2018"
         public static let KeyruneVersion      = "3.3.1"
@@ -136,7 +137,7 @@ public class ManaKit: NSObject {
         if FileManager.default.fileExists(atPath: targetPath) {
             // Check if we saved the version number
             if let version = databaseVersion() {
-                willCopy = version != Constants.MTGJSONVersion
+                willCopy = version != Constants.ScryfallDate
             }
         }
         
@@ -252,7 +253,7 @@ public class ManaKit: NSObject {
     }
     
     public func databaseVersion() -> String? {
-        let objectFinder = ["version": Constants.MTGJSONVersion] as [String: AnyObject]
+        let objectFinder = ["version": Constants.ScryfallDate] as [String: AnyObject]
         guard let object = ManaKit.sharedInstance.findObject("CMSystem",
                                                              objectFinder: objectFinder,
                                                              createIfNotFound: true) as? CMSystem else {

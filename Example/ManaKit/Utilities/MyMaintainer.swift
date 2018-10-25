@@ -7,17 +7,47 @@
 //
 
 import UIKit
+import CoreData
+import ManaKit
 
 class MyMaintainer: Maintainer {
     func updateCards() {
-        // Original text
-        // TODO: get original text from mtgjson
+        startActivity(name: "updateCards")
         
-        // Firebase id
-        // TODO: update firebaseId via: set.code + _ + card.name + _ + card.name.strippied + number?
+        let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
+                                   NSSortDescriptor(key: "name", ascending: true)]
+        if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
+            var count = 0
+            print("Creating cards: \(count)/\(cards.count) \(Date())")
+            
+            for card in cards {
+                count += 1
+                
+                // myNameSection
+                if let name = card.name {
+                    card.myNameSection = sectionFor(name: name)
+                }
+                
+                // myNumberOrder
+                if let collectorNumber = card.collectorNumber {
+                    card.myNumberOrder = order(of: collectorNumber)
+                }
+                
+                // Original text
+                // TODO: get original text from mtgjson
+                
+                // Firebase id
+                // TODO: update firebaseId via: set.code + _ + card.name + _ + card.name.strippied + number?
+                
+                if count % printMilestone == 0 {
+                    print("Updating cards: \(count)/\(cards.count) \(Date())")
+                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                }
+            }
+        }
         
-        // myNumberOrder
-        // myNameSection
+        endActivity()
     }
     
     /*

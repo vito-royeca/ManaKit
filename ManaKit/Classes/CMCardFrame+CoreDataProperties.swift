@@ -17,6 +17,7 @@ extension CMCardFrame {
     }
 
     @NSManaged public var name: String?
+    @NSManaged public var nameSection: String?
     @NSManaged public var cards: NSSet?
 
 }
