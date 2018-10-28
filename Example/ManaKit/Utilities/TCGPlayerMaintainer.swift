@@ -150,28 +150,26 @@ class TCGPlayerMaintainer: Maintainer {
         let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
         request.predicate = NSPredicate(format: "tcgplayerName = nil")
         
-        if let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
-            for set in sets {
-                for dict in array {
-                    if let code = dict["code"],
-                        let name = dict["name"] {
-                        if set.code == code.lowercased() {
-                            set.tcgplayerName = name
-                        }
+        var sets = try! context.fetch(request)
+        for set in sets {
+            for dict in array {
+                if let code = dict["code"],
+                    let name = dict["name"] {
+                    if set.code == code.lowercased() {
+                        set.tcgplayerName = name
                     }
                 }
             }
         }
-        try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+        try! context.save()
         
         // manual fix
-        if let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
-            for set in sets {
-                if let parent = set.parent {
-                    set.tcgplayerName = parent.tcgplayerName
-                }
+        sets = try! context.fetch(request)
+        for set in sets {
+            if let parent = set.parent {
+                set.tcgplayerName = parent.tcgplayerName
             }
         }
-        try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+        try! context.save()
     }
 }

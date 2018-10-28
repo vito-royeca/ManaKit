@@ -20,24 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
 
-        // Core Data updates 1
-//        DatabaseMaintainer.sharedInstance.json2CoreData()
-//        DatabaseMaintainer.sharedInstance.updateSomeData()
-
-//        Core Data updates 2
-//        DatabaseMaintainer.sharedInstance.updateTCGPlayerName()
-//        DatabaseMaintainer.sharedInstance.updateKeyruneCode()
-//        DatabaseMaintainer.sharedInstance.copyOldScryfallData()
-//        DatabaseMaintainer.sharedInstance.updateMCINumbers()
-//        DatabaseMaintainer.sharedInstance.updateScryfallData()
-
-//        Core Data updates 3
-//        //DatabaseMaintainer.sharedInstance.updateForeignNames()
-//        DatabaseMaintainer.sharedInstance.updateLegalities()
-//        DatabaseMaintainer.sharedInstance.rules2CoreData()
-//        DatabaseMaintainer.sharedInstance.createSampleDecks()
-//        DatabaseMaintainer.sharedInstance.updateSystem()
-
         let scryfall = ScryfallMaintainer()
         let keyrune = KeyruneMaintainer()
         let tcgplayer = TCGPlayerMaintainer()
@@ -45,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
 //        scryfall.fetchSets()
         scryfall.createCards()
+//        scryfall.updateCards()
         
 //        keyrune.updateSetSymbols()
 //        tcgplayer.updateSetTcgPlayerNames()
@@ -52,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        my.updateCards()
         
           // Normal run
-        ManaKit.sharedInstance.setupResources()
+//        ManaKit.sharedInstance.setupResources()
 //        ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "ManaGuide",
 //                                                  publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720",
 //                                                  privateKey: nil)

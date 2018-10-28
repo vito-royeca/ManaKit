@@ -25,9 +25,9 @@ class SetsTableViewCell: UITableViewCell {
             nameLabel.text = set.name
             var codeText = "\(set.parent != nil ? "\(set.parent!.code!) <-- " : "")\(set.code!)"
             if let tcgplayerName = set.tcgplayerName {
-               codeText = "\(codeText) = \(tcgplayerName)"
+               codeText = "\(codeText) / TCGPlayerName = \(tcgplayerName)"
             } else {
-               codeText = "\(codeText) = nil"
+               codeText = "\(codeText) / TCGPlayerName = nil"
             }
             codeLabel.text = codeText
         }

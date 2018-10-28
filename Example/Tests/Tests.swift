@@ -36,7 +36,10 @@ class Tests: XCTestCase {
         let objectFinder = ["name": "Air Elemental",
                             "set.code": "XLN"]  as [String : AnyObject]
         
-        if let card = ManaKit.sharedInstance.findObject("CMCard", objectFinder: objectFinder, createIfNotFound: false) as? CMCard {
+        if let card = ManaKit.sharedInstance.findObject("CMCard",
+                                                        objectFinder: objectFinder,
+                                                        createIfNotFound: false,
+                                                        useInMemoryDatabase: false) as? CMCard {
             firstly {
                 ManaKit.sharedInstance.fetchTCGPlayerStorePricing(card: card)
             }.done {

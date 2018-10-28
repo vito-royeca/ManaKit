@@ -13,7 +13,10 @@ import ManaKit
 class Maintainer: NSObject {
     // MARK: Constants
     let printMilestone = 1000
-    
+    let dataStack = ManaKit.sharedInstance.memoryDataStack!
+    let context = ManaKit.sharedInstance.memoryDataStack!.mainContext
+    let useInMemoryDatabase = true
+
     // MARK: Variables
     var dateStart = Date()
     
@@ -33,16 +36,20 @@ class Maintainer: NSObject {
         // delete existing data first
         let request: NSFetchRequest<CMSystem> = CMSystem.fetchRequest()
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: request as! NSFetchRequest<NSFetchRequestResult>)
-        try! ManaKit.sharedInstance.dataStack?.persistentStoreCoordinator.execute(deleteRequest, with: (ManaKit.sharedInstance.dataStack?.mainContext)!)
+        try! dataStack.persistentStoreCoordinator.execute(deleteRequest,
+                                                          with: context)
         
         let objectFinder = ["version": ManaKit.Constants.ScryfallDate] as [String: AnyObject]
-        guard let system = ManaKit.sharedInstance.findObject("CMSystem", objectFinder: objectFinder, createIfNotFound: true) as? CMSystem else {
+        guard let system = ManaKit.sharedInstance.findObject("CMSystem",
+                                                             objectFinder: objectFinder,
+                                                             createIfNotFound: true,
+                                                             useInMemoryDatabase: useInMemoryDatabase) as? CMSystem else {
             return
         }
         
         system.version = ManaKit.Constants.ScryfallDate
         system.date = NSDate()
-        try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+        try! context.save()
     }
     
     func sectionFor(name: String) -> String? {

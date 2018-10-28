@@ -17,44 +17,72 @@ class MyMaintainer: Maintainer {
         let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
                                    NSSortDescriptor(key: "name", ascending: true)]
-        if let cards = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
-            var count = 0
-            print("Creating cards: \(count)/\(cards.count) \(Date())")
+        let cards = try! context.fetch(request)
+        var count = 0
+        print("Creating cards: \(count)/\(cards.count) \(Date())")
+        
+        for card in cards {
+            // myNameSection
+            if let name = card.name {
+                card.myNameSection = sectionFor(name: name)
+            }
             
-            for card in cards {
-                count += 1
+            // myNumberOrder
+            if let collectorNumber = card.collectorNumber {
+                card.myNumberOrder = order(of: collectorNumber)
+            }
+            
+            // Firebase id = set.code + _ + card.name + _ + card.name+ number?
+            if let set = card.set,
+                let setCode = set.code,
+                let language = card.language,
+                let languageCode = language.code,
+                let name = card.name {
+                var firebaseId = "\(setCode.uppercased())_\(name)_\(name.lowercased())"
                 
-                // myNameSection
-                if let name = card.name {
-                    card.myNameSection = sectionFor(name: name)
+                let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
+                request.predicate = NSPredicate(format: "set.code = %@ AND language.code = %@ AND name = %@",
+                                                setCode, languageCode, name)
+                request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true),
+                                           NSSortDescriptor(key: "collectorNumber", ascending: true)]
+                let variations = try! context.fetch(request)
+                var index = 1
+                
+                for c in variations {
+                    if c.id == card.id {
+                        firebaseId += "\(index)"
+                        break
+                    } else {
+                        index += 1
+                    }
                 }
                 
-                // myNumberOrder
-                if let collectorNumber = card.collectorNumber {
-                    card.myNumberOrder = order(of: collectorNumber)
-                }
                 
-                // Original text
-                // TODO: get original text from mtgjson
-                
-                // Firebase id
-                // TODO: update firebaseId via: set.code + _ + card.name + _ + card.name.strippied + number?
-                
-                if count % printMilestone == 0 {
-                    print("Updating cards: \(count)/\(cards.count) \(Date())")
-                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
-                }
+                card.firebaseId = firebaseId
+            }
+            
+            // Original text
+            // TODO: get original text from mtgjson
+            
+            count += 1
+            if count % printMilestone == 0 {
+                print("Updating cards: \(count)/\(cards.count) \(Date())")
+                try! context.save()
             }
         }
         
         endActivity()
     }
     
+    func createRules() {
+        
+    }
+
     /*
      * Converts @param string into double equivalents i.e. 100.1a = 100.197
      * Useful for ordering in NSSortDescriptor.
      */
-    func order(of string: String) -> Double {
+    private func order(of string: String) -> Double {
         var termOrder = Double(0)
         
         if let num = Double(string) {

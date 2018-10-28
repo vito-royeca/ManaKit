@@ -15,7 +15,7 @@ import SSZipArchive
 class ScryfallMaintainer: Maintainer {
     // MARK: Constants
     let setCodesForProcessing:[String]? = nil
-    let fileName = "scryfall-all-cards.json"
+    let fileName = "scryfall-default-cards.json"
     
     // MARK: Variables
     var cachedLanguages = [CMLanguage]()
@@ -48,6 +48,7 @@ class ScryfallMaintainer: Maintainer {
             }.done { json in
                 if let data = json["data"] as? [[String: Any]] {
                     self.processSets(data: data)
+                    self.createCards()
                 }
                 self.endActivity()
             }.catch { error in
@@ -63,7 +64,8 @@ class ScryfallMaintainer: Maintainer {
                 
                 if let set = ManaKit.sharedInstance.findObject("CMSet",
                                                                objectFinder: ["code": code] as [String: AnyObject],
-                                                               createIfNotFound: true) as? CMSet {
+                                                               createIfNotFound: true,
+                                                               useInMemoryDatabase: useInMemoryDatabase) as? CMSet {
                     set.code = code
                     set.mtgoCode = dict["mtgo_code"] as? String
                     
@@ -76,7 +78,8 @@ class ScryfallMaintainer: Maintainer {
                         let capName = capitalize(string: self.displayFor(name: setType))
                         if let st = ManaKit.sharedInstance.findObject("CMSetType",
                                                                       objectFinder: ["name": capName] as [String: AnyObject],
-                                                                      createIfNotFound: true) as? CMSetType {
+                                                                      createIfNotFound: true,
+                                                                      useInMemoryDatabase: useInMemoryDatabase) as? CMSetType {
                             st.name = capName
                             st.nameSection = self.sectionFor(name: setType)
                             set.setType = st
@@ -87,7 +90,8 @@ class ScryfallMaintainer: Maintainer {
                     if let block = dict["block"] as? String {
                         if let b = ManaKit.sharedInstance.findObject("CMSetBlock",
                                                                      objectFinder: ["name": block] as [String: AnyObject],
-                                                                     createIfNotFound: true) as? CMSetBlock {
+                                                                     createIfNotFound: true,
+                                                                     useInMemoryDatabase: useInMemoryDatabase) as? CMSetBlock {
                             b.code = dict["block_code"] as? String
                             b.name = block
                             b.nameSection = self.sectionFor(name: block)
@@ -112,7 +116,7 @@ class ScryfallMaintainer: Maintainer {
                     }
                     
                     print("\(code) - \(name)")
-                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                    try! context.save()
                 }
             }
         }
@@ -124,13 +128,15 @@ class ScryfallMaintainer: Maintainer {
                 
                 if let childSet = ManaKit.sharedInstance.findObject("CMSet",
                                                                     objectFinder: ["code": code] as [String: AnyObject],
-                                                                    createIfNotFound: true) as? CMSet,
+                                                                    createIfNotFound: true,
+                                                                    useInMemoryDatabase: useInMemoryDatabase) as? CMSet,
                     let parentSet = ManaKit.sharedInstance.findObject("CMSet",
                                                                       objectFinder: ["code": parentSetSode] as [String: AnyObject],
-                                                                      createIfNotFound: true) as? CMSet {
+                                                                      createIfNotFound: true,
+                                                                      useInMemoryDatabase: useInMemoryDatabase) as? CMSet {
                     childSet.parent = parentSet
                     print("\(parentSetSode) -> \(code)")
-                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                    try! context.save()
                 }
             }
         }
@@ -146,180 +152,38 @@ class ScryfallMaintainer: Maintainer {
         }
         let jsonPath = "\(docsPath)/\(fileName)"
         
-        SSZipArchive.unzipFile(atPath: path, toDestination: docsPath)
         
-        if FileManager.default.fileExists(atPath: jsonPath) {
-            let data = try! Data(contentsOf: URL(fileURLWithPath: jsonPath))
-            guard let array = try! JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [[String: Any]] else {
-                return
+        if !FileManager.default.fileExists(atPath: jsonPath) {
+            SSZipArchive.unzipFile(atPath: path, toDestination: docsPath)
+        }
+        
+        let data = try! Data(contentsOf: URL(fileURLWithPath: jsonPath))
+        guard let array = try! JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [[String: Any]] else {
+            return
+        }
+        
+        var count = 0
+        print("Creating cards: \(count)/\(array.count) \(Date())")
+        for dict in array {
+            if let id = dict["id"] as? String {
+                let _ = processCardData(dict: dict, objectFinder: ["id": id as AnyObject])
+                count += 1
             }
             
-            var count = 0
-            print("Creating cards: \(count)/\(array.count) \(Date())")
-            for dict in array {
-                if let id = dict["id"] as? String {
-                    let _ = processCardData(dict: dict, objectFinder: ["id": id as AnyObject])
-                    count += 1
-                }
-                if count % printMilestone == 0 {
-                    print("Creating cards: \(count)/\(array.count) \(Date())")
-                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
-                }
+            if count % printMilestone == 0 {
+                print("Creating cards: \(count)/\(array.count) \(Date())")
+                try! context.save()
             }
         }
         
         endActivity()
-    }
-    
-    func updateCards() {
-        startActivity(name: "updateCards")
-        
-        guard let path = Bundle.main.path(forResource: fileName, ofType: "zip", inDirectory: "data"),
-            let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first else {
-                return
-        }
-        let jsonPath = "\(docsPath)/\(fileName)"
-        
-        SSZipArchive.unzipFile(atPath: path, toDestination: docsPath)
-        
-        if FileManager.default.fileExists(atPath: jsonPath) {
-            let data = try! Data(contentsOf: URL(fileURLWithPath: jsonPath))
-            guard let array = try! JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [[String: Any]] else {
-                return
-            }
-            
-            var count = 0
-            print("Updating cards: \(count)/\(array.count) \(Date())")
-            for dict in array {
-                if let id = dict["id"] {
-                    if let card = ManaKit.sharedInstance.findObject("CMCard",
-                                                                    objectFinder: ["id": id] as [String: AnyObject],
-                                                                    createIfNotFound: true) as? CMCard {
-
-                        // all parts
-                        if let allParts = dict["all_parts"] as? [[String: Any]] {
-                            for dict in allParts {
-                                if let partId = dict["id"] as? String {
-                                    if let part = ManaKit.sharedInstance.findObject("CMCard",
-                                                                                    objectFinder: ["id": partId] as [String: AnyObject],
-                                                                                    createIfNotFound: true) as? CMCard {
-                                        part.part = card
-                                        card.addToParts(part)
-                                    }
-                                }
-                            }
-                        }
-                        
-                        // card faces
-                        if let cardFaces = dict["card_faces"] as? [[String: Any]] {
-                            for cardFace in cardFaces {
-                                if let name = cardFace["name"] as? String,
-                                    let face = processCardData(dict: cardFace, objectFinder: ["name": name as AnyObject]) {
-                                    face.face = card
-                                    card.addToFaces(face)
-                                }
-                            }
-                        }
-                        
-                        // legalities
-                        if let legalities = dict["legalities"] as? [String: Any] {
-                            for (k,v) in legalities {
-                                if let v = v as? String,
-                                    let format = findFormat(with: k),
-                                    let legality = findLegality(with: v) {
-                                    let id = Int64("\(card.id!)_\(format.name!)_\(legality.name!)".hashValue)
-                                    
-                                    if let cardLegality = ManaKit.sharedInstance.findObject("CMCardLegality",
-                                                                                        objectFinder: ["id": id] as [String: AnyObject],
-                                                                                        createIfNotFound: true) as? CMCardLegality {
-                                        cardLegality.id = id
-                                        cardLegality.format = format
-                                        cardLegality.legality = legality
-                                        cardLegality.card = card
-                                        card.addToCardLegalities(cardLegality)
-                                    }
-                                }
-                            }
-                        }
-                        
-                        // card printings
-                        if let printsSearchUri = dict["prints_search_uri"] as? String {
-                            fetchOtherPrintings(ofCard: card, withUri: printsSearchUri)
-                        }
-                        
-                        // card variations
-                        fetchVariations(ofCard: card)
-                        
-                        try! ManaKit.sharedInstance.dataStack?.mainContext.save()
-                        
-                        count += 1
-                        if count % printMilestone == 0 {
-                            print("Creating cards: \(count)/\(array.count) \(Date())")
-                        }
-                    }
-                }
-            }
-        }
-        
-        endActivity()
-    }
-    
-    private func fetchOtherPrintings(ofCard card: CMCard, withUri uri: String) {
-        if let url = URL(string: uri) {
-            var rq = URLRequest(url: url)
-            rq.httpMethod = "GET"
-            
-            firstly {
-                URLSession.shared.dataTask(.promise, with:rq)
-            }.compactMap {
-                try JSONSerialization.jsonObject(with: $0.data) as? [String: Any]
-            }.done { json in
-                if let data = json["data"] as? [[String: Any]] {
-                    var idArray = [String]()
-                    
-                    for dict in data {
-                        if let id = dict[""] as? String {
-                            if id != card.id {
-                                idArray.append(id)
-                            }
-                        }
-                    }
-                    
-                    let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
-                    request.predicate = NSPredicate(format: "id in %@", idArray)
-                    if let otherPrintings = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
-                        for c in otherPrintings {
-                            card.addToOtherPrintings(c)
-                        }
-                    }
-                }
-                if let hasMore = json["has_more"] as? Bool,
-                    let nextPage = json["next_page"] as? String {
-                    if hasMore {
-                        self.fetchPrintings(ofCard: card, withUri: nextPage)
-                    }
-                }
-            }.catch { error in
-                print("\(error)")
-            }
-        }
-    }
-    
-    private func fetchVariations(ofCard card: CMCard) {
-        let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
-        request.predicate = NSPredicate(format: "set.code = %@ AND name = %@ and id != %@",
-                                        card.set!.code!, card.name!, card.id!)
-        if let variations = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
-            for c in variations {
-                card.addToVariations(c)
-            }
-        }
     }
     
     private func processCardData(dict: [String: Any], objectFinder: [String: AnyObject]) -> CMCard? {
         if let card = ManaKit.sharedInstance.findObject("CMCard",
                                                         objectFinder: objectFinder,
-                                                        createIfNotFound: true) as? CMCard {
+                                                        createIfNotFound: true,
+                                                        useInMemoryDatabase: useInMemoryDatabase) as? CMCard {
             // arena id
             card.arenaId = dict["arena_id"] as? String
             
@@ -447,9 +311,7 @@ class ScryfallMaintainer: Maintainer {
                 card.imageUris = binaryImageUris as NSData
             }
             
-            ////
-            //cached data here
-            ////
+            /// cached data here ///
             
             // language and set
             if let lang = dict["lang"] as? String,
@@ -470,6 +332,9 @@ class ScryfallMaintainer: Maintainer {
                     s.addToLanguages(l)
                 }
                 
+                // add the card to set
+                s.addToCards(card)
+
                 // type line
                 if let type = dict["type_line"] as? String {
                     card.typeLine = findCardType(with: type, language: l)
@@ -538,10 +403,164 @@ class ScryfallMaintainer: Maintainer {
                 card.watermark = findCardWatermark(with: watermark)
             }
             
+            // legalities
+            if let legalities = dict["legalities"] as? [String: Any] {
+                for (k,v) in legalities {
+                    if let v = v as? String,
+                        let format = findFormat(with: k),
+                        let legality = findLegality(with: v) {
+                        
+                        if let desc = NSEntityDescription.entity(forEntityName: "CMCardLegality",
+                                                                 in: context),
+                            let cardLegality = NSManagedObject(entity: desc,
+                                                               insertInto: context) as? CMCardLegality {
+                            cardLegality.format = format
+                            cardLegality.legality = legality
+                            cardLegality.card = card
+                            card.addToCardLegalities(cardLegality)
+                        }
+                    }
+                }
+            }
+
             return card
         }
         
         return nil
+    }
+
+    func updateCards() {
+        startActivity(name: "updateCards")
+        
+        guard let path = Bundle.main.path(forResource: fileName, ofType: "zip", inDirectory: "data"),
+            let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first else {
+                return
+        }
+        let jsonPath = "\(docsPath)/\(fileName)"
+        
+        if !FileManager.default.fileExists(atPath: jsonPath) {
+           SSZipArchive.unzipFile(atPath: path, toDestination: docsPath)
+        }
+        
+        let data = try! Data(contentsOf: URL(fileURLWithPath: jsonPath))
+        guard let array = try! JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [[String: Any]] else {
+            return
+        }
+        
+        var count = 0
+        print("Updating cards: \(count)/\(array.count) \(Date())")
+        for dict in array {
+            if let id = dict["id"] {
+                if let card = ManaKit.sharedInstance.findObject("CMCard",
+                                                                objectFinder: ["id": id] as [String: AnyObject],
+                                                                createIfNotFound: true,
+                                                                useInMemoryDatabase: useInMemoryDatabase) as? CMCard {
+                    // all parts
+                    if let allParts = dict["all_parts"] as? [[String: Any]] {
+                        for dict in allParts {
+                            if let partId = dict["id"] as? String,
+                                let partName = dict["name"] as? String {
+                                if partName == card.name {
+                                    continue
+                                }
+                                if let part = ManaKit.sharedInstance.findObject("CMCard",
+                                                                                objectFinder: ["id": partId] as [String: AnyObject],
+                                                                                createIfNotFound: true,
+                                                                                useInMemoryDatabase: useInMemoryDatabase) as? CMCard {
+                                    part.part = card
+                                    card.addToParts(part)
+                                }
+                            }
+                        }
+                    }
+                    
+                    // card faces
+                    if let cardFaces = dict["card_faces"] as? [[String: Any]] {
+                        for cardFace in cardFaces {
+                            if let name = cardFace["name"] as? String,
+                                let face = processCardData(dict: cardFace, objectFinder: ["name": name as AnyObject]) {
+                                face.face = card
+                                card.addToFaces(face)
+                            }
+                        }
+                    }
+                    
+                    count += 1
+                    if count % printMilestone == 0 {
+                        print("Uodating cards: \(count)/\(array.count) \(Date())")
+                        try! context.save()
+                    }
+                }
+            }
+        }
+        
+        endActivity()
+    }
+    
+    func updateCards2() {
+        startActivity(name: "updateCards2")
+        
+        let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
+                                   NSSortDescriptor(key: "name", ascending: true)]
+        let cards = try! context.fetch(request)
+        var count = 0
+        print("Updating cards: \(count)/\(cards.count) \(Date())")
+        
+        for card in cards {
+            if card.face == nil {
+                // variations
+                fetchVariations(ofCard: card)
+                
+                // other printings
+                fetchOtherPrintings(ofCard: card)
+            }
+            
+            count += 1
+            if count % printMilestone == 0 {
+                print("Uodating cards: \(count)/\(cards.count) \(Date())")
+                try! context.save()
+            }
+        }
+        
+        endActivity()
+    }
+    
+    private func fetchVariations(ofCard card: CMCard) {
+        if let set = card.set,
+            let setCode = set.code,
+            let language = card.language,
+            let languageCode = language.code,
+            let name = card.name,
+            let id = card.id {
+            
+            let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
+            request.predicate = NSPredicate(format: "set.code = %@ AND language.code = %@ AND name = %@ AND id != %@",
+                                            setCode, languageCode, name, id)
+            let variations = try! context.fetch(request)
+            for c in variations {
+                card.addToVariations(c)
+            }
+        }
+    }
+
+    private func fetchOtherPrintings(ofCard card: CMCard) {
+        if let set = card.set,
+            let setCode = set.code,
+            let language = card.language,
+            let languageCode = language.code,
+            let name = card.name,
+            let typeLine = card.typeLine,
+            let typeLineName = typeLine.name {
+            
+            let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
+            request.predicate = NSPredicate(format: "set.code != %@ AND language.code = %@ AND name = %@ AND typeLine.name = %@",
+                                            setCode, languageCode, name, typeLineName)
+            let otherPrintings = try! context.fetch(request)
+            for c in otherPrintings {
+                card.addToOtherPrintings(c)
+            }
+        }
     }
     
     // rulings
@@ -553,9 +572,7 @@ class ScryfallMaintainer: Maintainer {
     private func findSet(code: String) -> CMSet? {
         if cachedSets.isEmpty {
             let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
-            if let sets = try! ManaKit.sharedInstance.dataStack?.mainContext.fetch(request) {
-                cachedSets = sets
-            }
+            cachedSets = try! context.fetch(request)
         }
         
         return cachedSets.first(where: { $0.code == code})
@@ -567,7 +584,8 @@ class ScryfallMaintainer: Maintainer {
         } else {
             if let language = ManaKit.sharedInstance.findObject("CMLanguage",
                                                                 objectFinder: ["code": code] as [String: AnyObject],
-                                                                createIfNotFound: true) as? CMLanguage {
+                                                                createIfNotFound: true,
+                                                                useInMemoryDatabase: useInMemoryDatabase) as? CMLanguage {
                 if language.code == nil {
                     language.code = code
                     switch code {
@@ -612,7 +630,7 @@ class ScryfallMaintainer: Maintainer {
                         language.nameSection = sectionFor(name: name)
                     }
                     
-                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                    try! context.save()
                 }
                 
                 cachedLanguages.append(language)
@@ -629,7 +647,8 @@ class ScryfallMaintainer: Maintainer {
         } else {
             if let color = ManaKit.sharedInstance.findObject("CMCardColor",
                                                              objectFinder: ["symbol": symbol] as [String: AnyObject],
-                                                             createIfNotFound: true) as? CMCardColor {
+                                                             createIfNotFound: true,
+                                                             useInMemoryDatabase: useInMemoryDatabase) as? CMCardColor {
                 
                 if color.symbol == nil {
                     color.symbol = symbol
@@ -649,7 +668,7 @@ class ScryfallMaintainer: Maintainer {
                         ()
                     }
                     
-                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                    try! context.save()
                 }
                 
                 cachedCardColors.append(color)
@@ -668,11 +687,12 @@ class ScryfallMaintainer: Maintainer {
         } else {
             if let borderColor = ManaKit.sharedInstance.findObject("CMCardBorderColor",
                                                                    objectFinder: ["name": capName] as [String: AnyObject],
-                                                                   createIfNotFound: true) as? CMCardBorderColor {
+                                                                   createIfNotFound: true,
+                                                                   useInMemoryDatabase: useInMemoryDatabase) as? CMCardBorderColor {
                 if borderColor.name == nil {
                     borderColor.name = capName
                     borderColor.nameSection = sectionFor(name: name)
-                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                    try! context.save()
                 }
                 
                 cachedBorderColors.append(borderColor)
@@ -691,11 +711,12 @@ class ScryfallMaintainer: Maintainer {
         } else {
             if let layout = ManaKit.sharedInstance.findObject("CMCardLayout",
                                                               objectFinder: ["name": capName] as [String: AnyObject],
-                                                              createIfNotFound: true) as? CMCardLayout {
+                                                              createIfNotFound: true,
+                                                              useInMemoryDatabase: useInMemoryDatabase) as? CMCardLayout {
                 if layout.name == nil {
                     layout.name = capName
                     layout.nameSection = sectionFor(name: name)
-                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                    try! context.save()
                 }
                 
                 cachedLayouts.append(layout)
@@ -712,11 +733,12 @@ class ScryfallMaintainer: Maintainer {
         } else {
             if let type = ManaKit.sharedInstance.findObject("CMCardType",
                                                             objectFinder: ["name": name] as [String: AnyObject],
-                                                            createIfNotFound: true) as? CMCardType {
+                                                            createIfNotFound: true,
+                                                            useInMemoryDatabase: useInMemoryDatabase) as? CMCardType {
                 if type.name == nil {
                     type.name = name
                     type.language = language
-                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                    try! context.save()
                 }
                 
                 cachedCardTypes.append(type)
@@ -733,7 +755,8 @@ class ScryfallMaintainer: Maintainer {
         } else {
             if let artist = ManaKit.sharedInstance.findObject("CMArtist",
                                                               objectFinder: ["name": name] as [String: AnyObject],
-                                                              createIfNotFound: true) as? CMArtist {
+                                                              createIfNotFound: true,
+                                                              useInMemoryDatabase: useInMemoryDatabase) as? CMArtist {
                 if artist.name == nil {
                     artist.name = name
                     
@@ -764,7 +787,7 @@ class ScryfallMaintainer: Maintainer {
                         artist.nameSection = sectionFor(name: nameSection)
                     }
                     
-                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                    try! context.save()
                 }
                 
                 cachedArtists.append(artist)
@@ -783,11 +806,12 @@ class ScryfallMaintainer: Maintainer {
         } else {
             if let frame = ManaKit.sharedInstance.findObject("CMCardFrame",
                                                              objectFinder: ["name": capName] as [String: AnyObject],
-                                                            createIfNotFound: true) as? CMCardFrame {
+                                                            createIfNotFound: true,
+                                                            useInMemoryDatabase: useInMemoryDatabase) as? CMCardFrame {
                 if frame.name == nil {
                     frame.name = capName
                     frame.nameSection = sectionFor(name: name)
-                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                    try! context.save()
                 }
                 
                 cachedFrames.append(frame)
@@ -806,11 +830,12 @@ class ScryfallMaintainer: Maintainer {
         } else {
             if let rarity = ManaKit.sharedInstance.findObject("CMRarity",
                                                               objectFinder: ["name": capName] as [String: AnyObject],
-                                                              createIfNotFound: true) as? CMRarity {
+                                                              createIfNotFound: true,
+                                                              useInMemoryDatabase: useInMemoryDatabase) as? CMRarity {
                 if rarity.name == nil {
                     rarity.name = capName
                     rarity.nameSection = sectionFor(name: name)
-                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                    try! context.save()
                 }
                 
                 cachedRarities.append(rarity)
@@ -829,11 +854,12 @@ class ScryfallMaintainer: Maintainer {
         } else {
             if let watermark = ManaKit.sharedInstance.findObject("CMCardWatermark",
                                                                  objectFinder: ["name": capName] as [String: AnyObject],
-                                                                 createIfNotFound: true) as? CMCardWatermark {
+                                                                 createIfNotFound: true,
+                                                                 useInMemoryDatabase: useInMemoryDatabase) as? CMCardWatermark {
                 if watermark.name == nil {
                     watermark.name = capName
                     watermark.nameSection = sectionFor(name: name)
-                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                    try! context.save()
                 }
                 
                 cachedWatermarks.append(watermark)
@@ -852,11 +878,12 @@ class ScryfallMaintainer: Maintainer {
         } else {
             if let format = ManaKit.sharedInstance.findObject("CMFormat",
                                                               objectFinder: ["name": capName] as [String: AnyObject],
-                                                              createIfNotFound: true) as? CMFormat {
+                                                              createIfNotFound: true,
+                                                              useInMemoryDatabase: useInMemoryDatabase) as? CMFormat {
                 if format.name == nil {
                     format.name = capName
                     format.nameSection = sectionFor(name: name)
-                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                    try! context.save()
                 }
                 
                 cachedFormats.append(format)
@@ -875,11 +902,12 @@ class ScryfallMaintainer: Maintainer {
         } else {
             if let legality = ManaKit.sharedInstance.findObject("CMLegality",
                                                               objectFinder: ["name": capName] as [String: AnyObject],
-                                                              createIfNotFound: true) as? CMLegality {
+                                                              createIfNotFound: true,
+                                                              useInMemoryDatabase: useInMemoryDatabase) as? CMLegality {
                 if legality.name == nil {
                     legality.name = capName
                     legality.nameSection = sectionFor(name: name)
-                    try! ManaKit.sharedInstance.dataStack?.mainContext.save()
+                    try! context.save()
                 }
                 
                 cachedLegalities.append(legality)
