@@ -17,7 +17,7 @@ import Sync
 @objc(ManaKit)
 public class ManaKit: NSObject {
     public enum Constants {
-        public static let ScryfallDate        = "2018-10-24 09:49"
+        public static let ScryfallDate        = "2018-10-26 09:56 UTC"
         public static let MTGJSONVersion      = "3.19.2 E"
         public static let MTGJSONDate         = "Sep 26, 2018"
         public static let KeyruneVersion      = "3.3.1"
@@ -64,8 +64,8 @@ public class ManaKit: NSObject {
     public static let sharedInstance = ManaKit()
     
     // MARK: Variables
-    private var _dataStack:DataStack?
-    public var dataStack:DataStack? {
+    private var _dataStack: DataStack?
+    public var dataStack: DataStack? {
         get {
             if _dataStack == nil {
                 guard let bundleURL = Bundle(for: ManaKit.self).url(forResource: "ManaKit", withExtension: "bundle") else { return nil }
@@ -78,6 +78,23 @@ public class ManaKit: NSObject {
         }
         set {
             _dataStack = newValue
+        }
+    }
+    
+    private var _memoryDataStack: DataStack?
+    public var memoryDataStack: DataStack? {
+        get {
+            if _memoryDataStack == nil {
+                guard let bundleURL = Bundle(for: ManaKit.self).url(forResource: "ManaKit", withExtension: "bundle") else { return nil }
+                guard let bundle = Bundle(url: bundleURL) else { return nil }
+                guard let momURL = bundle.url(forResource: "ManaKit", withExtension: "momd") else { return nil }
+                guard let objectModel = NSManagedObjectModel(contentsOf: momURL) else { return nil }
+                _memoryDataStack = DataStack(model: objectModel, storeType: .inMemory)
+            }
+            return _memoryDataStack
+        }
+        set {
+            _memoryDataStack = newValue
         }
     }
     
@@ -117,7 +134,7 @@ public class ManaKit: NSObject {
     }
     
     public func setupResources() {
-//        copyDatabaseFile()
+        copyDatabaseFile()
         loadCustomFonts()
     }
     
@@ -211,7 +228,27 @@ public class ManaKit: NSObject {
     }
     
     // MARK: Database methods
-    public func findObject(_ entityName: String, objectFinder: [String: AnyObject]?, createIfNotFound: Bool) -> NSManagedObject? {
+    public func flushInMemoryDataStackToDisk() {
+        guard let memoryDataStack = memoryDataStack,
+            let persistentStore = memoryDataStack.persistentStoreCoordinator.persistentStores.first,
+            let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first,
+            let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String else {
+                return
+        }
+        let targetPath = "\(docsPath)/\(bundleName).sqlite"
+        
+        try! memoryDataStack.persistentStoreCoordinator.migratePersistentStore(persistentStore,
+                                                                               to: URL(fileURLWithPath: targetPath),
+                                                                               options: nil,
+                                                                               withType: NSSQLiteStoreType)
+    }
+    
+    public func findObject(_ entityName: String,
+                           objectFinder: [String: AnyObject]?,
+                           createIfNotFound: Bool,
+                           useInMemoryDatabase: Bool) -> NSManagedObject? {
+        let context = useInMemoryDatabase ? memoryDataStack!.mainContext : dataStack!.mainContext
+        
         var object:NSManagedObject?
         var predicate:NSPredicate?
         var fetchRequest:NSFetchRequest<NSFetchRequestResult>?
@@ -230,21 +267,21 @@ public class ManaKit: NSObject {
         }
         
         if let fetchRequest = fetchRequest {
-            if let m = try! dataStack?.mainContext.fetch(fetchRequest).first as? NSManagedObject {
+            if let m = try! context.fetch(fetchRequest).first as? NSManagedObject {
                 object = m
             } else {
                 if createIfNotFound {
-                    if let desc = NSEntityDescription.entity(forEntityName: entityName, in: dataStack!.mainContext) {
-                        object = NSManagedObject(entity: desc, insertInto: dataStack?.mainContext)
-                        try! dataStack?.mainContext.save()
+                    if let desc = NSEntityDescription.entity(forEntityName: entityName, in: context) {
+                        object = NSManagedObject(entity: desc, insertInto: context)
+                        try! context.save()
                     }
                 }
             }
         } else {
             if createIfNotFound {
-                if let desc = NSEntityDescription.entity(forEntityName: entityName, in: dataStack!.mainContext) {
-                    object = NSManagedObject(entity: desc, insertInto: dataStack?.mainContext)
-                    try! dataStack?.mainContext.save()
+                if let desc = NSEntityDescription.entity(forEntityName: entityName, in: context) {
+                    object = NSManagedObject(entity: desc, insertInto: context)
+                    try! context.save()
                 }
             }
         }
@@ -256,7 +293,8 @@ public class ManaKit: NSObject {
         let objectFinder = ["version": Constants.ScryfallDate] as [String: AnyObject]
         guard let object = ManaKit.sharedInstance.findObject("CMSystem",
                                                              objectFinder: objectFinder,
-                                                             createIfNotFound: true) as? CMSystem else {
+                                                             createIfNotFound: true,
+                                                             useInMemoryDatabase: false) as? CMSystem else {
             return nil
         }
         
@@ -486,10 +524,10 @@ public class ManaKit: NSObject {
                 }
             } else {
                 guard let desc = NSEntityDescription.entity(forEntityName: "CMCardPricing", in: dataStack!.mainContext),
-                    let p = NSManagedObject(entity: desc, insertInto: dataStack?.mainContext) as? CMCardPricing else {
+                    let p = NSManagedObject(entity: desc, insertInto: dataStack!.mainContext) as? CMCardPricing else {
                     fatalError()
                 }
-                try! dataStack?.mainContext.save()
+                try! dataStack!.mainContext.save()
                 pricing = p
                 willFetch = true
             }
@@ -532,7 +570,7 @@ public class ManaKit: NSObject {
                     pricing!.lastUpdate = NSDate()
                     card.pricing = pricing
                     
-                    self.dataStack?.performInNewBackgroundContext { backgroundContext in
+                    self.dataStack!.performInNewBackgroundContext { backgroundContext in
                         try! backgroundContext.save()
                         seal.fulfill(())
                     }
@@ -583,13 +621,13 @@ public class ManaKit: NSObject {
                     storePricing = sp
                 } else {
                     if let desc = NSEntityDescription.entity(forEntityName: "CMStorePricing", in: dataStack!.mainContext),
-                        let sp = NSManagedObject(entity: desc, insertInto: dataStack?.mainContext) as? CMStorePricing {
+                        let sp = NSManagedObject(entity: desc, insertInto: dataStack!.mainContext) as? CMStorePricing {
                         
                         sp.addToCards(card)
                         storePricing = sp
                     }
                 }
-                try! dataStack?.mainContext.save()
+                try! dataStack!.mainContext.save()
                 
                 var rq = URLRequest(url: url)
                 rq.httpMethod = "GET"
@@ -607,7 +645,10 @@ public class ManaKit: NSObject {
                             let link = supplier.xpath("link").first?.text {
                             
                             let id = "\(name)_\(condition)_\(qty)_\(price)"
-                            if let sup = self.findObject("CMSupplier", objectFinder: ["id": id as AnyObject], createIfNotFound: true) as? CMSupplier {
+                            if let sup = self.findObject("CMSupplier",
+                                                         objectFinder: ["id": id as AnyObject],
+                                                         createIfNotFound: true,
+                                                         useInMemoryDatabase: false) as? CMSupplier {
                             
                                 sup.id = id
                                 sup.name = name
@@ -624,7 +665,7 @@ public class ManaKit: NSObject {
                     }
                     storePricing!.lastUpdate = NSDate()
                     
-                    self.dataStack?.performInNewBackgroundContext { backgroundContext in
+                    self.dataStack!.performInNewBackgroundContext { backgroundContext in
                         try! backgroundContext.save()
                         seal.fulfill(())
                     }
