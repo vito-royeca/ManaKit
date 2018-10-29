@@ -17,7 +17,7 @@ import Sync
 @objc(ManaKit)
 public class ManaKit: NSObject {
     public enum Constants {
-        public static let ScryfallDate        = "2018-10-26 09:56 UTC"
+        public static let ScryfallDate        = "2018-10-28 09:58 UTC"
         public static let MTGJSONVersion      = "3.19.2 E"
         public static let MTGJSONDate         = "Sep 26, 2018"
         public static let KeyruneVersion      = "3.3.1"
@@ -228,14 +228,14 @@ public class ManaKit: NSObject {
     }
     
     // MARK: Database methods
-    public func flushInMemoryDataStackToDisk() {
+    public func flushInMemoryDatabaseToDisk() {
         guard let memoryDataStack = memoryDataStack,
             let persistentStore = memoryDataStack.persistentStoreCoordinator.persistentStores.first,
             let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first,
             let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String else {
                 return
         }
-        let targetPath = "\(docsPath)/\(bundleName).sqlite"
+        let targetPath = "\(docsPath)/\(bundleName)_0001).sqlite"
         
         try! memoryDataStack.persistentStoreCoordinator.migratePersistentStore(persistentStore,
                                                                                to: URL(fileURLWithPath: targetPath),
@@ -273,7 +273,7 @@ public class ManaKit: NSObject {
                 if createIfNotFound {
                     if let desc = NSEntityDescription.entity(forEntityName: entityName, in: context) {
                         object = NSManagedObject(entity: desc, insertInto: context)
-                        try! context.save()
+//                        try! context.save()
                     }
                 }
             }
@@ -281,7 +281,7 @@ public class ManaKit: NSObject {
             if createIfNotFound {
                 if let desc = NSEntityDescription.entity(forEntityName: entityName, in: context) {
                     object = NSManagedObject(entity: desc, insertInto: context)
-                    try! context.save()
+//                    try! context.save()
                 }
             }
         }
@@ -340,7 +340,7 @@ public class ManaKit: NSObject {
                             let imageCache = SDImageCache.init()
                             imageCache.store(image, forKey: cacheKey, toDisk: true, completion: {
                                 if imageType == .artCrop {
-                                    if let _ = card.imageURIs {
+                                    if let _ = card.imageUris {
                                         seal.fulfill(())
                                     } else {
                                         let _ = self.crop(image, ofCard: card)
@@ -400,7 +400,7 @@ public class ManaKit: NSObject {
         var willGetFromCache = false
         
         if imageType == .artCrop {
-            if let _ = card.imageURIs {
+            if let _ = card.imageUris {
                 willGetFromCache = true
             } else {
                 cardImage = croppedImage(card)
@@ -419,7 +419,7 @@ public class ManaKit: NSObject {
             
             cardImage = imageCache.imageFromDiskCache(forKey: cacheKey)
             
-            if let _ = card.imageURIs {
+            if let _ = card.imageUris {
                 // return roundCornered image
                 if let c = cardImage {
                     cardImage = c.roundCornered(card: card)
@@ -443,7 +443,7 @@ public class ManaKit: NSObject {
     public func croppedImage(_ card: CMCard) -> UIImage? {
         var image: UIImage?
         
-        if let _ = card.imageURIs {
+        if let _ = card.imageUris {
             image = cardImage(card, imageType: .artCrop)
         } else {
             guard let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first,

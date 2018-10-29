@@ -9,17 +9,19 @@
 import UIKit
 import CoreData
 import ManaKit
+import Sync
 
 class Maintainer: NSObject {
     // MARK: Constants
     let printMilestone = 1000
-    let dataStack = ManaKit.sharedInstance.memoryDataStack!
-    let context = ManaKit.sharedInstance.memoryDataStack!.mainContext
-    let useInMemoryDatabase = true
+    var dataStack: DataStack?
+    var context:NSManagedObjectContext?
+    var useInMemoryDatabase = true
 
     // MARK: Variables
     var dateStart = Date()
     
+    // MARK: Custom methods
     func startActivity(name: String) {
         dateStart = Date()
         print("Starting \(name)...")
@@ -31,13 +33,21 @@ class Maintainer: NSObject {
         print("Total Time Elapsed: \(self.dateStart) - \(dateEnd) = \(self.format(timeDifference))")
         print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
     }
-    
-    func updateSystem() {
+
+    func toggleDatabaseUsage(useInMemoryDatabase: Bool) {
+        self.useInMemoryDatabase = useInMemoryDatabase
+        dataStack = useInMemoryDatabase ? ManaKit.sharedInstance.memoryDataStack! : ManaKit.sharedInstance.dataStack!
+        context = useInMemoryDatabase ? ManaKit.sharedInstance.memoryDataStack!.mainContext : ManaKit.sharedInstance.dataStack!.mainContext
+    }
+
+    func updateSystem(useInMemoryDatabase: Bool) {
+        toggleDatabaseUsage(useInMemoryDatabase: useInMemoryDatabase)
+
         // delete existing data first
         let request: NSFetchRequest<CMSystem> = CMSystem.fetchRequest()
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: request as! NSFetchRequest<NSFetchRequestResult>)
-        try! dataStack.persistentStoreCoordinator.execute(deleteRequest,
-                                                          with: context)
+        try! dataStack!.persistentStoreCoordinator.execute(deleteRequest,
+                                                          with: context!)
         
         let objectFinder = ["version": ManaKit.Constants.ScryfallDate] as [String: AnyObject]
         guard let system = ManaKit.sharedInstance.findObject("CMSystem",
@@ -49,9 +59,10 @@ class Maintainer: NSObject {
         
         system.version = ManaKit.Constants.ScryfallDate
         system.date = NSDate()
-        try! context.save()
+        try! context!.save()
     }
     
+    // MARK: Utility methods
     func sectionFor(name: String) -> String? {
         if name.count == 0 {
             return nil
