@@ -13,7 +13,9 @@ import ManaKit
 import PromiseKit
 
 class KeyruneMaintainer: Maintainer {
-    func updateSetSymbols() {
+    func updateSetSymbols(useInMemoryDatabase: Bool) {
+        toggleDatabaseUsage(useInMemoryDatabase: useInMemoryDatabase)
+        
         startActivity(name: "updateSetSymbols")
         
         if let urlString = "http://andrewgioia.github.io/Keyrune/cheatsheet.html".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),

@@ -66,7 +66,6 @@ extension CMCard {
     @NSManaged public var face: CMCard?
     @NSManaged public var faces: NSSet?
     @NSManaged public var frame: CMCardFrame?
-    @NSManaged public var imageURIs: NSSet?
     @NSManaged public var inventories: NSSet?
     @NSManaged public var language: CMLanguage?
     @NSManaged public var layout: CMCardLayout?

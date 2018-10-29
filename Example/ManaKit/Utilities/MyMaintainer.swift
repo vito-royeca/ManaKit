@@ -11,13 +11,15 @@ import CoreData
 import ManaKit
 
 class MyMaintainer: Maintainer {
-    func updateCards() {
+    func updateCards(useInMemoryDatabase: Bool) {
+        toggleDatabaseUsage(useInMemoryDatabase: useInMemoryDatabase)
+
         startActivity(name: "updateCards")
         
         let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
                                    NSSortDescriptor(key: "name", ascending: true)]
-        let cards = try! context.fetch(request)
+        let cards = try! context!.fetch(request)
         var count = 0
         print("Creating cards: \(count)/\(cards.count) \(Date())")
         
@@ -35,17 +37,15 @@ class MyMaintainer: Maintainer {
             // Firebase id = set.code + _ + card.name + _ + card.name+ number?
             if let set = card.set,
                 let setCode = set.code,
-                let language = card.language,
-                let languageCode = language.code,
                 let name = card.name {
                 var firebaseId = "\(setCode.uppercased())_\(name)_\(name.lowercased())"
                 
                 let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
-                request.predicate = NSPredicate(format: "set.code = %@ AND language.code = %@ AND name = %@",
-                                                setCode, languageCode, name)
+                request.predicate = NSPredicate(format: "set.code = %@ %@ AND name = %@",
+                                                setCode, name)
                 request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true),
                                            NSSortDescriptor(key: "collectorNumber", ascending: true)]
-                let variations = try! context.fetch(request)
+                let variations = try! context!.fetch(request)
                 var index = 1
                 
                 for c in variations {
@@ -67,14 +67,15 @@ class MyMaintainer: Maintainer {
             count += 1
             if count % printMilestone == 0 {
                 print("Updating cards: \(count)/\(cards.count) \(Date())")
-                try! context.save()
+                try! context!.save()
             }
         }
         
         endActivity()
     }
     
-    func createRules() {
+    func createComprehensiveRules(useInMemoryDatabase: Bool) {
+        toggleDatabaseUsage(useInMemoryDatabase: useInMemoryDatabase)
         
     }
 
