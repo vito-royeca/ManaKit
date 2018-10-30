@@ -1,3 +1,6 @@
+**Version 3.0.0** @ 29.10.2018
+- Now using Scryfall database.
+
 **Version 2.8.6** @ 19.10.2018
 - Fixed error in ManaKit.copyDatabaseFiles().
 - Updated the Comprehensive Rules to: 20181005.
