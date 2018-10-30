@@ -15,7 +15,7 @@ class Maintainer: NSObject {
     // MARK: Constants
     let printMilestone = 1000
     var dataStack: DataStack?
-    var context:NSManagedObjectContext?
+    var context: NSManagedObjectContext?
     var useInMemoryDatabase = true
 
     // MARK: Variables

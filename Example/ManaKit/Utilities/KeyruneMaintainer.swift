@@ -38,20 +38,13 @@ class KeyruneMaintainer: Maintainer {
     }
     
     private func process(document: HTMLDocument) {
-        let context = ManaKit.sharedInstance.memoryDataStack!.mainContext
-        
         for div in document.xpath("//div[@class='vectors']") {
             for span in div.xpath("//span") {
                 if let content = span.content {
                     let array = content.components(separatedBy: " ")
                     if array.count == 3 {
                         let setCode = array[1].replacingOccurrences(of: "ss-", with: "")
-                        var keyruneCode = array[2].replacingOccurrences(of: "&#x", with: "").replacingOccurrences(of: ";", with: "")
-                        
-                        // fixes
-                        if setCode == "c14" {
-                            keyruneCode = "e65d"
-                        }
+                        let keyruneCode = array[2].replacingOccurrences(of: "&#x", with: "").replacingOccurrences(of: ";", with: "")
                         
                         if let set = ManaKit.sharedInstance.findObject("CMSet",
                                                                        objectFinder: ["code": setCode] as [String: AnyObject],
@@ -63,24 +56,26 @@ class KeyruneMaintainer: Maintainer {
                 }
             }
         }
-        try! context.save()
         
         // update keyrune of children
         let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
         request.predicate = NSPredicate(format: "parent != nil AND myKeyruneCode = nil")
-        var sets = try! context.fetch(request)
+        var sets = try! context!.fetch(request)
         for set in sets {
             if let parent = set.parent {
                 set.myKeyruneCode = parent.myKeyruneCode
             }
         }
-        try! context.save()
         
         // manual fix
         request.predicate = nil
-        sets = try! context.fetch(request)
+        sets = try! context!.fetch(request)
         for set in sets {
-            if set.code == "pgp17" ||
+            if set.code == "c14" ||
+                set.code == "oc14" ||
+                set.code == "tc14" {
+                set.myKeyruneCode = "e65d" // typo in website
+            } else if set.code == "pgp17" ||
                 set.code == "htr" ||
                 set.code == "plny" ||
                 set.code == "f11" ||
@@ -220,6 +215,6 @@ class KeyruneMaintainer: Maintainer {
                 }
             }
         }
-        try! context.save()
+        try! context!.save()
     }
 }

@@ -20,24 +20,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
 
-        let scryfall = ScryfallMaintainer()
+//        let scryfall = ScryfallMaintainer()
 //        let keyrune = KeyruneMaintainer()
 //        let tcgplayer = TCGPlayerMaintainer()
 //        let my = MyMaintainer()
         
-        scryfall.fetchSetsAndCreateCards(useInMemoryDatabase: true)
-//        scryfall.updateCards2(useInMemoryDatabase: false)
+//        scryfall.fetchSetsAndCreateCards(useInMemoryDatabase: true)
+//        scryfall.updateSystem(useInMemoryDatabase: false)
         
-//        keyrune.updateSetSymbols()
-//        tcgplayer.updateSetTcgPlayerNames()
-//        scryfall.updateCards()
-//        my.updateCards()
+//        keyrune.updateSetSymbols(useInMemoryDatabase: false)
+//        tcgplayer.updateSetTcgPlayerNames2(useInMemoryDatabase: false)
+//        my.updateCards(useInMemoryDatabase: false)
         
+//        my.updateSystem(useInMemoryDatabase: false)
+
           // Normal run
-//        ManaKit.sharedInstance.setupResources()
-//        ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "ManaGuide",
-//                                                  publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720",
-//                                                  privateKey: nil)
+        ManaKit.sharedInstance.setupResources()
+        ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "ManaGuide",
+                                                  publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720",
+                                                  privateKey: nil)
 
         return true
     }

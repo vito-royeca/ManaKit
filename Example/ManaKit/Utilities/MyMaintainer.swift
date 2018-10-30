@@ -17,6 +17,7 @@ class MyMaintainer: Maintainer {
         startActivity(name: "updateCards")
         
         let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
+        request.predicate = NSPredicate(format: "id != nil")
         request.sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
                                    NSSortDescriptor(key: "name", ascending: true)]
         let cards = try! context!.fetch(request)
@@ -40,24 +41,19 @@ class MyMaintainer: Maintainer {
                 let name = card.name {
                 var firebaseId = "\(setCode.uppercased())_\(name)_\(name.lowercased())"
                 
-                let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
-                request.predicate = NSPredicate(format: "set.code = %@ %@ AND name = %@",
-                                                setCode, name)
-                request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true),
-                                           NSSortDescriptor(key: "collectorNumber", ascending: true)]
-                let variations = try! context!.fetch(request)
-                var index = 1
-                
-                for c in variations {
-                    if c.id == card.id {
-                        firebaseId += "\(index)"
-                        break
-                    } else {
-                        index += 1
+                if let variations = card.variations,
+                    let array = variations.allObjects as? [CMCard] {
+                    var index = 1
+                    
+                    for c in array {
+                        if c.id == card.id {
+                            firebaseId += "\(index)"
+                            break
+                        } else {
+                            index += 1
+                        }
                     }
                 }
-                
-                
                 card.firebaseId = firebaseId
             }
             
@@ -67,10 +63,10 @@ class MyMaintainer: Maintainer {
             count += 1
             if count % printMilestone == 0 {
                 print("Updating cards: \(count)/\(cards.count) \(Date())")
-                try! context!.save()
             }
         }
-        
+
+        try! context!.save()
         endActivity()
     }
     

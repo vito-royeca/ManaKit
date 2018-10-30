@@ -17,7 +17,7 @@ import Sync
 @objc(ManaKit)
 public class ManaKit: NSObject {
     public enum Constants {
-        public static let ScryfallDate        = "2018-10-28 09:58 UTC"
+        public static let ScryfallDate        = "2018-10-29 09:22 UTC"
         public static let MTGJSONVersion      = "3.19.2 E"
         public static let MTGJSONDate         = "Sep 26, 2018"
         public static let KeyruneVersion      = "3.3.1"
@@ -235,7 +235,7 @@ public class ManaKit: NSObject {
             let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String else {
                 return
         }
-        let targetPath = "\(docsPath)/\(bundleName)_0001).sqlite"
+        let targetPath = "\(docsPath)/\(bundleName)_0001.sqlite"
         
         try! memoryDataStack.persistentStoreCoordinator.migratePersistentStore(persistentStore,
                                                                                to: URL(fileURLWithPath: targetPath),
