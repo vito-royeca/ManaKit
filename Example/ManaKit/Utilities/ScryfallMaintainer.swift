@@ -15,7 +15,7 @@ import SSZipArchive
 class ScryfallMaintainer: Maintainer {
     // MARK: Constants
     let setCodesForProcessing:[String]? = nil
-    let fileName = "scryfall-all-cards.json"
+    let fileName = "scryfall-default-cards.json"
     
     // MARK: Variables
     var cachedLanguages = [CMLanguage]()
@@ -455,32 +455,26 @@ class ScryfallMaintainer: Maintainer {
         
         var count = 0
         print("Updating cards: \(count)/\(array.count) \(Date())")
+        
+        reloadCachedCard()
         for dict in array {
-            if let id = dict["id"],
+            if let id = dict["id"] as? String,
                 let set = dict["set"] as? String {
-                var card: CMCard?
                 
                 // all parts
                 if let allParts = dict["all_parts"] as? [[String: Any]] {
-                    if card == nil {
-                        card = ManaKit.sharedInstance.findObject("CMCard",
-                                                                 objectFinder: ["id": id] as [String: AnyObject],
-                                                                 createIfNotFound: true,
-                                                                 useInMemoryDatabase: useInMemoryDatabase) as? CMCard
-                    }
-                    
-                    for allPart in allParts {
-                        if let allPartId = allPart["id"] as? String,
-                            let name = allPart["name"] as? String {
-                            if name == card!.name {
-                                continue
-                            }
-                            if let part = ManaKit.sharedInstance.findObject("CMCard",
-                                                                            objectFinder: ["id": allPartId] as [String: AnyObject],
-                                                                            createIfNotFound: true,
-                                                                            useInMemoryDatabase: useInMemoryDatabase) as? CMCard {
-                                part.part = card
-                                card!.addToParts(part)
+                    if let card = cachedCards.filter({ $0.id == id }).first {
+                        for allPart in allParts {
+                            if let allPartId = allPart["id"] as? String,
+                                let name = allPart["name"] as? String {
+                                
+                                if name == card.name {
+                                    continue
+                                }
+                                if let part = cachedCards.filter({ $0.id == allPartId }).first {
+                                    part.part = card
+                                    card.addToParts(part)
+                                }
                             }
                         }
                     }
@@ -488,27 +482,22 @@ class ScryfallMaintainer: Maintainer {
                 
                 // card faces
                 if let cardFaces = dict["card_faces"] as? [[String: Any]] {
-                    if card == nil {
-                        card = ManaKit.sharedInstance.findObject("CMCard",
-                                                                 objectFinder: ["id": id] as [String: AnyObject],
-                                                                 createIfNotFound: true,
-                                                                 useInMemoryDatabase: useInMemoryDatabase) as? CMCard
-                    }
-                    
-                    for cardFace in cardFaces {
-                        if let name = cardFace["name"] as? String,
-                            let face = processCardData(dict: cardFace,
-                                                       objectFinder: ["name": name,
-                                                                      "set.code": set] as [String: AnyObject]) {
-                            face.face = card
-                            card!.addToFaces(face)
+                    if let card = cachedCards.filter({ $0.id == id }).first {
+                        for cardFace in cardFaces {
+                            if let name = cardFace["name"] as? String,
+                                let face = processCardData(dict: cardFace,
+                                                           objectFinder: ["name": name,
+                                                                          "set.code": set] as [String: AnyObject]) {
+                                face.face = card
+                                card.addToFaces(face)
+                            }
                         }
                     }
                 }
                 
                 count += 1
                 if count % printMilestone == 0 {
-                    print("Uodating cards: \(count)/\(array.count) \(Date())")
+                    print("Updating cards: \(count)/\(array.count) \(Date())")
                 }
             }
         }
@@ -527,20 +516,7 @@ class ScryfallMaintainer: Maintainer {
         var count = 0
         print("Updating cards: \(count)/\(cards.count) \(Date())")
         
-        // refill the cachedSets
-        cachedSets.removeAll()
-        let request2: NSFetchRequest<CMSet> = CMSet.fetchRequest()
-        cachedSets = try! context!.fetch(request2)
-        
-        // refill the cachedCards
-        cachedCards.removeAll()
-        for set in cachedSets {
-            if let cards = set.cards,
-                let array = cards.allObjects as? [CMCard] {
-                cachedCards.append(contentsOf: array)
-            }
-        }
-        
+        reloadCachedCard()
         for card in cards {
             if card.id != nil {
                 // variations
@@ -624,6 +600,21 @@ class ScryfallMaintainer: Maintainer {
         }
         
         return cachedSets.first(where: { $0.code == code})
+    }
+    
+    private func reloadCachedCard() {
+        cachedSets.removeAll()
+        cachedCards.removeAll()
+        
+        let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
+        cachedSets = try! context!.fetch(request)
+        
+        for set in cachedSets {
+            if let cards = set.cards,
+                let array = cards.allObjects as? [CMCard] {
+                cachedCards.append(contentsOf: array)
+            }
+        }
     }
     
     private func findLanguage(with code: String) -> CMLanguage? {

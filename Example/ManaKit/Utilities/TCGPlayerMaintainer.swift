@@ -27,16 +27,37 @@ class TCGPlayerMaintainer: Maintainer {
             self.getMagicCategoryId()
         }.done { categoryId in
             self.getMagicSets(categoryId: categoryId, offset: 0)
-            
-            // manual fix
-            let sets = [["code": "e01", "name": "Archenemy: Nicol Bolas"],
-                        ["code": "", "name": ""]]
-            
-            self.processSets(array: sets)
             self.endActivity()
         }.catch { error in
             print("\(error)")
         }
+    }
+    
+    func updateSetTcgPlayerNames2(useInMemoryDatabase: Bool) {
+        toggleDatabaseUsage(useInMemoryDatabase: useInMemoryDatabase)
+        
+        startActivity(name: "updateSetTcgPlayerNames2()")
+        
+        // manual fix
+        let sets = [["code": "e01", "name": "Archenemy: Nicol Bolas"],
+                    ["code": "p15a", "name": "Unique and Miscellaneous Promos"],
+                    ["code": "pgp17", "name": "Gift Boxes and Promos"],
+                    ["code": "pcmp", "name": "Champs Promos"],
+                    ["code": "pdrc", "name": "Media Promos"],
+                    ["code": "dvd", "name": "Duel Decks: Anthology"],
+                    ["code": "evg", "name": "Duel Decks: Anthology"],
+                    ["code": "gvl", "name": "Duel Decks: Anthology"],
+                    ["code": "jvc", "name": "Duel Decks: Anthology"],
+                    ["code": "ddf", "name": "Duel Decks: Elspeth vs. Tezzeret"],
+                    ["code": "dd1", "name": "Duel Decks: Elves vs. Goblins"],
+                    ["code": "jvc", "name": "Duel Decks: Anthology"],
+                    ["code": "gpt", "name": "Guildpact"],
+                    ["code": "pgru", "name": "Guru Lands"],
+                    ["code": "phpr", "name": "Media Promos"],
+                    ["code": "h17", "name": "Media Promos"]]
+        
+        processSets(array: sets)
+        endActivity()
     }
     
     private func getToken() -> Promise<Void> {
@@ -149,14 +170,14 @@ class TCGPlayerMaintainer: Maintainer {
     
     private func processSets(array: [[String: String]]) {
         let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
-        request.predicate = NSPredicate(format: "tcgplayerName = nil")
+//        request.predicate = NSPredicate(format: "tcgplayerName = nil")
         
         var sets = try! context!.fetch(request)
         for set in sets {
             for dict in array {
                 if let code = dict["code"],
                     let name = dict["name"] {
-                    if set.code == code.lowercased() {
+                    if set.code?.lowercased() == code.lowercased() {
                         set.tcgplayerName = name
                     }
                 }
