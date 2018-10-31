@@ -1,8 +1,8 @@
 //
-//  CMArtist+CoreDataProperties.swift
+//  CMCardArtist+CoreDataProperties.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 23/10/2018.
+//  Created by Jovito Royeca on 30/10/2018.
 //
 //
 
@@ -10,10 +10,10 @@ import Foundation
 import CoreData
 
 
-extension CMArtist {
+extension CMCardArtist {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMArtist> {
-        return NSFetchRequest<CMArtist>(entityName: "CMArtist")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMCardArtist> {
+        return NSFetchRequest<CMCardArtist>(entityName: "CMCardArtist")
     }
 
     @NSManaged public var firstName: String?
@@ -25,7 +25,7 @@ extension CMArtist {
 }
 
 // MARK: Generated accessors for cards
-extension CMArtist {
+extension CMCardArtist {
 
     @objc(addCardsObject:)
     @NSManaged public func addToCards(_ value: CMCard)

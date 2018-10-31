@@ -33,32 +33,32 @@ class TCGPlayerMaintainer: Maintainer {
         }
     }
     
-    func updateSetTcgPlayerNames2(useInMemoryDatabase: Bool) {
-        toggleDatabaseUsage(useInMemoryDatabase: useInMemoryDatabase)
-        
-        startActivity(name: "updateSetTcgPlayerNames2()")
-        
-        // manual fix
-        let sets = [["code": "e01", "name": "Archenemy: Nicol Bolas"],
-                    ["code": "p15a", "name": "Unique and Miscellaneous Promos"],
-                    ["code": "pgp17", "name": "Gift Boxes and Promos"],
-                    ["code": "pcmp", "name": "Champs Promos"],
-                    ["code": "pdrc", "name": "Media Promos"],
-                    ["code": "dvd", "name": "Duel Decks: Anthology"],
-                    ["code": "evg", "name": "Duel Decks: Anthology"],
-                    ["code": "gvl", "name": "Duel Decks: Anthology"],
-                    ["code": "jvc", "name": "Duel Decks: Anthology"],
-                    ["code": "ddf", "name": "Duel Decks: Elspeth vs. Tezzeret"],
-                    ["code": "dd1", "name": "Duel Decks: Elves vs. Goblins"],
-                    ["code": "jvc", "name": "Duel Decks: Anthology"],
-                    ["code": "gpt", "name": "Guildpact"],
-                    ["code": "pgru", "name": "Guru Lands"],
-                    ["code": "phpr", "name": "Media Promos"],
-                    ["code": "h17", "name": "Media Promos"]]
-        
-        processSets(array: sets)
-        endActivity()
-    }
+//    func updateSetTcgPlayerNames2(useInMemoryDatabase: Bool) {
+//        toggleDatabaseUsage(useInMemoryDatabase: useInMemoryDatabase)
+//        
+//        startActivity(name: "updateSetTcgPlayerNames2()")
+//        
+//        // manual fix
+//        let sets = [["code": "e01", "name": "Archenemy: Nicol Bolas"],
+//                    ["code": "p15a", "name": "Unique and Miscellaneous Promos"],
+//                    ["code": "pgp17", "name": "Gift Boxes and Promos"],
+//                    ["code": "pcmp", "name": "Champs Promos"],
+//                    ["code": "pdrc", "name": "Media Promos"],
+//                    ["code": "dvd", "name": "Duel Decks: Anthology"],
+//                    ["code": "evg", "name": "Duel Decks: Anthology"],
+//                    ["code": "gvl", "name": "Duel Decks: Anthology"],
+//                    ["code": "jvc", "name": "Duel Decks: Anthology"],
+//                    ["code": "ddf", "name": "Duel Decks: Elspeth vs. Tezzeret"],
+//                    ["code": "dd1", "name": "Duel Decks: Elves vs. Goblins"],
+//                    ["code": "jvc", "name": "Duel Decks: Anthology"],
+//                    ["code": "gpt", "name": "Guildpact"],
+//                    ["code": "pgru", "name": "Guru Lands"],
+//                    ["code": "phpr", "name": "Media Promos"],
+//                    ["code": "h17", "name": "Media Promos"]]
+//        
+//        processSets(array: sets)
+//        endActivity()
+//    }
     
     private func getToken() -> Promise<Void> {
         return Promise { seal  in

@@ -2,7 +2,7 @@
 //  CMSet+CoreDataProperties.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 23/10/2018.
+//  Created by Jovito Royeca on 30/10/2018.
 //
 //
 
@@ -20,19 +20,18 @@ extension CMSet {
     @NSManaged public var code: String?
     @NSManaged public var isFoilOnly: Bool
     @NSManaged public var isOnlineOnly: Bool
-    @NSManaged public var myKeyruneCode: String?
     @NSManaged public var mtgoCode: String?
-    @NSManaged public var name: String?
+    @NSManaged public var myKeyruneCode: String?
     @NSManaged public var myNameSection: String?
-    @NSManaged public var releaseDate: String?
     @NSManaged public var myYearSection: String?
+    @NSManaged public var name: String?
+    @NSManaged public var releaseDate: String?
     @NSManaged public var tcgplayerName: String?
     @NSManaged public var block: CMSetBlock?
     @NSManaged public var cards: NSSet?
     @NSManaged public var children: NSSet?
     @NSManaged public var languages: NSSet?
     @NSManaged public var parent: CMSet?
-    @NSManaged public var printings: NSSet?
     @NSManaged public var setType: CMSetType?
 
 }
@@ -85,22 +84,5 @@ extension CMSet {
 
     @objc(removeLanguages:)
     @NSManaged public func removeFromLanguages(_ values: NSSet)
-
-}
-
-// MARK: Generated accessors for printings
-extension CMSet {
-
-    @objc(addPrintingsObject:)
-    @NSManaged public func addToPrintings(_ value: CMCard)
-
-    @objc(removePrintingsObject:)
-    @NSManaged public func removeFromPrintings(_ value: CMCard)
-
-    @objc(addPrintings:)
-    @NSManaged public func addToPrintings(_ values: NSSet)
-
-    @objc(removePrintings:)
-    @NSManaged public func removeFromPrintings(_ values: NSSet)
 
 }

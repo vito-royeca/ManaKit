@@ -2,7 +2,7 @@
 //  CMDeck+CoreDataProperties.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 23/10/2018.
+//  Created by Jovito Royeca on 30/10/2018.
 //
 //
 
@@ -28,7 +28,7 @@ extension CMDeck {
     @NSManaged public var updatedOn: NSDate?
     @NSManaged public var views: Int64
     @NSManaged public var cards: NSSet?
-    @NSManaged public var format: CMFormat?
+    @NSManaged public var format: CMCardFormat?
     @NSManaged public var heroCard: CMCard?
     @NSManaged public var pricing: CMCardPricing?
     @NSManaged public var user: CMUser?
@@ -39,10 +39,10 @@ extension CMDeck {
 extension CMDeck {
 
     @objc(addCardsObject:)
-    @NSManaged public func addToCards(_ value: CMCardInventory)
+    @NSManaged public func addToCards(_ value: CMInventory)
 
     @objc(removeCardsObject:)
-    @NSManaged public func removeFromCards(_ value: CMCardInventory)
+    @NSManaged public func removeFromCards(_ value: CMInventory)
 
     @objc(addCards:)
     @NSManaged public func addToCards(_ values: NSSet)

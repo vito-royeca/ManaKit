@@ -1,8 +1,8 @@
 //
-//  CMFormat+CoreDataProperties.swift
+//  CMCardFormat+CoreDataProperties.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 23/10/2018.
+//  Created by Jovito Royeca on 30/10/2018.
 //
 //
 
@@ -10,10 +10,10 @@ import Foundation
 import CoreData
 
 
-extension CMFormat {
+extension CMCardFormat {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMFormat> {
-        return NSFetchRequest<CMFormat>(entityName: "CMFormat")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMCardFormat> {
+        return NSFetchRequest<CMCardFormat>(entityName: "CMCardFormat")
     }
 
     @NSManaged public var name: String?
@@ -24,7 +24,7 @@ extension CMFormat {
 }
 
 // MARK: Generated accessors for cardLegalities
-extension CMFormat {
+extension CMCardFormat {
 
     @objc(addCardLegalitiesObject:)
     @NSManaged public func addToCardLegalities(_ value: CMCardLegality)
@@ -41,7 +41,7 @@ extension CMFormat {
 }
 
 // MARK: Generated accessors for decks
-extension CMFormat {
+extension CMCardFormat {
 
     @objc(addDecksObject:)
     @NSManaged public func addToDecks(_ value: CMDeck)

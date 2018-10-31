@@ -168,29 +168,34 @@ public class CardTableViewCell: UITableViewCell {
 
         // type symbol
         var cardType: CMCardType?
-        if let types = card.mtgjsonTypes {
-            if types.count > 1 {
-                symbolImage.image = ManaKit.sharedInstance.symbolImage(name: "Multiple")
-                cardType = types.allObjects.first as? CMCardType
-                
-                for t in types.allObjects {
-                    if let t = t as? CMCardType {
-                        if t.name == "Creature" {
-                            cardType = t
-                        }
-                    }
-                }
-            } else {
-                if let type = types.allObjects.first as? CMCardType {
-                    cardType = type
-                }
-            }
-        }
-
-        if let cardType = cardType {
-            if let name = cardType.name {
-                symbolImage.image = ManaKit.sharedInstance.symbolImage(name: name)
-            }
+//        if let types = card.mtgjsonTypes {
+//            if types.count > 1 {
+//                symbolImage.image = ManaKit.sharedInstance.symbolImage(name: "Multiple")
+//                cardType = types.allObjects.first as? CMCardType
+//                
+//                for t in types.allObjects {
+//                    if let t = t as? CMCardType {
+//                        if t.name == "Creature" {
+//                            cardType = t
+//                        }
+//                    }
+//                }
+//            } else {
+//                if let type = types.allObjects.first as? CMCardType {
+//                    cardType = type
+//                }
+//            }
+//        }
+//
+//        if let cardType = cardType {
+//            if let name = cardType.name {
+//                symbolImage.image = ManaKit.sharedInstance.symbolImage(name: name)
+//            }
+//        }
+        
+        if let type = card.typeLine,
+            let name = type.name {
+            symbolImage.image = ManaKit.sharedInstance.symbolImage(name: name)
         }
         
         // type

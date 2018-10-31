@@ -1,8 +1,8 @@
 //
-//  CMSupplier+CoreDataProperties.swift
+//  CMStoreSupplier+CoreDataProperties.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 23/10/2018.
+//  Created by Jovito Royeca on 30/10/2018.
 //
 //
 
@@ -10,10 +10,10 @@ import Foundation
 import CoreData
 
 
-extension CMSupplier {
+extension CMStoreSupplier {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMSupplier> {
-        return NSFetchRequest<CMSupplier>(entityName: "CMSupplier")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMStoreSupplier> {
+        return NSFetchRequest<CMStoreSupplier>(entityName: "CMStoreSupplier")
     }
 
     @NSManaged public var condition: String?

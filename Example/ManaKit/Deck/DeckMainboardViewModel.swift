@@ -15,7 +15,7 @@ class DeckMainboardViewModel: NSObject {
     
     private var _sectionIndexTitles = [String]()
     private var _sectionTitles = [String]()
-    private var _fetchedResultsController: NSFetchedResultsController<CMCardInventory>?
+    private var _fetchedResultsController: NSFetchedResultsController<CMInventory>?
     
     // MARK: Settings
     private let _sortDescriptors = [NSSortDescriptor(key: "card.typeSection", ascending: true),
@@ -78,7 +78,7 @@ class DeckMainboardViewModel: NSObject {
             }
             
             var count = 0
-            if let objects = sections[section - 1].objects as? [CMCardInventory] {
+            if let objects = sections[section - 1].objects as? [CMInventory] {
                 for cardInventory in objects {
                     count += Int(cardInventory.quantity)
                 }
@@ -89,7 +89,7 @@ class DeckMainboardViewModel: NSObject {
     }
     
     // MARK: Custom methods
-    func object(forRowAt indexPath: IndexPath) -> CMCardInventory {
+    func object(forRowAt indexPath: IndexPath) -> CMInventory {
         guard let fetchedResultsController = _fetchedResultsController else {
             fatalError("fetchedResultsController is nil")
         }
@@ -108,7 +108,7 @@ class DeckMainboardViewModel: NSObject {
             return
         }
         
-        let request: NSFetchRequest<CMCardInventory> = CMCardInventory.fetchRequest()
+        let request: NSFetchRequest<CMInventory> = CMInventory.fetchRequest()
         let predicate = NSPredicate(format: "deck = %@ AND mainboard = YES", deck)
         
         request.predicate = predicate
@@ -118,15 +118,15 @@ class DeckMainboardViewModel: NSObject {
         updateSections()
     }
     
-    private func getFetchedResultsController(with fetchRequest: NSFetchRequest<CMCardInventory>?) -> NSFetchedResultsController<CMCardInventory> {
+    private func getFetchedResultsController(with fetchRequest: NSFetchRequest<CMInventory>?) -> NSFetchedResultsController<CMInventory> {
         let context = ManaKit.sharedInstance.dataStack!.viewContext
-        var request: NSFetchRequest<CMCardInventory>?
+        var request: NSFetchRequest<CMInventory>?
         
         if let fetchRequest = fetchRequest {
             request = fetchRequest
         } else {
             // Create a default fetchRequest
-            request = CMCardInventory.fetchRequest()
+            request = CMInventory.fetchRequest()
             request!.sortDescriptors = _sortDescriptors
         }
         

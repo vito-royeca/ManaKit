@@ -2,7 +2,7 @@
 //  CMStorePricing+CoreDataProperties.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 23/10/2018.
+//  Created by Jovito Royeca on 30/10/2018.
 //
 //
 
@@ -45,10 +45,10 @@ extension CMStorePricing {
 extension CMStorePricing {
 
     @objc(addSuppliersObject:)
-    @NSManaged public func addToSuppliers(_ value: CMSupplier)
+    @NSManaged public func addToSuppliers(_ value: CMStoreSupplier)
 
     @objc(removeSuppliersObject:)
-    @NSManaged public func removeFromSuppliers(_ value: CMSupplier)
+    @NSManaged public func removeFromSuppliers(_ value: CMStoreSupplier)
 
     @objc(addSuppliers:)
     @NSManaged public func addToSuppliers(_ values: NSSet)

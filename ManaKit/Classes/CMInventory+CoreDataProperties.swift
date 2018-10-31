@@ -1,8 +1,8 @@
 //
-//  CMCardInventory+CoreDataProperties.swift
+//  CMInventory+CoreDataProperties.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 23/10/2018.
+//  Created by Jovito Royeca on 30/10/2018.
 //
 //
 
@@ -10,10 +10,10 @@ import Foundation
 import CoreData
 
 
-extension CMCardInventory {
+extension CMInventory {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMCardInventory> {
-        return NSFetchRequest<CMCardInventory>(entityName: "CMCardInventory")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMInventory> {
+        return NSFetchRequest<CMInventory>(entityName: "CMInventory")
     }
 
     @NSManaged public var acquiredFrom: String?

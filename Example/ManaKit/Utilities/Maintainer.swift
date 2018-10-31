@@ -40,28 +40,6 @@ class Maintainer: NSObject {
         context = useInMemoryDatabase ? ManaKit.sharedInstance.memoryDataStack!.mainContext : ManaKit.sharedInstance.dataStack!.mainContext
     }
 
-    func updateSystem(useInMemoryDatabase: Bool) {
-        toggleDatabaseUsage(useInMemoryDatabase: useInMemoryDatabase)
-
-        // delete existing data first
-        let request: NSFetchRequest<CMSystem> = CMSystem.fetchRequest()
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: request as! NSFetchRequest<NSFetchRequestResult>)
-        try! dataStack!.persistentStoreCoordinator.execute(deleteRequest,
-                                                          with: context!)
-        
-        let objectFinder = ["version": ManaKit.Constants.ScryfallDate] as [String: AnyObject]
-        guard let system = ManaKit.sharedInstance.findObject("CMSystem",
-                                                             objectFinder: objectFinder,
-                                                             createIfNotFound: true,
-                                                             useInMemoryDatabase: useInMemoryDatabase) as? CMSystem else {
-            return
-        }
-        
-        system.version = ManaKit.Constants.ScryfallDate
-        system.date = NSDate()
-        try! context!.save()
-    }
-    
     // MARK: Utility methods
     func sectionFor(name: String) -> String? {
         if name.count == 0 {

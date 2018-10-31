@@ -1,8 +1,8 @@
 //
-//  CMRarity+CoreDataProperties.swift
+//  CMCardRarity+CoreDataProperties.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 23/10/2018.
+//  Created by Jovito Royeca on 30/10/2018.
 //
 //
 
@@ -10,10 +10,10 @@ import Foundation
 import CoreData
 
 
-extension CMRarity {
+extension CMCardRarity {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMRarity> {
-        return NSFetchRequest<CMRarity>(entityName: "CMRarity")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<CMCardRarity> {
+        return NSFetchRequest<CMCardRarity>(entityName: "CMCardRarity")
     }
 
     @NSManaged public var name: String?
@@ -23,7 +23,7 @@ extension CMRarity {
 }
 
 // MARK: Generated accessors for cards
-extension CMRarity {
+extension CMCardRarity {
 
     @objc(addCardsObject:)
     @NSManaged public func addToCards(_ value: CMCard)

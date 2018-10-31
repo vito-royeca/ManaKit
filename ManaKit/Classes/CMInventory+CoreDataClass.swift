@@ -1,5 +1,5 @@
 //
-//  CMLanguage+CoreDataClass.swift
+//  CMInventory+CoreDataClass.swift
 //  Pods
 //
 //  Created by Jovito Royeca on 30/10/2018.
@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-@objc(CMLanguage)
-public class CMLanguage: NSManagedObject {
+@objc(CMInventory)
+public class CMInventory: NSManagedObject {
 
 }
