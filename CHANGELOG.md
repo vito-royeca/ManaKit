@@ -1,3 +1,6 @@
+**Version 3.0.1** @ 31.10.2018
+- Scryfall database minor fixes.
+
 **Version 3.0.0** @ 29.10.2018
 - Now using Scryfall database.
 

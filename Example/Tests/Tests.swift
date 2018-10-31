@@ -45,7 +45,7 @@ class Tests: XCTestCase {
             }.done {
                 if let storePricing = card.tcgplayerStorePricing,
                     let suppliers = storePricing.suppliers,
-                    let array = suppliers.allObjects as? [CMSupplier] {
+                    let array = suppliers.allObjects as? [CMStoreSupplier] {
                     for supplier in array {
                         print("\(supplier)")
                     }

@@ -17,9 +17,9 @@ import Sync
 @objc(ManaKit)
 public class ManaKit: NSObject {
     public enum Constants {
-        public static let ScryfallDate        = "2018-10-29 09:22 UTC"
+        public static let ScryfallDateKey     = "ScryfallDateKey"
+        public static let ScryfallDate        = "2018-10-30 09:49 UTC"
         public static let MTGJSONVersion      = "3.19.2 E"
-        public static let MTGJSONDate         = "Sep 26, 2018"
         public static let KeyruneVersion      = "3.3.1"
         public static let EightEditionRelease = "2003-07-28"
         public static let TCGPlayerPricingAge = 24 * 3 // 3 days
@@ -149,12 +149,11 @@ public class ManaKit: NSObject {
             return
         }
         let targetPath = "\(docsPath)/\(bundleName).sqlite"
-        var willCopy = true
+        var willCopy = !FileManager.default.fileExists(atPath: targetPath)
 
-        if FileManager.default.fileExists(atPath: targetPath) {
-            // Check if we saved the version number
-            if let version = databaseVersion() {
-                willCopy = version != Constants.ScryfallDate
+        if let scryfallDate = UserDefaults.standard.string(forKey: Constants.ScryfallDateKey) {
+            if scryfallDate == Constants.ScryfallDate {
+                willCopy = false
             }
         }
         
@@ -195,8 +194,7 @@ public class ManaKit: NSObject {
             resourceValues.isExcludedFromBackup = true
             try! targetURL.setResourceValues(resourceValues)
             
-            // Save the version
-            UserDefaults.standard.set(Constants.MTGJSONVersion, forKey: UserDefaultsKeys.MTGJSONVersionKey)
+            UserDefaults.standard.set(Constants.ScryfallDate, forKey: Constants.ScryfallDateKey)
             UserDefaults.standard.synchronize()
         }
     }
@@ -287,18 +285,6 @@ public class ManaKit: NSObject {
         }
         
         return object
-    }
-    
-    public func databaseVersion() -> String? {
-        let objectFinder = ["version": Constants.ScryfallDate] as [String: AnyObject]
-        guard let object = ManaKit.sharedInstance.findObject("CMSystem",
-                                                             objectFinder: objectFinder,
-                                                             createIfNotFound: true,
-                                                             useInMemoryDatabase: false) as? CMSystem else {
-            return nil
-        }
-        
-        return object.version
     }
     
     public func saveContext() {
@@ -484,6 +470,32 @@ public class ManaKit: NSObject {
         return url
     }
     
+    public func typeImage(OfCard card: CMCard) -> UIImage? {
+        if let type = card.typeLine,
+            let name = type.name {
+            
+            if name.contains("Artifact") {
+                return ManaKit.sharedInstance.symbolImage(name: "Artifact")
+            } else if name.contains("Chaos") {
+                return ManaKit.sharedInstance.symbolImage(name: "Chaos")
+            } else if name.contains("Creature") {
+                return ManaKit.sharedInstance.symbolImage(name: "Creature")
+            } else if name.contains("Enchantment") {
+                return ManaKit.sharedInstance.symbolImage(name: "Enchantment")
+            } else if name.contains("Instant") {
+                return ManaKit.sharedInstance.symbolImage(name: "Instant")
+            } else if name.contains("Land") {
+                return ManaKit.sharedInstance.symbolImage(name: "Land")
+            } else if name.contains("Planeswalker") {
+                return ManaKit.sharedInstance.symbolImage(name: "Planeswalker")
+            } else if name.contains("Sorcery") {
+                return ManaKit.sharedInstance.symbolImage(name: "Sorcery")
+            }
+        }
+        
+        return nil
+    }
+
     // MARK: Miscellaneous methods
     public func isModern(_ card: CMCard) -> Bool {
         guard let releaseDate = card.set!.releaseDate else {
@@ -648,7 +660,7 @@ public class ManaKit: NSObject {
                             if let sup = self.findObject("CMSupplier",
                                                          objectFinder: ["id": id as AnyObject],
                                                          createIfNotFound: true,
-                                                         useInMemoryDatabase: false) as? CMSupplier {
+                                                         useInMemoryDatabase: false) as? CMStoreSupplier {
                             
                                 sup.id = id
                                 sup.name = name
@@ -704,7 +716,7 @@ public class ManaKit: NSObject {
         
         var color:UIColor?
         
-        if set.code == "TSB" {
+        if set.code == "tsb" {
             color = UIColor(hex: "652978") // purple
         } else {
             if rarity.name == "Common" {
@@ -713,7 +725,7 @@ public class ManaKit: NSObject {
                 color = UIColor(hex: "707883")
             } else if rarity.name == "Rare" {
                 color = UIColor(hex: "A58E4A")
-            } else if rarity.name == "Mythic Rare" {
+            } else if rarity.name == "Mythic" {
                 color = UIColor(hex: "BF4427")
             } else if rarity.name == "Special" {
                 color = UIColor(hex: "BF4427")

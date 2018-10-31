@@ -12,7 +12,7 @@ import ManaKit
 class DeckSideboardViewModel: NSObject {
     // MARK: Variables
     private var _deck: CMDeck?
-    private var _fetchedResultsController: NSFetchedResultsController<CMCardInventory>?
+    private var _fetchedResultsController: NSFetchedResultsController<CMInventory>?
     
     // MARK: Settings
     private let _sortDescriptors = [NSSortDescriptor(key: "card.name", ascending: true)]
@@ -60,7 +60,7 @@ class DeckSideboardViewModel: NSObject {
     }
     
     // MARK: Custom methods
-    func object(forRowAt indexPath: IndexPath) -> CMCardInventory {
+    func object(forRowAt indexPath: IndexPath) -> CMInventory {
         guard let fetchedResultsController = _fetchedResultsController else {
             fatalError("fetchedResultsController is nil")
         }
@@ -79,7 +79,7 @@ class DeckSideboardViewModel: NSObject {
             return
         }
         
-        let request: NSFetchRequest<CMCardInventory> = CMCardInventory.fetchRequest()
+        let request: NSFetchRequest<CMInventory> = CMInventory.fetchRequest()
         let predicate = NSPredicate(format: "deck = %@ AND sideboard = YES", deck)
         
         request.predicate = predicate
@@ -88,15 +88,15 @@ class DeckSideboardViewModel: NSObject {
         _fetchedResultsController = getFetchedResultsController(with: request)
     }
     
-    private func getFetchedResultsController(with fetchRequest: NSFetchRequest<CMCardInventory>?) -> NSFetchedResultsController<CMCardInventory> {
+    private func getFetchedResultsController(with fetchRequest: NSFetchRequest<CMInventory>?) -> NSFetchedResultsController<CMInventory> {
         let context = ManaKit.sharedInstance.dataStack!.viewContext
-        var request: NSFetchRequest<CMCardInventory>?
+        var request: NSFetchRequest<CMInventory>?
         
         if let fetchRequest = fetchRequest {
             request = fetchRequest
         } else {
             // Create a default fetchRequest
-            request = CMCardInventory.fetchRequest()
+            request = CMInventory.fetchRequest()
             request!.sortDescriptors = _sortDescriptors
         }
         

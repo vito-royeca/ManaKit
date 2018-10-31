@@ -2,7 +2,7 @@
 //  CMCard+CoreDataProperties.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 23/10/2018.
+//  Created by Jovito Royeca on 30/10/2018.
 //
 //
 
@@ -18,17 +18,26 @@ extension CMCard {
 
     @NSManaged public var arenaId: String?
     @NSManaged public var collectorNumber: String?
-    @NSManaged public var comvertedManaCost: Double
+    @NSManaged public var convertedManaCost: Double
     @NSManaged public var firebaseId: String?
+    @NSManaged public var firebaseRating: Double
+    @NSManaged public var firebaseRatings: Int32
+    @NSManaged public var firebaseViews: Int64
     @NSManaged public var flavorText: String?
     @NSManaged public var id: String?
+    @NSManaged public var illustrationId: String?
     @NSManaged public var imageUris: NSData?
+    @NSManaged public var isColorshifted: Bool
+    @NSManaged public var isDigital: Bool
     @NSManaged public var isFoil: Bool
     @NSManaged public var isFullArt: Bool
+    @NSManaged public var isFutureshifted: Bool
+    @NSManaged public var isHighResImage: Bool
     @NSManaged public var isNonFoil: Bool
     @NSManaged public var isOversized: Bool
     @NSManaged public var isReprint: Bool
     @NSManaged public var isReserved: Bool
+    @NSManaged public var isStorySpotlight: Bool
     @NSManaged public var isTimeshifted: Bool
     @NSManaged public var loyalty: String?
     @NSManaged public var manaCost: String?
@@ -36,27 +45,19 @@ extension CMCard {
     @NSManaged public var mtgoFoilId: String?
     @NSManaged public var mtgoId: String?
     @NSManaged public var multiverseIds: NSData?
-    @NSManaged public var name: String?
     @NSManaged public var myNameSection: String?
     @NSManaged public var myNumberOrder: Double
+    @NSManaged public var name: String?
     @NSManaged public var oracleId: String?
     @NSManaged public var oracleText: String?
     @NSManaged public var power: String?
-    @NSManaged public var firebaseRating: Double
-    @NSManaged public var firebaseRatings: Int32
-    @NSManaged public var releaseDate: String?
-    @NSManaged public var source: String?
-    @NSManaged public var toughness: String?
-    @NSManaged public var firebaseViews: Int64
-    @NSManaged public var isColorshifted: Bool
-    @NSManaged public var isDigital: Bool
     @NSManaged public var printedName: String?
     @NSManaged public var printedText: String?
-    @NSManaged public var isFutureshifted: Bool
-    @NSManaged public var isHighResImage: Bool
-    @NSManaged public var illustrationId: String?
-    @NSManaged public var isStorySpotlight: Bool
-    @NSManaged public var artist: CMArtist?
+    @NSManaged public var releaseDate: String?
+    @NSManaged public var source: String?
+    @NSManaged public var tcgPlayerPurchaseUri: String?
+    @NSManaged public var toughness: String?
+    @NSManaged public var artist: CMCardArtist?
     @NSManaged public var borderColor: CMCardBorderColor?
     @NSManaged public var cardLegalities: NSSet?
     @NSManaged public var colorIdentities: NSSet?
@@ -65,28 +66,27 @@ extension CMCard {
     @NSManaged public var deckHeroes: NSSet?
     @NSManaged public var face: CMCard?
     @NSManaged public var faces: NSSet?
+    @NSManaged public var firebaseUserFavorites: NSSet?
+    @NSManaged public var firebaseUserRatings: NSSet?
     @NSManaged public var frame: CMCardFrame?
     @NSManaged public var inventories: NSSet?
     @NSManaged public var language: CMLanguage?
     @NSManaged public var layout: CMCardLayout?
     @NSManaged public var mtgjsonOriginalType: CMCardType?
+    @NSManaged public var mtgjsonSubtypes: NSSet?
+    @NSManaged public var mtgjsonSupertypes: NSSet?
+    @NSManaged public var mtgjsonTypes: NSSet?
+    @NSManaged public var otherPrintings: NSSet?
     @NSManaged public var part: CMCard?
     @NSManaged public var parts: NSSet?
     @NSManaged public var pricing: CMCardPricing?
-    @NSManaged public var printings: NSSet?
-    @NSManaged public var rarity: CMRarity?
+    @NSManaged public var printedTypeLine: CMCardType?
+    @NSManaged public var rarity: CMCardRarity?
     @NSManaged public var rulings: NSSet?
     @NSManaged public var set: CMSet?
     @NSManaged public var tcgplayerStorePricing: CMStorePricing?
-    @NSManaged public var variations: NSSet?
-    @NSManaged public var otherPrintings: NSSet?
-    @NSManaged public var mtgjsonSubtypes: NSSet?
-    @NSManaged public var mtgjsonSupertypes: NSSet?
     @NSManaged public var typeLine: CMCardType?
-    @NSManaged public var mtgjsonTypes: NSSet?
-    @NSManaged public var firebaseUserFavorites: NSSet?
-    @NSManaged public var firebaseUserRatings: NSSet?
-    @NSManaged public var printedTypeLine: CMCardType?
+    @NSManaged public var variations: NSSet?
     @NSManaged public var watermark: CMCardWatermark?
 
 }
@@ -193,71 +193,54 @@ extension CMCard {
 
 }
 
+// MARK: Generated accessors for firebaseUserFavorites
+extension CMCard {
+
+    @objc(addFirebaseUserFavoritesObject:)
+    @NSManaged public func addToFirebaseUserFavorites(_ value: CMUser)
+
+    @objc(removeFirebaseUserFavoritesObject:)
+    @NSManaged public func removeFromFirebaseUserFavorites(_ value: CMUser)
+
+    @objc(addFirebaseUserFavorites:)
+    @NSManaged public func addToFirebaseUserFavorites(_ values: NSSet)
+
+    @objc(removeFirebaseUserFavorites:)
+    @NSManaged public func removeFromFirebaseUserFavorites(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for firebaseUserRatings
+extension CMCard {
+
+    @objc(addFirebaseUserRatingsObject:)
+    @NSManaged public func addToFirebaseUserRatings(_ value: CMCardRating)
+
+    @objc(removeFirebaseUserRatingsObject:)
+    @NSManaged public func removeFromFirebaseUserRatings(_ value: CMCardRating)
+
+    @objc(addFirebaseUserRatings:)
+    @NSManaged public func addToFirebaseUserRatings(_ values: NSSet)
+
+    @objc(removeFirebaseUserRatings:)
+    @NSManaged public func removeFromFirebaseUserRatings(_ values: NSSet)
+
+}
+
 // MARK: Generated accessors for inventories
 extension CMCard {
 
     @objc(addInventoriesObject:)
-    @NSManaged public func addToInventories(_ value: CMCardInventory)
+    @NSManaged public func addToInventories(_ value: CMInventory)
 
     @objc(removeInventoriesObject:)
-    @NSManaged public func removeFromInventories(_ value: CMCardInventory)
+    @NSManaged public func removeFromInventories(_ value: CMInventory)
 
     @objc(addInventories:)
     @NSManaged public func addToInventories(_ values: NSSet)
 
     @objc(removeInventories:)
     @NSManaged public func removeFromInventories(_ values: NSSet)
-
-}
-
-// MARK: Generated accessors for parts
-extension CMCard {
-
-    @objc(addPartsObject:)
-    @NSManaged public func addToParts(_ value: CMCard)
-
-    @objc(removePartsObject:)
-    @NSManaged public func removeFromParts(_ value: CMCard)
-
-    @objc(addParts:)
-    @NSManaged public func addToParts(_ values: NSSet)
-
-    @objc(removeParts:)
-    @NSManaged public func removeFromParts(_ values: NSSet)
-
-}
-
-// MARK: Generated accessors for printings
-extension CMCard {
-
-    @objc(addPrintingsObject:)
-    @NSManaged public func addToPrintings(_ value: CMSet)
-
-    @objc(removePrintingsObject:)
-    @NSManaged public func removeFromPrintings(_ value: CMSet)
-
-    @objc(addPrintings:)
-    @NSManaged public func addToPrintings(_ values: NSSet)
-
-    @objc(removePrintings:)
-    @NSManaged public func removeFromPrintings(_ values: NSSet)
-
-}
-
-// MARK: Generated accessors for rulings
-extension CMCard {
-
-    @objc(addRulingsObject:)
-    @NSManaged public func addToRulings(_ value: CMRuling)
-
-    @objc(removeRulingsObject:)
-    @NSManaged public func removeFromRulings(_ value: CMRuling)
-
-    @objc(addRulings:)
-    @NSManaged public func addToRulings(_ values: NSSet)
-
-    @objc(removeRulings:)
-    @NSManaged public func removeFromRulings(_ values: NSSet)
 
 }
 
@@ -312,70 +295,70 @@ extension CMCard {
 
 }
 
-// MARK: Generated accessors for firebaseUserFavorites
+// MARK: Generated accessors for otherPrintings
 extension CMCard {
 
-    @objc(addFirebaseUserFavoritesObject:)
-    @NSManaged public func addToFirebaseUserFavorites(_ value: CMUser)
+    @objc(addOtherPrintingsObject:)
+    @NSManaged public func addToOtherPrintings(_ value: CMCard)
 
-    @objc(removeFirebaseUserFavoritesObject:)
-    @NSManaged public func removeFromFirebaseUserFavorites(_ value: CMUser)
+    @objc(removeOtherPrintingsObject:)
+    @NSManaged public func removeFromOtherPrintings(_ value: CMCard)
 
-    @objc(addFirebaseUserFavorites:)
-    @NSManaged public func addToFirebaseUserFavorites(_ values: NSSet)
+    @objc(addOtherPrintings:)
+    @NSManaged public func addToOtherPrintings(_ values: NSSet)
 
-    @objc(removeFirebaseUserFavorites:)
-    @NSManaged public func removeFromFirebaseUserFavorites(_ values: NSSet)
+    @objc(removeOtherPrintings:)
+    @NSManaged public func removeFromOtherPrintings(_ values: NSSet)
 
 }
 
-// MARK: Generated accessors for firebaseUserRatings
+// MARK: Generated accessors for parts
 extension CMCard {
 
-    @objc(addFirebaseUserRatingsObject:)
-    @NSManaged public func addToFirebaseUserRatings(_ value: CMCardRating)
+    @objc(addPartsObject:)
+    @NSManaged public func addToParts(_ value: CMCard)
 
-    @objc(removeFirebaseUserRatingsObject:)
-    @NSManaged public func removeFromFirebaseUserRatings(_ value: CMCardRating)
+    @objc(removePartsObject:)
+    @NSManaged public func removeFromParts(_ value: CMCard)
 
-    @objc(addFirebaseUserRatings:)
-    @NSManaged public func addToFirebaseUserRatings(_ values: NSSet)
+    @objc(addParts:)
+    @NSManaged public func addToParts(_ values: NSSet)
 
-    @objc(removeFirebaseUserRatings:)
-    @NSManaged public func removeFromFirebaseUserRatings(_ values: NSSet)
+    @objc(removeParts:)
+    @NSManaged public func removeFromParts(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for rulings
+extension CMCard {
+
+    @objc(addRulingsObject:)
+    @NSManaged public func addToRulings(_ value: CMCardRuling)
+
+    @objc(removeRulingsObject:)
+    @NSManaged public func removeFromRulings(_ value: CMCardRuling)
+
+    @objc(addRulings:)
+    @NSManaged public func addToRulings(_ values: NSSet)
+
+    @objc(removeRulings:)
+    @NSManaged public func removeFromRulings(_ values: NSSet)
 
 }
 
 // MARK: Generated accessors for variations
 extension CMCard {
-    
+
     @objc(addVariationsObject:)
     @NSManaged public func addToVariations(_ value: CMCard)
-    
+
     @objc(removeVariationsObject:)
     @NSManaged public func removeFromVariations(_ value: CMCard)
-    
+
     @objc(addVariations:)
     @NSManaged public func addToVariations(_ values: NSSet)
-    
+
     @objc(removeVariations:)
     @NSManaged public func removeFromVariations(_ values: NSSet)
-    
-}
 
-// MARK: Generated accessors for other printings
-extension CMCard {
-    
-    @objc(addOtherPrintingsObject:)
-    @NSManaged public func addToOtherPrintings(_ value: CMCard)
-    
-    @objc(removeOtherPrintingsObject:)
-    @NSManaged public func removeFromOtherPrintings(_ value: CMCard)
-    
-    @objc(addOtherPrintings:)
-    @NSManaged public func addToOtherPrintings(_ values: NSSet)
-    
-    @objc(removeOtherPrintings:)
-    @NSManaged public func removeFromOtherPrintings(_ values: NSSet)
-    
 }

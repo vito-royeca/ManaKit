@@ -24,11 +24,11 @@ class ScryfallMaintainer: Maintainer {
     var cachedBorderColors = [CMCardBorderColor]()
     var cachedLayouts = [CMCardLayout]()
     var cachedCardTypes = [CMCardType]()
-    var cachedArtists = [CMArtist]()
+    var cachedArtists = [CMCardArtist]()
     var cachedFrames = [CMCardFrame]()
-    var cachedRarities = [CMRarity]()
+    var cachedRarities = [CMCardRarity]()
     var cachedWatermarks = [CMCardWatermark]()
-    var cachedFormats = [CMFormat]()
+    var cachedFormats = [CMCardFormat]()
     var cachedLegalities = [CMLegality]()
     var cachedCards = [CMCard]()
     
@@ -140,6 +140,9 @@ class ScryfallMaintainer: Maintainer {
                                                                       createIfNotFound: true,
                                                                       useInMemoryDatabase: useInMemoryDatabase) as? CMSet {
                     childSet.parent = parentSet
+                    childSet.releaseDate = parentSet.releaseDate
+                    childSet.setType = parentSet.setType
+                    childSet.block = parentSet.block
                     print("\(parentSetSode) -> \(code)")
                 }
             }
@@ -172,7 +175,7 @@ class ScryfallMaintainer: Maintainer {
         print("Creating cards: \(count)/\(array.count) \(Date())")
         for dict in array {
             if let id = dict["id"] as? String {
-                let _ = processCardData(dict: dict, objectFinder: ["id": id as AnyObject])
+                let _ = processCardData(dict: dict, objectFinder: ["id": id as AnyObject], languageCode: nil)
                 count += 1
             }
             
@@ -185,7 +188,7 @@ class ScryfallMaintainer: Maintainer {
         endActivity()
     }
     
-    private func processCardData(dict: [String: Any], objectFinder: [String: AnyObject]) -> CMCard? {
+    private func processCardData(dict: [String: Any], objectFinder: [String: AnyObject], languageCode: String?) -> CMCard? {
         if let card = ManaKit.sharedInstance.findObject("CMCard",
                                                         objectFinder: objectFinder,
                                                         createIfNotFound: true,
@@ -209,7 +212,7 @@ class ScryfallMaintainer: Maintainer {
             
             // converted mana cost
             if let convertedManaCost = dict["cmc"] as? Double {
-                card.comvertedManaCost = convertedManaCost
+                card.convertedManaCost = convertedManaCost
             }
             
             // loyalty
@@ -340,14 +343,18 @@ class ScryfallMaintainer: Maintainer {
                 
                 // add the card to set
                 s.addToCards(card)
-
-                // type line
-                if let type = dict["type_line"] as? String {
+            }
+            
+            // type line
+            if let type = dict["type_line"] as? String {
+                if let l = findLanguage(with: languageCode ?? dict["lang"] as? String ?? "en") {
                     card.typeLine = findCardType(with: type, language: l)
                 }
-                
-                // printed type line
-                if let type = dict["printed_type_line"] as? String {
+            }
+            
+            // printed type line
+            if let type = dict["printed_type_line"] as? String {
+                if let l = findLanguage(with: languageCode ?? dict["lang"] as? String ?? "en") {
                     card.printedTypeLine = findCardType(with: type, language: l)
                 }
             }
@@ -487,7 +494,8 @@ class ScryfallMaintainer: Maintainer {
                             if let name = cardFace["name"] as? String,
                                 let face = processCardData(dict: cardFace,
                                                            objectFinder: ["name": name,
-                                                                          "set.code": set] as [String: AnyObject]) {
+                                                                          "set.code": set] as [String: AnyObject],
+                                                           languageCode: dict["lang"] as? String) {
                                 face.face = card
                                 card.addToFaces(face)
                             }
@@ -537,20 +545,6 @@ class ScryfallMaintainer: Maintainer {
     }
     
     private func fetchVariations(ofCard card: CMCard) {
-//        if let set = card.set,
-//            let setCode = set.code,
-//            let name = card.name,
-//            let id = card.id {
-//
-//            let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
-//            request.predicate = NSPredicate(format: "set.code = %@ AND name = %@ AND id != %@",
-//                                            setCode, name, id)
-//            let variations = try! context!.fetch(request)
-//            for c in variations {
-//                card.addToVariations(c)
-//            }
-//        }
-        
         if let set = card.set,
             let cachedSet = findSet(code: set.code!),
             let cards = cachedSet.cards,
@@ -562,21 +556,6 @@ class ScryfallMaintainer: Maintainer {
     }
 
     private func fetchOtherPrintings(ofCard card: CMCard) {
-//        if let set = card.set,
-//            let setCode = set.code,
-//            let name = card.name,
-//            let typeLine = card.typeLine,
-//            let typeLineName = typeLine.name {
-//
-//            let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
-//            request.predicate = NSPredicate(format: "set.code != %@ AND name = %@ AND typeLine.name = %@",
-//                                            setCode, name, typeLineName)
-//            let otherPrintings = try! context!.fetch(request)
-//            for c in otherPrintings {
-//                card.addToOtherPrintings(c)
-//            }
-//        }
-        
         if let set = card.set,
             let setCode = set.code,
             let name = card.name {
@@ -621,53 +600,50 @@ class ScryfallMaintainer: Maintainer {
         if let language = cachedLanguages.first(where: { $0.code == code}) {
             return language
         } else {
-            if let language = ManaKit.sharedInstance.findObject("CMLanguage",
-                                                                objectFinder: ["code": code] as [String: AnyObject],
-                                                                createIfNotFound: true,
-                                                                useInMemoryDatabase: useInMemoryDatabase) as? CMLanguage {
-                if language.code == nil {
-                    language.code = code
-                    switch code {
-                    case "en":
-                        language.name = "English"
-                    case "es":
-                        language.name = "Spanish"
-                    case "fr":
-                        language.name = "French"
-                    case "de":
-                        language.name = "German"
-                    case "it":
-                        language.name = "Italian"
-                    case "pt":
-                        language.name = "Portuguese"
-                    case "ja":
-                        language.name = "Japanese"
-                    case "ko":
-                        language.name = "Korean"
-                    case "ru":
-                        language.name = "Russian"
-                    case "zhs":
-                        language.name = "Simplified Chinese"
-                    case "zht":
-                        language.name = "Traditional Chinese"
-                    case "he":
-                        language.name = "Hebrew"
-                    case "la":
-                        language.name = "Latin"
-                    case "grc":
-                        language.name = "Ancient Greek"
-                    case "ar":
-                        language.name = "Arabic"
-                    case "sa":
-                        language.name = "Sanskrit"
-                    case "px":
-                        language.name = "Phyrexian"
-                    default:
-                        ()
-                    }
-                    if let name = language.name {
-                        language.nameSection = sectionFor(name: name)
-                    }
+            if let desc = NSEntityDescription.entity(forEntityName: "CMLanguage", in: context!),
+                let language = NSManagedObject(entity: desc, insertInto: context!) as? CMLanguage {
+                
+                language.code = code
+                switch code {
+                case "en":
+                    language.name = "English"
+                case "es":
+                    language.name = "Spanish"
+                case "fr":
+                    language.name = "French"
+                case "de":
+                    language.name = "German"
+                case "it":
+                    language.name = "Italian"
+                case "pt":
+                    language.name = "Portuguese"
+                case "ja":
+                    language.name = "Japanese"
+                case "ko":
+                    language.name = "Korean"
+                case "ru":
+                    language.name = "Russian"
+                case "zhs":
+                    language.name = "Simplified Chinese"
+                case "zht":
+                    language.name = "Traditional Chinese"
+                case "he":
+                    language.name = "Hebrew"
+                case "la":
+                    language.name = "Latin"
+                case "grc":
+                    language.name = "Ancient Greek"
+                case "ar":
+                    language.name = "Arabic"
+                case "sa":
+                    language.name = "Sanskrit"
+                case "px":
+                    language.name = "Phyrexian"
+                default:
+                    ()
+                }
+                if let name = language.name {
+                    language.nameSection = sectionFor(name: name)
                 }
                 
                 cachedLanguages.append(language)
@@ -682,28 +658,23 @@ class ScryfallMaintainer: Maintainer {
         if let color = cachedCardColors.first(where: { $0.symbol == symbol}) {
             return color
         } else {
-            if let color = ManaKit.sharedInstance.findObject("CMCardColor",
-                                                             objectFinder: ["symbol": symbol] as [String: AnyObject],
-                                                             createIfNotFound: true,
-                                                             useInMemoryDatabase: useInMemoryDatabase) as? CMCardColor {
+            if let desc = NSEntityDescription.entity(forEntityName: "CMCardColor", in: context!),
+                let color = NSManagedObject(entity: desc, insertInto: context!) as? CMCardColor {
                 
-                if color.symbol == nil {
-                    color.symbol = symbol
-                    
-                    switch symbol {
-                    case "B":
-                        color.name = "Black"
-                    case "U":
-                        color.name = "Blue"
-                    case "G":
-                        color.name = "Green"
-                    case "R":
-                        color.name = "Red"
-                    case "W":
-                        color.name = "White"
-                    default:
-                        ()
-                    }
+                color.symbol = symbol
+                switch symbol {
+                case "B":
+                    color.name = "Black"
+                case "U":
+                    color.name = "Blue"
+                case "G":
+                    color.name = "Green"
+                case "R":
+                    color.name = "Red"
+                case "W":
+                    color.name = "White"
+                default:
+                    ()
                 }
                 
                 cachedCardColors.append(color)
@@ -720,14 +691,11 @@ class ScryfallMaintainer: Maintainer {
         if let borderColor = cachedBorderColors.first(where: { $0.name == capName}) {
             return borderColor
         } else {
-            if let borderColor = ManaKit.sharedInstance.findObject("CMCardBorderColor",
-                                                                   objectFinder: ["name": capName] as [String: AnyObject],
-                                                                   createIfNotFound: true,
-                                                                   useInMemoryDatabase: useInMemoryDatabase) as? CMCardBorderColor {
-                if borderColor.name == nil {
-                    borderColor.name = capName
-                    borderColor.nameSection = sectionFor(name: name)
-                }
+            if let desc = NSEntityDescription.entity(forEntityName: "CMCardBorderColor", in: context!),
+                let borderColor = NSManagedObject(entity: desc, insertInto: context!) as? CMCardBorderColor {
+                
+                borderColor.name = capName
+                borderColor.nameSection = sectionFor(name: name)
                 
                 cachedBorderColors.append(borderColor)
                 return borderColor
@@ -743,14 +711,11 @@ class ScryfallMaintainer: Maintainer {
         if let layout = cachedLayouts.first(where: { $0.name == capName}) {
             return layout
         } else {
-            if let layout = ManaKit.sharedInstance.findObject("CMCardLayout",
-                                                              objectFinder: ["name": capName] as [String: AnyObject],
-                                                              createIfNotFound: true,
-                                                              useInMemoryDatabase: useInMemoryDatabase) as? CMCardLayout {
-                if layout.name == nil {
-                    layout.name = capName
-                    layout.nameSection = sectionFor(name: name)
-                }
+            if let desc = NSEntityDescription.entity(forEntityName: "CMCardLayout", in: context!),
+                let layout = NSManagedObject(entity: desc, insertInto: context!) as? CMCardLayout {
+                
+                layout.name = capName
+                layout.nameSection = sectionFor(name: name)
                 
                 cachedLayouts.append(layout)
                 return layout
@@ -764,14 +729,11 @@ class ScryfallMaintainer: Maintainer {
         if let type = cachedCardTypes.first(where: { $0.name == name}) {
             return type
         } else {
-            if let type = ManaKit.sharedInstance.findObject("CMCardType",
-                                                            objectFinder: ["name": name] as [String: AnyObject],
-                                                            createIfNotFound: true,
-                                                            useInMemoryDatabase: useInMemoryDatabase) as? CMCardType {
-                if type.name == nil {
-                    type.name = name
-                    type.language = language
-                }
+            if let desc = NSEntityDescription.entity(forEntityName: "CMCardType", in: context!),
+                let type = NSManagedObject(entity: desc, insertInto: context!) as? CMCardType {
+                
+                type.name = name
+                type.language = language
                 
                 cachedCardTypes.append(type)
                 return type
@@ -781,43 +743,40 @@ class ScryfallMaintainer: Maintainer {
         return nil
     }
     
-    private func findArtist(with name: String) -> CMArtist? {
+    private func findArtist(with name: String) -> CMCardArtist? {
         if let artist = cachedArtists.first(where: { $0.name == name}) {
             return artist
         } else {
-            if let artist = ManaKit.sharedInstance.findObject("CMArtist",
-                                                              objectFinder: ["name": name] as [String: AnyObject],
-                                                              createIfNotFound: true,
-                                                              useInMemoryDatabase: useInMemoryDatabase) as? CMArtist {
-                if artist.name == nil {
-                    artist.name = name
-                    
-                    let names = name.components(separatedBy: " ")
-                    var nameSection: String?
-                    
-                    if names.count > 1 {
-                        if let lastName = names.last {
-                            artist.lastName = lastName
-                            nameSection = lastName
-                        }
-                        
-                        var firstName = ""
-                        for i in 0...names.count - 2 {
-                            firstName.append("\(names[i])")
-                            if i != names.count - 2 && names.count >= 3 {
-                                firstName.append(" ")
-                            }
-                        }
-                        artist.firstName = firstName
-                        
-                    } else {
-                        artist.firstName = names.first
-                        nameSection = artist.firstName
+            if let desc = NSEntityDescription.entity(forEntityName: "CMArtist", in: context!),
+                let artist = NSManagedObject(entity: desc, insertInto: context!) as? CMCardArtist {
+                
+                artist.name = name
+                
+                let names = name.components(separatedBy: " ")
+                var nameSection: String?
+                
+                if names.count > 1 {
+                    if let lastName = names.last {
+                        artist.lastName = lastName
+                        nameSection = lastName
                     }
                     
-                    if let nameSection = nameSection {
-                        artist.nameSection = sectionFor(name: nameSection)
+                    var firstName = ""
+                    for i in 0...names.count - 2 {
+                        firstName.append("\(names[i])")
+                        if i != names.count - 2 && names.count >= 3 {
+                            firstName.append(" ")
+                        }
                     }
+                    artist.firstName = firstName
+                    
+                } else {
+                    artist.firstName = names.first
+                    nameSection = artist.firstName
+                }
+                
+                if let nameSection = nameSection {
+                    artist.nameSection = sectionFor(name: nameSection)
                 }
                 
                 cachedArtists.append(artist)
@@ -834,14 +793,11 @@ class ScryfallMaintainer: Maintainer {
         if let frame = cachedFrames.first(where: { $0.name == capName}) {
             return frame
         } else {
-            if let frame = ManaKit.sharedInstance.findObject("CMCardFrame",
-                                                             objectFinder: ["name": capName] as [String: AnyObject],
-                                                            createIfNotFound: true,
-                                                            useInMemoryDatabase: useInMemoryDatabase) as? CMCardFrame {
-                if frame.name == nil {
-                    frame.name = capName
-                    frame.nameSection = sectionFor(name: name)
-                }
+            if let desc = NSEntityDescription.entity(forEntityName: "CMCardFrame", in: context!),
+                let frame = NSManagedObject(entity: desc, insertInto: context!) as? CMCardFrame {
+                
+                frame.name = capName
+                frame.nameSection = sectionFor(name: name)
                 
                 cachedFrames.append(frame)
                 return frame
@@ -851,20 +807,17 @@ class ScryfallMaintainer: Maintainer {
         return nil
     }
     
-    private func findRarity(with name: String) -> CMRarity? {
+    private func findRarity(with name: String) -> CMCardRarity? {
         let capName = capitalize(string: name)
         
         if let rarity = cachedRarities.first(where: { $0.name == capName}) {
             return rarity
         } else {
-            if let rarity = ManaKit.sharedInstance.findObject("CMRarity",
-                                                              objectFinder: ["name": capName] as [String: AnyObject],
-                                                              createIfNotFound: true,
-                                                              useInMemoryDatabase: useInMemoryDatabase) as? CMRarity {
-                if rarity.name == nil {
-                    rarity.name = capName
-                    rarity.nameSection = sectionFor(name: name)
-                }
+            if let desc = NSEntityDescription.entity(forEntityName: "CMCardRarity", in: context!),
+                let rarity = NSManagedObject(entity: desc, insertInto: context!) as? CMCardRarity {
+                
+                rarity.name = capName
+                rarity.nameSection = sectionFor(name: name)
                 
                 cachedRarities.append(rarity)
                 return rarity
@@ -880,14 +833,11 @@ class ScryfallMaintainer: Maintainer {
         if let watermark = cachedWatermarks.first(where: { $0.name == capName}) {
             return watermark
         } else {
-            if let watermark = ManaKit.sharedInstance.findObject("CMCardWatermark",
-                                                                 objectFinder: ["name": capName] as [String: AnyObject],
-                                                                 createIfNotFound: true,
-                                                                 useInMemoryDatabase: useInMemoryDatabase) as? CMCardWatermark {
-                if watermark.name == nil {
-                    watermark.name = capName
-                    watermark.nameSection = sectionFor(name: name)
-                }
+            if let desc = NSEntityDescription.entity(forEntityName: "CMCardWatermark", in: context!),
+                let watermark = NSManagedObject(entity: desc, insertInto: context!) as? CMCardWatermark {
+                
+                watermark.name = capName
+                watermark.nameSection = sectionFor(name: name)
                 
                 cachedWatermarks.append(watermark)
                 return watermark
@@ -897,20 +847,17 @@ class ScryfallMaintainer: Maintainer {
         return nil
     }
     
-    private func findFormat(with name: String) -> CMFormat? {
+    private func findFormat(with name: String) -> CMCardFormat? {
         let capName = capitalize(string: name)
         
         if let format = cachedFormats.first(where: { $0.name == capName}) {
             return format
         } else {
-            if let format = ManaKit.sharedInstance.findObject("CMFormat",
-                                                              objectFinder: ["name": capName] as [String: AnyObject],
-                                                              createIfNotFound: true,
-                                                              useInMemoryDatabase: useInMemoryDatabase) as? CMFormat {
-                if format.name == nil {
-                    format.name = capName
-                    format.nameSection = sectionFor(name: name)
-                }
+            if let desc = NSEntityDescription.entity(forEntityName: "CMCardFormat", in: context!),
+                let format = NSManagedObject(entity: desc, insertInto: context!) as? CMCardFormat {
+                
+                format.name = capName
+                format.nameSection = sectionFor(name: name)
                 
                 cachedFormats.append(format)
                 return format
@@ -926,14 +873,11 @@ class ScryfallMaintainer: Maintainer {
         if let legality = cachedLegalities.first(where: { $0.name == capName}) {
             return legality
         } else {
-            if let legality = ManaKit.sharedInstance.findObject("CMLegality",
-                                                              objectFinder: ["name": capName] as [String: AnyObject],
-                                                              createIfNotFound: true,
-                                                              useInMemoryDatabase: useInMemoryDatabase) as? CMLegality {
-                if legality.name == nil {
-                    legality.name = capName
-                    legality.nameSection = sectionFor(name: name)
-                }
+            if let desc = NSEntityDescription.entity(forEntityName: "CMLegality", in: context!),
+                let legality = NSManagedObject(entity: desc, insertInto: context!) as? CMLegality {
+                
+                legality.name = capName
+                legality.nameSection = sectionFor(name: name)
                 
                 cachedLegalities.append(legality)
                 return legality

@@ -2,7 +2,7 @@
 //  CMCardType+CoreDataProperties.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 23/10/2018.
+//  Created by Jovito Royeca on 30/10/2018.
 //
 //
 
@@ -18,13 +18,13 @@ extension CMCardType {
 
     @NSManaged public var name: String?
     @NSManaged public var nameSection: String?
-    @NSManaged public var language: CMLanguage?
     @NSManaged public var cardOriginalTypes: NSSet?
+    @NSManaged public var cardPrintedTypes: NSSet?
     @NSManaged public var cards: NSSet?
     @NSManaged public var cardSubtypes: NSSet?
     @NSManaged public var cardSupertypes: NSSet?
     @NSManaged public var cardTypes: NSSet?
-    @NSManaged public var cardPrintedTypes: NSSet?
+    @NSManaged public var language: CMLanguage?
 
 }
 
@@ -42,6 +42,23 @@ extension CMCardType {
 
     @objc(removeCardOriginalTypes:)
     @NSManaged public func removeFromCardOriginalTypes(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for cardPrintedTypes
+extension CMCardType {
+
+    @objc(addCardPrintedTypesObject:)
+    @NSManaged public func addToCardPrintedTypes(_ value: CMCard)
+
+    @objc(removeCardPrintedTypesObject:)
+    @NSManaged public func removeFromCardPrintedTypes(_ value: CMCard)
+
+    @objc(addCardPrintedTypes:)
+    @NSManaged public func addToCardPrintedTypes(_ values: NSSet)
+
+    @objc(removeCardPrintedTypes:)
+    @NSManaged public func removeFromCardPrintedTypes(_ values: NSSet)
 
 }
 
@@ -111,21 +128,4 @@ extension CMCardType {
     @objc(removeCardTypes:)
     @NSManaged public func removeFromCardTypes(_ values: NSSet)
 
-}
-
-// MARK: Generated accessors for cardPrintedTypes
-extension CMCardType {
-    
-    @objc(addCardPrintedTypesObject:)
-    @NSManaged public func addToCardPrintedTypes(_ value: CMCard)
-    
-    @objc(removeCardPrintedTypesObject:)
-    @NSManaged public func removeFromCardPrintedTypes(_ value: CMCard)
-    
-    @objc(addCardPrintedTypes:)
-    @NSManaged public func addToCardPrintedTypes(_ values: NSSet)
-    
-    @objc(removeCardPrintedTypes:)
-    @NSManaged public func removeFromCardPrintedTypes(_ values: NSSet)
-    
 }

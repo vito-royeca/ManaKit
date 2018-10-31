@@ -124,18 +124,18 @@ extension DeckViewController : UITableViewDataSource {
                 fatalError("Unexpected indexPath: \(indexPath)")
             }
             
-            var cardInventory: CMCardInventory?
+            var inventory: CMInventory?
             
             switch segmentedControl.selectedSegmentIndex {
             case 0:
-                cardInventory = mainboardViewModel.object(forRowAt: indexPath)
+                inventory = mainboardViewModel.object(forRowAt: indexPath)
             case 1:
-                cardInventory = sideboardViewModel.object(forRowAt: indexPath)
+                inventory = sideboardViewModel.object(forRowAt: indexPath)
             default:
                 ()
             }
             
-            guard let ci = cardInventory else {
+            guard let ci = inventory else {
                 fatalError("Unexpected indexPath: \(indexPath)")
             }
             
@@ -195,18 +195,18 @@ extension DeckViewController : UITableViewDataSource {
 // MARK: UITableViewDelegate
 extension DeckViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        var cardInventory: CMCardInventory?
+        var inventory: CMInventory?
         
         switch segmentedControl.selectedSegmentIndex {
         case 0:
-            cardInventory = mainboardViewModel.object(forRowAt: indexPath)
+            inventory = mainboardViewModel.object(forRowAt: indexPath)
         case 1:
-            cardInventory = sideboardViewModel.object(forRowAt: indexPath)
+            inventory = sideboardViewModel.object(forRowAt: indexPath)
         default:
             ()
         }
         
-        guard let ci = cardInventory else {
+        guard let ci = inventory else {
             return
         }
         performSegue(withIdentifier: "showCard", sender: ci.card)

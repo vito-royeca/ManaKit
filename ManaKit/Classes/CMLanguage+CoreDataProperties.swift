@@ -2,7 +2,7 @@
 //  CMLanguage+CoreDataProperties.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 23/10/2018.
+//  Created by Jovito Royeca on 30/10/2018.
 //
 //
 
@@ -44,19 +44,19 @@ extension CMLanguage {
 
 // MARK: Generated accessors for cardTypes
 extension CMLanguage {
-    
+
     @objc(addCardTypesObject:)
-    @NSManaged public func addToCardTypes(_ value: CMCard)
-    
+    @NSManaged public func addToCardTypes(_ value: CMCardType)
+
     @objc(removeCardTypesObject:)
-    @NSManaged public func removeFromCardTypes(_ value: CMCard)
-    
+    @NSManaged public func removeFromCardTypes(_ value: CMCardType)
+
     @objc(addCardTypes:)
     @NSManaged public func addToCardTypes(_ values: NSSet)
-    
+
     @objc(removeCardTypes:)
     @NSManaged public func removeFromCardTypes(_ values: NSSet)
-    
+
 }
 
 // MARK: Generated accessors for sets

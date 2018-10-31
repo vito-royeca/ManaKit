@@ -2,7 +2,7 @@
 //  CMCardFrame+CoreDataClass.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 23/10/2018.
+//  Created by Jovito Royeca on 30/10/2018.
 //
 //
 

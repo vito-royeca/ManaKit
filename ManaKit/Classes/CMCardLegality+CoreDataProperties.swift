@@ -2,7 +2,7 @@
 //  CMCardLegality+CoreDataProperties.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 23/10/2018.
+//  Created by Jovito Royeca on 30/10/2018.
 //
 //
 
@@ -16,8 +16,9 @@ extension CMCardLegality {
         return NSFetchRequest<CMCardLegality>(entityName: "CMCardLegality")
     }
 
+    @NSManaged public var id: Int64
     @NSManaged public var card: CMCard?
-    @NSManaged public var format: CMFormat?
+    @NSManaged public var format: CMCardFormat?
     @NSManaged public var legality: CMLegality?
 
 }
