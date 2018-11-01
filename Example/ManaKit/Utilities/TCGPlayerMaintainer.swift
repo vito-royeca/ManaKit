@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import ManaKit
 import PromiseKit
+import SSZipArchive
 
 class TCGPlayerMaintainer: Maintainer {
     let version = "v1.9.0"
@@ -27,38 +28,12 @@ class TCGPlayerMaintainer: Maintainer {
             self.getMagicCategoryId()
         }.done { categoryId in
             self.getMagicSets(categoryId: categoryId, offset: 0)
+//            self.getCardPurchaseUris()
             self.endActivity()
         }.catch { error in
             print("\(error)")
         }
     }
-    
-//    func updateSetTcgPlayerNames2(useInMemoryDatabase: Bool) {
-//        toggleDatabaseUsage(useInMemoryDatabase: useInMemoryDatabase)
-//        
-//        startActivity(name: "updateSetTcgPlayerNames2()")
-//        
-//        // manual fix
-//        let sets = [["code": "e01", "name": "Archenemy: Nicol Bolas"],
-//                    ["code": "p15a", "name": "Unique and Miscellaneous Promos"],
-//                    ["code": "pgp17", "name": "Gift Boxes and Promos"],
-//                    ["code": "pcmp", "name": "Champs Promos"],
-//                    ["code": "pdrc", "name": "Media Promos"],
-//                    ["code": "dvd", "name": "Duel Decks: Anthology"],
-//                    ["code": "evg", "name": "Duel Decks: Anthology"],
-//                    ["code": "gvl", "name": "Duel Decks: Anthology"],
-//                    ["code": "jvc", "name": "Duel Decks: Anthology"],
-//                    ["code": "ddf", "name": "Duel Decks: Elspeth vs. Tezzeret"],
-//                    ["code": "dd1", "name": "Duel Decks: Elves vs. Goblins"],
-//                    ["code": "jvc", "name": "Duel Decks: Anthology"],
-//                    ["code": "gpt", "name": "Guildpact"],
-//                    ["code": "pgru", "name": "Guru Lands"],
-//                    ["code": "phpr", "name": "Media Promos"],
-//                    ["code": "h17", "name": "Media Promos"]]
-//        
-//        processSets(array: sets)
-//        endActivity()
-//    }
     
     private func getToken() -> Promise<Void> {
         return Promise { seal  in
@@ -127,6 +102,62 @@ class TCGPlayerMaintainer: Maintainer {
         }
     }
     
+    private func getCardPurchaseUris() {
+        startActivity(name: "getCardPurchaseUris")
+        
+        let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
+        request.predicate = NSPredicate(format: "tcgplayerName = nil")
+        request.sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: true)]
+        
+        var promises = [Promise<URL?>]()
+        for set in try! context!.fetch(request) {
+            if let code = set.code,
+                let urlString = "https://api.scryfall.com/cards/search?q=e:\(code)&unique=prints".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+                
+            }
+        }
+        
+        endActivity()
+    }
+
+    private func readScryfall(url: URL) -> Promise<URL?> {
+        return Promise { seal  in
+            var rq = URLRequest(url: url)
+            rq.httpMethod = "GET"
+            
+            firstly {
+                URLSession.shared.dataTask(.promise, with:rq)
+            }.compactMap {
+                    try JSONSerialization.jsonObject(with: $0.data) as? [String: Any]
+            }.done { json in
+                if let data = json["data"] as? [[String: Any]] {
+                    for e in data {
+                        if let id = e["id"] as? String,
+                            let purchaseUris = [""] as? [String: String] {
+                        
+                        }
+                    }
+                }
+            
+                print("Scraping \(url)...")
+                
+                if let hasMore = json["has_more"] as? Bool,
+                    let nextPage = json["next_page"] as? String {
+                    
+                    if hasMore {
+                        seal.fulfill(URL(string: nextPage)!)
+                    } else {
+                        seal.fulfill(nil)
+                    }
+                } else {
+                    seal.fulfill(nil)
+                }
+            }.catch { error in
+                seal.fulfill(nil)
+            }
+        }
+    }
+    
     private func getMagicSets(categoryId: Int, offset: Int) {
             if let urlString = "http://api.tcgplayer.com/\(version)/catalog/categories/\(categoryId)/groups?limit=\(limit)&offset=\(offset)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                 let url = URL(string: urlString) {
@@ -170,7 +201,6 @@ class TCGPlayerMaintainer: Maintainer {
     
     private func processSets(array: [[String: String]]) {
         let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
-//        request.predicate = NSPredicate(format: "tcgplayerName = nil")
         
         var sets = try! context!.fetch(request)
         for set in sets {
