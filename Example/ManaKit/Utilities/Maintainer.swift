@@ -14,10 +14,11 @@ import Sync
 class Maintainer: NSObject {
     // MARK: Constants
     let printMilestone = 1000
+    let fileName = "scryfall-default-cards.json"
     var dataStack: DataStack?
     var context: NSManagedObjectContext?
     var useInMemoryDatabase = true
-
+    
     // MARK: Variables
     var dateStart = Date()
     
