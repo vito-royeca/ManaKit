@@ -16,7 +16,6 @@ extension CMCardLegality {
         return NSFetchRequest<CMCardLegality>(entityName: "CMCardLegality")
     }
 
-    @NSManaged public var id: Int64
     @NSManaged public var card: CMCard?
     @NSManaged public var format: CMCardFormat?
     @NSManaged public var legality: CMLegality?

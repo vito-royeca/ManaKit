@@ -35,7 +35,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "ManaGuide",
 //                                                  publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720",
 //                                                  privateKey: nil)
-
         return true
     }
 

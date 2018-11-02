@@ -10,23 +10,9 @@ import UIKit
 import CoreData
 import PromiseKit
 
-public let kCardTableViewCellHeight = CGFloat(88)
-
-public let kPreEightEditionFont      = UIFont(name: "Magic:the Gathering", size: 17.0)
-public let kPreEightEditionFontSmall = UIFont(name: "Magic:the Gathering", size: 15.0)
-public let kEightEditionFont         = UIFont(name: "Matrix-Bold", size: 17.0)
-public let kEightEditionFontSmall    = UIFont(name: "Matrix-Bold", size: 15.0)
-public let kMagic2015Font            = UIFont(name: "Beleren", size: 17.0)
-public let kMagic2015FontSmall       = UIFont(name: "Beleren", size: 15.0)
-
-public let kLowPriceColor  = UIColor.red
-public let kMidPriceColor  = UIColor.blue
-public let kHighPriceColor = UIColor(red:0.00, green:0.50, blue:0.00, alpha:1.0)
-public let kFoilPriceColor = UIColor(red:0.60, green:0.51, blue:0.00, alpha:1.0)
-public let kNormalColor    = UIColor.black
-
 public class CardTableViewCell: UITableViewCell {
     public static let reuseIdentifier = "CardCell"
+    public static let cellHeight = CGFloat(88)
     
     // Variables
     public var card: CMCard? {
@@ -77,16 +63,16 @@ public class CardTableViewCell: UITableViewCell {
         setImage.text = nil
         
         lowPriceLabel.text = "NA"
-        lowPriceLabel.textColor = kNormalColor
+        lowPriceLabel.textColor = ManaKit.PriceColors.normal
         
         midPriceLabel.text = "NA"
-        midPriceLabel.textColor = kNormalColor
+        midPriceLabel.textColor = ManaKit.PriceColors.normal
         
         highPriceLabel.text = "NA"
-        highPriceLabel.textColor = kNormalColor
+        highPriceLabel.textColor = ManaKit.PriceColors.normal
         
         foilPriceLabel.text = "NA"
-        foilPriceLabel.textColor = kNormalColor
+        foilPriceLabel.textColor = ManaKit.PriceColors.normal
     }
     
     private func updateDataDisplay() {
@@ -110,10 +96,10 @@ public class CardTableViewCell: UITableViewCell {
                 
                 if setReleaseDate.compare(m15Date) == .orderedSame ||
                     setReleaseDate.compare(m15Date) == .orderedDescending {
-                    nameLabel.font = kMagic2015Font
+                    nameLabel.font = ManaKit.Fonts.magic2015
                     
                 } else {
-                    nameLabel.font = isModern ? kEightEditionFont : kPreEightEditionFont
+                    nameLabel.font = isModern ? ManaKit.Fonts.eightEdition : ManaKit.Fonts.preEightEdition
                     
                     if !isModern {
                         shadowColor = UIColor.darkGray
@@ -166,57 +152,10 @@ public class CardTableViewCell: UITableViewCell {
             setImage.textColor = ManaKit.sharedInstance.keyruneColor(forCard: card)
         }
 
-        // type symbol
-        var cardType: CMCardType?
-//        if let types = card.mtgjsonTypes {
-//            if types.count > 1 {
-//                symbolImage.image = ManaKit.sharedInstance.symbolImage(name: "Multiple")
-//                cardType = types.allObjects.first as? CMCardType
-//                
-//                for t in types.allObjects {
-//                    if let t = t as? CMCardType {
-//                        if t.name == "Creature" {
-//                            cardType = t
-//                        }
-//                    }
-//                }
-//            } else {
-//                if let type = types.allObjects.first as? CMCardType {
-//                    cardType = type
-//                }
-//            }
-//        }
-//
-//        if let cardType = cardType {
-//            if let name = cardType.name {
-//                symbolImage.image = ManaKit.sharedInstance.symbolImage(name: name)
-//            }
-//        }
-        
-        if let type = card.typeLine,
-            let name = type.name {
-            symbolImage.image = ManaKit.sharedInstance.symbolImage(name: name)
-        }
-        
         // type
-        if let type = card.typeLine,
-            let cardType = cardType {
-            var typeText = ""
-            
-            if let name = type.name {
-                typeText.append(name)
-            }
-            if let name = cardType.name {
-                if name == "Creature" {
-                    if let power = card.power,
-                        let toughness = card.toughness {
-                        typeText.append(" (\(power)/\(toughness))")
-                    }
-                }
-            }
-            typeLabel.text = typeText
-        }
-
+        symbolImage.image = ManaKit.sharedInstance.typeImage(ofCard: card)
+        typeLabel.text = ManaKit.sharedInstance.typeText(ofCard: card)
+        
         // pricing
         var willFetchPricing = false
         if let set = card.set {
@@ -249,29 +188,29 @@ public class CardTableViewCell: UITableViewCell {
         guard let card = card,
             let pricing = card.pricing else {
                 lowPriceLabel.text = "NA"
-                lowPriceLabel.textColor = kNormalColor
+                lowPriceLabel.textColor = ManaKit.PriceColors.normal
                 
                 midPriceLabel.text = "NA"
-                midPriceLabel.textColor = kNormalColor
+                midPriceLabel.textColor = ManaKit.PriceColors.normal
                 
                 highPriceLabel.text = "NA"
-                highPriceLabel.textColor = kNormalColor
+                highPriceLabel.textColor = ManaKit.PriceColors.normal
                 
                 foilPriceLabel.text = "NA"
-                foilPriceLabel.textColor = kNormalColor
+                foilPriceLabel.textColor = ManaKit.PriceColors.normal
                 return
         }
         
         lowPriceLabel.text = pricing.low > 0 ? String(format: "$%.2f", pricing.low) : "NA"
-        lowPriceLabel.textColor = pricing.low > 0 ? kLowPriceColor : kNormalColor
+        lowPriceLabel.textColor = pricing.low > 0 ? ManaKit.PriceColors.low : ManaKit.PriceColors.normal
         
         midPriceLabel.text = pricing.average > 0 ? String(format: "$%.2f", pricing.average) : "NA"
-        midPriceLabel.textColor = pricing.average > 0 ? kMidPriceColor : kNormalColor
+        midPriceLabel.textColor = pricing.average > 0 ? ManaKit.PriceColors.mid : ManaKit.PriceColors.normal
         
         highPriceLabel.text = pricing.high > 0 ? String(format: "$%.2f", pricing.high) : "NA"
-        highPriceLabel.textColor = pricing.high > 0 ? kHighPriceColor : kNormalColor
+        highPriceLabel.textColor = pricing.high > 0 ? ManaKit.PriceColors.high : ManaKit.PriceColors.normal
         
         foilPriceLabel.text = pricing.foil > 0 ? String(format: "$%.2f", pricing.foil) : "NA"
-        foilPriceLabel.textColor = pricing.foil > 0 ? kFoilPriceColor : kNormalColor
+        foilPriceLabel.textColor = pricing.foil > 0 ? ManaKit.PriceColors.foil : ManaKit.PriceColors.normal
     }
 }

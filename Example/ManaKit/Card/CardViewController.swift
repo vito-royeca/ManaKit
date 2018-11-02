@@ -96,9 +96,9 @@ extension CardViewController : UITableViewDelegate {
         
         switch indexPath.row {
         case 0:
-            height = kCardTableViewCellHeight
+            height = CardTableViewCell.cellHeight
         case 1:
-            height = tableView.frame.size.height - kCardTableViewCellHeight
+            height = tableView.frame.size.height - CardTableViewCell.cellHeight
         default:
             height = UITableView.automaticDimension
         }

@@ -103,7 +103,7 @@ extension SetViewController : UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return kCardTableViewCellHeight
+        return CardTableViewCell.cellHeight
     }
 }
 

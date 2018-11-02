@@ -17,7 +17,6 @@ extension CMCardRuling {
     }
 
     @NSManaged public var date: String?
-    @NSManaged public var id: Int64
     @NSManaged public var text: String?
     @NSManaged public var card: CMCard?
 
