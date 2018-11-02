@@ -1,3 +1,6 @@
+**Version 3.0.3** @ 02.11.2018
+- Added Rulings and Comprehensive Rules in Scryfall database.
+
 **Version 3.0.2** @ 31.10.2018
 - Scryfall database minor fixes.
 

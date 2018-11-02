@@ -14,7 +14,9 @@ import Sync
 class Maintainer: NSObject {
     // MARK: Constants
     let printMilestone = 1000
-    let fileName = "scryfall-default-cards.json"
+    let cardsFileName   = "scryfall-default-cards.json"
+    let rulingsFileName = "scryfall-rulings.json"
+    let comprehensiveRulesFileName = "MagicCompRules 20181005"
     var dataStack: DataStack?
     var context: NSManagedObjectContext?
     var useInMemoryDatabase = true

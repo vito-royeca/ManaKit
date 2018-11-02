@@ -53,6 +53,7 @@ class ScryfallMaintainer: Maintainer {
                     self.createCards()
                     self.updateCards()
                     self.updateCards2()
+                    self.createCardRulings()
                     ManaKit.sharedInstance.flushInMemoryDatabaseToDisk()
                 }
                 self.endActivity()
@@ -154,11 +155,11 @@ class ScryfallMaintainer: Maintainer {
     func createCards() {
         startActivity(name: "createCards")
         
-        guard let path = Bundle.main.path(forResource: fileName, ofType: "zip", inDirectory: "data"),
+        guard let path = Bundle.main.path(forResource: cardsFileName, ofType: "zip", inDirectory: "data"),
             let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first else {
             return
         }
-        let jsonPath = "\(docsPath)/\(fileName)"
+        let jsonPath = "\(docsPath)/\(cardsFileName)"
         
         
         if !FileManager.default.fileExists(atPath: jsonPath) {
@@ -444,11 +445,11 @@ class ScryfallMaintainer: Maintainer {
     func updateCards() {
         startActivity(name: "updateCards")
         
-        guard let path = Bundle.main.path(forResource: fileName, ofType: "zip", inDirectory: "data"),
+        guard let path = Bundle.main.path(forResource: cardsFileName, ofType: "zip", inDirectory: "data"),
             let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first else {
                 return
         }
-        let jsonPath = "\(docsPath)/\(fileName)"
+        let jsonPath = "\(docsPath)/\(cardsFileName)"
         
         if !FileManager.default.fileExists(atPath: jsonPath) {
            SSZipArchive.unzipFile(atPath: path, toDestination: docsPath)
@@ -462,7 +463,7 @@ class ScryfallMaintainer: Maintainer {
         var count = 0
         print("Updating cards: \(count)/\(array.count) \(Date())")
         
-        reloadCachedCard()
+        reloadCachedCards()
         for dict in array {
             if let id = dict["id"] as? String {
                 
@@ -492,6 +493,7 @@ class ScryfallMaintainer: Maintainer {
                             if let face = processCardData(dict: cardFace,
                                                           languageCode: dict["lang"] as? String) {
                                 face.face = card
+                                face.set = card.set
                                 card.addToFaces(face)
                             }
                         }
@@ -519,14 +521,14 @@ class ScryfallMaintainer: Maintainer {
         var count = 0
         print("Updating cards: \(count)/\(cards.count) \(Date())")
         
-        reloadCachedCard()
+        reloadCachedCards()
         for card in cards {
             if card.id != nil {
                 // variations
-                fetchVariations(ofCard: card)
+                createVariations(ofCard: card)
             
                 // other printings
-                fetchOtherPrintings(ofCard: card)
+                createOtherPrintings(ofCard: card)
             }
 
             count += 1
@@ -539,7 +541,7 @@ class ScryfallMaintainer: Maintainer {
         endActivity()
     }
     
-    private func fetchVariations(ofCard card: CMCard) {
+    private func createVariations(ofCard card: CMCard) {
         if let set = card.set,
             let cachedSet = findSet(code: set.code!),
             let cardSets = cachedSet.cards,
@@ -552,7 +554,7 @@ class ScryfallMaintainer: Maintainer {
         }
     }
 
-    private func fetchOtherPrintings(ofCard card: CMCard) {
+    private func createOtherPrintings(ofCard card: CMCard) {
         if let set = card.set,
             let setCode = set.code,
             let name = card.name {
@@ -566,7 +568,51 @@ class ScryfallMaintainer: Maintainer {
     
     // rulings
     func createCardRulings() {
+        startActivity(name: "createCardRulings")
         
+        guard let path = Bundle.main.path(forResource: rulingsFileName, ofType: "zip", inDirectory: "data"),
+            let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first else {
+                return
+        }
+        let jsonPath = "\(docsPath)/\(rulingsFileName)"
+        
+        if !FileManager.default.fileExists(atPath: jsonPath) {
+            SSZipArchive.unzipFile(atPath: path, toDestination: docsPath)
+        }
+        
+        let data = try! Data(contentsOf: URL(fileURLWithPath: jsonPath))
+        guard let array = try! JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [[String: Any]] else {
+            return
+        }
+        
+        var count = 0
+        print("Creating rulings: \(count)/\(array.count) \(Date())")
+        
+        reloadCachedCards()
+        for dict in array {
+            if let oracleId = dict["oracle_id"] as? String,
+                let publishedAt = dict["published_at"] as? String,
+                let comment = dict["comment"] as? String {
+                
+                if let card = cachedCards.filter({ $0.oracleId == oracleId }).first,
+                    let desc = NSEntityDescription.entity(forEntityName: "CMCardRuling", in: context!),
+                    let ruling = NSManagedObject(entity: desc, insertInto: context!) as? CMCardRuling {
+                    
+                    ruling.text = comment
+                    ruling.date = publishedAt
+                    ruling.card = card
+                    card.addToRulings(ruling)
+                }
+                
+                count += 1
+                if count % printMilestone == 0 {
+                    print("Creating rulings: \(count)/\(array.count) \(Date())")
+                }
+            }
+        }
+        
+        try! context!.save()
+        endActivity()
     }
     
     // MARK: Object finders
@@ -579,7 +625,7 @@ class ScryfallMaintainer: Maintainer {
         return cachedSets.first(where: { $0.code == code})
     }
     
-    private func reloadCachedCard() {
+    private func reloadCachedCards() {
         cachedSets.removeAll()
         cachedCards.removeAll()
         
@@ -745,7 +791,7 @@ class ScryfallMaintainer: Maintainer {
         if let artist = cachedArtists.first(where: { $0.name == name}) {
             return artist
         } else {
-            if let desc = NSEntityDescription.entity(forEntityName: "CMArtist", in: context!),
+            if let desc = NSEntityDescription.entity(forEntityName: "CMCardArtist", in: context!),
                 let artist = NSManagedObject(entity: desc, insertInto: context!) as? CMCardArtist {
                 
                 artist.name = name

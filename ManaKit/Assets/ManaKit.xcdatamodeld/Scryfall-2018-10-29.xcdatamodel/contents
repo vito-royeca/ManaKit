@@ -145,12 +145,6 @@
         <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="layout" inverseEntity="CMCard" syncable="YES"/>
     </entity>
     <entity name="CMCardLegality" representedClassName="CMCardLegality" syncable="YES">
-        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
-            <userInfo>
-                <entry key="hyper.isPrimaryKey" value="true"/>
-                <entry key="sync.isPrimaryKey" value="true"/>
-            </userInfo>
-        </attribute>
         <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCard" inverseName="cardLegalities" inverseEntity="CMCard" syncable="YES"/>
         <relationship name="format" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCardFormat" inverseName="cardLegalities" inverseEntity="CMCardFormat" syncable="YES"/>
         <relationship name="legality" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMLegality" inverseName="cardLegalities" inverseEntity="CMLegality" syncable="YES"/>
@@ -189,12 +183,6 @@
     </entity>
     <entity name="CMCardRuling" representedClassName="CMCardRuling" syncable="YES">
         <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
-            <userInfo>
-                <entry key="hyper.isPrimaryKey" value="true"/>
-                <entry key="sync.isPrimaryKey" value="true"/>
-            </userInfo>
-        </attribute>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCard" inverseName="rulings" inverseEntity="CMCard" syncable="YES"/>
     </entity>
@@ -412,27 +400,27 @@
         <relationship name="ratings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCardRating" inverseName="user" inverseEntity="CMCardRating" syncable="YES"/>
     </entity>
     <elements>
-        <element name="CMCardArtist" positionX="-45" positionY="153" width="128" height="120"/>
         <element name="CMCard" positionX="-54" positionY="72" width="128" height="1125"/>
+        <element name="CMCardArtist" positionX="-45" positionY="153" width="128" height="120"/>
         <element name="CMCardBorderColor" positionX="-9" positionY="153" width="128" height="90"/>
         <element name="CMCardColor" positionX="18" positionY="180" width="128" height="120"/>
+        <element name="CMCardFormat" positionX="18" positionY="189" width="128" height="105"/>
         <element name="CMCardFrame" positionX="-18" positionY="144" width="128" height="90"/>
-        <element name="CMInventory" positionX="-27" positionY="135" width="128" height="240"/>
         <element name="CMCardLayout" positionX="9" positionY="171" width="128" height="90"/>
-        <element name="CMCardLegality" positionX="-27" positionY="135" width="128" height="105"/>
+        <element name="CMCardLegality" positionX="-27" positionY="135" width="128" height="90"/>
         <element name="CMCardPricing" positionX="-27" positionY="135" width="128" height="195"/>
+        <element name="CMCardRarity" positionX="-27" positionY="135" width="128" height="90"/>
         <element name="CMCardRating" positionX="-27" positionY="135" width="128" height="90"/>
+        <element name="CMCardRuling" positionX="-27" positionY="135" width="128" height="90"/>
         <element name="CMCardType" positionX="27" positionY="189" width="128" height="180"/>
         <element name="CMCardWatermark" positionX="-27" positionY="135" width="128" height="90"/>
         <element name="CMCollection" positionX="-27" positionY="135" width="128" height="195"/>
         <element name="CMDeck" positionX="-18" positionY="144" width="128" height="285"/>
-        <element name="CMCardFormat" positionX="18" positionY="189" width="128" height="105"/>
+        <element name="CMInventory" positionX="-27" positionY="135" width="128" height="240"/>
         <element name="CMLanguage" positionX="-18" positionY="171" width="128" height="135"/>
         <element name="CMLegality" positionX="9" positionY="180" width="128" height="90"/>
         <element name="CMList" positionX="-27" positionY="135" width="128" height="195"/>
-        <element name="CMCardRarity" positionX="-27" positionY="135" width="128" height="90"/>
         <element name="CMRule" positionX="0" positionY="162" width="128" height="135"/>
-        <element name="CMCardRuling" positionX="-27" positionY="135" width="128" height="105"/>
         <element name="CMSet" positionX="-63" positionY="-18" width="128" height="300"/>
         <element name="CMSetBlock" positionX="-18" positionY="144" width="128" height="105"/>
         <element name="CMSetType" positionX="-27" positionY="135" width="128" height="90"/>

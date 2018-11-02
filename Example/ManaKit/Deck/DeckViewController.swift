@@ -216,7 +216,7 @@ extension DeckViewController : UITableViewDelegate {
         if indexPath.section == 0 {
             return 176
         } else {
-            return kCardTableViewCellHeight
+            return CardTableViewCell.cellHeight
         }
     }
 }

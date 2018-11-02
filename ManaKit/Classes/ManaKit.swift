@@ -16,9 +16,26 @@ import Sync
 
 @objc(ManaKit)
 public class ManaKit: NSObject {
+    public enum Fonts {
+        public static let preEightEdition      = UIFont(name: "Magic:the Gathering", size: 17.0)
+        public static let preEightEditionSmall = UIFont(name: "Magic:the Gathering", size: 15.0)
+        public static let eightEdition         = UIFont(name: "Matrix-Bold", size: 17.0)
+        public static let eightEditionSmall    = UIFont(name: "Matrix-Bold", size: 15.0)
+        public static let magic2015            = UIFont(name: "Beleren", size: 17.0)
+        public static let magic2015Small       = UIFont(name: "Beleren", size: 15.0)
+    }
+
+    public enum PriceColors {
+        public static let low    = UIColor.red
+        public static let mid    = UIColor.blue
+        public static let high   = UIColor(red:0.00, green:0.50, blue:0.00, alpha:1.0)
+        public static let foil   = UIColor(red:0.60, green:0.51, blue:0.00, alpha:1.0)
+        public static let normal = UIColor.black
+    }
+    
     public enum Constants {
         public static let ScryfallDateKey     = "ScryfallDateKey"
-        public static let ScryfallDate        = "2018-10-30 09:49 UTC"
+        public static let ScryfallDate        = "2018-11-01 09:36 UTC"
         public static let MTGJSONVersion      = "3.19.2 E"
         public static let KeyruneVersion      = "3.3.1"
         public static let EightEditionRelease = "2003-07-28"
@@ -103,26 +120,6 @@ public class ManaKit: NSObject {
     fileprivate var tcgPlayerPrivateKey: String?
     
     // MARK: Resource methods
-    public func imageFromFramework(imageName: ImageName) -> UIImage? {
-        let bundle = Bundle(for: ManaKit.self)
-        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
-            let resourceBundle = Bundle(url: bundleURL) else {
-            return nil
-        }
-        
-        return UIImage(named: imageName.rawValue, in: resourceBundle, compatibleWith: nil)
-    }
-    
-    public func symbolImage(name: String) -> UIImage? {
-        let bundle = Bundle(for: ManaKit.self)
-        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
-            let resourceBundle = Bundle(url: bundleURL) else {
-            return nil
-        }
-        
-        return UIImage(named: name, in: resourceBundle, compatibleWith: nil)
-    }
-    
     public func nibFromBundle(_ name: String) -> UINib? {
         let bundle = Bundle(for: ManaKit.self)
         guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
@@ -306,7 +303,102 @@ public class ManaKit: NSObject {
         }
     }
     
+    // MARK: Card methods
+    public func typeImage(ofCard card: CMCard) -> UIImage? {
+        if let type = card.typeLine,
+            let name = type.name {
+
+            // TODO:  conspiracy, phenomenon, plane, planeswalker, scheme, tribal, and vanguard
+            let typeNames = ["Artifact",
+                             "Chaos",
+                             "Creature",
+                             "Enchantment",
+                             "Instant",
+                             "Land",
+                             "Planeswalker",
+                             "Sorcery"]
+            var types = [String]()
+            
+            for type in typeNames {
+                if name.contains(type) {
+                    types.append(type)
+                }
+            }
+            
+            if types.count == 1 {
+                return ManaKit.sharedInstance.symbolImage(name: types.first!)
+            } else if types.count > 1 {
+                return ManaKit.sharedInstance.symbolImage(name: "Multiple")
+            }
+            
+        }
+        
+        return nil
+    }
+    
+    public func typeText(ofCard card: CMCard) -> String? {
+        if let type = card.typeLine,
+            let name = type.name {
+            var typeText = name
+            
+            if let power = card.power,
+                let toughness = card.toughness {
+                typeText.append(" (\(power)/\(toughness))")
+            }
+            
+            if let loyalty = card.loyalty {
+                typeText.append(" (\(loyalty))")
+            }
+            
+            return typeText
+        }
+        
+        return nil
+    }
+    
+    public func imageURL(ofCard card: CMCard, imageType: ImageType) -> URL? {
+        var url:URL?
+        var urlString: String?
+        
+        
+        if let imageURIs = card.imageUris,
+            let dict = NSKeyedUnarchiver.unarchiveObject(with: imageURIs as Data) as? [String: String] {
+            
+            urlString = dict[imageType.description]
+        } else {
+//            urlString = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=\(card.multiverseIds.first!)&type=card"
+        }
+        
+        if let urlString = urlString {
+            if let okUrlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+                url = URL(string: okUrlString)
+            }
+        }
+        
+        return url
+    }
+
     // MARK: Image methods
+    public func imageFromFramework(imageName: ImageName) -> UIImage? {
+        let bundle = Bundle(for: ManaKit.self)
+        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
+            let resourceBundle = Bundle(url: bundleURL) else {
+                return nil
+        }
+        
+        return UIImage(named: imageName.rawValue, in: resourceBundle, compatibleWith: nil)
+    }
+    
+    public func symbolImage(name: String) -> UIImage? {
+        let bundle = Bundle(for: ManaKit.self)
+        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
+            let resourceBundle = Bundle(url: bundleURL) else {
+                return nil
+        }
+        
+        return UIImage(named: name, in: resourceBundle, compatibleWith: nil)
+    }
+    
     public func downloadImage(ofCard card: CMCard, imageType: ImageType) -> Promise<Void> {
         return Promise { seal  in
             guard let url = imageURL(ofCard: card, imageType: imageType) else {
@@ -450,54 +542,6 @@ public class ManaKit: NSObject {
         return image
     }
     
-    public func imageURL(ofCard card: CMCard, imageType: ImageType) -> URL? {
-        var url:URL?
-        var urlString: String?
-        
-        
-        if let imageURIs = card.imageUris,
-            let dict = NSKeyedUnarchiver.unarchiveObject(with: imageURIs as Data) as? [String: String] {
-            
-            urlString = dict[imageType.description]
-        } else {
-//            urlString = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=\(card.multiverseIds.first!)&type=card"
-        }
-        
-        if let urlString = urlString {
-            if let okUrlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-                url = URL(string: okUrlString)
-            }
-        }
-        
-        return url
-    }
-    
-    public func typeImage(OfCard card: CMCard) -> UIImage? {
-        if let type = card.typeLine,
-            let name = type.name {
-            
-            if name.contains("Artifact") {
-                return ManaKit.sharedInstance.symbolImage(name: "Artifact")
-            } else if name.contains("Chaos") {
-                return ManaKit.sharedInstance.symbolImage(name: "Chaos")
-            } else if name.contains("Creature") {
-                return ManaKit.sharedInstance.symbolImage(name: "Creature")
-            } else if name.contains("Enchantment") {
-                return ManaKit.sharedInstance.symbolImage(name: "Enchantment")
-            } else if name.contains("Instant") {
-                return ManaKit.sharedInstance.symbolImage(name: "Instant")
-            } else if name.contains("Land") {
-                return ManaKit.sharedInstance.symbolImage(name: "Land")
-            } else if name.contains("Planeswalker") {
-                return ManaKit.sharedInstance.symbolImage(name: "Planeswalker")
-            } else if name.contains("Sorcery") {
-                return ManaKit.sharedInstance.symbolImage(name: "Sorcery")
-            }
-        }
-        
-        return nil
-    }
-
     // MARK: Miscellaneous methods
     public func isModern(_ card: CMCard) -> Bool {
         guard let releaseDate = card.set!.releaseDate else {
@@ -659,7 +703,7 @@ public class ManaKit: NSObject {
                             let link = supplier.xpath("link").first?.text {
                             
                             let id = "\(name)_\(condition)_\(qty)_\(price)"
-                            if let sup = self.findObject("CMSupplier",
+                            if let sup = self.findObject("CMStoreSupplier",
                                                          objectFinder: ["id": id as AnyObject],
                                                          createIfNotFound: true,
                                                          useInMemoryDatabase: false) as? CMStoreSupplier {
