@@ -95,7 +95,7 @@ class SetViewModel: NSObject {
         }
         
         let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
-        let predicate = NSPredicate(format: "set = %@", set)
+        let predicate = NSPredicate(format: "set.code = %@ AND id != nil", set.code!)
         let count = queryString.count
         
         if count > 0 {
