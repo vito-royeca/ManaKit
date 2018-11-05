@@ -26,7 +26,7 @@ public class CardTableViewCell: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var castingCostLabel: UILabel!
     @IBOutlet weak var annotationLabel: UILabel!
-    @IBOutlet weak var symbolImage: UIImageView!
+    @IBOutlet weak var typeImage: UIImageView!
     @IBOutlet weak var typeLabel: UILabel!
     @IBOutlet weak var setImage: UILabel!
     @IBOutlet weak var lowPriceLabel: UILabel!
@@ -55,7 +55,7 @@ public class CardTableViewCell: UITableViewCell {
     // MARK: Custom methods
     public func clearDataDisplay() {
         thumbnailImage.image = ManaKit.sharedInstance.imageFromFramework(imageName: .cardBackCropped)
-        symbolImage.image = nil
+        typeImage.image = nil
         removeAnnotation()
         nameLabel.text = nil
         castingCostLabel.text = nil
@@ -82,7 +82,8 @@ public class CardTableViewCell: UITableViewCell {
         }
         
         // name
-        nameLabel.text = card.name
+        nameLabel.text = ManaKit.sharedInstance.name(ofCard: card)
+        
         if let releaseDate = card.set!.releaseDate {
             let isModern = ManaKit.sharedInstance.isModern(card)
             let formatter = DateFormatter()
@@ -153,7 +154,7 @@ public class CardTableViewCell: UITableViewCell {
         }
 
         // type
-        symbolImage.image = ManaKit.sharedInstance.typeImage(ofCard: card)
+        typeImage.image = ManaKit.sharedInstance.typeImage(ofCard: card)
         typeLabel.text = ManaKit.sharedInstance.typeText(ofCard: card)
         
         // pricing

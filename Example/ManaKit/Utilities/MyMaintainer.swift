@@ -11,16 +11,14 @@ import CoreData
 import ManaKit
 
 class MyMaintainer: Maintainer {
-    func updateCards(useInMemoryDatabase: Bool) {
+    func updateCards() {
         startActivity(name: "updateCards")
-        
-        toggleDatabaseUsage(useInMemoryDatabase: useInMemoryDatabase)
         
         let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
         request.predicate = NSPredicate(format: "id != nil")
         request.sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
                                    NSSortDescriptor(key: "name", ascending: true)]
-        let cards = try! context!.fetch(request)
+        let cards = try! context.fetch(request)
         var count = 0
         print("Creating cards: \(count)/\(cards.count) \(Date())")
         
@@ -39,7 +37,7 @@ class MyMaintainer: Maintainer {
             if let set = card.set,
                 let setCode = set.code,
                 let name = card.name {
-                var firebaseId = "\(setCode.uppercased())_\(name)_\(name.lowercased())"
+                var firebaseID = "\(setCode.uppercased())_\(name)_\(name.lowercased())"
                 
                 if let variations = card.variations,
                     let array = variations.allObjects as? [CMCard] {
@@ -47,14 +45,22 @@ class MyMaintainer: Maintainer {
                     
                     for c in array {
                         if c.id == card.id {
-                            firebaseId += "\(index)"
+                            firebaseID += "\(index)"
                             break
                         } else {
                             index += 1
                         }
                     }
                 }
-                card.firebaseId = firebaseId
+                
+                // add language code for non-english cards
+                if let language = card.language,
+                    let code = language.code {
+                    if code != "en" {
+                        firebaseID += "_\(code)"
+                    }
+                }
+                card.firebaseID = firebaseID
             }
             
             // Original text
@@ -74,7 +80,7 @@ class MyMaintainer: Maintainer {
                 print("Updating cards: \(count)/\(cards.count) \(Date())")
             }
         }
-        try! context!.save()
+        try! context.save()
         
         // Comprehensive rules
         createComprehensiveRules()
@@ -96,7 +102,7 @@ class MyMaintainer: Maintainer {
         let request: NSFetchRequest<CMRule> = CMRule.fetchRequest()
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: request as! NSFetchRequest<NSFetchRequestResult>)
         try! dataStack!.persistentStoreCoordinator.execute(deleteRequest,
-                                                           with: context!)
+                                                           with: context)
         
         let data = try! String(contentsOfFile: path, encoding: .ascii)
         let lines = data.components(separatedBy: .newlines)
@@ -110,8 +116,7 @@ class MyMaintainer: Maintainer {
         objectFinder = ["term": "Introduction"] as [String: AnyObject]
         if let object = ManaKit.sharedInstance.findObject("CMRule",
                                                           objectFinder: objectFinder,
-                                                          createIfNotFound: true,
-                                                          useInMemoryDatabase: useInMemoryDatabase) as? CMRule {
+                                                          createIfNotFound: true) as? CMRule {
             object.term = "Introduction"
             object.order = 0
             object.definition = nil
@@ -129,8 +134,7 @@ class MyMaintainer: Maintainer {
                 
                 if let object2 = ManaKit.sharedInstance.findObject("CMRule",
                                                                    objectFinder: objectFinder,
-                                                                   createIfNotFound: true,
-                                                                   useInMemoryDatabase: useInMemoryDatabase) as? CMRule {
+                                                                   createIfNotFound: true) as? CMRule {
                     object2.term = nil
                     object2.order = 0.1
                     object2.definition = text
@@ -146,8 +150,7 @@ class MyMaintainer: Maintainer {
         objectFinder = ["term": "Glossary"] as [String: AnyObject]
         if let object = ManaKit.sharedInstance.findObject("CMRule",
                                                           objectFinder: objectFinder,
-                                                          createIfNotFound: true,
-                                                          useInMemoryDatabase: useInMemoryDatabase) as? CMRule {
+                                                          createIfNotFound: true) as? CMRule {
             object.term = "Glossary"
             object.order = 10000
             object.definition = nil
@@ -159,8 +162,7 @@ class MyMaintainer: Maintainer {
         objectFinder = ["term": "Credits"] as [String: AnyObject]
         if let object = ManaKit.sharedInstance.findObject("CMRule",
                                                           objectFinder: objectFinder,
-                                                          createIfNotFound: true,
-                                                          useInMemoryDatabase: useInMemoryDatabase) as? CMRule {
+                                                          createIfNotFound: true) as? CMRule {
             object.term = "Credits"
             object.order = 11000
             object.definition = nil
@@ -174,8 +176,7 @@ class MyMaintainer: Maintainer {
                 
                 if let object2 = ManaKit.sharedInstance.findObject("CMRule",
                                                                    objectFinder: objectFinder,
-                                                                   createIfNotFound: true,
-                                                                   useInMemoryDatabase: useInMemoryDatabase) as? CMRule {
+                                                                   createIfNotFound: true) as? CMRule {
                     object2.term = nil
                     object2.order = 11000.1
                     object2.definition = text
@@ -184,7 +185,7 @@ class MyMaintainer: Maintainer {
             }
         }
         
-        try! context!.save()
+        try! context.save()
         endActivity()
     }
 
@@ -273,8 +274,7 @@ class MyMaintainer: Maintainer {
                     let objectFinder = ["term": term] as [String: AnyObject]
                     if let object = ManaKit.sharedInstance.findObject("CMRule",
                                                                       objectFinder: objectFinder,
-                                                                      createIfNotFound: true,
-                                                                      useInMemoryDatabase: useInMemoryDatabase) as? CMRule {
+                                                                      createIfNotFound: true) as? CMRule {
                         object.term = term
                         object.order = order(of: term)
                         object.definition = definition
@@ -306,18 +306,17 @@ class MyMaintainer: Maintainer {
         
         guard let parent = ManaKit.sharedInstance.findObject("CMRule",
                                                              objectFinder: parentFinder,
-                                                             createIfNotFound: true,
-                                                             useInMemoryDatabase: useInMemoryDatabase) as? CMRule else {
+                                                             createIfNotFound: true) as? CMRule else {
             return nil
         }
         
         if parent.definition == nil &&
             parent.definition == nil {
-            context!.delete(parent)
+            context.delete(parent)
         } else {
             if parent != rule {
                 rule.parent = parent
-                try! context!.save()
+                try! context.save()
                 return parent
             }
         }
@@ -378,8 +377,7 @@ class MyMaintainer: Maintainer {
                             
                             if let object = ManaKit.sharedInstance.findObject("CMRule",
                                                                               objectFinder: objectFinder,
-                                                                              createIfNotFound: true,
-                                                                              useInMemoryDatabase: useInMemoryDatabase) as? CMRule {
+                                                                              createIfNotFound: true) as? CMRule {
                                 let letters = CharacterSet.letters
                                 var prefix = String(term!.prefix(1))
                                 if prefix.rangeOfCharacter(from: letters) == nil {

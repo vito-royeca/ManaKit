@@ -13,10 +13,8 @@ import ManaKit
 import PromiseKit
 
 class KeyruneMaintainer: Maintainer {
-    func updateSetSymbols(useInMemoryDatabase: Bool) {
+    func updateSetSymbols() {
         startActivity(name: "updateSetSymbols")
-        
-        toggleDatabaseUsage(useInMemoryDatabase: useInMemoryDatabase)
         
         if let urlString = "http://andrewgioia.github.io/Keyrune/cheatsheet.html".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
             let url = URL(string: urlString) {
@@ -48,8 +46,7 @@ class KeyruneMaintainer: Maintainer {
                         
                         if let set = ManaKit.sharedInstance.findObject("CMSet",
                                                                        objectFinder: ["code": setCode] as [String: AnyObject],
-                                                                       createIfNotFound: false,
-                                                                       useInMemoryDatabase: useInMemoryDatabase) as? CMSet {
+                                                                       createIfNotFound: false) as? CMSet {
                             set.myKeyruneCode = keyruneCode
                         }
                     }
@@ -60,7 +57,7 @@ class KeyruneMaintainer: Maintainer {
         // update keyrune of children
         let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
         request.predicate = NSPredicate(format: "parent != nil AND myKeyruneCode = nil")
-        var sets = try! context!.fetch(request)
+        var sets = try! context.fetch(request)
         for set in sets {
             if let parent = set.parent {
                 set.myKeyruneCode = parent.myKeyruneCode
@@ -69,7 +66,7 @@ class KeyruneMaintainer: Maintainer {
         
         // manual fix
         request.predicate = nil
-        sets = try! context!.fetch(request)
+        sets = try! context.fetch(request)
         for set in sets {
             if set.code == "c14" ||
                 set.code == "oc14" ||
@@ -215,6 +212,6 @@ class KeyruneMaintainer: Maintainer {
                 }
             }
         }
-        try! context!.save()
+        try! context.save()
     }
 }

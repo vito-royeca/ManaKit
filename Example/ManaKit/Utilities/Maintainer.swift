@@ -14,11 +14,11 @@ import Sync
 class Maintainer: NSObject {
     // MARK: Constants
     let printMilestone = 1000
-    let cardsFileName   = "scryfall-default-cards.json"
+    let cardsFileName   = "scryfall-all-cards.json"
     let rulingsFileName = "scryfall-rulings.json"
     let comprehensiveRulesFileName = "MagicCompRules 20181005"
-    var dataStack: DataStack?
-    var context: NSManagedObjectContext?
+    var dataStack =  ManaKit.sharedInstance.dataStack
+    var context = ManaKit.sharedInstance.dataStack!.mainContext
     var useInMemoryDatabase = true
     
     // MARK: Variables
@@ -35,12 +35,6 @@ class Maintainer: NSObject {
         let timeDifference = dateEnd.timeIntervalSince(dateStart)
         print("Total Time Elapsed: \(self.dateStart) - \(dateEnd) = \(self.format(timeDifference))")
         print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
-    }
-
-    func toggleDatabaseUsage(useInMemoryDatabase: Bool) {
-        self.useInMemoryDatabase = useInMemoryDatabase
-        dataStack = useInMemoryDatabase ? ManaKit.sharedInstance.memoryDataStack! : ManaKit.sharedInstance.dataStack!
-        context = useInMemoryDatabase ? ManaKit.sharedInstance.memoryDataStack!.mainContext : ManaKit.sharedInstance.dataStack!.mainContext
     }
 
     // MARK: Utility methods

@@ -17,9 +17,7 @@ class TCGPlayerMaintainer: Maintainer {
     let limit = 300
     var token = ""
     
-    func updateSetTcgPlayerNames(useInMemoryDatabase: Bool) {
-        toggleDatabaseUsage(useInMemoryDatabase: useInMemoryDatabase)
-        
+    func updateSetTcgPlayerNames() {
         startActivity(name: "updateSetTcgPlayerNames()")
         
         firstly {
@@ -110,7 +108,7 @@ class TCGPlayerMaintainer: Maintainer {
         request.sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: true)]
         
         var promises = [Promise<URL?>]()
-        for set in try! context!.fetch(request) {
+        for set in try! context.fetch(request) {
             if let code = set.code,
                 let urlString = "https://api.scryfall.com/cards/search?q=e:\(code)&unique=prints".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
                 
@@ -202,7 +200,7 @@ class TCGPlayerMaintainer: Maintainer {
     private func processSets(array: [[String: String]]) {
         let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
         
-        var sets = try! context!.fetch(request)
+        var sets = try! context.fetch(request)
         for set in sets {
             for dict in array {
                 if let code = dict["code"],
@@ -213,15 +211,15 @@ class TCGPlayerMaintainer: Maintainer {
                 }
             }
         }
-        try! context!.save()
+        try! context.save()
         
         // manual fix
-        sets = try! context!.fetch(request)
+        sets = try! context.fetch(request)
         for set in sets {
             if let parent = set.parent {
                 set.tcgplayerName = parent.tcgplayerName
             }
         }
-        try! context!.save()
+        try! context.save()
     }
 }

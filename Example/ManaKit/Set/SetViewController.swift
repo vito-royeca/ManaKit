@@ -57,7 +57,6 @@ class SetViewController: UIViewController {
             }
             
             dest.card = card
-            dest.title = card.name
         }
     }
 }

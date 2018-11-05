@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14315.18" systemVersion="18A391" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CMCard" representedClassName="CMCard" syncable="YES">
-        <attribute name="arenaId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="arenaID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="collectorNumber" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="convertedManaCost" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="firebaseId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="faceOrder" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="firebaseID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="firebaseRating" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="firebaseRatings" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="firebaseViews" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -15,8 +16,8 @@
                 <entry key="sync.isPrimaryKey" value="true"/>
             </userInfo>
         </attribute>
-        <attribute name="illustrationId" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="imageUris" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="illustrationID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageURIs" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="isColorshifted" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isDigital" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isFoil" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
@@ -32,20 +33,20 @@
         <attribute name="loyalty" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="manaCost" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mtgjsonOriginalText" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="mtgoFoilId" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="mtgoId" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="multiverseIds" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="mtgoFoilID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mtgoID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="multiverseIDs" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="myNameSection" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="myNumberOrder" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="oracleId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="oracleID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="oracleText" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="power" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="printedName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="printedText" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="releaseDate" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="source" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="tcgPlayerPurchaseUri" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tcgPlayerPurchaseURI" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="toughness" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="artist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCardArtist" inverseName="cards" inverseEntity="CMCardArtist" syncable="YES"/>
         <relationship name="borderColor" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCardBorderColor" inverseName="cards" inverseEntity="CMCardBorderColor" syncable="YES"/>
@@ -400,7 +401,7 @@
         <relationship name="ratings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCardRating" inverseName="user" inverseEntity="CMCardRating" syncable="YES"/>
     </entity>
     <elements>
-        <element name="CMCard" positionX="-54" positionY="72" width="128" height="1125"/>
+        <element name="CMCard" positionX="-54" positionY="72" width="128" height="1140"/>
         <element name="CMCardArtist" positionX="-45" positionY="153" width="128" height="120"/>
         <element name="CMCardBorderColor" positionX="-9" positionY="153" width="128" height="90"/>
         <element name="CMCardColor" positionX="18" positionY="180" width="128" height="120"/>

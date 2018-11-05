@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -258,8 +258,8 @@
                 <outlet property="midPriceLabel" destination="7Zd-vt-Yxk" id="89w-AU-P6m"/>
                 <outlet property="nameLabel" destination="5R8-Ie-iaQ" id="IV3-RR-WoK"/>
                 <outlet property="setImage" destination="Kbw-1w-5Bx" id="Q72-UF-dkv"/>
-                <outlet property="symbolImage" destination="Glp-iO-s75" id="nxU-al-n7R"/>
                 <outlet property="thumbnailImage" destination="rgs-66-M0A" id="6Zq-N0-5Io"/>
+                <outlet property="typeImage" destination="Glp-iO-s75" id="U2z-9M-Sew"/>
                 <outlet property="typeLabel" destination="Hu5-Rh-KhR" id="uke-5a-DWm"/>
             </connections>
             <point key="canvasLocation" x="34" y="96"/>

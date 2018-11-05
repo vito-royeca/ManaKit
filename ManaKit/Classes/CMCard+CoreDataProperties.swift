@@ -16,17 +16,18 @@ extension CMCard {
         return NSFetchRequest<CMCard>(entityName: "CMCard")
     }
 
-    @NSManaged public var arenaId: String?
+    @NSManaged public var arenaID: String?
     @NSManaged public var collectorNumber: String?
     @NSManaged public var convertedManaCost: Double
-    @NSManaged public var firebaseId: String?
+    @NSManaged public var faceOrder: Int32
+    @NSManaged public var firebaseID: String?
     @NSManaged public var firebaseRating: Double
     @NSManaged public var firebaseRatings: Int32
     @NSManaged public var firebaseViews: Int64
     @NSManaged public var flavorText: String?
     @NSManaged public var id: String?
-    @NSManaged public var illustrationId: String?
-    @NSManaged public var imageUris: NSData?
+    @NSManaged public var illustrationID: String?
+    @NSManaged public var imageURIs: NSData?
     @NSManaged public var isColorshifted: Bool
     @NSManaged public var isDigital: Bool
     @NSManaged public var isFoil: Bool
@@ -42,20 +43,20 @@ extension CMCard {
     @NSManaged public var loyalty: String?
     @NSManaged public var manaCost: String?
     @NSManaged public var mtgjsonOriginalText: String?
-    @NSManaged public var mtgoFoilId: String?
-    @NSManaged public var mtgoId: String?
-    @NSManaged public var multiverseIds: NSData?
+    @NSManaged public var mtgoFoilID: String?
+    @NSManaged public var mtgoID: String?
+    @NSManaged public var multiverseIDs: NSData?
     @NSManaged public var myNameSection: String?
     @NSManaged public var myNumberOrder: Double
     @NSManaged public var name: String?
-    @NSManaged public var oracleId: String?
+    @NSManaged public var oracleID: String?
     @NSManaged public var oracleText: String?
     @NSManaged public var power: String?
     @NSManaged public var printedName: String?
     @NSManaged public var printedText: String?
     @NSManaged public var releaseDate: String?
     @NSManaged public var source: String?
-    @NSManaged public var tcgPlayerPurchaseUri: String?
+    @NSManaged public var tcgPlayerPurchaseURI: String?
     @NSManaged public var toughness: String?
     @NSManaged public var artist: CMCardArtist?
     @NSManaged public var borderColor: CMCardBorderColor?

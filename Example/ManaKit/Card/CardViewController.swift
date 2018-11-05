@@ -14,7 +14,7 @@ import PromiseKit
 class CardViewController: UIViewController {
 
     // MARK: Variables
-    var card: CMCard?
+    var card: CMCard!
     
     // MARK: Outlets
     @IBOutlet weak var tableView: UITableView!
@@ -25,6 +25,7 @@ class CardViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         tableView.register(ManaKit.sharedInstance.nibFromBundle("CardTableViewCell"), forCellReuseIdentifier: "CardCell")
+        title = ManaKit.sharedInstance.name(ofCard: card)
     }
 }
 
@@ -39,8 +40,7 @@ extension CardViewController : UITableViewDataSource {
         
         switch indexPath.row {
         case 0:
-            guard let c = tableView.dequeueReusableCell(withIdentifier: "CardCell") as? CardTableViewCell,
-                let card = card else {
+            guard let c = tableView.dequeueReusableCell(withIdentifier: "CardCell") as? CardTableViewCell else {
                 fatalError("Unexpected indexPath: \(indexPath)")
             }
             
@@ -49,8 +49,7 @@ extension CardViewController : UITableViewDataSource {
             
         case 1:
             guard let c = tableView.dequeueReusableCell(withIdentifier: "ImageCell"),
-                let imageView = c.viewWithTag(100) as? UIImageView,
-                let card = card else {
+                let imageView = c.viewWithTag(100) as? UIImageView else {
                 fatalError("Unexpected indexPath: \(indexPath)")
             }
             
@@ -62,7 +61,7 @@ extension CardViewController : UITableViewDataSource {
                 firstly {
                     ManaKit.sharedInstance.downloadImage(ofCard: card, imageType: .normal)
                 }.done {
-                    guard let image = ManaKit.sharedInstance.cardImage(card, imageType: .normal) else {
+                    guard let image = ManaKit.sharedInstance.cardImage(self.card, imageType: .normal) else {
                         return
                     }
                     

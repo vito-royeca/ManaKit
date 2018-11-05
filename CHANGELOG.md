@@ -1,3 +1,6 @@
+**Version 3.0.4** @ 04.11.2018
+- Added foreign language cards in Scryfall database.
+
 **Version 3.0.3** @ 02.11.2018
 - Added Rulings and Comprehensive Rules in Scryfall database.
 

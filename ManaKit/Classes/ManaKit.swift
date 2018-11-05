@@ -35,7 +35,7 @@ public class ManaKit: NSObject {
     
     public enum Constants {
         public static let ScryfallDateKey     = "ScryfallDateKey"
-        public static let ScryfallDate        = "2018-11-01 09:36 UTC"
+        public static let ScryfallDate        = "2018-11-03 10:02 UTC"
         public static let MTGJSONVersion      = "3.19.2 E"
         public static let KeyruneVersion      = "3.3.1"
         public static let EightEditionRelease = "2003-07-28"
@@ -95,23 +95,6 @@ public class ManaKit: NSObject {
         }
         set {
             _dataStack = newValue
-        }
-    }
-    
-    private var _memoryDataStack: DataStack?
-    public var memoryDataStack: DataStack? {
-        get {
-            if _memoryDataStack == nil {
-                guard let bundleURL = Bundle(for: ManaKit.self).url(forResource: "ManaKit", withExtension: "bundle") else { return nil }
-                guard let bundle = Bundle(url: bundleURL) else { return nil }
-                guard let momURL = bundle.url(forResource: "ManaKit", withExtension: "momd") else { return nil }
-                guard let objectModel = NSManagedObjectModel(contentsOf: momURL) else { return nil }
-                _memoryDataStack = DataStack(model: objectModel, storeType: .inMemory)
-            }
-            return _memoryDataStack
-        }
-        set {
-            _memoryDataStack = newValue
         }
     }
     
@@ -225,26 +208,10 @@ public class ManaKit: NSObject {
     }
     
     // MARK: Database methods
-    public func flushInMemoryDatabaseToDisk() {
-        guard let memoryDataStack = memoryDataStack,
-            let persistentStore = memoryDataStack.persistentStoreCoordinator.persistentStores.first,
-            let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first,
-            let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String else {
-                return
-        }
-        let targetPath = "\(docsPath)/\(bundleName)_0001.sqlite"
-        
-        try! memoryDataStack.persistentStoreCoordinator.migratePersistentStore(persistentStore,
-                                                                               to: URL(fileURLWithPath: targetPath),
-                                                                               options: nil,
-                                                                               withType: NSSQLiteStoreType)
-    }
-    
     public func findObject(_ entityName: String,
                            objectFinder: [String: AnyObject]?,
-                           createIfNotFound: Bool,
-                           useInMemoryDatabase: Bool) -> NSManagedObject? {
-        let context = useInMemoryDatabase ? memoryDataStack!.mainContext : dataStack!.mainContext
+                           createIfNotFound: Bool) -> NSManagedObject? {
+        let context = dataStack!.mainContext
         
         var object:NSManagedObject?
         var predicate:NSPredicate?
@@ -270,7 +237,6 @@ public class ManaKit: NSObject {
                 if createIfNotFound {
                     if let desc = NSEntityDescription.entity(forEntityName: entityName, in: context) {
                         object = NSManagedObject(entity: desc, insertInto: context)
-//                        try! context.save()
                     }
                 }
             }
@@ -278,7 +244,6 @@ public class ManaKit: NSObject {
             if createIfNotFound {
                 if let desc = NSEntityDescription.entity(forEntityName: entityName, in: context) {
                     object = NSManagedObject(entity: desc, insertInto: context)
-//                    try! context.save()
                 }
             }
         }
@@ -304,6 +269,17 @@ public class ManaKit: NSObject {
     }
     
     // MARK: Card methods
+    public func name(ofCard card: CMCard) -> String? {
+        var name: String?
+        
+        if let language = card.language,
+            let code = language.code {
+            name = code == "en" ? card.name : card.printedName
+        }
+        
+        return name
+    }
+    
     public func typeImage(ofCard card: CMCard) -> UIImage? {
         if let type = card.typeLine,
             let name = type.name {
@@ -336,10 +312,23 @@ public class ManaKit: NSObject {
         return nil
     }
     
-    public func typeText(ofCard card: CMCard) -> String? {
-        if let type = card.typeLine,
-            let name = type.name {
-            var typeText = name
+    public func typeText(ofCard card: CMCard) -> String {
+        var typeText = ""
+        
+        if let language = card.language,
+            let code = language.code {
+            
+            if code == "en" {
+                if let type = card.typeLine,
+                    let name = type.name {
+                    typeText = name
+                }
+            } else {
+                if let type = card.printedTypeLine,
+                    let name = type.name {
+                    typeText = name
+                }
+            }
             
             if let power = card.power,
                 let toughness = card.toughness {
@@ -349,11 +338,9 @@ public class ManaKit: NSObject {
             if let loyalty = card.loyalty {
                 typeText.append(" (\(loyalty))")
             }
-            
-            return typeText
         }
         
-        return nil
+        return typeText
     }
     
     public func imageURL(ofCard card: CMCard, imageType: ImageType) -> URL? {
@@ -361,7 +348,7 @@ public class ManaKit: NSObject {
         var urlString: String?
         
         
-        if let imageURIs = card.imageUris,
+        if let imageURIs = card.imageURIs,
             let dict = NSKeyedUnarchiver.unarchiveObject(with: imageURIs as Data) as? [String: String] {
             
             urlString = dict[imageType.description]
@@ -420,7 +407,7 @@ public class ManaKit: NSObject {
                             let imageCache = SDImageCache.init()
                             imageCache.store(image, forKey: cacheKey, toDisk: true, completion: {
                                 if imageType == .artCrop {
-                                    if let _ = card.imageUris {
+                                    if let _ = card.imageURIs {
                                         seal.fulfill(())
                                     } else {
                                         let _ = self.crop(image, ofCard: card)
@@ -480,7 +467,7 @@ public class ManaKit: NSObject {
         var willGetFromCache = false
         
         if imageType == .artCrop {
-            if let _ = card.imageUris {
+            if let _ = card.imageURIs {
                 willGetFromCache = true
             } else {
                 cardImage = croppedImage(card)
@@ -499,7 +486,7 @@ public class ManaKit: NSObject {
             
             cardImage = imageCache.imageFromDiskCache(forKey: cacheKey)
             
-            if let _ = card.imageUris {
+            if let _ = card.imageURIs {
                 // return roundCornered image
                 if let c = cardImage {
                     cardImage = c.roundCornered(card: card)
@@ -511,9 +498,9 @@ public class ManaKit: NSObject {
     }
     
     public func cardBack(_ card: CMCard) -> UIImage? {
-        if card.set!.code == "CED" {
+        if card.set!.code == "ced" {
             return imageFromFramework(imageName: .collectorsCardBack)
-        } else if card.set!.code == "CEI" {
+        } else if card.set!.code == "cei" {
             return imageFromFramework(imageName: .intlCollectorsCardBack)
         } else {
             return imageFromFramework(imageName: .cardBack)
@@ -523,7 +510,7 @@ public class ManaKit: NSObject {
     public func croppedImage(_ card: CMCard) -> UIImage? {
         var image: UIImage?
         
-        if let _ = card.imageUris {
+        if let _ = card.imageURIs {
             image = cardImage(card, imageType: .artCrop)
         } else {
             guard let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first,
@@ -705,8 +692,7 @@ public class ManaKit: NSObject {
                             let id = "\(name)_\(condition)_\(qty)_\(price)"
                             if let sup = self.findObject("CMStoreSupplier",
                                                          objectFinder: ["id": id as AnyObject],
-                                                         createIfNotFound: true,
-                                                         useInMemoryDatabase: false) as? CMStoreSupplier {
+                                                         createIfNotFound: true) as? CMStoreSupplier {
                             
                                 sup.id = id
                                 sup.name = name
