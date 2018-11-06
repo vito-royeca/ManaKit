@@ -35,9 +35,8 @@ public class ManaKit: NSObject {
     
     public enum Constants {
         public static let ScryfallDateKey     = "ScryfallDateKey"
-        public static let ScryfallDate        = "2018-11-03 10:02 UTC"
-        public static let MTGJSONVersion      = "3.19.2 E"
-        public static let KeyruneVersion      = "3.3.1"
+        public static let ScryfallDate        = "2018-11-05 09:33 UTC"
+        public static let KeyruneVersion      = "3.3.2"
         public static let EightEditionRelease = "2003-07-28"
         public static let TCGPlayerPricingAge = 24 * 3 // 3 days
     }
@@ -312,7 +311,7 @@ public class ManaKit: NSObject {
         return nil
     }
     
-    public func typeText(ofCard card: CMCard) -> String {
+    public func typeText(ofCard card: CMCard, includePower: Bool) -> String {
         var typeText = ""
         
         if let language = card.language,
@@ -330,13 +329,15 @@ public class ManaKit: NSObject {
                 }
             }
             
-            if let power = card.power,
-                let toughness = card.toughness {
-                typeText.append(" (\(power)/\(toughness))")
-            }
-            
-            if let loyalty = card.loyalty {
-                typeText.append(" (\(loyalty))")
+            if includePower {
+                if let power = card.power,
+                    let toughness = card.toughness {
+                    typeText.append(" (\(power)/\(toughness))")
+                }
+                
+                if let loyalty = card.loyalty {
+                    typeText.append(" (\(loyalty))")
+                }
             }
         }
         

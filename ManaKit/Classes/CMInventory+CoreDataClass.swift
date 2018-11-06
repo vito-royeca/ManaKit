@@ -2,7 +2,7 @@
 //  CMInventory+CoreDataClass.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 30/10/2018.
+//  Created by Jovito Royeca on 05/11/2018.
 //
 //
 

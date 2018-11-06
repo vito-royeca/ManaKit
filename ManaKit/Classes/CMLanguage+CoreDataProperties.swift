@@ -2,7 +2,7 @@
 //  CMLanguage+CoreDataProperties.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 30/10/2018.
+//  Created by Jovito Royeca on 05/11/2018.
 //
 //
 
@@ -17,6 +17,7 @@ extension CMLanguage {
     }
 
     @NSManaged public var code: String?
+    @NSManaged public var displayCode: String?
     @NSManaged public var name: String?
     @NSManaged public var nameSection: String?
     @NSManaged public var cards: NSSet?

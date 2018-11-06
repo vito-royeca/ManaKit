@@ -155,7 +155,7 @@ public class CardTableViewCell: UITableViewCell {
 
         // type
         typeImage.image = ManaKit.sharedInstance.typeImage(ofCard: card)
-        typeLabel.text = ManaKit.sharedInstance.typeText(ofCard: card)
+        typeLabel.text = ManaKit.sharedInstance.typeText(ofCard: card, includePower: true)
         
         // pricing
         var willFetchPricing = false

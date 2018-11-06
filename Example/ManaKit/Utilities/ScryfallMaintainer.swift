@@ -50,7 +50,7 @@ class ScryfallMaintainer: Maintainer {
                     self.processSets(data: data)
                     self.createCards()
                     self.updateCards()
-                    self.updateCards2()
+//                    self.updateCards2()
                     self.createCardRulings()
                 }
                 self.endActivity()
@@ -483,6 +483,7 @@ class ScryfallMaintainer: Maintainer {
                                                           languageCode: dict["lang"] as? String) {
                                 face.face = card
                                 face.set = card.set
+                                face.language = card.language
                                 face.faceOrder = Int32(index)
                                 card.addToFaces(face)
                                 index += 1
@@ -506,6 +507,7 @@ class ScryfallMaintainer: Maintainer {
         startActivity(name: "updateCards2")
         
         let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
+        request.predicate = NSPredicate(format: "id != nil")
         request.sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
                                    NSSortDescriptor(key: "name", ascending: true)]
         let cards = try! context.fetch(request)
@@ -514,13 +516,14 @@ class ScryfallMaintainer: Maintainer {
         
         reloadCachedCards()
         for card in cards {
-            if card.id != nil {
-                // variations
-                createVariations(ofCard: card)
+            // variations
+            createVariations(ofCard: card)
+        
+            // other languages
+            createOtherLanguages(ofCard: card)
             
-                // other printings
-                createOtherPrintings(ofCard: card)
-            }
+            // other printings
+            createOtherPrintings(ofCard: card)
 
             count += 1
             if count % printMilestone == 0 {
@@ -534,13 +537,32 @@ class ScryfallMaintainer: Maintainer {
     
     private func createVariations(ofCard card: CMCard) {
         if let set = card.set,
-            let cachedSet = findSet(code: set.code!),
+            let code = set.code,
+            let language = card.language,
+            let languageCode = language.code,
+            let cachedSet = findSet(code: code),
             let cardSets = cachedSet.cards,
             let cards = cardSets.allObjects as? [CMCard] {
             
-            let filteredCards = cards.filter({ $0.name == card.name && $0.id != card.id})
+            let filteredCards = cards.filter({ $0.language!.code == languageCode
+                                               && $0.id != card.id
+                                               && $0.name == card.name })
             for c in filteredCards {
                 card.addToVariations(c)
+            }
+        }
+    }
+
+    private func createOtherLanguages(ofCard card: CMCard) {
+        if let language = card.language,
+            let languageCode = language.code,
+            let name = card.name {
+            
+            let filteredCards = cachedCards.filter({ $0.language!.code != languageCode
+                                                     && $0.id != card.id
+                                                     && $0.name == name })
+            for c in filteredCards {
+                card.addToOtherLanguages(c)
             }
         }
     }
@@ -548,16 +570,21 @@ class ScryfallMaintainer: Maintainer {
     private func createOtherPrintings(ofCard card: CMCard) {
         if let set = card.set,
             let setCode = set.code,
+            let language = card.language,
+            let languageCode = language.code,
             let name = card.name {
             
-            let filteredCards = cachedCards.filter({ $0.set!.code != setCode && $0.name == name/* && $0.typeLine?.name == card.typeLine?.name*/})
+            let filteredCards = cachedCards.filter({ $0.set!.code != setCode
+                                                     && $0.language!.code == languageCode
+                                                     && $0.id != card.id
+                                                     && $0.name == name })
             for c in filteredCards {
                 card.addToOtherPrintings(c)
             }
         }
     }
     
-    // rulings
+    // MARK: Rulings
     func createCardRulings() {
         startActivity(name: "createCardRulings")
         
@@ -626,7 +653,7 @@ class ScryfallMaintainer: Maintainer {
         for set in cachedSets {
             if let cards = set.cards,
                 let array = cards.allObjects as? [CMCard] {
-                cachedCards.append(contentsOf: array)
+                cachedCards.append(contentsOf: array.filter({ $0.id != nil }))
             }
         }
     }
@@ -642,26 +669,37 @@ class ScryfallMaintainer: Maintainer {
                 switch code {
                 case "en":
                     language.name = "English"
+                    language.displayCode = "EN"
                 case "es":
                     language.name = "Spanish"
+                    language.displayCode = "ES"
                 case "fr":
                     language.name = "French"
+                    language.displayCode = "FR"
                 case "de":
                     language.name = "German"
+                    language.displayCode = "DE"
                 case "it":
                     language.name = "Italian"
+                    language.displayCode = "IT"
                 case "pt":
                     language.name = "Portuguese"
+                    language.displayCode = "PT"
                 case "ja":
                     language.name = "Japanese"
+                    language.displayCode = "JA"
                 case "ko":
                     language.name = "Korean"
+                    language.displayCode = "KO"
                 case "ru":
                     language.name = "Russian"
+                    language.displayCode = "RU"
                 case "zhs":
                     language.name = "Simplified Chinese"
+                    language.displayCode = "汉语"
                 case "zht":
                     language.name = "Traditional Chinese"
+                    language.displayCode = "漢語"
                 case "he":
                     language.name = "Hebrew"
                 case "la":

@@ -2,7 +2,7 @@
 //  CMCard+CoreDataProperties.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 30/10/2018.
+//  Created by Jovito Royeca on 05/11/2018.
 //
 //
 
@@ -42,7 +42,6 @@ extension CMCard {
     @NSManaged public var isTimeshifted: Bool
     @NSManaged public var loyalty: String?
     @NSManaged public var manaCost: String?
-    @NSManaged public var mtgjsonOriginalText: String?
     @NSManaged public var mtgoFoilID: String?
     @NSManaged public var mtgoID: String?
     @NSManaged public var multiverseIDs: NSData?
@@ -73,10 +72,6 @@ extension CMCard {
     @NSManaged public var inventories: NSSet?
     @NSManaged public var language: CMLanguage?
     @NSManaged public var layout: CMCardLayout?
-    @NSManaged public var mtgjsonOriginalType: CMCardType?
-    @NSManaged public var mtgjsonSubtypes: NSSet?
-    @NSManaged public var mtgjsonSupertypes: NSSet?
-    @NSManaged public var mtgjsonTypes: NSSet?
     @NSManaged public var otherPrintings: NSSet?
     @NSManaged public var part: CMCard?
     @NSManaged public var parts: NSSet?
@@ -89,6 +84,7 @@ extension CMCard {
     @NSManaged public var typeLine: CMCardType?
     @NSManaged public var variations: NSSet?
     @NSManaged public var watermark: CMCardWatermark?
+    @NSManaged public var otherLanguages: NSSet?
 
 }
 
@@ -245,57 +241,6 @@ extension CMCard {
 
 }
 
-// MARK: Generated accessors for mtgjsonSubtypes
-extension CMCard {
-
-    @objc(addMtgjsonSubtypesObject:)
-    @NSManaged public func addToMtgjsonSubtypes(_ value: CMCardType)
-
-    @objc(removeMtgjsonSubtypesObject:)
-    @NSManaged public func removeFromMtgjsonSubtypes(_ value: CMCardType)
-
-    @objc(addMtgjsonSubtypes:)
-    @NSManaged public func addToMtgjsonSubtypes(_ values: NSSet)
-
-    @objc(removeMtgjsonSubtypes:)
-    @NSManaged public func removeFromMtgjsonSubtypes(_ values: NSSet)
-
-}
-
-// MARK: Generated accessors for mtgjsonSupertypes
-extension CMCard {
-
-    @objc(addMtgjsonSupertypesObject:)
-    @NSManaged public func addToMtgjsonSupertypes(_ value: CMCardType)
-
-    @objc(removeMtgjsonSupertypesObject:)
-    @NSManaged public func removeFromMtgjsonSupertypes(_ value: CMCardType)
-
-    @objc(addMtgjsonSupertypes:)
-    @NSManaged public func addToMtgjsonSupertypes(_ values: NSSet)
-
-    @objc(removeMtgjsonSupertypes:)
-    @NSManaged public func removeFromMtgjsonSupertypes(_ values: NSSet)
-
-}
-
-// MARK: Generated accessors for mtgjsonTypes
-extension CMCard {
-
-    @objc(addMtgjsonTypesObject:)
-    @NSManaged public func addToMtgjsonTypes(_ value: CMCardType)
-
-    @objc(removeMtgjsonTypesObject:)
-    @NSManaged public func removeFromMtgjsonTypes(_ value: CMCardType)
-
-    @objc(addMtgjsonTypes:)
-    @NSManaged public func addToMtgjsonTypes(_ values: NSSet)
-
-    @objc(removeMtgjsonTypes:)
-    @NSManaged public func removeFromMtgjsonTypes(_ values: NSSet)
-
-}
-
 // MARK: Generated accessors for otherPrintings
 extension CMCard {
 
@@ -361,5 +306,22 @@ extension CMCard {
 
     @objc(removeVariations:)
     @NSManaged public func removeFromVariations(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for otherLanguages
+extension CMCard {
+
+    @objc(addOtherLanguagesObject:)
+    @NSManaged public func addToOtherLanguages(_ value: CMCard)
+
+    @objc(removeOtherLanguagesObject:)
+    @NSManaged public func removeFromOtherLanguages(_ value: CMCard)
+
+    @objc(addOtherLanguages:)
+    @NSManaged public func addToOtherLanguages(_ values: NSSet)
+
+    @objc(removeOtherLanguages:)
+    @NSManaged public func removeFromOtherLanguages(_ values: NSSet)
 
 }

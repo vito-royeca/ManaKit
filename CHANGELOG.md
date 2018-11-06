@@ -1,3 +1,6 @@
+**Version 3.0.5** @ 06.11.2018
+- No longer builds the variations and other printings in the Scryfall database.
+
 **Version 3.0.4** @ 04.11.2018
 - Added foreign language cards in Scryfall database.
 
