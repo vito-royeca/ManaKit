@@ -23,12 +23,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        let scryfall = ScryfallMaintainer()
 //        let keyrune = KeyruneMaintainer()
 //        let tcgplayer = TCGPlayerMaintainer()
-//        let my = MyMaintainer()
+        let my = MyMaintainer()
         
 //        scryfall.fetchSetsAndCreateCards()
 //        keyrune.updateSetSymbols()
 //        tcgplayer.updateSetTcgPlayerNames()
-//        my.updateCards()
+        my.updateCards()
         
           // Normal run
 //        ManaKit.sharedInstance.setupResources()

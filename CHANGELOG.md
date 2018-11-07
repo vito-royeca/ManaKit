@@ -1,3 +1,6 @@
+**Version 3.0.6** @ 07.11.2018
+- Fixed myYearSection and urlString of imageURIs.
+
 **Version 3.0.5** @ 06.11.2018
 - No longer builds the variations and other printings in the Scryfall database.
 

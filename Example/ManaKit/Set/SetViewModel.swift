@@ -20,7 +20,7 @@ class SetViewModel: NSObject {
     
     // MARK: Settings
     private let _sortDescriptors = [NSSortDescriptor(key: "name", ascending: true),
-                                   NSSortDescriptor(key: "collectorNumber", ascending: true)]
+                                    NSSortDescriptor(key: "collectorNumber", ascending: true)]
     private var _sectionName = "myNameSection"
     
     // MARK: Overrides

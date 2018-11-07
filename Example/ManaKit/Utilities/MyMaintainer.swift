@@ -62,19 +62,7 @@ class MyMaintainer: Maintainer {
                 }
                 card.firebaseID = firebaseID
             }
-            
-            // Original text
-            // TODO: get original text from mtgjson
-            
-            // types
-            // TODO: get types from mtgjson
-            
-            // Subtypes
-            // TODO: get subtypes from mtgjson
-            
-            // Supertypes
-            // TODO: get supertypes from mtgjson
-            
+
             count += 1
             if count % printMilestone == 0 {
                 print("Updating cards: \(count)/\(cards.count) \(Date())")

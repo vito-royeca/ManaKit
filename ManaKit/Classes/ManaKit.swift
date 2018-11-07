@@ -35,7 +35,7 @@ public class ManaKit: NSObject {
     
     public enum Constants {
         public static let ScryfallDateKey     = "ScryfallDateKey"
-        public static let ScryfallDate        = "2018-11-05 09:33 UTC"
+        public static let ScryfallDate        = "2018-11-06 09:29 UTC"
         public static let KeyruneVersion      = "3.3.2"
         public static let EightEditionRelease = "2003-07-28"
         public static let TCGPlayerPricingAge = 24 * 3 // 3 days
@@ -358,13 +358,32 @@ public class ManaKit: NSObject {
         }
         
         if let urlString = urlString {
-            if let okUrlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-                url = URL(string: okUrlString)
-            }
+//            if let okUrlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+//                url = URL(string: okUrlString)
+//            }
+            url = URL(string: urlString)
         }
         
         return url
     }
+    
+    public func isModern(_ card: CMCard) -> Bool {
+        guard let releaseDate = card.set!.releaseDate else {
+            return false
+        }
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        
+        if let eightEditionDate = formatter.date(from: Constants.EightEditionRelease),
+            let setReleaseDate = formatter.date(from: releaseDate) {
+            return setReleaseDate.compare(eightEditionDate) == .orderedDescending ||
+                setReleaseDate.compare(eightEditionDate) == .orderedSame
+        }
+        
+        return false
+    }
+    
 
     // MARK: Image methods
     public func imageFromFramework(imageName: ImageName) -> UIImage? {
@@ -530,24 +549,6 @@ public class ManaKit: NSObject {
         return image
     }
     
-    // MARK: Miscellaneous methods
-    public func isModern(_ card: CMCard) -> Bool {
-        guard let releaseDate = card.set!.releaseDate else {
-            return false
-        }
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-    
-        if let eightEditionDate = formatter.date(from: Constants.EightEditionRelease),
-            let setReleaseDate = formatter.date(from: releaseDate) {
-            return setReleaseDate.compare(eightEditionDate) == .orderedDescending ||
-                setReleaseDate.compare(eightEditionDate) == .orderedSame
-        }
-        
-        return false
-    }
-
     // MARK: TCGPlayer
     public func configureTCGPlayer(partnerKey: String, publicKey: String?, privateKey: String?) {
         tcgPlayerPartnerKey = partnerKey

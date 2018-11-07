@@ -103,6 +103,8 @@ class ScryfallMaintainer: Maintainer {
                     if let releaseAt = dict["released_at"] as? String {
                         set.releaseDate = releaseAt
                         set.myYearSection = String(releaseAt.prefix(4))
+                    } else {
+                        set.myYearSection = "Undated"
                     }
 
                     if let cardCount = dict["card_count"] as? Int {
@@ -132,7 +134,11 @@ class ScryfallMaintainer: Maintainer {
                                                                       objectFinder: ["code": parentSetSode] as [String: AnyObject],
                                                                       createIfNotFound: true) as? CMSet {
                     childSet.parent = parentSet
-                    childSet.releaseDate = parentSet.releaseDate
+                    if let releaseDate = parentSet.releaseDate {
+                        childSet.releaseDate = releaseDate
+                        childSet.myYearSection = String(releaseDate.prefix(4))
+                    }
+                    
                     childSet.setType = parentSet.setType
                     childSet.block = parentSet.block
                     print("\(parentSetSode) -> \(code)")

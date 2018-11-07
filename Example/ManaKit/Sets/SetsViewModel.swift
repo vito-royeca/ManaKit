@@ -19,8 +19,8 @@ class SetsViewModel: NSObject {
     private var _fetchedResultsController: NSFetchedResultsController<CMSet>?
     
     // MARK: Settings
-    private let _sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
-    private var _sectionName = "myNameSection"
+    private let _sortDescriptors = [NSSortDescriptor(key: "myYearSection", ascending: true)]
+    private var _sectionName = "myYearSection"
     
     // MARK: UITableView methods
     func numberOfRows(inSection section: Int) -> Int {
