@@ -618,14 +618,16 @@ class ScryfallMaintainer: Maintainer {
                 let publishedAt = dict["published_at"] as? String,
                 let comment = dict["comment"] as? String {
                 
-                if let card = cachedCards.filter({ $0.oracleID == oracleID }).first,
-                    let desc = NSEntityDescription.entity(forEntityName: "CMCardRuling", in: context),
+                if let desc = NSEntityDescription.entity(forEntityName: "CMCardRuling", in: context),
                     let ruling = NSManagedObject(entity: desc, insertInto: context) as? CMCardRuling {
                     
                     ruling.text = comment
                     ruling.date = publishedAt
-                    ruling.card = card
-                    card.addToRulings(ruling)
+                    
+                    for card in cachedCards.filter({ $0.oracleID == oracleID }) {
+                        ruling.card = card
+                        card.addToRulings(ruling)
+                    }
                 }
                 
                 count += 1

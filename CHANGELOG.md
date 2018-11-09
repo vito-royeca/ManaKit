@@ -1,3 +1,6 @@
+**Version 3.0.7** @ 09.11.2018
+- Fixed card rulings.
+
 **Version 3.0.6** @ 07.11.2018
 - Fixed myYearSection and urlString of imageURIs.
 
