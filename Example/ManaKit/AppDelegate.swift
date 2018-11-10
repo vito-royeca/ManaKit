@@ -20,21 +20,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
 
-        let scryfall = ScryfallMaintainer()
+//        let scryfall = ScryfallMaintainer()
 //        let keyrune = KeyruneMaintainer()
 //        let tcgplayer = TCGPlayerMaintainer()
 //        let my = MyMaintainer()
         
-        scryfall.fetchSetsAndCreateCards()
+//        scryfall.fetchSetsAndCreateCards()
 //        keyrune.updateSetSymbols()
 //        tcgplayer.updateSetTcgPlayerNames()
 //        my.updateCards()
         
           // Normal run
-//        ManaKit.sharedInstance.setupResources()
-//        ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "ManaGuide",
-//                                                  publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720",
-//                                                  privateKey: nil)
+        ManaKit.sharedInstance.setupResources()
+        ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "ManaGuide",
+                                                  publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720",
+                                                  privateKey: nil)
         return true
     }
 

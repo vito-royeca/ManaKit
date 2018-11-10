@@ -10,7 +10,6 @@ import UIKit
 import CoreData
 import ManaKit
 import PromiseKit
-import SSZipArchive
 
 class TCGPlayerMaintainer: Maintainer {
     let version = "v1.9.0"
