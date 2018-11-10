@@ -131,7 +131,7 @@ class TCGPlayerMaintainer: Maintainer {
                 if let data = json["data"] as? [[String: Any]] {
                     for e in data {
                         if let id = e["id"] as? String,
-                            let purchaseUris = [""] as? [String: String] {
+                            let purchaseUris = [""] as? [String: Any] {
                         
                         }
                     }

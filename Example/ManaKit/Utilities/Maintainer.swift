@@ -14,8 +14,8 @@ import Sync
 class Maintainer: NSObject {
     // MARK: Constants
     let printMilestone = 1000
-    let cardsFileName   = "scryfall-all-cards.json"
-    let rulingsFileName = "scryfall-rulings.json"
+    let cardsFileName   = "scryfall-all-cards"
+    let rulingsFileName = "scryfall-rulings"
     let comprehensiveRulesFileName = "MagicCompRules 20181005"
     var dataStack =  ManaKit.sharedInstance.dataStack
     var context = ManaKit.sharedInstance.dataStack!.mainContext

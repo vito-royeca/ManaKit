@@ -35,7 +35,7 @@ public class ManaKit: NSObject {
     
     public enum Constants {
         public static let ScryfallDateKey     = "ScryfallDateKey"
-        public static let ScryfallDate        = "2018-11-08 09:25 UTC"
+        public static let ScryfallDate        = "2018-11-09 09:31 UTC"
         public static let KeyruneVersion      = "3.3.2"
         public static let EightEditionRelease = "2003-07-28"
         public static let TCGPlayerPricingAge = 24 * 3 // 3 days

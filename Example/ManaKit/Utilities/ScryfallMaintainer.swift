@@ -10,7 +10,6 @@ import UIKit
 import CoreData
 import ManaKit
 import PromiseKit
-import SSZipArchive
 
 class ScryfallMaintainer: Maintainer {
     // MARK: Constants
@@ -153,19 +152,15 @@ class ScryfallMaintainer: Maintainer {
     func createCards() {
         startActivity(name: "createCards")
         
-        guard let path = Bundle.main.path(forResource: cardsFileName, ofType: "zip", inDirectory: "data"),
-            let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first else {
+        guard let path = Bundle.main.path(forResource: cardsFileName,
+                                          ofType: "json",
+                                          inDirectory: "data") else {
             return
         }
-        let jsonPath = "\(docsPath)/\(cardsFileName)"
         
-        
-        if !FileManager.default.fileExists(atPath: jsonPath) {
-            SSZipArchive.unzipFile(atPath: path, toDestination: docsPath)
-        }
-        
-        let data = try! Data(contentsOf: URL(fileURLWithPath: jsonPath))
-        guard let array = try! JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [[String: Any]] else {
+        let data = try! Data(contentsOf: URL(fileURLWithPath: path))
+        guard let array = try! JSONSerialization.jsonObject(with: data,
+                                                            options: .mutableContainers) as? [[String: Any]] else {
             return
         }
         
@@ -439,18 +434,15 @@ class ScryfallMaintainer: Maintainer {
     func updateCards() {
         startActivity(name: "updateCards")
         
-        guard let path = Bundle.main.path(forResource: cardsFileName, ofType: "zip", inDirectory: "data"),
-            let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first else {
-                return
-        }
-        let jsonPath = "\(docsPath)/\(cardsFileName)"
-        
-        if !FileManager.default.fileExists(atPath: jsonPath) {
-           SSZipArchive.unzipFile(atPath: path, toDestination: docsPath)
+        guard let path = Bundle.main.path(forResource: cardsFileName,
+                                          ofType: "json",
+                                          inDirectory: "data") else {
+            return
         }
         
-        let data = try! Data(contentsOf: URL(fileURLWithPath: jsonPath))
-        guard let array = try! JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [[String: Any]] else {
+        let data = try! Data(contentsOf: URL(fileURLWithPath: path))
+        guard let array = try! JSONSerialization.jsonObject(with: data,
+                                                            options: .mutableContainers) as? [[String: Any]] else {
             return
         }
         
@@ -594,18 +586,15 @@ class ScryfallMaintainer: Maintainer {
     func createCardRulings() {
         startActivity(name: "createCardRulings")
         
-        guard let path = Bundle.main.path(forResource: rulingsFileName, ofType: "zip", inDirectory: "data"),
-            let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first else {
-                return
-        }
-        let jsonPath = "\(docsPath)/\(rulingsFileName)"
-        
-        if !FileManager.default.fileExists(atPath: jsonPath) {
-            SSZipArchive.unzipFile(atPath: path, toDestination: docsPath)
+        guard let path = Bundle.main.path(forResource: rulingsFileName,
+                                          ofType: "json",
+                                          inDirectory: "data") else {
+            return
         }
         
-        let data = try! Data(contentsOf: URL(fileURLWithPath: jsonPath))
-        guard let array = try! JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [[String: Any]] else {
+        let data = try! Data(contentsOf: URL(fileURLWithPath: path))
+        guard let array = try! JSONSerialization.jsonObject(with: data,
+                                                            options: .mutableContainers) as? [[String: Any]] else {
             return
         }
         
