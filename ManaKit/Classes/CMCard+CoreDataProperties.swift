@@ -2,7 +2,7 @@
 //  CMCard+CoreDataProperties.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 05/11/2018.
+//  Created by Jovito Royeca on 10/11/2018.
 //
 //
 
@@ -72,19 +72,19 @@ extension CMCard {
     @NSManaged public var inventories: NSSet?
     @NSManaged public var language: CMLanguage?
     @NSManaged public var layout: CMCardLayout?
+    @NSManaged public var otherLanguages: NSSet?
     @NSManaged public var otherPrintings: NSSet?
     @NSManaged public var part: CMCard?
     @NSManaged public var parts: NSSet?
     @NSManaged public var pricing: CMCardPricing?
     @NSManaged public var printedTypeLine: CMCardType?
     @NSManaged public var rarity: CMCardRarity?
-    @NSManaged public var rulings: NSSet?
+    @NSManaged public var cardRulings: NSSet?
     @NSManaged public var set: CMSet?
     @NSManaged public var tcgplayerStorePricing: CMStorePricing?
     @NSManaged public var typeLine: CMCardType?
     @NSManaged public var variations: NSSet?
     @NSManaged public var watermark: CMCardWatermark?
-    @NSManaged public var otherLanguages: NSSet?
 
 }
 
@@ -241,6 +241,23 @@ extension CMCard {
 
 }
 
+// MARK: Generated accessors for otherLanguages
+extension CMCard {
+
+    @objc(addOtherLanguagesObject:)
+    @NSManaged public func addToOtherLanguages(_ value: CMCard)
+
+    @objc(removeOtherLanguagesObject:)
+    @NSManaged public func removeFromOtherLanguages(_ value: CMCard)
+
+    @objc(addOtherLanguages:)
+    @NSManaged public func addToOtherLanguages(_ values: NSSet)
+
+    @objc(removeOtherLanguages:)
+    @NSManaged public func removeFromOtherLanguages(_ values: NSSet)
+
+}
+
 // MARK: Generated accessors for otherPrintings
 extension CMCard {
 
@@ -275,20 +292,20 @@ extension CMCard {
 
 }
 
-// MARK: Generated accessors for rulings
+// MARK: Generated accessors for cardRulings
 extension CMCard {
 
-    @objc(addRulingsObject:)
-    @NSManaged public func addToRulings(_ value: CMCardRuling)
+    @objc(addCardRulingsObject:)
+    @NSManaged public func addToCardRulings(_ value: CMCardRuling)
 
-    @objc(removeRulingsObject:)
-    @NSManaged public func removeFromRulings(_ value: CMCardRuling)
+    @objc(removeCardRulingsObject:)
+    @NSManaged public func removeFromCardRulings(_ value: CMCardRuling)
 
-    @objc(addRulings:)
-    @NSManaged public func addToRulings(_ values: NSSet)
+    @objc(addCardRulings:)
+    @NSManaged public func addToCardRulings(_ values: NSSet)
 
-    @objc(removeRulings:)
-    @NSManaged public func removeFromRulings(_ values: NSSet)
+    @objc(removeCardRulings:)
+    @NSManaged public func removeFromCardRulings(_ values: NSSet)
 
 }
 
@@ -306,22 +323,5 @@ extension CMCard {
 
     @objc(removeVariations:)
     @NSManaged public func removeFromVariations(_ values: NSSet)
-
-}
-
-// MARK: Generated accessors for otherLanguages
-extension CMCard {
-
-    @objc(addOtherLanguagesObject:)
-    @NSManaged public func addToOtherLanguages(_ value: CMCard)
-
-    @objc(removeOtherLanguagesObject:)
-    @NSManaged public func removeFromOtherLanguages(_ value: CMCard)
-
-    @objc(addOtherLanguages:)
-    @NSManaged public func addToOtherLanguages(_ values: NSSet)
-
-    @objc(removeOtherLanguages:)
-    @NSManaged public func removeFromOtherLanguages(_ values: NSSet)
 
 }

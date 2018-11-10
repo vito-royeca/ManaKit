@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14315.18" systemVersion="18A391" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18B75" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CMCard" representedClassName="CMCard" syncable="YES">
         <attribute name="arenaID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="collectorNumber" optional="YES" attributeType="String" syncable="YES"/>
@@ -50,6 +50,7 @@
         <relationship name="artist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCardArtist" inverseName="cards" inverseEntity="CMCardArtist" syncable="YES"/>
         <relationship name="borderColor" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCardBorderColor" inverseName="cards" inverseEntity="CMCardBorderColor" syncable="YES"/>
         <relationship name="cardLegalities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCardLegality" inverseName="card" inverseEntity="CMCardLegality" syncable="YES"/>
+        <relationship name="cardRulings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCardRuling" inverseName="card" inverseEntity="CMCardRuling" syncable="YES"/>
         <relationship name="colorIdentities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCardColor" inverseName="cardIdentities" inverseEntity="CMCardColor" syncable="YES"/>
         <relationship name="colorIndicators" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCardColor" inverseName="cardIndicators" inverseEntity="CMCardColor" syncable="YES"/>
         <relationship name="colors" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCardColor" inverseName="cardColors" inverseEntity="CMCardColor" syncable="YES"/>
@@ -69,7 +70,6 @@
         <relationship name="pricing" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCardPricing" inverseName="cards" inverseEntity="CMCardPricing" syncable="YES"/>
         <relationship name="printedTypeLine" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCardType" inverseName="cardPrintedTypes" inverseEntity="CMCardType" syncable="YES"/>
         <relationship name="rarity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCardRarity" inverseName="cards" inverseEntity="CMCardRarity" syncable="YES"/>
-        <relationship name="rulings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCardRuling" inverseName="card" inverseEntity="CMCardRuling" syncable="YES"/>
         <relationship name="set" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMSet" inverseName="cards" inverseEntity="CMSet" syncable="YES"/>
         <relationship name="tcgplayerStorePricing" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMStorePricing" inverseName="cards" inverseEntity="CMStorePricing" syncable="YES"/>
         <relationship name="typeLine" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCardType" inverseName="cards" inverseEntity="CMCardType" syncable="YES"/>
@@ -179,9 +179,8 @@
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMUser" inverseName="ratings" inverseEntity="CMUser" syncable="YES"/>
     </entity>
     <entity name="CMCardRuling" representedClassName="CMCardRuling" syncable="YES">
-        <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCard" inverseName="rulings" inverseEntity="CMCard" syncable="YES"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCard" inverseName="cardRulings" inverseEntity="CMCard" syncable="YES"/>
+        <relationship name="ruling" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMRuling" inverseName="cardRulings" inverseEntity="CMRuling" syncable="YES"/>
     </entity>
     <entity name="CMCardType" representedClassName="CMCardType" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES">
@@ -309,6 +308,11 @@
         <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMRule" inverseName="parent" inverseEntity="CMRule" syncable="YES"/>
         <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMRule" inverseName="children" inverseEntity="CMRule" syncable="YES"/>
     </entity>
+    <entity name="CMRuling" representedClassName="CMRuling" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="cardRulings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCardRuling" inverseName="ruling" inverseEntity="CMCardRuling" syncable="YES"/>
+    </entity>
     <entity name="CMSet" representedClassName="CMSet" syncable="YES">
         <attribute name="cardCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="code" optional="YES" attributeType="String" syncable="YES">
@@ -405,7 +409,7 @@
         <element name="CMCardPricing" positionX="-27" positionY="135" width="128" height="195"/>
         <element name="CMCardRarity" positionX="-27" positionY="135" width="128" height="90"/>
         <element name="CMCardRating" positionX="-27" positionY="135" width="128" height="90"/>
-        <element name="CMCardRuling" positionX="-27" positionY="135" width="128" height="90"/>
+        <element name="CMCardRuling" positionX="-27" positionY="135" width="128" height="75"/>
         <element name="CMCardType" positionX="27" positionY="189" width="128" height="120"/>
         <element name="CMCardWatermark" positionX="-27" positionY="135" width="128" height="90"/>
         <element name="CMCollection" positionX="-27" positionY="135" width="128" height="195"/>
@@ -421,5 +425,6 @@
         <element name="CMStorePricing" positionX="-9" positionY="153" width="128" height="120"/>
         <element name="CMStoreSupplier" positionX="-27" positionY="135" width="128" height="150"/>
         <element name="CMUser" positionX="-9" positionY="153" width="128" height="150"/>
+        <element name="CMRuling" positionX="-27" positionY="135" width="128" height="90"/>
     </elements>
 </model>

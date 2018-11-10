@@ -1,5 +1,5 @@
 //
-//  CMCard+CoreDataClass.swift
+//  CMRuling+CoreDataClass.swift
 //  Pods
 //
 //  Created by Jovito Royeca on 10/11/2018.
@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-@objc(CMCard)
-public class CMCard: NSManagedObject {
+@objc(CMRuling)
+public class CMRuling: NSManagedObject {
 
 }

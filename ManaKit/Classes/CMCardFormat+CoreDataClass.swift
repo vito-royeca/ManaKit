@@ -2,7 +2,7 @@
 //  CMCardFormat+CoreDataClass.swift
 //  Pods
 //
-//  Created by Jovito Royeca on 05/11/2018.
+//  Created by Jovito Royeca on 10/11/2018.
 //
 //
 

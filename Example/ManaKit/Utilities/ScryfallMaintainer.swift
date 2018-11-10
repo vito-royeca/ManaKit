@@ -28,6 +28,7 @@ class ScryfallMaintainer: Maintainer {
     var cachedWatermarks = [CMCardWatermark]()
     var cachedFormats = [CMCardFormat]()
     var cachedLegalities = [CMLegality]()
+    var cachedRulings = [CMRuling]()
     var cachedCards = [CMCard]()
     
     // MARK: Sets
@@ -598,6 +599,17 @@ class ScryfallMaintainer: Maintainer {
             return
         }
         
+        // delete existing cardRulings first
+        let request: NSFetchRequest<CMCardRuling> = CMCardRuling.fetchRequest()
+        var deleteRequest = NSBatchDeleteRequest(fetchRequest: request as! NSFetchRequest<NSFetchRequestResult>)
+        try! dataStack!.persistentStoreCoordinator.execute(deleteRequest,
+                                                           with: context)
+        let request2: NSFetchRequest<CMRuling> = CMRuling.fetchRequest()
+        deleteRequest = NSBatchDeleteRequest(fetchRequest: request2 as! NSFetchRequest<NSFetchRequestResult>)
+        try! dataStack!.persistentStoreCoordinator.execute(deleteRequest,
+                                                           with: context)
+        try! context.save()
+        
         var count = 0
         print("Creating rulings: \(count)/\(array.count) \(Date())")
         
@@ -607,15 +619,15 @@ class ScryfallMaintainer: Maintainer {
                 let publishedAt = dict["published_at"] as? String,
                 let comment = dict["comment"] as? String {
                 
-                if let desc = NSEntityDescription.entity(forEntityName: "CMCardRuling", in: context),
-                    let ruling = NSManagedObject(entity: desc, insertInto: context) as? CMCardRuling {
+                let ruling = findRuling(withDate: publishedAt, andText: comment)
                     
-                    ruling.text = comment
-                    ruling.date = publishedAt
-                    
-                    for card in cachedCards.filter({ $0.oracleID == oracleID }) {
-                        ruling.card = card
-                        card.addToRulings(ruling)
+                for card in cachedCards.filter({ $0.oracleID == oracleID }) {
+                    if let desc = NSEntityDescription.entity(forEntityName: "CMCardRuling", in: context),
+                        let cardRuling = NSManagedObject(entity: desc, insertInto: context) as? CMCardRuling {
+                        
+                        cardRuling.ruling = ruling
+                        cardRuling.card = card
+                        card.addToCardRulings(cardRuling)
                     }
                 }
                 
@@ -951,6 +963,24 @@ class ScryfallMaintainer: Maintainer {
                 
                 cachedLegalities.append(legality)
                 return legality
+            }
+        }
+        
+        return nil
+    }
+    
+    private func findRuling(withDate date: String, andText text: String) -> CMRuling? {
+        if let ruling = cachedRulings.first(where: { $0.date == date && $0.text == text }) {
+            return ruling
+        } else {
+            if let desc = NSEntityDescription.entity(forEntityName: "CMRuling", in: context),
+                let ruling = NSManagedObject(entity: desc, insertInto: context) as? CMRuling {
+                
+                ruling.date = date
+                ruling.text = text
+                
+                cachedRulings.append(ruling)
+                return ruling
             }
         }
         
