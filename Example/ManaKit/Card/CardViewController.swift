@@ -84,14 +84,6 @@ extension CardViewController : UITableViewDataSource {
             cell = UITableViewCell(frame: CGRect.zero)
         }
         
-        if let rulingsSet = card.cardRulings,
-            let rulings = rulingsSet.allObjects as? [CMCardRuling] {
-            print("\(card.set!.code!) - \(card.name!) - \(card.id!)")
-            for ruling in rulings {
-                print("\t\(ruling.ruling!.date!) - \(ruling.ruling!.text!)")
-            }
-        }
-        
         return cell!
     }
 }

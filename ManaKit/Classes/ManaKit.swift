@@ -128,16 +128,14 @@ public class ManaKit: NSObject {
             return
         }
         let targetPath = "\(docsPath)/\(bundleName).sqlite"
-        var willCopy = !FileManager.default.fileExists(atPath: targetPath)
+        var willCopy = true
 
-        if !willCopy {
-            if let scryfallDate = UserDefaults.standard.string(forKey: Constants.ScryfallDateKey) {
-                willCopy = scryfallDate != Constants.ScryfallDate
-            } else {
-                willCopy = true
+        if let scryfallDate = UserDefaults.standard.string(forKey: Constants.ScryfallDateKey) {
+            if scryfallDate == Constants.ScryfallDate {
+                willCopy = false
             }
         }
-        
+
         if willCopy {
             // Shutdown database
             dataStack = nil
