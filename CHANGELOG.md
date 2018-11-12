@@ -1,5 +1,6 @@
-**Version 3.0.9** @ 09.11.2018
+**Version 3.10.0** @ 11.11.2018
 - Fixed card rulings.
+- Scryfall database update.
 
 **Version 3.0.6** @ 07.11.2018
 - Fixed myYearSection and urlString of imageURIs.
