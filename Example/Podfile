@@ -9,9 +9,9 @@ def default_pods
     pod 'Sync'
     pod 'FontAwesome.swift'
     pod 'Kanna', '~> 4.0.0'
-    pod 'PromiseKit'#, '~> 6.0'
+    pod 'PromiseKit'
     pod 'SSZipArchive'
-    pod 'SDWebImage'#, '~> 4.0'
+    pod 'SDWebImage'
 end
 
 target 'ManaKit_Example' do

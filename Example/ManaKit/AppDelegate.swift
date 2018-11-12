@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        let tcgplayer = TCGPlayerMaintainer()
 //        let my = MyMaintainer()
         
-//        scryfall.createCardRulings()
+//        scryfall.fetchSetsAndCreateCards()
 //        keyrune.updateSetSymbols()
 //        tcgplayer.updateSetTcgPlayerNames()
 //        my.updateCards()

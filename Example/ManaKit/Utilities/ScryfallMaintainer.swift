@@ -35,28 +35,28 @@ class ScryfallMaintainer: Maintainer {
     func fetchSetsAndCreateCards() {
         startActivity(name: "fetchSets")
         
-        if let urlString = "https://api.scryfall.com/sets".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-            let url = URL(string: urlString) {
-            
-            var rq = URLRequest(url: url)
-            rq.httpMethod = "GET"
-            
-            firstly {
-                URLSession.shared.dataTask(.promise, with:rq)
-            }.compactMap {
-                try JSONSerialization.jsonObject(with: $0.data) as? [String: Any]
-            }.done { json in
-                if let data = json["data"] as? [[String: Any]] {
-                    self.processSets(data: data)
-                    self.createCards()
-                    self.updateCards()
+        guard let urlString = "https://api.scryfall.com/sets".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+            let url = URL(string: urlString) else {
+            fatalError("Malformed url")
+        }
+        var rq = URLRequest(url: url)
+        rq.httpMethod = "GET"
+        
+        firstly {
+            URLSession.shared.dataTask(.promise, with:rq)
+        }.compactMap {
+            try JSONSerialization.jsonObject(with: $0.data) as? [String: Any]
+        }.done { json in
+            if let data = json["data"] as? [[String: Any]] {
+                self.processSets(data: data)
+                self.createCards()
+                self.updateCards()
 //                    self.updateCards2()
-                    self.createCardRulings()
-                }
-                self.endActivity()
-            }.catch { error in
-                print("\(error)")
+                self.createCardRulings()
             }
+            self.endActivity()
+        }.catch { error in
+            print("\(error)")
         }
     }
     

@@ -16,22 +16,23 @@ class KeyruneMaintainer: Maintainer {
     func updateSetSymbols() {
         startActivity(name: "updateSetSymbols")
         
-        if let urlString = "http://andrewgioia.github.io/Keyrune/cheatsheet.html".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-            let url = URL(string: urlString) {
-            
-            var rq = URLRequest(url: url)
-            rq.httpMethod = "GET"
-            
-            firstly {
-                URLSession.shared.dataTask(.promise, with:rq)
-            }.map {
-                try! HTML(html: $0.data, encoding: .utf8)
-            }.done { html in
-                self.process(document: html)
-                self.endActivity()
-            }.catch { error in
-                print("\(error)")
-            }
+        guard let urlString = "http://andrewgioia.github.io/Keyrune/cheatsheet.html".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+            let url = URL(string: urlString) else {
+            fatalError("Malformed url")
+        }
+
+        var rq = URLRequest(url: url)
+        rq.httpMethod = "GET"
+        
+        firstly {
+            URLSession.shared.dataTask(.promise, with:rq)
+        }.map {
+            try! HTML(html: $0.data, encoding: .utf8)
+        }.done { html in
+            self.process(document: html)
+            self.endActivity()
+        }.catch { error in
+            print("\(error)")
         }
     }
     
