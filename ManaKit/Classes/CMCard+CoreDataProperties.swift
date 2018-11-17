@@ -54,7 +54,6 @@ extension CMCard {
     @NSManaged public var printedName: String?
     @NSManaged public var printedText: String?
     @NSManaged public var releaseDate: String?
-    @NSManaged public var source: String?
     @NSManaged public var tcgPlayerPurchaseURI: String?
     @NSManaged public var toughness: String?
     @NSManaged public var artist: CMCardArtist?

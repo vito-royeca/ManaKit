@@ -1,3 +1,6 @@
+**Version 3.10.1** @ 16.11.2018
+- Updated the Scryfall database to: 2018-11-16 09:24 UTC.
+
 **Version 3.10.0** @ 11.11.2018
 - Fixed card rulings.
 - Scryfall database update.

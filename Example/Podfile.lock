@@ -1,20 +1,20 @@
 PODS:
   - FontAwesome.swift (1.4.6)
   - Kanna (4.0.2)
-  - ManaKit (3.0.9):
+  - ManaKit (3.1.0):
     - Kanna (~> 4.0.0)
     - PromiseKit
     - SDWebImage
     - SSZipArchive
     - Sync
-  - PromiseKit (6.5.2):
-    - PromiseKit/CorePromise (= 6.5.2)
-    - PromiseKit/Foundation (= 6.5.2)
-    - PromiseKit/UIKit (= 6.5.2)
-  - PromiseKit/CorePromise (6.5.2)
-  - PromiseKit/Foundation (6.5.2):
+  - PromiseKit (6.5.3):
+    - PromiseKit/CorePromise (= 6.5.3)
+    - PromiseKit/Foundation (= 6.5.3)
+    - PromiseKit/UIKit (= 6.5.3)
+  - PromiseKit/CorePromise (6.5.3)
+  - PromiseKit/Foundation (6.5.3):
     - PromiseKit/CorePromise
-  - PromiseKit/UIKit (6.5.2):
+  - PromiseKit/UIKit (6.5.3):
     - PromiseKit/CorePromise
   - SDWebImage (4.4.2):
     - SDWebImage/Core (= 4.4.2)
@@ -47,12 +47,12 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   FontAwesome.swift: 18fb500c0decc2bbfadf2ae16a936704ec2c49bd
   Kanna: c60b61d72554bf04ed1ee074f9b379855cab4892
-  ManaKit: 34796a1cc99d2434b83aa12f96707be3d854703c
-  PromiseKit: 27c1601bfb73405871b805bcb8cf7e55c4dad3db
+  ManaKit: dea426cd3ded387fee3553d149bfcffa7f1b6d3b
+  PromiseKit: c609029bdd801f792551a504c695c7d3098b42cd
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
   SSZipArchive: 41455d4b8d2b6ab93990820b50dc697c2554a322
   Sync: 0412c2b068eb7cf1a04607e948ef92cbd6114d0f
 
-PODFILE CHECKSUM: 7917c2b1a8999276f4ca9b7356950990d03be088
+PODFILE CHECKSUM: aa9ce24725717494a05cb4af8517df7ec7ec6e0b
 
 COCOAPODS: 1.5.3
