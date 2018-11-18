@@ -815,6 +815,7 @@ class ScryfallMaintainer: Maintainer {
                 let type = NSManagedObject(entity: desc, insertInto: context) as? CMCardType {
                 
                 type.name = name
+                type.nameSection = sectionFor(name: name)
                 type.language = language
                 
                 cachedCardTypes.append(type)

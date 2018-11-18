@@ -506,12 +506,12 @@ public class ManaKit: NSObject {
             
             cardImage = imageCache.imageFromDiskCache(forKey: cacheKey)
             
-            if let _ = card.imageURIs {
-                // return roundCornered image
-                if let c = cardImage {
-                    cardImage = c.roundCornered(card: card)
-                }
-            }
+            // return roundCornered image
+//            if let _ = card.imageURIs {
+//                if let c = cardImage {
+//                    cardImage = c.roundCornered(card: card)
+//                }
+//            }
         }
         
         return cardImage
