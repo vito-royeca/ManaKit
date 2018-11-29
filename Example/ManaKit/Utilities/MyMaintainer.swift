@@ -23,6 +23,34 @@ class MyMaintainer: Maintainer {
         print("Creating cards: \(count)/\(cards.count) \(Date())")
         
         for card in cards {
+            // displayName
+            var displayName: String?
+            if let language = card.language,
+                let code = language.code {
+                displayName = code == "en" ? card.name : card.printedName
+            }
+            if displayName == nil {
+                if let facesSet = card.faces,
+                    let faces = facesSet.allObjects as? [CMCard] {
+                    let orderedFaces = faces.sorted(by: {(a, b) -> Bool in
+                        return a.faceOrder < b.faceOrder
+                    })
+                    displayName = ""
+                    for face in orderedFaces {
+                        if let printedName = face.printedName {
+                            if displayName!.count > 0 {
+                                displayName!.append(contentsOf: " // ")
+                            }
+                            displayName!.append(contentsOf: printedName)
+                        }
+                    }
+                }
+            }
+            if displayName!.count == 0 {
+                displayName = card.name
+            }
+            card.displayName = displayName
+            
             // myNameSection
             if let name = card.name {
                 card.myNameSection = sectionFor(name: name)

@@ -1,3 +1,7 @@
+**Version 3.10.2** @ 16.11.2018
+- Updated the Scryfall database to: 2018-11-28 09:40 UTC.
+- Added new property: CMCard.displayName.
+
 **Version 3.10.1** @ 16.11.2018
 - Updated the Scryfall database to: 2018-11-16 09:24 UTC.
 

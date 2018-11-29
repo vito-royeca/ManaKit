@@ -25,7 +25,7 @@ class CardViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         tableView.register(ManaKit.sharedInstance.nibFromBundle("CardTableViewCell"), forCellReuseIdentifier: "CardCell")
-        title = ManaKit.sharedInstance.name(ofCard: card)
+        title = card.displayName
     }
 }
 

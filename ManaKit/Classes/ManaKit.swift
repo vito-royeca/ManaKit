@@ -35,7 +35,7 @@ public class ManaKit: NSObject {
     
     public enum Constants {
         public static let ScryfallDateKey     = "ScryfallDateKey"
-        public static let ScryfallDate        = "2018-11-16 09:24 UTC"
+        public static let ScryfallDate        = "2018-11-28 09:40 UTC"
         public static let KeyruneVersion      = "3.3.2"
         public static let EightEditionRelease = "2003-07-28"
         public static let TCGPlayerPricingAge = 24 * 3 // 3 days
@@ -267,18 +267,6 @@ public class ManaKit: NSObject {
         }
     }
     
-    // MARK: Card methods
-    public func name(ofCard card: CMCard) -> String? {
-        var name: String?
-        
-        if let language = card.language,
-            let code = language.code {
-            name = code == "en" ? card.name : card.printedName
-        }
-        
-        return name
-    }
-    
     public func typeImage(ofCard card: CMCard) -> UIImage? {
         if let type = card.typeLine,
             let name = type.name {
@@ -324,6 +312,14 @@ public class ManaKit: NSObject {
                 }
             } else {
                 if let type = card.printedTypeLine,
+                    let name = type.name {
+                    typeText = name
+                }
+            }
+            
+            // fallback to default typeLine
+            if typeText.count == 0 {
+                if let type = card.typeLine,
                     let name = type.name {
                     typeText = name
                 }

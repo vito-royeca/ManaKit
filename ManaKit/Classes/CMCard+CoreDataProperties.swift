@@ -19,6 +19,7 @@ extension CMCard {
     @NSManaged public var arenaID: String?
     @NSManaged public var collectorNumber: String?
     @NSManaged public var convertedManaCost: Double
+    @NSManaged public var displayName: String?
     @NSManaged public var faceOrder: Int32
     @NSManaged public var firebaseID: String?
     @NSManaged public var firebaseRating: Double
