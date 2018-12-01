@@ -23,7 +23,9 @@ public extension UIImage {
         }
 
         UIGraphicsBeginImageContextWithOptions(self.size, false, 0)
-        UIBezierPath(roundedRect: CGRect(origin: CGPoint(x: 0, y: 0), size: self.size), cornerRadius: radius).addClip()
+        UIBezierPath(roundedRect: CGRect(origin: CGPoint(x: 0, y: 0),
+                                         size: self.size),
+                     cornerRadius: radius).addClip()
         self.draw(in:  CGRect(origin: CGPoint(x: 0, y: 0), size: self.size))
         let result = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()

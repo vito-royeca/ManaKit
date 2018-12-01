@@ -30,7 +30,9 @@ class DeckHeroTableViewCell: UITableViewCell {
                 return
             }
             
-            if let croppedImage = ManaKit.sharedInstance.croppedImage(heroCard) {
+            if let croppedImage = ManaKit.sharedInstance.cardImage(heroCard,
+                                                                   imageType: .artCrop,
+                                                                   roundCornered: false) {
                 heroImageView.image = croppedImage
             } else {
                 heroImageView.image = ManaKit.sharedInstance.imageFromFramework(imageName: .cardBackCropped)
@@ -38,7 +40,9 @@ class DeckHeroTableViewCell: UITableViewCell {
                 firstly {
                     ManaKit.sharedInstance.downloadImage(ofCard: heroCard, imageType: .artCrop)
                 }.done {
-                    guard let image = ManaKit.sharedInstance.croppedImage(heroCard) else {
+                    guard let image = ManaKit.sharedInstance.cardImage(heroCard,
+                                                                       imageType: .artCrop,
+                                                                       roundCornered: false) else {
                         return
                     }
                     

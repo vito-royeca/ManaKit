@@ -53,7 +53,9 @@ extension CardViewController : UITableViewDataSource {
                 fatalError("Unexpected indexPath: \(indexPath)")
             }
             
-            if let cardImage = ManaKit.sharedInstance.cardImage(card, imageType: .normal) {
+            if let cardImage = ManaKit.sharedInstance.cardImage(card,
+                                                                imageType: .normal,
+                                                                roundCornered: true) {
                 imageView.image = cardImage
             } else {
                 imageView.image = ManaKit.sharedInstance.cardBack(card)
@@ -61,7 +63,9 @@ extension CardViewController : UITableViewDataSource {
                 firstly {
                     ManaKit.sharedInstance.downloadImage(ofCard: card, imageType: .normal)
                 }.done {
-                    guard let image = ManaKit.sharedInstance.cardImage(self.card, imageType: .normal) else {
+                    guard let image = ManaKit.sharedInstance.cardImage(self.card,
+                                                                       imageType: .normal,
+                                                                       roundCornered: true) else {
                         return
                     }
                     

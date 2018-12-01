@@ -1,4 +1,8 @@
-**Version 3.10.2** @ 16.11.2018
+**Version 3.10.3** @ 01.12.2018
+- Updated the Scryfall database to: 2018-11-30 09:48 UTC.
+- Removed Manakit.croppedImage method.
+
+**Version 3.10.2** @ 28.11.2018
 - Updated the Scryfall database to: 2018-11-28 09:40 UTC.
 - Added new property: CMCard.displayName.
 

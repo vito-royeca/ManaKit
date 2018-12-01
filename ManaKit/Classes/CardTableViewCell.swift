@@ -122,7 +122,9 @@ public class CardTableViewCell: UITableViewCell {
         }
         
         // thumbnail image
-        if let croppedImage = ManaKit.sharedInstance.croppedImage(card) {
+        if let croppedImage = ManaKit.sharedInstance.cardImage(card,
+                                                               imageType: .artCrop,
+                                                               roundCornered: false) {
             thumbnailImage.image = croppedImage
         } else {
             thumbnailImage.image = ManaKit.sharedInstance.imageFromFramework(imageName: .cardBackCropped)
@@ -130,7 +132,9 @@ public class CardTableViewCell: UITableViewCell {
             firstly {
                 ManaKit.sharedInstance.downloadImage(ofCard: card, imageType: .artCrop)
             }.done {
-                guard let image = ManaKit.sharedInstance.croppedImage(card) else {
+                guard let image = ManaKit.sharedInstance.cardImage(card,
+                                                                   imageType: .artCrop,
+                                                                   roundCornered: false) else {
                     return
                 }
 

@@ -35,7 +35,7 @@ public class ManaKit: NSObject {
     
     public enum Constants {
         public static let ScryfallDateKey     = "ScryfallDateKey"
-        public static let ScryfallDate        = "2018-11-28 09:40 UTC"
+        public static let ScryfallDate        = "2018-11-30 09:48 UTC"
         public static let KeyruneVersion      = "3.3.2"
         public static let EightEditionRelease = "2003-07-28"
         public static let TCGPlayerPricingAge = 24 * 3 // 3 days
@@ -409,8 +409,9 @@ public class ManaKit: NSObject {
                 seal.reject(error)
                 return
             }
+            let roundCornered = imageType != .artCrop
             
-            if let _ = self.cardImage(card, imageType: imageType) {
+            if let _ = self.cardImage(card, imageType: imageType, roundCornered: roundCornered) {
                 seal.fulfill(())
             } else {
                 let downloader = SDWebImageDownloader.shared()
@@ -465,12 +466,16 @@ public class ManaKit: NSObject {
                               height: width-60)
             
             let imageRef = image.cgImage!.cropping(to: rect)
-            let croppedImage = UIImage(cgImage: imageRef!, scale: image.scale, orientation: image.imageOrientation)
+            let croppedImage = UIImage(cgImage: imageRef!,
+                                       scale: image.scale,
+                                       orientation: image.imageOrientation)
             
             
             // write to file
             if !FileManager.default.fileExists(atPath: path)  {
-                try! FileManager.default.createDirectory(atPath: path, withIntermediateDirectories: true, attributes: nil)
+                try! FileManager.default.createDirectory(atPath: path,
+                                                         withIntermediateDirectories: true,
+                                                         attributes: nil)
             }
             try! croppedImage.jpegData(compressionQuality: 1.0)?.write(to: URL(fileURLWithPath: cropPath))
             
@@ -478,36 +483,22 @@ public class ManaKit: NSObject {
         }
     }
     
-    public func cardImage(_ card: CMCard, imageType: ImageType) -> UIImage? {
+    public func cardImage(_ card: CMCard, imageType: ImageType, roundCornered: Bool) -> UIImage? {
         var cardImage: UIImage?
-        var willGetFromCache = false
         
-        if imageType == .artCrop {
-            if let _ = card.imageURIs {
-                willGetFromCache = true
-            } else {
-                cardImage = croppedImage(card)
-            }
-        } else {
-            willGetFromCache = true
+        guard let url = imageURL(ofCard: card, imageType: imageType) else {
+            return nil
         }
         
-        if willGetFromCache {
-            guard let url = imageURL(ofCard: card, imageType: imageType) else {
-                return nil
+        let imageCache = SDImageCache.init()
+        let cacheKey = url.absoluteString
+        
+        cardImage = imageCache.imageFromDiskCache(forKey: cacheKey)
+        
+        if roundCornered {
+            if let c = cardImage {
+                cardImage = c.roundCornered(card: card)
             }
-            
-            let imageCache = SDImageCache.init()
-            let cacheKey = url.absoluteString
-            
-            cardImage = imageCache.imageFromDiskCache(forKey: cacheKey)
-            
-            // return roundCornered image
-//            if let _ = card.imageURIs {
-//                if let c = cardImage {
-//                    cardImage = c.roundCornered(card: card)
-//                }
-//            }
         }
         
         return cardImage
@@ -523,27 +514,27 @@ public class ManaKit: NSObject {
         }
     }
     
-    public func croppedImage(_ card: CMCard) -> UIImage? {
-        var image: UIImage?
-        
-        if let _ = card.imageURIs {
-            image = cardImage(card, imageType: .artCrop)
-        } else {
-            guard let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first,
-                let id = card.id else {
-                return nil
-            }
-            
-            let path = "\(dir)/crop/\(card.set!.code!)"
-            let cropPath = "\(path)/\(id).jpg"
-                    
-            if FileManager.default.fileExists(atPath: cropPath) {
-                image = UIImage(contentsOfFile: cropPath)
-            }
-        }
-        
-        return image
-    }
+//    public func croppedImage(_ card: CMCard) -> UIImage? {
+//        var image: UIImage?
+//
+//        if let _ = card.imageURIs {
+//            image = cardImage(card, imageType: .artCrop, roundCornered: false)
+//        } else {
+//            guard let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first,
+//                let id = card.id else {
+//                return nil
+//            }
+//
+//            let path = "\(dir)/crop/\(card.set!.code!)"
+//            let cropPath = "\(path)/\(id).jpg"
+//
+//            if FileManager.default.fileExists(atPath: cropPath) {
+//                image = UIImage(contentsOfFile: cropPath)
+//            }
+//        }
+//
+//        return image
+//    }
     
     // MARK: TCGPlayer
     public func configureTCGPlayer(partnerKey: String, publicKey: String?, privateKey: String?) {
