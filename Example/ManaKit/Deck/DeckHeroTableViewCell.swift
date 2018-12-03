@@ -13,6 +13,9 @@ import PromiseKit
 class DeckHeroTableViewCell: UITableViewCell {
     static let reuseIdentifier = "HeroCell"
     
+    // MARK: Variables
+    var faceOrder = 0
+
     // MARK: Outlets
     @IBOutlet weak var heroImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
@@ -32,16 +35,20 @@ class DeckHeroTableViewCell: UITableViewCell {
             
             if let croppedImage = ManaKit.sharedInstance.cardImage(heroCard,
                                                                    imageType: .artCrop,
+                                                                   faceOrder: faceOrder,
                                                                    roundCornered: false) {
                 heroImageView.image = croppedImage
             } else {
                 heroImageView.image = ManaKit.sharedInstance.imageFromFramework(imageName: .cardBackCropped)
                 
                 firstly {
-                    ManaKit.sharedInstance.downloadImage(ofCard: heroCard, imageType: .artCrop)
+                    ManaKit.sharedInstance.downloadImage(ofCard: heroCard,
+                                                         imageType: .artCrop,
+                                                         faceOrder: faceOrder)
                 }.done {
                     guard let image = ManaKit.sharedInstance.cardImage(heroCard,
                                                                        imageType: .artCrop,
+                                                                       faceOrder: self.faceOrder,
                                                                        roundCornered: false) else {
                         return
                     }

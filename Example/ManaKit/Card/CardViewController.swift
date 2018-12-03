@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import FontAwesome_swift
 import ManaKit
 import PromiseKit
 
@@ -15,7 +16,9 @@ class CardViewController: UIViewController {
 
     // MARK: Variables
     var card: CMCard!
-    
+    var faceOrder = 0
+    var flipAngle = CGFloat(0)
+
     // MARK: Outlets
     @IBOutlet weak var tableView: UITableView!
     
@@ -26,6 +29,38 @@ class CardViewController: UIViewController {
         // Do any additional setup after loading the view.
         tableView.register(ManaKit.sharedInstance.nibFromBundle("CardTableViewCell"), forCellReuseIdentifier: "CardCell")
         title = card.displayName
+    }
+    
+    // MARK: Custom methods
+    @objc func buttonAction() {
+        guard let layout = card.layout,
+            let layoutName = layout.name else {
+            fatalError("Missing card layout")
+        }
+        
+        if layoutName == "Double faced token" ||
+            layoutName == "Transform" {
+            if let facesSet = card.faces,
+                let faces = facesSet.allObjects as? [CMCard] {
+                
+                let orderedFaces = faces.sorted(by: {(a, b) -> Bool in
+                    return a.faceOrder < b.faceOrder
+                })
+                let count = orderedFaces.count
+                
+                if (faceOrder + 1) >= count {
+                    faceOrder = 0
+                } else {
+                    faceOrder += 1
+                }
+            }
+        } else if layoutName == "Flip" {
+            flipAngle = flipAngle == 0 ? CGFloat(180 * Double.pi / 180) : 0
+        } else if layoutName == "Planar" {
+            flipAngle = flipAngle == 0 ? CGFloat(90 * Double.pi / 180) : 0
+        }
+        
+        tableView.reloadData()
     }
 }
 
@@ -44,27 +79,65 @@ extension CardViewController : UITableViewDataSource {
                 fatalError("Unexpected indexPath: \(indexPath)")
             }
             
+            c.faceOrder = faceOrder
             c.card = card
             cell = c
             
         case 1:
             guard let c = tableView.dequeueReusableCell(withIdentifier: "ImageCell"),
-                let imageView = c.viewWithTag(100) as? UIImageView else {
+                let imageView = c.viewWithTag(100) as? UIImageView,
+                let button = c.viewWithTag(200) as? UIButton else {
                 fatalError("Unexpected indexPath: \(indexPath)")
+            }
+            
+            guard let layout = card.layout,
+                let layoutName = layout.name else {
+                fatalError("Missing card layout")
+            }
+            
+            button.layer.cornerRadius = button.frame.height / 2
+            button.setTitle(nil, for: .normal)
+            button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+            
+            if layoutName == "Double faced token" ||
+                layoutName == "Transform" {
+                button.isHidden = false
+                button.setImage(UIImage.fontAwesomeIcon(name: .sync,
+                                                        style: .solid,
+                                                        textColor: UIColor.white,
+                                                        size: CGSize(width: 30, height: 30)),
+                                for: .normal)
+            } else if layoutName == "Flip" ||
+                layoutName == "Planar" {
+                button.isHidden = false
+                button.setImage(UIImage.fontAwesomeIcon(name: .redo,
+                                                        style: .solid,
+                                                        textColor: UIColor.white,
+                                                        size: CGSize(width: 30, height: 30)),
+                                for: .normal)
+            } else {
+                button.isHidden = true
             }
             
             if let cardImage = ManaKit.sharedInstance.cardImage(card,
                                                                 imageType: .normal,
+                                                                faceOrder: faceOrder,
                                                                 roundCornered: true) {
                 imageView.image = cardImage
+                UIView.animate(withDuration: 1.0, animations: {
+                    imageView.transform = CGAffineTransform(rotationAngle: self.flipAngle)
+                })
             } else {
                 imageView.image = ManaKit.sharedInstance.cardBack(card)
 
                 firstly {
-                    ManaKit.sharedInstance.downloadImage(ofCard: card, imageType: .normal)
+                    ManaKit.sharedInstance.downloadImage(ofCard: card,
+                                                         imageType: .normal,
+                                                         faceOrder: faceOrder)
                 }.done {
                     guard let image = ManaKit.sharedInstance.cardImage(self.card,
                                                                        imageType: .normal,
+                                                                       faceOrder: self.faceOrder,
                                                                        roundCornered: true) else {
                         return
                     }

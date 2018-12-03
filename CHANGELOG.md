@@ -1,3 +1,7 @@
+**Version 3.10.4** @ 03.12.2018
+- Updated the Scryfall database to: 2018-12-02 09:29 UTC.
+- Can now rotate and flip cards with flip, planar, double-faced-token, and transform layouts.
+
 **Version 3.10.3** @ 01.12.2018
 - Updated the Scryfall database to: 2018-11-30 09:48 UTC.
 - Removed Manakit.croppedImage method.

@@ -35,7 +35,7 @@ public class ManaKit: NSObject {
     
     public enum Constants {
         public static let ScryfallDateKey     = "ScryfallDateKey"
-        public static let ScryfallDate        = "2018-11-30 09:48 UTC"
+        public static let ScryfallDate        = "2018-12-02 09:29 UTC"
         public static let KeyruneVersion      = "3.3.2"
         public static let EightEditionRelease = "2003-07-28"
         public static let TCGPlayerPricingAge = 24 * 3 // 3 days
@@ -340,23 +340,30 @@ public class ManaKit: NSObject {
         return typeText
     }
     
-    public func imageURL(ofCard card: CMCard, imageType: ImageType) -> URL? {
+    public func imageURL(ofCard card: CMCard, imageType: ImageType, faceOrder: Int) -> URL? {
         var url:URL?
         var urlString: String?
         
         
         if let imageURIs = card.imageURIs,
             let dict = NSKeyedUnarchiver.unarchiveObject(with: imageURIs as Data) as? [String: String] {
-            
             urlString = dict[imageType.description]
         } else {
-//            urlString = "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=\(card.multiverseIds.first!)&type=card"
+            if let facesSet = card.faces,
+                let faces = facesSet.allObjects as? [CMCard] {
+                let orderedFaces = faces.sorted(by: {(a, b) -> Bool in
+                    return a.faceOrder < b.faceOrder
+                })
+                let face = orderedFaces[faceOrder]
+                
+                if let imageURIs = face.imageURIs,
+                    let dict = NSKeyedUnarchiver.unarchiveObject(with: imageURIs as Data) as? [String: String] {
+                    urlString = dict[imageType.description]
+                }
+            }
         }
         
         if let urlString = urlString {
-//            if let okUrlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-//                url = URL(string: okUrlString)
-//            }
             url = URL(string: urlString)
         }
         
@@ -402,16 +409,21 @@ public class ManaKit: NSObject {
         return UIImage(named: name, in: resourceBundle, compatibleWith: nil)
     }
     
-    public func downloadImage(ofCard card: CMCard, imageType: ImageType) -> Promise<Void> {
+    public func downloadImage(ofCard card: CMCard, imageType: ImageType, faceOrder: Int) -> Promise<Void> {
         return Promise { seal  in
-            guard let url = imageURL(ofCard: card, imageType: imageType) else {
+            guard let url = imageURL(ofCard: card,
+                                     imageType: imageType,
+                                     faceOrder: faceOrder) else {
                 let error = NSError(domain: NSURLErrorDomain, code: 404, userInfo: [NSLocalizedDescriptionKey: "No valid URL for image"])
                 seal.reject(error)
                 return
             }
             let roundCornered = imageType != .artCrop
             
-            if let _ = self.cardImage(card, imageType: imageType, roundCornered: roundCornered) {
+            if let _ = self.cardImage(card,
+                                      imageType: imageType,
+                                      faceOrder: faceOrder,
+                                      roundCornered: roundCornered) {
                 seal.fulfill(())
             } else {
                 let downloader = SDWebImageDownloader.shared()
@@ -422,21 +434,17 @@ public class ManaKit: NSObject {
                     } else {
                         if let image = image {
                             let imageCache = SDImageCache.init()
-                            imageCache.store(image, forKey: cacheKey, toDisk: true, completion: {
-                                if imageType == .artCrop {
-                                    if let _ = card.imageURIs {
-                                        seal.fulfill(())
-                                    } else {
-                                        let _ = self.crop(image, ofCard: card)
-                                        seal.fulfill(())
-                                    }
-                                } else {
-                                    seal.fulfill(())
-                                }
+                            imageCache.store(image,
+                                             forKey: cacheKey,
+                                             toDisk: true,
+                                             completion: {
+                                                seal.fulfill(())
                             })
                             
                         } else {
-                            let error = NSError(domain: NSURLErrorDomain, code: 404, userInfo: [NSLocalizedDescriptionKey: "Image not found: \(url)"])
+                            let error = NSError(domain: NSURLErrorDomain,
+                                                code: 404,
+                                                userInfo: [NSLocalizedDescriptionKey: "Image not found: \(url)"])
                             seal.reject(error)
                         }
                     }
@@ -447,46 +455,12 @@ public class ManaKit: NSObject {
         }
     }
     
-    public func crop(_ image: UIImage, ofCard card: CMCard) -> UIImage? {
-        guard let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first,
-            let id = card.id else {
-            return nil
-        }
-        
-        let path = "\(dir)/crop/\(card.set!.code!)"
-        let cropPath = "\(path)/\(id).jpg"
-            
-        if FileManager.default.fileExists(atPath: cropPath) {
-            return UIImage(contentsOfFile: cropPath)
-        } else {
-            let width = image.size.width * 3/4
-            let rect = CGRect(x: (image.size.width-width) / 2,
-                              y: isModern(card) ? 47 : 40,
-                              width: width,
-                              height: width-60)
-            
-            let imageRef = image.cgImage!.cropping(to: rect)
-            let croppedImage = UIImage(cgImage: imageRef!,
-                                       scale: image.scale,
-                                       orientation: image.imageOrientation)
-            
-            
-            // write to file
-            if !FileManager.default.fileExists(atPath: path)  {
-                try! FileManager.default.createDirectory(atPath: path,
-                                                         withIntermediateDirectories: true,
-                                                         attributes: nil)
-            }
-            try! croppedImage.jpegData(compressionQuality: 1.0)?.write(to: URL(fileURLWithPath: cropPath))
-            
-            return UIImage(contentsOfFile: cropPath)
-        }
-    }
-    
-    public func cardImage(_ card: CMCard, imageType: ImageType, roundCornered: Bool) -> UIImage? {
+    public func cardImage(_ card: CMCard, imageType: ImageType, faceOrder: Int, roundCornered: Bool) -> UIImage? {
         var cardImage: UIImage?
         
-        guard let url = imageURL(ofCard: card, imageType: imageType) else {
+        guard let url = imageURL(ofCard: card,
+                                 imageType: imageType,
+                                 faceOrder: faceOrder) else {
             return nil
         }
         
@@ -513,28 +487,6 @@ public class ManaKit: NSObject {
             return imageFromFramework(imageName: .cardBack)
         }
     }
-    
-//    public func croppedImage(_ card: CMCard) -> UIImage? {
-//        var image: UIImage?
-//
-//        if let _ = card.imageURIs {
-//            image = cardImage(card, imageType: .artCrop, roundCornered: false)
-//        } else {
-//            guard let dir = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first,
-//                let id = card.id else {
-//                return nil
-//            }
-//
-//            let path = "\(dir)/crop/\(card.set!.code!)"
-//            let cropPath = "\(path)/\(id).jpg"
-//
-//            if FileManager.default.fileExists(atPath: cropPath) {
-//                image = UIImage(contentsOfFile: cropPath)
-//            }
-//        }
-//
-//        return image
-//    }
     
     // MARK: TCGPlayer
     public func configureTCGPlayer(partnerKey: String, publicKey: String?, privateKey: String?) {

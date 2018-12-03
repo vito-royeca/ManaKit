@@ -17,6 +17,7 @@ public class DeckTableViewCell: UITableViewCell {
             updateDataDisplay()
         }
     }
+    var faceOrder = 0
     
     // MARK: Outlets
     @IBOutlet weak var thumbnailImage: UIImageView!
@@ -59,16 +60,18 @@ public class DeckTableViewCell: UITableViewCell {
         if let card = deck.heroCard {
             if let croppedImage = ManaKit.sharedInstance.cardImage(card,
                                                                    imageType: .artCrop,
+                                                                   faceOrder: faceOrder,
                                                                    roundCornered: false) {
                 thumbnailImage.image = croppedImage
             } else {
                 thumbnailImage.image = ManaKit.sharedInstance.imageFromFramework(imageName: .cardBackCropped)
                 
                 firstly {
-                    ManaKit.sharedInstance.downloadImage(ofCard: card, imageType: .artCrop)
+                    ManaKit.sharedInstance.downloadImage(ofCard: card, imageType: .artCrop, faceOrder: faceOrder)
                 }.done {
                     guard let image = ManaKit.sharedInstance.cardImage(card,
                                                                        imageType: .artCrop,
+                                                                       faceOrder: self.faceOrder,
                                                                        roundCornered: false) else {
                         return
                     }

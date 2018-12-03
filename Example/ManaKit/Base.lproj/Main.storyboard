@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="6pM-IZ-Pyw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="6pM-IZ-Pyw">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="Font Awesome 5 Free-Regular-400.otf">
+            <string>FontAwesome5FreeRegular</string>
+        </array>
         <array key="beleren-bold-webfont.ttf">
             <string>Beleren-Bold</string>
         </array>
@@ -193,12 +196,30 @@
                                                 <imageView userInteractionEnabled="NO" tag="100" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="i7u-f7-Fah">
                                                     <rect key="frame" x="42" y="33.000000000000028" width="326" height="490.66666666666674"/>
                                                 </imageView>
+                                                <button opaque="NO" tag="200" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fuW-wI-6hl">
+                                                    <rect key="frame" x="349" y="256" width="45" height="45"/>
+                                                    <color key="backgroundColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="45" id="kSs-aA-HFd"/>
+                                                        <constraint firstAttribute="width" constant="45" id="pkd-hc-Mrb"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="FontAwesome5FreeRegular" family="Font Awesome 5 Free" pointSize="30"/>
+                                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <state key="normal" title="">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </state>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </button>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="fuW-wI-6hl" secondAttribute="trailing" constant="20" id="5ij-Nn-ajU"/>
                                                 <constraint firstItem="i7u-f7-Fah" firstAttribute="leading" secondItem="kBt-IH-5E4" secondAttribute="leadingMargin" constant="22" id="Daw-z1-gBa"/>
                                                 <constraint firstItem="i7u-f7-Fah" firstAttribute="top" secondItem="kBt-IH-5E4" secondAttribute="topMargin" constant="22" id="ESj-Mg-3Jw"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="i7u-f7-Fah" secondAttribute="trailing" constant="26" id="dgD-Jh-bz3"/>
                                                 <constraint firstItem="i7u-f7-Fah" firstAttribute="centerY" secondItem="kBt-IH-5E4" secondAttribute="centerY" id="eG9-Oq-4Mq"/>
+                                                <constraint firstItem="fuW-wI-6hl" firstAttribute="centerY" secondItem="kBt-IH-5E4" secondAttribute="centerY" id="ipO-Lg-b1V"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
