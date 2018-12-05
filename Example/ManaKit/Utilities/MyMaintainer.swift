@@ -15,7 +15,7 @@ class MyMaintainer: Maintainer {
         startActivity(name: "updateCards")
         
         let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
-        request.predicate = NSPredicate(format: "id != nil")
+//        request.predicate = NSPredicate(format: "id != nil")
         request.sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
                                    NSSortDescriptor(key: "name", ascending: true)]
         let cards = try! context.fetch(request)
@@ -28,49 +28,36 @@ class MyMaintainer: Maintainer {
             if let language = card.language,
                 let code = language.code {
                 displayName = code == "en" ? card.name : card.printedName
-            }
-            if displayName == nil {
-                if let facesSet = card.faces,
-                    let faces = facesSet.allObjects as? [CMCard] {
-                    let orderedFaces = faces.sorted(by: {(a, b) -> Bool in
-                        return a.faceOrder < b.faceOrder
-                    })
-                    displayName = ""
-                    for face in orderedFaces {
-                        if let printedName = face.printedName {
-                            if displayName!.count > 0 {
-                                displayName!.append(contentsOf: " // ")
-                            }
-                            displayName!.append(contentsOf: printedName)
-                        }
-                    }
+                
+                if displayName == nil {
+                    displayName = card.name
                 }
-            }
-            if displayName!.count == 0 {
-                displayName = card.name
             }
             card.displayName = displayName
             
             // myNameSection
-            if let name = card.name {
+            if let _ = card.id,
+                let name = card.name {
                 card.myNameSection = sectionFor(name: name)
             }
-            
+
             // myNumberOrder
-            if let collectorNumber = card.collectorNumber {
+            if let _ = card.id,
+                let collectorNumber = card.collectorNumber {
                 card.myNumberOrder = order(of: collectorNumber)
             }
-            
+
             // Firebase id = set.code + _ + card.name + _ + card.name+ number?
-            if let set = card.set,
+            if let _ = card.id,
+                let set = card.set,
                 let setCode = set.code,
                 let name = card.name {
                 var firebaseID = "\(setCode.uppercased())_\(name)_\(name.lowercased())"
-                
+
                 if let variations = card.variations,
                     let array = variations.allObjects as? [CMCard] {
                     var index = 1
-                    
+
                     for c in array {
                         if c.id == card.id {
                             firebaseID += "\(index)"
@@ -80,7 +67,7 @@ class MyMaintainer: Maintainer {
                         }
                     }
                 }
-                
+
                 // add language code for non-english cards
                 if let language = card.language,
                     let code = language.code {

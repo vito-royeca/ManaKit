@@ -1,3 +1,7 @@
+**Version 3.10.5** @ 05.12.2018
+- Updated the Scryfall database to: 2018-12-04 09:24 UTC.
+- fix: Card.displayName for cards with faces.
+
 **Version 3.10.4** @ 03.12.2018
 - Updated the Scryfall database to: 2018-12-02 09:29 UTC.
 - Can now rotate and flip cards with flip, planar, double-faced-token, and transform layouts.
