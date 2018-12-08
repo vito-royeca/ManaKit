@@ -59,8 +59,10 @@ class MyMaintainer: Maintainer {
                 
                 var types = [String]()
                 for type in ManaKit.sharedInstance.typeNames {
-                    if name.contains(type) {
-                        types.append(type)
+                    for n in name.components(separatedBy: " ") {
+                        if n == type && !types.contains(type) {
+                            types.append(type)
+                        }
                     }
                 }
                 

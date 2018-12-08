@@ -1,3 +1,7 @@
+**Version 3.10.7** @ 08.12.2018
+- Updated the Scryfall database to: 2018-12-08 10:05 UTC.
+- Fixed CMCard.myType value.
+
 **Version 3.10.6** @ 07.12.2018
 - Updated the Scryfall database to: 2018-12-07 09:32 UTC.
 - Added CMCard.frameEffect and CMCard.myType properties.
