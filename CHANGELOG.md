@@ -1,3 +1,7 @@
+**Version 3.10.6** @ 07.12.2018
+- Updated the Scryfall database to: 2018-12-07 09:32 UTC.
+- Added CMCard.frameEffect and CMCard.myType properties.
+
 **Version 3.10.5** @ 05.12.2018
 - Updated the Scryfall database to: 2018-12-04 09:24 UTC.
 - fix: Card.displayName for cards with faces.

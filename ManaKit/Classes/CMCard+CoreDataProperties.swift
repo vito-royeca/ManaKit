@@ -69,6 +69,7 @@ extension CMCard {
     @NSManaged public var firebaseUserFavorites: NSSet?
     @NSManaged public var firebaseUserRatings: NSSet?
     @NSManaged public var frame: CMCardFrame?
+    @NSManaged public var frameEffect: CMCardFrameEffect?
     @NSManaged public var inventories: NSSet?
     @NSManaged public var language: CMLanguage?
     @NSManaged public var layout: CMCardLayout?
@@ -83,6 +84,7 @@ extension CMCard {
     @NSManaged public var set: CMSet?
     @NSManaged public var tcgplayerStorePricing: CMStorePricing?
     @NSManaged public var typeLine: CMCardType?
+    @NSManaged public var myType: CMCardType?
     @NSManaged public var variations: NSSet?
     @NSManaged public var watermark: CMCardWatermark?
 

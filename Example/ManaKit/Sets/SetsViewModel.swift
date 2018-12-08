@@ -19,7 +19,7 @@ class SetsViewModel: NSObject {
     private var _fetchedResultsController: NSFetchedResultsController<CMSet>?
     
     // MARK: Settings
-    private let _sortDescriptors = [NSSortDescriptor(key: "myYearSection", ascending: true)]
+    private let _sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: false)]
     private var _sectionName = "myYearSection"
     
     // MARK: UITableView methods
@@ -61,7 +61,7 @@ class SetsViewModel: NSObject {
     func titleForHeaderInSection(section: Int) -> String? {
         guard let fetchedResultsController = _fetchedResultsController,
             let sections = fetchedResultsController.sections else {
-                return nil
+            return nil
         }
         
         return sections[section].name
@@ -127,28 +127,29 @@ class SetsViewModel: NSObject {
     
     private func updateSections() {
         guard let fetchedResultsController = _fetchedResultsController,
-            let sets = fetchedResultsController.fetchedObjects,
+//            let sets = fetchedResultsController.fetchedObjects,
             let sections = fetchedResultsController.sections else {
-                return
+            return
         }
         
-        _sectionIndexTitles = [String]()
+//        _sectionIndexTitles = [String]()
         _sectionTitles = [String]()
         
-        for set in sets {
-            if let nameSection = set.myNameSection {
-                if !_sectionIndexTitles.contains(nameSection) {
-                    _sectionIndexTitles.append(nameSection)
-                }
-            }
-        }
+//        for set in sets {
+//            if let nameSection = set.myNameSection {
+//                if !_sectionIndexTitles.contains(nameSection) {
+//                    _sectionIndexTitles.append(nameSection)
+//                }
+//            }
+//        }
         
         let count = sections.count
         if count > 0 {
             for i in 0...count - 1 {
-                if let sectionTitle = sections[i].indexTitle {
-                    _sectionTitles.append(sectionTitle)
-                }
+//                if let sectionTitle = sections[i].indexTitle {
+//                    _sectionTitles.append(sectionTitle)
+//                }
+                _sectionTitles.append(sections[i].name)
             }
         }
         

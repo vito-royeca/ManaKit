@@ -21,13 +21,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
 
 //        let scryfall = ScryfallMaintainer()
-//        let keyrune = KeyruneMaintainer()
-//        let tcgplayer = TCGPlayerMaintainer()
-//        let my = MyMaintainer()
-        
 //        scryfall.fetchSetsAndCreateCards()
+        
+//        let keyrune = KeyruneMaintainer()
 //        keyrune.updateSetSymbols()
+        
+//        let tcgplayer = TCGPlayerMaintainer()
 //        tcgplayer.updateSetTcgPlayerNames()
+        
+//        let my = MyMaintainer()
 //        my.updateCards()
         
           // Normal run

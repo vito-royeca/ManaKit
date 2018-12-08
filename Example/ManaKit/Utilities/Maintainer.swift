@@ -21,8 +21,10 @@ class Maintainer: NSObject {
     var context = ManaKit.sharedInstance.dataStack!.mainContext
     var useInMemoryDatabase = true
     
-    // MARK: Variables
+        // MARK: Variables
     var dateStart = Date()
+    var cachedLanguages = [CMLanguage]()
+    var cachedCardTypes = [CMCardType]()
     
     // MARK: Custom methods
     func startActivity(name: String) {
@@ -91,5 +93,102 @@ class Maintainer: NSObject {
         let minutes = (interval / 60).truncatingRemainder(dividingBy: 60)
         let hours = (interval / 3600)
         return String(format: "%.2d:%.2d:%.2d", Int(hours), Int(minutes), Int(seconds))
+    }
+    
+    // MARK: Object finders
+    func findLanguage(with code: String) -> CMLanguage? {
+        if code.isEmpty {
+            return nil
+        }
+        
+        if let language = cachedLanguages.first(where: { $0.code == code}) {
+            return language
+        } else {
+            if let desc = NSEntityDescription.entity(forEntityName: "CMLanguage", in: context),
+                let language = NSManagedObject(entity: desc, insertInto: context) as? CMLanguage {
+                
+                language.code = code
+                switch code {
+                case "en":
+                    language.name = "English"
+                    language.displayCode = "EN"
+                case "es":
+                    language.name = "Spanish"
+                    language.displayCode = "ES"
+                case "fr":
+                    language.name = "French"
+                    language.displayCode = "FR"
+                case "de":
+                    language.name = "German"
+                    language.displayCode = "DE"
+                case "it":
+                    language.name = "Italian"
+                    language.displayCode = "IT"
+                case "pt":
+                    language.name = "Portuguese"
+                    language.displayCode = "PT"
+                case "ja":
+                    language.name = "Japanese"
+                    language.displayCode = "JA"
+                case "ko":
+                    language.name = "Korean"
+                    language.displayCode = "KO"
+                case "ru":
+                    language.name = "Russian"
+                    language.displayCode = "RU"
+                case "zhs":
+                    language.name = "Simplified Chinese"
+                    language.displayCode = "汉语"
+                case "zht":
+                    language.name = "Traditional Chinese"
+                    language.displayCode = "漢語"
+                case "he":
+                    language.name = "Hebrew"
+                case "la":
+                    language.name = "Latin"
+                case "grc":
+                    language.name = "Ancient Greek"
+                case "ar":
+                    language.name = "Arabic"
+                case "sa":
+                    language.name = "Sanskrit"
+                case "px":
+                    language.name = "Phyrexian"
+                default:
+                    ()
+                }
+                if let name = language.name {
+                    language.nameSection = sectionFor(name: name)
+                }
+                
+                cachedLanguages.append(language)
+                return language
+            }
+        }
+        
+        return nil
+    }
+    
+    func findCardType(with name: String, language: CMLanguage) -> CMCardType? {
+        if name.isEmpty {
+            return nil
+        }
+        
+        if let type = cachedCardTypes.first(where: { $0.name == name}) {
+            return type
+        } else {
+            if let desc = NSEntityDescription.entity(forEntityName: "CMCardType", in: context),
+                let type = NSManagedObject(entity: desc, insertInto: context) as? CMCardType {
+                
+                type.name = name
+                type.nameSection = sectionFor(name: name)
+                type.language = language
+                
+                cachedCardTypes.append(type)
+                return type
+            }
+        }
+        
+        return nil
     }
 }

@@ -35,7 +35,7 @@ public class ManaKit: NSObject {
     
     public enum Constants {
         public static let ScryfallDateKey     = "ScryfallDateKey"
-        public static let ScryfallDate        = "2018-12-04 09:24 UTC"
+        public static let ScryfallDate        = "2018-12-07 09:32 UTC"
         public static let KeyruneVersion      = "3.3.2"
         public static let EightEditionRelease = "2003-07-28"
         public static let TCGPlayerPricingAge = 24 * 3 // 3 days
@@ -96,6 +96,20 @@ public class ManaKit: NSObject {
             _dataStack = newValue
         }
     }
+    public let typeNames = ["Artifact",
+                            "Chaos",
+                            "Conspiracy",
+                            "Creature",
+                            "Enchantment",
+                            "Instant",
+                            "Land",
+                            "Phenomenon",
+                            "Plane",
+                            "Planeswalker",
+                            "Scheme",
+                            "Sorcery",
+                            "Tribal",
+                            "Vanguard"]
     
     fileprivate var tcgPlayerPartnerKey: String?
     fileprivate var tcgPlayerPublicKey: String?
@@ -268,32 +282,10 @@ public class ManaKit: NSObject {
     }
     
     public func typeImage(ofCard card: CMCard) -> UIImage? {
-        if let type = card.typeLine,
+        if let type = card.myType,
             let name = type.name {
 
-            // TODO:  conspiracy, phenomenon, plane, planeswalker, scheme, tribal, and vanguard
-            let typeNames = ["Artifact",
-                             "Chaos",
-                             "Creature",
-                             "Enchantment",
-                             "Instant",
-                             "Land",
-                             "Planeswalker",
-                             "Sorcery"]
-            var types = [String]()
-            
-            for type in typeNames {
-                if name.contains(type) {
-                    types.append(type)
-                }
-            }
-            
-            if types.count == 1 {
-                return ManaKit.sharedInstance.symbolImage(name: types.first!)
-            } else if types.count > 1 {
-                return ManaKit.sharedInstance.symbolImage(name: "Multiple")
-            }
-            
+            return ManaKit.sharedInstance.symbolImage(name: name)
         }
         
         return nil

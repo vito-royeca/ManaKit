@@ -99,7 +99,8 @@ class KeyruneMaintainer: Maintainer {
                 set.code == "ovnt" ||
                 set.code == "pwp11" ||
                 set.code == "pwp12" ||
-                set.code == "pwcq" {
+                set.code == "pwcq" ||
+                set.code == "pf19" {
                 set.myKeyruneCode = "e687" // media insert
             } else if set.code == "pal99" {
                 set.myKeyruneCode = "e622" // urza's saga

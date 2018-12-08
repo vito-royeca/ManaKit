@@ -16,14 +16,13 @@ class ScryfallMaintainer: Maintainer {
     let setCodesForProcessing:[String]? = nil
     
     // MARK: Variables
-    var cachedLanguages = [CMLanguage]()
     var cachedSets = [CMSet]()
     var cachedCardColors = [CMCardColor]()
     var cachedBorderColors = [CMCardBorderColor]()
     var cachedLayouts = [CMCardLayout]()
-    var cachedCardTypes = [CMCardType]()
     var cachedArtists = [CMCardArtist]()
     var cachedFrames = [CMCardFrame]()
+    var cachedFrameEffects = [CMCardFrameEffect]()
     var cachedRarities = [CMCardRarity]()
     var cachedWatermarks = [CMCardWatermark]()
     var cachedFormats = [CMCardFormat]()
@@ -396,6 +395,11 @@ class ScryfallMaintainer: Maintainer {
                 card.frame = findCardFrame(with: frame)
             }
             
+            // frame effect
+            if let frame = dict["frame_effect"] as? String {
+                card.frameEffect = findCardFrameEffect(with: frame)
+            }
+            
             // rarity
             if let rarity = dict["rarity"] as? String {
                 card.rarity = findRarity(with: rarity)
@@ -667,76 +671,11 @@ class ScryfallMaintainer: Maintainer {
         }
     }
     
-    private func findLanguage(with code: String) -> CMLanguage? {
-        if let language = cachedLanguages.first(where: { $0.code == code}) {
-            return language
-        } else {
-            if let desc = NSEntityDescription.entity(forEntityName: "CMLanguage", in: context),
-                let language = NSManagedObject(entity: desc, insertInto: context) as? CMLanguage {
-                
-                language.code = code
-                switch code {
-                case "en":
-                    language.name = "English"
-                    language.displayCode = "EN"
-                case "es":
-                    language.name = "Spanish"
-                    language.displayCode = "ES"
-                case "fr":
-                    language.name = "French"
-                    language.displayCode = "FR"
-                case "de":
-                    language.name = "German"
-                    language.displayCode = "DE"
-                case "it":
-                    language.name = "Italian"
-                    language.displayCode = "IT"
-                case "pt":
-                    language.name = "Portuguese"
-                    language.displayCode = "PT"
-                case "ja":
-                    language.name = "Japanese"
-                    language.displayCode = "JA"
-                case "ko":
-                    language.name = "Korean"
-                    language.displayCode = "KO"
-                case "ru":
-                    language.name = "Russian"
-                    language.displayCode = "RU"
-                case "zhs":
-                    language.name = "Simplified Chinese"
-                    language.displayCode = "汉语"
-                case "zht":
-                    language.name = "Traditional Chinese"
-                    language.displayCode = "漢語"
-                case "he":
-                    language.name = "Hebrew"
-                case "la":
-                    language.name = "Latin"
-                case "grc":
-                    language.name = "Ancient Greek"
-                case "ar":
-                    language.name = "Arabic"
-                case "sa":
-                    language.name = "Sanskrit"
-                case "px":
-                    language.name = "Phyrexian"
-                default:
-                    ()
-                }
-                if let name = language.name {
-                    language.nameSection = sectionFor(name: name)
-                }
-                
-                cachedLanguages.append(language)
-                return language
-            }
-        }
-
-        return nil
-    }
-    
     private func findCardColor(with symbol: String) -> CMCardColor? {
+        if symbol.isEmpty {
+            return nil
+        }
+        
         if let color = cachedCardColors.first(where: { $0.symbol == symbol}) {
             return color
         } else {
@@ -768,6 +707,10 @@ class ScryfallMaintainer: Maintainer {
     }
     
     private func findCardBorderColor(with name: String) -> CMCardBorderColor? {
+        if name.isEmpty {
+            return nil
+        }
+        
         let capName = capitalize(string: name)
         
         if let borderColor = cachedBorderColors.first(where: { $0.name == capName}) {
@@ -788,6 +731,10 @@ class ScryfallMaintainer: Maintainer {
     }
     
     private func findCardLayout(with name: String) -> CMCardLayout? {
+        if name.isEmpty {
+            return nil
+        }
+        
         let capName = capitalize(string: name)
         
         if let layout = cachedLayouts.first(where: { $0.name == capName}) {
@@ -807,26 +754,11 @@ class ScryfallMaintainer: Maintainer {
         return nil
     }
     
-    private func findCardType(with name: String, language: CMLanguage) -> CMCardType? {
-        if let type = cachedCardTypes.first(where: { $0.name == name}) {
-            return type
-        } else {
-            if let desc = NSEntityDescription.entity(forEntityName: "CMCardType", in: context),
-                let type = NSManagedObject(entity: desc, insertInto: context) as? CMCardType {
-                
-                type.name = name
-                type.nameSection = sectionFor(name: name)
-                type.language = language
-                
-                cachedCardTypes.append(type)
-                return type
-            }
-        }
-        
-        return nil
-    }
-    
     private func findArtist(with name: String) -> CMCardArtist? {
+        if name.isEmpty {
+            return nil
+        }
+
         if let artist = cachedArtists.first(where: { $0.name == name}) {
             return artist
         } else {
@@ -871,6 +803,10 @@ class ScryfallMaintainer: Maintainer {
     }
     
     private func findCardFrame(with name: String) -> CMCardFrame? {
+        if name.isEmpty {
+            return nil
+        }
+        
         let capName = capitalize(string: name)
         
         if let frame = cachedFrames.first(where: { $0.name == capName}) {
@@ -890,7 +826,35 @@ class ScryfallMaintainer: Maintainer {
         return nil
     }
     
+    private func findCardFrameEffect(with name: String) -> CMCardFrameEffect? {
+        if name.isEmpty {
+            return nil
+        }
+        
+        let capName = capitalize(string: name)
+        
+        if let frame = cachedFrameEffects.first(where: { $0.name == capName}) {
+            return frame
+        } else {
+            if let desc = NSEntityDescription.entity(forEntityName: "CMCardFrameEffect", in: context),
+                let frame = NSManagedObject(entity: desc, insertInto: context) as? CMCardFrameEffect {
+                
+                frame.name = capName
+                frame.nameSection = sectionFor(name: name)
+                
+                cachedFrameEffects.append(frame)
+                return frame
+            }
+        }
+        
+        return nil
+    }
+
     private func findRarity(with name: String) -> CMCardRarity? {
+        if name.isEmpty {
+            return nil
+        }
+        
         let capName = capitalize(string: name)
         
         if let rarity = cachedRarities.first(where: { $0.name == capName}) {
@@ -911,6 +875,10 @@ class ScryfallMaintainer: Maintainer {
     }
     
     private func findCardWatermark(with name: String) -> CMCardWatermark? {
+        if name.isEmpty {
+            return nil
+        }
+        
         let capName = capitalize(string: name)
         
         if let watermark = cachedWatermarks.first(where: { $0.name == capName}) {
@@ -931,6 +899,10 @@ class ScryfallMaintainer: Maintainer {
     }
     
     private func findFormat(with name: String) -> CMCardFormat? {
+        if name.isEmpty {
+            return nil
+        }
+        
         let capName = capitalize(string: name)
         
         if let format = cachedFormats.first(where: { $0.name == capName}) {
@@ -951,6 +923,10 @@ class ScryfallMaintainer: Maintainer {
     }
     
     private func findLegality(with name: String) -> CMLegality? {
+        if name.isEmpty {
+            return nil
+        }
+        
         let capName = capitalize(string: name)
         
         if let legality = cachedLegalities.first(where: { $0.name == capName}) {
@@ -971,6 +947,10 @@ class ScryfallMaintainer: Maintainer {
     }
     
     private func findRuling(withDate date: String, andText text: String) -> CMRuling? {
+        if date.isEmpty && text.isEmpty {
+            return nil
+        }
+
         if let ruling = cachedRulings.first(where: { $0.date == date && $0.text == text }) {
             return ruling
         } else {
