@@ -79,8 +79,9 @@ class MyMaintainer: Maintainer {
                 let setCode = set.code,
                 let name = card.name {
                 var firebaseID = "\(setCode.uppercased())_\(name)_\(name.lowercased())"
-                    .replacingOccurrences(of: " ", with: "_")
-                    .replacingOccurrences(of: ".", with: "_")
+//                    .replacingOccurrences(of: " ", with: "_")
+//                    .replacingOccurrences(of: ".", with: "_")
+                    .replacingOccurrences(of: "//", with: "_")
 
                 if let variations = card.variations,
                     let array = variations.allObjects as? [CMCard] {
