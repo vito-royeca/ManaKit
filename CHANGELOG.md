@@ -1,4 +1,7 @@
 **Version 3.10.8** @ 09.12.2018
+- Updated the Scryfall database to: 2018-12-11 09:21 UTC.
+
+**Version 3.10.8** @ 09.12.2018
 - Updated the Scryfall database to: 2018-12-09 09:23 UTC.
 - Fixed CMCard.firebaseID value.
 

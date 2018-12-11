@@ -35,7 +35,7 @@ public class ManaKit: NSObject {
     
     public enum Constants {
         public static let ScryfallDateKey     = "ScryfallDateKey"
-        public static let ScryfallDate        = "2018-12-09 09:23 UTC"
+        public static let ScryfallDate        = "2018-12-11 09:21 UTC"
         public static let KeyruneVersion      = "3.3.2"
         public static let EightEditionRelease = "2003-07-28"
         public static let TCGPlayerPricingAge = 24 * 3 // 3 days
@@ -84,10 +84,12 @@ public class ManaKit: NSObject {
     public var dataStack: DataStack? {
         get {
             if _dataStack == nil {
-                guard let bundleURL = Bundle(for: ManaKit.self).url(forResource: "ManaKit", withExtension: "bundle") else { return nil }
-                guard let bundle = Bundle(url: bundleURL) else { return nil }
-                guard let momURL = bundle.url(forResource: "ManaKit", withExtension: "momd") else { return nil }
-                guard let objectModel = NSManagedObjectModel(contentsOf: momURL) else { return nil }
+                guard let bundleURL = Bundle(for: ManaKit.self).url(forResource: "ManaKit", withExtension: "bundle"),
+                    let bundle = Bundle(url: bundleURL),
+                    let momURL = bundle.url(forResource: "ManaKit", withExtension: "momd"),
+                    let objectModel = NSManagedObjectModel(contentsOf: momURL) else {
+                    return nil
+                }
                 _dataStack = DataStack(model: objectModel, storeType: .sqLite)
             }
             return _dataStack

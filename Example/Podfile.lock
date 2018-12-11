@@ -1,7 +1,7 @@
 PODS:
   - FontAwesome.swift (1.4.6)
   - Kanna (4.0.2)
-  - ManaKit (3.10.6):
+  - ManaKit (3.10.8):
     - Kanna (~> 4.0.0)
     - PromiseKit
     - SDWebImage
@@ -47,7 +47,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   FontAwesome.swift: 18fb500c0decc2bbfadf2ae16a936704ec2c49bd
   Kanna: c60b61d72554bf04ed1ee074f9b379855cab4892
-  ManaKit: fadcf5ed437018432c4771063f63e6bead516c98
+  ManaKit: 3c08a4d3071931072e66a3317fcee8edf9c43122
   PromiseKit: 453ddcc947fe7b302f3ef41882b81d31c554df7f
   SDWebImage: c5594f1a19c48d526d321e548902b56b479cd508
   SSZipArchive: 41455d4b8d2b6ab93990820b50dc697c2554a322
