@@ -16,7 +16,6 @@ class ScryfallMaintainer: Maintainer {
     let setCodesForProcessing:[String]? = nil
     
     // MARK: Variables
-    var cachedSets = [CMSet]()
     var cachedCardColors = [CMCardColor]()
     var cachedBorderColors = [CMCardBorderColor]()
     var cachedLayouts = [CMCardLayout]()
@@ -28,7 +27,6 @@ class ScryfallMaintainer: Maintainer {
     var cachedFormats = [CMCardFormat]()
     var cachedLegalities = [CMLegality]()
     var cachedRulings = [CMRuling]()
-    var cachedCards = [CMCard]()
     
     // MARK: Sets
     func fetchSetsAndCreateCards() {
@@ -647,30 +645,6 @@ class ScryfallMaintainer: Maintainer {
     }
     
     // MARK: Object finders
-    private func findSet(code: String) -> CMSet? {
-        if cachedSets.isEmpty {
-            let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
-            cachedSets = try! context.fetch(request)
-        }
-        
-        return cachedSets.first(where: { $0.code == code})
-    }
-    
-    private func reloadCachedCards() {
-        cachedSets.removeAll()
-        cachedCards.removeAll()
-        
-        let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
-        cachedSets = try! context.fetch(request)
-        
-        for set in cachedSets {
-            if let cards = set.cards,
-                let array = cards.allObjects as? [CMCard] {
-                cachedCards.append(contentsOf: array.filter({ $0.id != nil }))
-            }
-        }
-    }
-    
     private func findCardColor(with symbol: String) -> CMCardColor? {
         if symbol.isEmpty {
             return nil

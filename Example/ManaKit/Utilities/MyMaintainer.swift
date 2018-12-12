@@ -15,6 +15,7 @@ class MyMaintainer: Maintainer {
         startActivity(name: "updateCards")
         
         let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
+        request.predicate = NSPredicate(format: "id != nil")
         request.sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
                                    NSSortDescriptor(key: "name", ascending: true)]
         let cards = try! context.fetch(request)
@@ -27,6 +28,8 @@ class MyMaintainer: Maintainer {
         let languageRequest: NSFetchRequest<CMLanguage> = CMLanguage.fetchRequest()
         cachedLanguages = try! context.fetch(languageRequest)
         let enLanguage = findLanguage(with: "en")
+
+        reloadCachedCards()
 
         for card in cards {
             // displayName
@@ -77,34 +80,45 @@ class MyMaintainer: Maintainer {
             if let _ = card.id,
                 let set = card.set,
                 let setCode = set.code,
+                let language = card.language,
+                let languageCode = language.code,
                 let name = card.name {
                 var firebaseID = "\(setCode.uppercased())_\(name)_\(name.lowercased())"
 //                    .replacingOccurrences(of: " ", with: "_")
 //                    .replacingOccurrences(of: ".", with: "_")
                     .replacingOccurrences(of: "//", with: "_")
 
-                if let variations = card.variations,
-                    let array = variations.allObjects as? [CMCard] {
-                    var index = 1
+                if let cachedSet = findSet(code: setCode),
+                    let cardSets = cachedSet.cards,
+                    let cards = cardSets.allObjects as? [CMCard] {
+                    
+                    let variations = cards.filter({ $0.language!.code == languageCode &&
+                                                    $0.name == card.name })
+                    if variations.count > 1 {
+                        let orderedVariations = variations.sorted(by: {(a, b) -> Bool in
+                            return a.myNumberOrder < b.myNumberOrder
+                        })
+                        var index = 1
 
-                    for c in array {
-                        if c.id == card.id {
-                            firebaseID += "\(index)"
-                            break
-                        } else {
-                            index += 1
+                        for c in orderedVariations {
+                            if c.id == card.id {
+                                firebaseID += "\(index)"
+                                break
+                            } else {
+                                index += 1
+                            }
                         }
                     }
-                }
 
-                // add language code for non-english cards
-                if let language = card.language,
-                    let code = language.code {
-                    if code != "en" {
-                        firebaseID += "_\(code)"
+                    // add language code for non-english cards
+                    if let language = card.language,
+                        let code = language.code {
+                        if code != "en" {
+                            firebaseID += "_\(code)"
+                        }
                     }
+                    card.firebaseID = firebaseID
                 }
-                card.firebaseID = firebaseID
             }
 
             count += 1
@@ -118,6 +132,20 @@ class MyMaintainer: Maintainer {
         createComprehensiveRules()
         
         endActivity()
+    }
+    
+    func fetchVariations(ofCard card: CMCard) -> [CMCard] {
+        let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
+        
+        request.predicate = NSPredicate(format: "set.code = %@ AND language.code = %@ AND id != %@ AND name = %@",
+                                        card.set!.code!,
+                                        card.language!.code!,
+                                        card.id!,
+                                        card.name!)
+        request.sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: false),
+                                   NSSortDescriptor(key: "name", ascending: true),
+                                   NSSortDescriptor(key: "collectorNumber", ascending: true)]
+        return try! context.fetch(request)
     }
     
     // MARK: Comprehensive rules

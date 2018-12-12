@@ -25,6 +25,8 @@ class Maintainer: NSObject {
     var dateStart = Date()
     var cachedLanguages = [CMLanguage]()
     var cachedCardTypes = [CMCardType]()
+    var cachedSets = [CMSet]()
+    var cachedCards = [CMCard]()
     
     // MARK: Custom methods
     func startActivity(name: String) {
@@ -96,6 +98,30 @@ class Maintainer: NSObject {
     }
     
     // MARK: Object finders
+    func reloadCachedCards() {
+        cachedSets.removeAll()
+        cachedCards.removeAll()
+        
+        let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
+        cachedSets = try! context.fetch(request)
+        
+        for set in cachedSets {
+            if let cards = set.cards,
+                let array = cards.allObjects as? [CMCard] {
+                cachedCards.append(contentsOf: array.filter({ $0.id != nil }))
+            }
+        }
+    }
+    
+    func findSet(code: String) -> CMSet? {
+        if cachedSets.isEmpty {
+            let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
+            cachedSets = try! context.fetch(request)
+        }
+        
+        return cachedSets.first(where: { $0.code == code})
+    }
+
     func findLanguage(with code: String) -> CMLanguage? {
         if code.isEmpty {
             return nil
