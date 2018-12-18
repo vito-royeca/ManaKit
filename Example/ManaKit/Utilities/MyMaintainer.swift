@@ -84,9 +84,6 @@ class MyMaintainer: Maintainer {
                 let languageCode = language.code,
                 let name = card.name {
                 var firebaseID = "\(setCode.uppercased())_\(name)_\(name.lowercased())"
-//                    .replacingOccurrences(of: " ", with: "_")
-//                    .replacingOccurrences(of: ".", with: "_")
-                    .replacingOccurrences(of: "//", with: "_")
 
                 if let cachedSet = findSet(code: setCode),
                     let cardSets = cachedSet.cards,
@@ -117,7 +114,7 @@ class MyMaintainer: Maintainer {
                             firebaseID += "_\(code)"
                         }
                     }
-                    card.firebaseID = firebaseID
+                    card.firebaseID = encodeFirebase(key: firebaseID)
                 }
             }
 
@@ -148,6 +145,24 @@ class MyMaintainer: Maintainer {
         return try! context.fetch(request)
     }
     
+    func encodeFirebase(key: String) -> String {
+        return key.replacingOccurrences(of: ".", with: "P%n*")
+            .replacingOccurrences(of: "$", with: "D%n*")
+            .replacingOccurrences(of: "#", with: "H%n*")
+            .replacingOccurrences(of: "[", with: "On%*")
+            .replacingOccurrences(of: "]", with: "n*C%")
+            .replacingOccurrences(of: "/", with: "*S%n")
+    }
+
+    func decodeFirebase(key: String) -> String {
+        return key.replacingOccurrences(of: "P%n*", with: ".")
+            .replacingOccurrences(of: "D%n*", with: "$")
+            .replacingOccurrences(of: "H%n*", with: "#")
+            .replacingOccurrences(of: "On%*", with: "[")
+            .replacingOccurrences(of: "n*C%", with: "]")
+            .replacingOccurrences(of: "*S%n", with: "/")
+    }
+
     // MARK: Comprehensive rules
     func createComprehensiveRules() {
         startActivity(name: "createComprehensiveRules")

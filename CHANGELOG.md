@@ -1,3 +1,6 @@
+**Version 3.11.1** @ 18.12.2018
+- Fixed CMCard.firebaseID for special characters: .$[]#/
+
 **Version 3.11.0** @ 12.12.2018
 - Fixed CMCard.firebaseID for card with variations.
 
