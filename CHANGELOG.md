@@ -1,3 +1,6 @@
+**Version 3.11.2** @ 20.12.2018
+- Refactored Manakit.downloadImage(ofCard card:imageType:faceOrder:) with a helper method downloadImage(url:).
+
 **Version 3.11.1** @ 18.12.2018
 - Fixed CMCard.firebaseID for special characters: .$[]#/
 

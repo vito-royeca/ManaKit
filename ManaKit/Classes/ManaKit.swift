@@ -404,48 +404,64 @@ public class ManaKit: NSObject {
     }
     
     public func downloadImage(ofCard card: CMCard, imageType: ImageType, faceOrder: Int) -> Promise<Void> {
-        return Promise { seal  in
-            guard let url = imageURL(ofCard: card,
-                                     imageType: imageType,
-                                     faceOrder: faceOrder) else {
-                let error = NSError(domain: NSURLErrorDomain, code: 404, userInfo: [NSLocalizedDescriptionKey: "No valid URL for image"])
-                seal.reject(error)
-                return
-            }
-            let roundCornered = imageType != .artCrop
+        guard let url = imageURL(ofCard: card,
+                                 imageType: imageType,
+                                 faceOrder: faceOrder) else {
             
-            if let _ = self.cardImage(card,
-                                      imageType: imageType,
-                                      faceOrder: faceOrder,
-                                      roundCornered: roundCornered) {
+            return Promise { seal  in
+                let error = NSError(domain: NSURLErrorDomain,
+                                    code: 404,
+                                    userInfo: [NSLocalizedDescriptionKey: "No valid URL for image"])
+                seal.reject(error)
+            }
+        }
+        
+        let roundCornered = imageType != .artCrop
+        
+        if let _ = self.cardImage(card,
+                                  imageType: imageType,
+                                  faceOrder: faceOrder,
+                                  roundCornered: roundCornered) {
+            return Promise { seal  in
                 seal.fulfill(())
-            } else {
-                let downloader = SDWebImageDownloader.shared()
-                let cacheKey = url.absoluteString
-                let completion = { (image: UIImage?, data: Data?, error: Error?, finished: Bool) in
-                    if let error = error {
-                        seal.reject(error)
-                    } else {
-                        if let image = image {
-                            let imageCache = SDImageCache.init()
-                            imageCache.store(image,
-                                             forKey: cacheKey,
-                                             toDisk: true,
-                                             completion: {
-                                                seal.fulfill(())
-                            })
-                            
-                        } else {
-                            let error = NSError(domain: NSURLErrorDomain,
-                                                code: 404,
-                                                userInfo: [NSLocalizedDescriptionKey: "Image not found: \(url)"])
-                            seal.reject(error)
+            }
+        } else {
+            return downloadImage(url: url)
+        }
+    }
+    
+    public func downloadImage(url: URL) -> Promise<Void> {
+        return Promise { seal in
+            let downloader = SDWebImageDownloader.shared()
+            let cacheKey = url.absoluteString
+            let completion = { (image: UIImage?, data: Data?, error: Error?, finished: Bool) in
+                if let error = error {
+                    seal.reject(error)
+                } else {
+                    if let image = image {
+                        let imageCache = SDImageCache.init()
+                        let imageCacheCompletion = {
+                            seal.fulfill(())
                         }
+                        
+                        imageCache.store(image,
+                                         forKey: cacheKey,
+                                         toDisk: true,
+                                         completion: imageCacheCompletion)
+                        
+                    } else {
+                        let error = NSError(domain: NSURLErrorDomain,
+                                            code: 404,
+                                            userInfo: [NSLocalizedDescriptionKey: "Image not found: \(url)"])
+                        seal.reject(error)
                     }
                 }
-                
-                downloader.downloadImage(with: url, options: .lowPriority, progress: nil, completed: completion)
             }
+            
+            downloader.downloadImage(with: url,
+                                     options: .lowPriority,
+                                     progress: nil,
+                                     completed: completion)
         }
     }
     
