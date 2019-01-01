@@ -6,8 +6,8 @@
 //  Copyright © 2018 CocoaPods. All rights reserved.
 //
 
-import CoreData
 import ManaKit
+import RealmSwift
 
 class SetsViewModel: NSObject {
     // MARK: Variables
@@ -16,29 +16,27 @@ class SetsViewModel: NSObject {
 
     private var _sectionIndexTitles = [String]()
     private var _sectionTitles = [String]()
-    private var _fetchedResultsController: NSFetchedResultsController<CMSet>?
+    private var _results: Results<CMSet>? = nil
     
     // MARK: Settings
-    private let _sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: false)]
+    private let _sortDescriptors = [SortDescriptor(keyPath: "releaseDate", ascending: false)]
     private var _sectionName = "myYearSection"
     
     // MARK: UITableView methods
     func numberOfRows(inSection section: Int) -> Int {
-        guard let fetchedResultsController = _fetchedResultsController,
-            let sections = fetchedResultsController.sections else {
+        guard let results = _results else {
             return 0
         }
         
-        return sections[section].numberOfObjects
+        return results.filter("\(_sectionName) == %@", _sectionTitles[section]).count
     }
     
     func numberOfSections() -> Int {
-        guard let fetchedResultsController = _fetchedResultsController,
-            let sections = fetchedResultsController.sections else {
-                return 0
+        guard let _ = _results else {
+            return 0
         }
         
-        return sections.count
+        return _sectionTitles.count
     }
     
     func sectionIndexTitles() -> [String]? {
@@ -59,106 +57,66 @@ class SetsViewModel: NSObject {
     }
     
     func titleForHeaderInSection(section: Int) -> String? {
-        guard let fetchedResultsController = _fetchedResultsController,
-            let sections = fetchedResultsController.sections else {
+        guard let _ = _results else {
             return nil
         }
         
-        return sections[section].name
+        return _sectionTitles[section]
     }
     
     // MARK: Custom methods
     func object(forRowAt indexPath: IndexPath) -> CMSet {
-        guard let fetchedResultsController = _fetchedResultsController else {
-            fatalError("fetchedResultsController is nil")
+        guard let results = _results else {
+            fatalError("results is nil")
         }
-        return fetchedResultsController.object(at: indexPath)
+        return results.filter("\(_sectionName) == %@", _sectionTitles[indexPath.section])[indexPath.row]
     }
     
     func fetchData() {
-        let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
+        var predicate: NSPredicate?
         let count = queryString.count
         
         if count > 0 {
             if count == 1 {
-                request.predicate = NSPredicate(format: "name BEGINSWITH[cd] %@ OR code BEGINSWITH[cd] %@", queryString, queryString)
+                predicate = NSPredicate(format: "name BEGINSWITH[cd] %@ OR code BEGINSWITH[cd] %@", queryString, queryString)
             } else {
-                request.predicate = NSPredicate(format: "name CONTAINS[cd] %@ OR code CONTAINS[cd] %@", queryString, queryString)
+                predicate = NSPredicate(format: "name CONTAINS[cd] %@ OR code CONTAINS[cd] %@", queryString, queryString)
             }
+            _results = ManaKit.sharedInstance.realm.objects(CMSet.self).filter(predicate!).sorted(by: _sortDescriptors)
+        } else {
+            _results = ManaKit.sharedInstance.realm.objects(CMSet.self).sorted(by: _sortDescriptors)
         }
-        request.sortDescriptors = _sortDescriptors
         
-        _fetchedResultsController = getFetchedResultsController(with: request)
         updateSections()
     }
     
-    private func getFetchedResultsController(with fetchRequest: NSFetchRequest<CMSet>?) -> NSFetchedResultsController<CMSet> {
-        let context = ManaKit.sharedInstance.dataStack!.viewContext
-        var request: NSFetchRequest<CMSet>?
-        
-        if let fetchRequest = fetchRequest {
-            request = fetchRequest
-        } else {
-            // Create a default fetchRequest
-            request = CMSet.fetchRequest()
-            request!.sortDescriptors = _sortDescriptors
-        }
-        
-        // Create Fetched Results Controller
-        let frc = NSFetchedResultsController(fetchRequest: request!,
-                                             managedObjectContext: context,
-                                             sectionNameKeyPath: _sectionName,
-                                             cacheName: nil)
-        
-        // Configure Fetched Results Controller
-        frc.delegate = self
-        
-        // perform fetch
-        do {
-            try frc.performFetch()
-        } catch {
-            let fetchError = error as NSError
-            print("Unable to Perform Fetch Request")
-            print("\(fetchError), \(fetchError.localizedDescription)")
-        }
-        
-        return frc
-    }
-    
     private func updateSections() {
-        guard let fetchedResultsController = _fetchedResultsController,
-//            let sets = fetchedResultsController.fetchedObjects,
-            let sections = fetchedResultsController.sections else {
+        guard let results = _results else {
             return
         }
         
-//        _sectionIndexTitles = [String]()
+        _sectionIndexTitles = [String]()
         _sectionTitles = [String]()
         
-//        for set in sets {
-//            if let nameSection = set.myNameSection {
-//                if !_sectionIndexTitles.contains(nameSection) {
-//                    _sectionIndexTitles.append(nameSection)
-//                }
-//            }
-//        }
+        for set in results {
+            if let nameSection = set.myNameSection {
+                if !_sectionTitles.contains(nameSection) {
+                    _sectionTitles.append(nameSection)
+                }
+            }
+        }
         
-        let count = sections.count
-        if count > 0 {
-            for i in 0...count - 1 {
+//        let count = sections.count
+//        if count > 0 {
+//            for i in 0...count - 1 {
 //                if let sectionTitle = sections[i].indexTitle {
 //                    _sectionTitles.append(sectionTitle)
 //                }
-                _sectionTitles.append(sections[i].name)
-            }
-        }
+//                _sectionTitles.append(sections[i].name)
+//            }
+//        }
         
         _sectionIndexTitles.sort()
         _sectionTitles.sort()
     }
-}
-
-// MARK: NSFetchedResultsControllerDelegate
-extension SetsViewModel : NSFetchedResultsControllerDelegate {
-    
 }

@@ -6,10 +6,10 @@ def default_pods
     
     pod 'ManaKit', :path => '../'
     
-    pod 'Sync'
     pod 'FontAwesome.swift'
     pod 'Kanna', '~> 4.0.0'
     pod 'PromiseKit'
+    pod 'RealmSwift'
     pod 'SSZipArchive'
     pod 'SDWebImage'
 end

@@ -33,19 +33,12 @@ class Tests: XCTestCase {
     func testSuppliers() {
         let expectation = XCTestExpectation(description: "testSuppliers()")
         
-        let objectFinder = ["name": "Air Elemental",
-                            "set.code": "XLN"]  as [String : AnyObject]
-        
-        if let card = ManaKit.sharedInstance.findObject("CMCard",
-                                                        objectFinder: objectFinder,
-                                                        createIfNotFound: false) as? CMCard {
+        if let card = ManaKit.sharedInstance.realm.objects(CMCard.self).filter("name == %@ AND set.code == %@", "Air Elemental", "XLN").first {
             firstly {
                 ManaKit.sharedInstance.fetchTCGPlayerStorePricing(card: card)
             }.done {
-                if let storePricing = card.tcgplayerStorePricing,
-                    let suppliers = storePricing.suppliers,
-                    let array = suppliers.allObjects as? [CMStoreSupplier] {
-                    for supplier in array {
+                if let storePricing = card.tcgplayerStorePricing {
+                    for supplier in storePricing.suppliers {
                         print("\(supplier)")
                     }
                 }

@@ -6,16 +6,16 @@
 //  Copyright © 2018 CocoaPods. All rights reserved.
 //
 
-import CoreData
 import ManaKit
+import RealmSwift
 
 class DeckSideboardViewModel: NSObject {
     // MARK: Variables
     private var _deck: CMDeck?
-    private var _fetchedResultsController: NSFetchedResultsController<CMInventory>?
+    private var _results: Results<CMInventory>? = nil
     
     // MARK: Settings
-    private let _sortDescriptors = [NSSortDescriptor(key: "card.name", ascending: true)]
+    private let _sortDescriptors = [SortDescriptor(keyPath: "card.name", ascending: true)]
     private var _sectionName: String?
     
     // MARK: Overrides
@@ -26,25 +26,25 @@ class DeckSideboardViewModel: NSObject {
     
     // MARK: UITableView methods
     func numberOfRows(inSection section: Int) -> Int {
-        guard let fetchedResultsController = _fetchedResultsController,
-            let sections = fetchedResultsController.sections else {
+        guard let _ = _results else {
             return 0
         }
         
         if section == 0 {
             return 1
         } else {
-            return sections[section - 1].numberOfObjects
+            //return sections[section - 1].numberOfObjects
+            return 0
         }
     }
     
     func numberOfSections() -> Int {
-        guard let fetchedResultsController = _fetchedResultsController,
-            let sections = fetchedResultsController.sections else {
-                return 0
+        guard let _ = _results else {
+            return 0
         }
         
-        return sections.count + 1
+//        return sections.count + 1
+        return 0
     }
     
     func sectionIndexTitles() -> [String]? {
@@ -61,10 +61,11 @@ class DeckSideboardViewModel: NSObject {
     
     // MARK: Custom methods
     func object(forRowAt indexPath: IndexPath) -> CMInventory {
-        guard let fetchedResultsController = _fetchedResultsController else {
-            fatalError("fetchedResultsController is nil")
+        guard let results = _results else {
+            fatalError("results is nil")
         }
-        return fetchedResultsController.object(at: IndexPath(row: indexPath.row, section: indexPath.section - 1))
+//        return results.filter("\(_sectionName) == %@", _sectionTitles[indexPath.section])[indexPath.row]
+        return results[indexPath.row - 1]
     }
     
     func objectTitle() -> String? {
@@ -79,52 +80,9 @@ class DeckSideboardViewModel: NSObject {
             return
         }
         
-        let request: NSFetchRequest<CMInventory> = CMInventory.fetchRequest()
         let predicate = NSPredicate(format: "deck = %@ AND sideboard = YES", deck)
         
-        request.predicate = predicate
-        request.sortDescriptors = _sortDescriptors
-        
-        _fetchedResultsController = getFetchedResultsController(with: request)
-    }
-    
-    private func getFetchedResultsController(with fetchRequest: NSFetchRequest<CMInventory>?) -> NSFetchedResultsController<CMInventory> {
-        let context = ManaKit.sharedInstance.dataStack!.viewContext
-        var request: NSFetchRequest<CMInventory>?
-        
-        if let fetchRequest = fetchRequest {
-            request = fetchRequest
-        } else {
-            // Create a default fetchRequest
-            request = CMInventory.fetchRequest()
-            request!.sortDescriptors = _sortDescriptors
-        }
-        
-        // Create Fetched Results Controller
-        let frc = NSFetchedResultsController(fetchRequest: request!,
-                                             managedObjectContext: context,
-                                             sectionNameKeyPath: _sectionName,
-                                             cacheName: nil)
-        
-        // Configure Fetched Results Controller
-        frc.delegate = self
-        
-        // perform fetch
-        do {
-            try frc.performFetch()
-        } catch {
-            let fetchError = error as NSError
-            print("Unable to Perform Fetch Request")
-            print("\(fetchError), \(fetchError.localizedDescription)")
-        }
-        
-        return frc
+        _results = ManaKit.sharedInstance.realm.objects(CMInventory.self).filter(predicate).sorted(by: _sortDescriptors)
     }
 }
-
-// MARK: NSFetchedResultsControllerDelegate
-extension DeckSideboardViewModel : NSFetchedResultsControllerDelegate {
-    
-}
-
 

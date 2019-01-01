@@ -40,20 +40,19 @@ class CardViewController: UIViewController {
         
         if layoutName == "Double faced token" ||
             layoutName == "Transform" {
-            if let facesSet = card.faces,
-                let faces = facesSet.allObjects as? [CMCard] {
-                
-                let orderedFaces = faces.sorted(by: {(a, b) -> Bool in
-                    return a.faceOrder < b.faceOrder
-                })
-                let count = orderedFaces.count
-                
-                if (faceOrder + 1) >= count {
-                    faceOrder = 0
-                } else {
-                    faceOrder += 1
-                }
+            
+            let faces = card.faces
+            let orderedFaces = faces.sorted(by: {(a, b) -> Bool in
+                return a.faceOrder < b.faceOrder
+            })
+            let count = orderedFaces.count
+            
+            if (faceOrder + 1) >= count {
+                faceOrder = 0
+            } else {
+                faceOrder += 1
             }
+            
         } else if layoutName == "Flip" {
             flipAngle = flipAngle == 0 ? CGFloat(180 * Double.pi / 180) : 0
         } else if layoutName == "Planar" {

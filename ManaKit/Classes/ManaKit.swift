@@ -9,10 +9,9 @@
 import UIKit
 import Kanna
 import PromiseKit
+import RealmSwift
 import SDWebImage
 import SSZipArchive
-import Sync
-
 
 @objc(ManaKit)
 public class ManaKit: NSObject {
@@ -35,10 +34,11 @@ public class ManaKit: NSObject {
     
     public enum Constants {
         public static let ScryfallDateKey     = "ScryfallDateKey"
-        public static let ScryfallDate        = "2018-12-11 09:21 UTC B"
+        public static let ScryfallDate        = "2018-12-11 09:21 UTC - Realm DB"
         public static let KeyruneVersion      = "3.3.2"
         public static let EightEditionRelease = "2003-07-28"
         public static let TCGPlayerPricingAge = 24 * 3 // 3 days
+        public static let FirebaseDataAge     = 60     // 60 sec
     }
     
     public enum ImageName: String {
@@ -80,24 +80,48 @@ public class ManaKit: NSObject {
     public static let sharedInstance = ManaKit()
     
     // MARK: Variables
-    private var _dataStack: DataStack?
-    public var dataStack: DataStack? {
+//    private var _dataStack: DataStack?
+//    public var dataStack: DataStack? {
+//        get {
+//            if _dataStack == nil {
+//                guard let bundleURL = Bundle(for: ManaKit.self).url(forResource: "ManaKit", withExtension: "bundle"),
+//                    let bundle = Bundle(url: bundleURL),
+//                    let momURL = bundle.url(forResource: "ManaKit", withExtension: "momd"),
+//                    let objectModel = NSManagedObjectModel(contentsOf: momURL) else {
+//                    return nil
+//                }
+//                _dataStack = DataStack(model: objectModel, storeType: .sqLite)
+//            }
+//            return _dataStack
+//        }
+//        set {
+//            _dataStack = newValue
+//        }
+//    }
+    
+    private var _realm: Realm?
+    public var realm: Realm {
         get {
-            if _dataStack == nil {
-                guard let bundleURL = Bundle(for: ManaKit.self).url(forResource: "ManaKit", withExtension: "bundle"),
-                    let bundle = Bundle(url: bundleURL),
-                    let momURL = bundle.url(forResource: "ManaKit", withExtension: "momd"),
-                    let objectModel = NSManagedObjectModel(contentsOf: momURL) else {
-                    return nil
+            if _realm == nil {
+                guard let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String else {
+                    fatalError("Can't find bundleName")
                 }
-                _dataStack = DataStack(model: objectModel, storeType: .sqLite)
+                var config = Realm.Configuration()
+                
+                
+                // Use the default directory, but replace the filename with ManaKit
+                config.fileURL = config.fileURL!.deletingLastPathComponent().appendingPathComponent("\(bundleName).realm")
+                
+                // Set this as the configuration used for the default Realm
+                Realm.Configuration.defaultConfiguration = config
+                
+                // Open the Realm with the configuration
+                _realm = try! Realm(configuration: config)
             }
-            return _dataStack
-        }
-        set {
-            _dataStack = newValue
+            return _realm!
         }
     }
+    
     public let typeNames = ["Artifact",
                             "Chaos",
                             "Conspiracy",
@@ -139,11 +163,11 @@ public class ManaKit: NSObject {
             let resourceBundle = Bundle(url: bundleURL),
             let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first,
             let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first,
-            let sourcePath = resourceBundle.path(forResource: "ManaKit.sqlite", ofType: "zip"),
+            let sourcePath = resourceBundle.path(forResource: "ManaKit.realm", ofType: "zip"),
             let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String else {
             return
         }
-        let targetPath = "\(docsPath)/\(bundleName).sqlite"
+        let targetPath = "\(docsPath)/\(bundleName).realm"
         var willCopy = true
 
         if let scryfallDate = UserDefaults.standard.string(forKey: Constants.ScryfallDateKey) {
@@ -156,7 +180,7 @@ public class ManaKit: NSObject {
             print("Copying database file: \(Constants.ScryfallDate)")
 
             // Shutdown database
-            dataStack = nil
+//            realm.close()
             
             // Remove old database files in docs directory
             for file in try! FileManager.default.contentsOfDirectory(atPath: docsPath) {
@@ -183,7 +207,7 @@ public class ManaKit: NSObject {
             SSZipArchive.unzipFile(atPath: sourcePath, toDestination: docsPath)
             
             // rename
-            try! FileManager.default.moveItem(atPath: "\(docsPath)/ManaKit.sqlite", toPath: targetPath)
+            try! FileManager.default.moveItem(atPath: "\(docsPath)/ManaKit.realm", toPath: targetPath)
             
             // skip from iCloud backups!
             var targetURL = URL(fileURLWithPath: targetPath)
@@ -223,66 +247,6 @@ public class ManaKit: NSObject {
     }
     
     // MARK: Database methods
-    public func findObject(_ entityName: String,
-                           objectFinder: [String: AnyObject]?,
-                           createIfNotFound: Bool) -> NSManagedObject? {
-        let context = dataStack!.mainContext
-        
-        var object:NSManagedObject?
-        var predicate:NSPredicate?
-        var fetchRequest:NSFetchRequest<NSFetchRequestResult>?
-        
-        if let objectFinder = objectFinder {
-            for (key,value) in objectFinder {
-                if predicate != nil {
-                    predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate!, NSPredicate(format: "%K == [c] %@", key, value as! NSObject)])
-                } else {
-                    predicate = NSPredicate(format: "%K == [c] %@", key, value as! NSObject)
-                }
-            }
-
-            fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-            fetchRequest!.predicate = predicate
-        }
-        
-        if let fetchRequest = fetchRequest {
-            if let m = try! context.fetch(fetchRequest).first as? NSManagedObject {
-                object = m
-            } else {
-                if createIfNotFound {
-                    if let desc = NSEntityDescription.entity(forEntityName: entityName, in: context) {
-                        object = NSManagedObject(entity: desc, insertInto: context)
-                    }
-                }
-            }
-        } else {
-            if createIfNotFound {
-                if let desc = NSEntityDescription.entity(forEntityName: entityName, in: context) {
-                    object = NSManagedObject(entity: desc, insertInto: context)
-                }
-            }
-        }
-        
-        return object
-    }
-    
-    public func saveContext() {
-        guard let dataStack = dataStack else {
-            return
-        }
-        
-        if dataStack.mainContext.hasChanges {
-            do {
-                try dataStack.mainContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
-        }
-    }
-    
     public func typeImage(ofCard card: CMCard) -> UIImage? {
         if let type = card.myType,
             let name = type.name {
@@ -343,17 +307,15 @@ public class ManaKit: NSObject {
             let dict = NSKeyedUnarchiver.unarchiveObject(with: imageURIs as Data) as? [String: String] {
             urlString = dict[imageType.description]
         } else {
-            if let facesSet = card.faces,
-                let faces = facesSet.allObjects as? [CMCard] {
-                let orderedFaces = faces.sorted(by: {(a, b) -> Bool in
-                    return a.faceOrder < b.faceOrder
-                })
-                let face = orderedFaces[faceOrder]
-                
-                if let imageURIs = face.imageURIs,
-                    let dict = NSKeyedUnarchiver.unarchiveObject(with: imageURIs as Data) as? [String: String] {
-                    urlString = dict[imageType.description]
-                }
+            let faces = card.faces
+            let orderedFaces = faces.sorted(by: {(a, b) -> Bool in
+                return a.faceOrder < b.faceOrder
+            })
+            let face = orderedFaces[faceOrder]
+            
+            if let imageURIs = face.imageURIs,
+                let dict = NSKeyedUnarchiver.unarchiveObject(with: imageURIs as Data) as? [String: String] {
+                urlString = dict[imageType.description]
             }
         }
         
@@ -507,28 +469,7 @@ public class ManaKit: NSObject {
     
     public func fetchTCGPlayerCardPricing(card: CMCard) -> Promise<Void> {
         return Promise { seal  in
-            var pricing = card.pricing
-            var willFetch = false
-
-            if pricing != nil {
-                if let lastUpdate = pricing!.lastUpdate {
-                    if let diff = Calendar.current.dateComponents([.hour], from: lastUpdate as Date, to: Date()).hour, diff >= Constants.TCGPlayerPricingAge {
-                        willFetch = true
-                    }
-                } else {
-                    willFetch = true
-                }
-            } else {
-                guard let desc = NSEntityDescription.entity(forEntityName: "CMCardPricing", in: dataStack!.mainContext),
-                    let p = NSManagedObject(entity: desc, insertInto: dataStack!.mainContext) as? CMCardPricing else {
-                    fatalError()
-                }
-                try! dataStack!.mainContext.save()
-                pricing = p
-                willFetch = true
-            }
-            
-            if willFetch {
+            if card.willUpdateTCGPlayerCardPricing() {
                 guard let tcgPlayerPartnerKey = tcgPlayerPartnerKey,
                     let set = card.set,
                     let tcgPlayerSetName = set.tcgplayerName,
@@ -548,6 +489,8 @@ public class ManaKit: NSObject {
                 }.map {
                     try! XML(xml: $0.data, encoding: .utf8)
                 }.done { xml in
+                    let pricing = card.pricing != nil ? card.pricing : CMCardPricing()
+                    
                     for product in xml.xpath("//product") {
                         if let id = product.xpath("id").first?.text,
                             let hiprice = product.xpath("hiprice").first?.text,
@@ -563,11 +506,12 @@ public class ManaKit: NSObject {
                             pricing!.link = link
                         }
                     }
-                    pricing!.lastUpdate = NSDate()
+                    pricing!.lastUpdate = Date()
                     card.pricing = pricing
                     
-                    self.dataStack!.performInNewBackgroundContext { backgroundContext in
-                        try! backgroundContext.save()
+                    try! self.realm.write {
+                        self.realm.add(pricing!)
+                        self.realm.add(card, update: true)
                         seal.fulfill(())
                     }
                 }.catch { error in
@@ -581,19 +525,7 @@ public class ManaKit: NSObject {
     
     public func fetchTCGPlayerStorePricing(card: CMCard) -> Promise<Void> {
         return Promise { seal  in
-            var willFetch = true
-            
-            if let storePricing = card.tcgplayerStorePricing {
-                if let lastUpdate = storePricing.lastUpdate {
-                    if let diff = Calendar.current.dateComponents([.hour], from: lastUpdate as Date, to: Date()).hour {
-                        if diff <= Constants.TCGPlayerPricingAge {
-                            willFetch = false
-                        }
-                    }
-                }
-            }
-            
-            if willFetch {
+            if card.willUpdateTCGPlayerStorePricing() {
                 guard let tcgPlayerPartnerKey = tcgPlayerPartnerKey,
                     let set = card.set,
                     let tcgPlayerSetName = set.tcgplayerName,
@@ -604,26 +536,6 @@ public class ManaKit: NSObject {
                     seal.fulfill(())
                     return
                 }
-
-                // cleanup existing storePricing, if there is any
-                var storePricing: CMStorePricing?
-                if let sp = card.tcgplayerStorePricing {
-                    let suppliers = sp.mutableSetValue(forKey: "suppliers")
-                    for supplier in suppliers {
-                        suppliers.remove(supplier)
-                    }
-                    sp.notes = nil
-                    sp.lastUpdate = nil
-                    storePricing = sp
-                } else {
-                    if let desc = NSEntityDescription.entity(forEntityName: "CMStorePricing", in: dataStack!.mainContext),
-                        let sp = NSManagedObject(entity: desc, insertInto: dataStack!.mainContext) as? CMStorePricing {
-                        
-                        sp.addToCards(card)
-                        storePricing = sp
-                    }
-                }
-                try! dataStack!.mainContext.save()
                 
                 var rq = URLRequest(url: url)
                 rq.httpMethod = "GET"
@@ -633,35 +545,51 @@ public class ManaKit: NSObject {
                 }.map {
                     try! XML(xml: $0.data, encoding: .utf8)
                 }.done { xml in
-                    for supplier in xml.xpath("//supplier") {
-                        if let name = supplier.xpath("name").first?.text,
-                            let condition = supplier.xpath("condition").first?.text,
-                            let qty = supplier.xpath("qty").first?.text,
-                            let price = supplier.xpath("price").first?.text,
-                            let link = supplier.xpath("link").first?.text {
-                            
-                            let id = "\(name)_\(condition)_\(qty)_\(price)"
-                            if let sup = self.findObject("CMStoreSupplier",
-                                                         objectFinder: ["id": id as AnyObject],
-                                                         createIfNotFound: true) as? CMStoreSupplier {
-                            
-                                sup.id = id
-                                sup.name = name
-                                sup.condition = condition
-                                sup.qty = Int32(qty)!
-                                sup.price = Double(price)!
-                                sup.link = link
-                                storePricing!.addToSuppliers(sup)
+                    try! self.realm.write {
+                        var storePricing: CMStorePricing?
+                        
+                        // cleanup existing storePricing, if there is any
+                        if let sp = card.tcgplayerStorePricing {
+                            for sup in sp.suppliers {
+                                self.realm.delete(sup)
+                            }
+                            self.realm.delete(sp)
+                            storePricing = sp
+                        } else {
+                            storePricing = CMStorePricing()
+                        }
+                        
+                        for supplier in xml.xpath("//supplier") {
+                            if let name = supplier.xpath("name").first?.text,
+                                let condition = supplier.xpath("condition").first?.text,
+                                let qty = supplier.xpath("qty").first?.text,
+                                let price = supplier.xpath("price").first?.text,
+                                let link = supplier.xpath("link").first?.text {
+                                
+                                let id = "\(name)_\(condition)_\(qty)_\(price)"
+                                var sup: CMStoreSupplier?
+                                
+                                if let s = self.realm.objects(CMStoreSupplier.self).filter("id = %@", id).first {
+                                    sup = s
+                                } else {
+                                    sup = CMStoreSupplier()
+                                }
+                                sup!.id = id
+                                sup!.name = name
+                                sup!.condition = condition
+                                sup!.qty = Int32(qty)!
+                                sup!.price = Double(price)!
+                                sup!.link = link
+                                self.realm.add(sup!)
+                                storePricing!.suppliers.append(sup!)
                             }
                         }
-                    }
-                    if let note = xml.xpath("//note").first?.text {
-                        storePricing!.notes = note
-                    }
-                    storePricing!.lastUpdate = NSDate()
-                    
-                    self.dataStack!.performInNewBackgroundContext { backgroundContext in
-                        try! backgroundContext.save()
+                        if let note = xml.xpath("//note").first?.text {
+                            storePricing!.notes = note
+                        }
+                        storePricing!.lastUpdate = Date()
+                        self.realm.add(storePricing!)
+                        
                         seal.fulfill(())
                     }
                     

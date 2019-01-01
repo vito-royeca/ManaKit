@@ -6,8 +6,8 @@
 //  Copyright © 2018 CocoaPods. All rights reserved.
 //
 
-import CoreData
 import ManaKit
+import RealmSwift
 
 class DeckMainboardViewModel: NSObject {
     // MARK: Variables
@@ -15,11 +15,11 @@ class DeckMainboardViewModel: NSObject {
     
     private var _sectionIndexTitles = [String]()
     private var _sectionTitles = [String]()
-    private var _fetchedResultsController: NSFetchedResultsController<CMInventory>?
+    private var _results: Results<CMInventory>? = nil
     
     // MARK: Settings
-    private let _sortDescriptors = [NSSortDescriptor(key: "card.typeSection", ascending: true),
-                                   NSSortDescriptor(key: "card.name", ascending: true)]
+    private let _sortDescriptors = [SortDescriptor(keyPath: "card.typeSection", ascending: true),
+                                    SortDescriptor(keyPath: "card.name", ascending: true)]
     private var _sectionName = "card.typeSection"
     
     // MARK: Overrides
@@ -30,25 +30,19 @@ class DeckMainboardViewModel: NSObject {
     
     // MARK: UITableView methods
     func numberOfRows(inSection section: Int) -> Int {
-        guard let fetchedResultsController = _fetchedResultsController,
-            let sections = fetchedResultsController.sections else {
+        guard let results = _results else {
             return 0
         }
         
-        if section == 0 {
-            return 1
-        } else {
-            return sections[section - 1].numberOfObjects
-        }
+        return results.filter("\(_sectionName) == %@", _sectionTitles[section]).count
     }
     
     func numberOfSections() -> Int {
-        guard let fetchedResultsController = _fetchedResultsController,
-            let sections = fetchedResultsController.sections else {
+        guard let _ = _results else {
             return 0
         }
         
-        return sections.count + 1
+        return _sectionTitles.count
     }
     
     func sectionIndexTitles() -> [String]? {
@@ -72,28 +66,32 @@ class DeckMainboardViewModel: NSObject {
         if section == 0 {
             return nil
         } else {
-            guard let fetchedResultsController = _fetchedResultsController,
-                let sections = fetchedResultsController.sections else {
-                    return nil
+            guard let _ = _results else {
+                return nil
             }
             
-            var count = 0
-            if let objects = sections[section - 1].objects as? [CMInventory] {
-                for cardInventory in objects {
-                    count += Int(cardInventory.quantity)
-                }
-            }
-            
-            return "\(sections[section - 1].name): \(count)"
+//            var count = 0
+//            if let objects = sections[section - 1].objects as? [CMInventory] {
+//                for cardInventory in objects {
+//                    count += Int(cardInventory.quantity)
+//                }
+//            }
+//
+//            return "\(sections[section - 1].name): \(count)"
+            return _sectionTitles[section]
         }
     }
     
     // MARK: Custom methods
     func object(forRowAt indexPath: IndexPath) -> CMInventory {
-        guard let fetchedResultsController = _fetchedResultsController else {
-            fatalError("fetchedResultsController is nil")
+//        guard let fetchedResultsController = _fetchedResultsController else {
+//            fatalError("fetchedResultsController is nil")
+//        }
+//        return fetchedResultsController.object(at: IndexPath(row: indexPath.row, section: indexPath.section - 1))
+        guard let results = _results else {
+            fatalError("results is nil")
         }
-        return fetchedResultsController.object(at: IndexPath(row: indexPath.row, section: indexPath.section - 1))
+        return results.filter("\(_sectionName) == %@", _sectionTitles[indexPath.section])[indexPath.row]
     }
     
     func objectTitle() -> String? {
@@ -108,86 +106,40 @@ class DeckMainboardViewModel: NSObject {
             return
         }
         
-        let request: NSFetchRequest<CMInventory> = CMInventory.fetchRequest()
         let predicate = NSPredicate(format: "deck = %@ AND mainboard = YES", deck)
         
-        request.predicate = predicate
-        request.sortDescriptors = _sortDescriptors
-        
-        _fetchedResultsController = getFetchedResultsController(with: request)
+        _results = ManaKit.sharedInstance.realm.objects(CMInventory.self).filter(predicate).sorted(by: _sortDescriptors)
         updateSections()
     }
     
-    private func getFetchedResultsController(with fetchRequest: NSFetchRequest<CMInventory>?) -> NSFetchedResultsController<CMInventory> {
-        let context = ManaKit.sharedInstance.dataStack!.viewContext
-        var request: NSFetchRequest<CMInventory>?
-        
-        if let fetchRequest = fetchRequest {
-            request = fetchRequest
-        } else {
-            // Create a default fetchRequest
-            request = CMInventory.fetchRequest()
-            request!.sortDescriptors = _sortDescriptors
-        }
-        
-        // Create Fetched Results Controller
-        let frc = NSFetchedResultsController(fetchRequest: request!,
-                                             managedObjectContext: context,
-                                             sectionNameKeyPath: _sectionName,
-                                             cacheName: nil)
-        
-        // Configure Fetched Results Controller
-        frc.delegate = self
-        
-        // perform fetch
-        do {
-            try frc.performFetch()
-        } catch {
-            let fetchError = error as NSError
-            print("Unable to Perform Fetch Request")
-            print("\(fetchError), \(fetchError.localizedDescription)")
-        }
-        
-        return frc
-    }
-    
     private func updateSections() {
-        guard let fetchedResultsController = _fetchedResultsController,
-            let cardInventories = fetchedResultsController.fetchedObjects,
-            let sections = fetchedResultsController.sections else {
-                return
+        guard let results = _results else {
+            return
         }
         
         _sectionIndexTitles = [String]()
         _sectionTitles = [String]()
         
-        for cardInventory in cardInventories {
-            if let card = cardInventory.card,
-                let type = card.typeLine,
-                let nameSection = type.nameSection {
-                if !_sectionIndexTitles.contains(nameSection) {
-                    _sectionIndexTitles.append(nameSection)
-                }
-            }
-        }
-        
-        let count = sections.count
-        if count > 0 {
-            for i in 0...count - 1 {
-                if let sectionTitle = sections[i].indexTitle {
-                    _sectionTitles.append(sectionTitle)
-                }
-            }
-        }
+//        for cardInventory in cardInventories {
+//            if let card = cardInventory.card,
+//                let type = card.typeLine,
+//                let nameSection = type.nameSection {
+//                if !_sectionIndexTitles.contains(nameSection) {
+//                    _sectionIndexTitles.append(nameSection)
+//                }
+//            }
+//        }
+//
+//        let count = sections.count
+//        if count > 0 {
+//            for i in 0...count - 1 {
+//                if let sectionTitle = sections[i].indexTitle {
+//                    _sectionTitles.append(sectionTitle)
+//                }
+//            }
+//        }
         
         _sectionIndexTitles.sort()
         _sectionTitles.sort()
     }
 }
-
-// MARK: NSFetchedResultsControllerDelegate
-extension DeckMainboardViewModel : NSFetchedResultsControllerDelegate {
-    
-}
-
-

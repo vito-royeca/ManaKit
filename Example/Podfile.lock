@@ -1,12 +1,12 @@
 PODS:
-  - FontAwesome.swift (1.4.7)
+  - FontAwesome.swift (1.4.8)
   - Kanna (4.0.2)
   - ManaKit (3.11.2):
     - Kanna (~> 4.0.0)
     - PromiseKit
+    - RealmSwift
     - SDWebImage
     - SSZipArchive
-    - Sync
   - PromiseKit (6.7.0):
     - PromiseKit/CorePromise (= 6.7.0)
     - PromiseKit/Foundation (= 6.7.0)
@@ -16,43 +16,49 @@ PODS:
     - PromiseKit/CorePromise
   - PromiseKit/UIKit (6.7.0):
     - PromiseKit/CorePromise
+  - Realm (3.13.0):
+    - Realm/Headers (= 3.13.0)
+  - Realm/Headers (3.13.0)
+  - RealmSwift (3.13.0):
+    - Realm (= 3.13.0)
   - SDWebImage (4.4.3):
     - SDWebImage/Core (= 4.4.3)
   - SDWebImage/Core (4.4.3)
   - SSZipArchive (2.1.4)
-  - Sync (5.1.0)
 
 DEPENDENCIES:
   - FontAwesome.swift
   - Kanna (~> 4.0.0)
   - ManaKit (from `../`)
   - PromiseKit
+  - RealmSwift
   - SDWebImage
   - SSZipArchive
-  - Sync
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - FontAwesome.swift
     - Kanna
     - PromiseKit
+    - Realm
+    - RealmSwift
     - SDWebImage
     - SSZipArchive
-    - Sync
 
 EXTERNAL SOURCES:
   ManaKit:
     :path: "../"
 
 SPEC CHECKSUMS:
-  FontAwesome.swift: ed820aa59420c3c5e1b087afa3f3a78373fc5300
+  FontAwesome.swift: fb8637bffb9a588c7e8c753c084565b27b20a39d
   Kanna: c60b61d72554bf04ed1ee074f9b379855cab4892
-  ManaKit: b7672c65b7e121c8438f7e5bb73ed546df526f3d
+  ManaKit: 6da61329c01330d2f7c247d7893f46d5ed538516
   PromiseKit: 453ddcc947fe7b302f3ef41882b81d31c554df7f
+  Realm: 5edd2ee65406aef591a4f9895de5a3440e51b3d8
+  RealmSwift: be5ebc7930e37cd3376b41cec7f21984528aaa16
   SDWebImage: c5594f1a19c48d526d321e548902b56b479cd508
   SSZipArchive: 41455d4b8d2b6ab93990820b50dc697c2554a322
-  Sync: 0412c2b068eb7cf1a04607e948ef92cbd6114d0f
 
-PODFILE CHECKSUM: aa9ce24725717494a05cb4af8517df7ec7ec6e0b
+PODFILE CHECKSUM: df2171717a27f334a8eacc62f7925c19e52b9768
 
 COCOAPODS: 1.5.3

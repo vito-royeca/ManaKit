@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CoreData
 import PromiseKit
 
 public class CardTableViewCell: UITableViewCell {

@@ -38,7 +38,7 @@ class DecksViewController: UIViewController {
         tableView.register(ManaKit.sharedInstance.nibFromBundle("DeckTableViewCell"),
                            forCellReuseIdentifier: DeckTableViewCell.reuseIdentifier)
         
-        viewModel.fetchData()
+//        viewModel.fetchData()
     }
 
     override func viewDidAppear(_ animated: Bool) {
