@@ -238,8 +238,10 @@ extension Maintainer {
                     set.myKeyruneCode = "e605" // Summer Magic / Edgar
                     realm.add(set)
                 } else {
-                    set.myKeyruneCode = "e684" // default 'M'
-                    realm.add(set)
+                    if set.myKeyruneCode == nil {
+                        set.myKeyruneCode = "e684" // default 'M'
+                        realm.add(set)
+                    }
                 }
             }
         }

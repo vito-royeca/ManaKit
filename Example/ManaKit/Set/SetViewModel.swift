@@ -14,6 +14,7 @@ class SetViewModel: NSObject {
     var queryString = ""
     
     private var _set: CMSet?
+    private var _languageCode: String?
     private var _sectionIndexTitles = [String]()
     private var _sectionTitles = [String]()
     private var _results: Results<CMCard>? = nil
@@ -24,9 +25,10 @@ class SetViewModel: NSObject {
     private var _sectionName = "myNameSection"
     
     // MARK: Overrides
-    init(withSet set: CMSet) {
+    init(withSet set: CMSet, languageCode: String) {
         super.init()
         _set = set
+        _languageCode = languageCode
     }
     
     // MARK: UITableView methods
@@ -72,6 +74,14 @@ class SetViewModel: NSObject {
     }
     
     // MARK: Custom methods
+    func isEmpty() -> Bool {
+        if let results = _results {
+            return results.count <= 0
+        } else {
+            return true
+        }
+    }
+
     func object(forRowAt indexPath: IndexPath) -> CMCard {
         guard let results = _results else {
             fatalError("results is nil")
@@ -87,11 +97,12 @@ class SetViewModel: NSObject {
     }
 
     func fetchData() {
-        guard let set = _set else {
+        guard let set = _set,
+            let languageCode = _languageCode else {
             return
         }
         
-        var predicate = NSPredicate(format: "set.code = %@ AND id != nil", set.code!)
+        var predicate = NSPredicate(format: "set.code = %@ AND language.code = %@ AND id != nil", set.code!, languageCode)
         let count = queryString.count
         
         if count > 0 {
@@ -116,13 +127,17 @@ class SetViewModel: NSObject {
         _sectionIndexTitles = [String]()
         _sectionTitles = [String]()
         
-//        for set in sets {
-//            if let nameSection = set.myNameSection {
-//                if !_sectionIndexTitles.contains(nameSection) {
-//                    _sectionIndexTitles.append(nameSection)
-//                }
-//            }
-//        }
+        for set in results {
+            if let section = set.myNameSection {
+                if !_sectionTitles.contains(section) {
+                    _sectionTitles.append(section)
+                }
+
+                if !_sectionIndexTitles.contains(section) {
+                    _sectionIndexTitles.append(section)
+                }
+            }
+        }
 //
 //        let count = sections.count
 //        if count > 0 {
@@ -133,7 +148,7 @@ class SetViewModel: NSObject {
 //            }
 //        }
         
-        _sectionIndexTitles.sort()
-        _sectionTitles.sort()
+//        _sectionIndexTitles.sort()
+//        _sectionTitles.sort()
     }
 }

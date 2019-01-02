@@ -37,7 +37,8 @@ class SetsViewController: UIViewController {
         }
         tableView.keyboardDismissMode = .onDrag
         
-        viewModel.fetchData()
+        tableView.register(ManaKit.sharedInstance.nibFromBundle("SetTableViewCell"),
+                           forCellReuseIdentifier: SetTableViewCell.reuseIdentifier)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -46,16 +47,24 @@ class SetsViewController: UIViewController {
         if #available(iOS 11.0, *) {
             navigationItem.hidesSearchBarWhenScrolling = true
         }
+        
+        if viewModel.isEmpty() {
+            viewModel.fetchData()
+            tableView.reloadData()
+        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showSet" {
             guard let dest = segue.destination as? SetViewController,
-                let set = sender as? CMSet else {
+                let dict = sender as? [String: Any],
+                let set = dict["set"] as? CMSet,
+                let languageCode = dict["languageCode"] as? String  else {
                 return
             }
             
-            let viewModel = SetViewModel(withSet: set)
+            let viewModel = SetViewModel(withSet: set,
+                                         languageCode: languageCode)
             dest.viewModel = viewModel
         }
     }
@@ -72,12 +81,13 @@ extension SetsViewController : UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: SetsTableViewCell.reuseIdentifier,
-                                                       for: indexPath) as? SetsTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SetTableViewCell.reuseIdentifier,
+                                                       for: indexPath) as? SetTableViewCell else {
             fatalError("Unexpected indexPath: \(indexPath)")
         }
         
         cell.set = viewModel.object(forRowAt: indexPath)
+        cell.delegate = self
         return cell
     }
     
@@ -102,7 +112,7 @@ extension SetsViewController : UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return CGFloat(66)
+        return SetTableViewCell.cellHeight
     }
 }
 
@@ -138,3 +148,15 @@ extension SetsViewController : UISearchBarDelegate {
     }
 }
 
+// MARK: SetsTableViewCellDelegate
+extension SetsViewController: SetTableViewCellDelegate {
+    func languageAction(cell: UITableViewCell, code: String) {
+        guard let indexPath = tableView.indexPath(for: cell) else {
+            return
+        }
+        let set = viewModel.object(forRowAt: indexPath)
+        let sender = ["set": set,
+                      "languageCode": code] as [String : Any]
+        performSegue(withIdentifier: "showSet", sender: sender)
+    }
+}

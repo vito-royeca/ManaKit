@@ -27,7 +27,6 @@
 		118F290521DB035300660158 /* Maintainer+TCGPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118F290421DB035300660158 /* Maintainer+TCGPlayer.swift */; };
 		118F290721DB040D00660158 /* Maintainer+Keyrune.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118F290621DB040C00660158 /* Maintainer+Keyrune.swift */; };
 		118F290921DB051400660158 /* Maintainer+My.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118F290821DB051400660158 /* Maintainer+My.swift */; };
-		119588E12125E63600B5D7C4 /* SetsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119588E02125E63600B5D7C4 /* SetsTableViewCell.swift */; };
 		11E74D96217437FE0077B252 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E74D95217437FE0077B252 /* MainViewController.swift */; };
 		11E74D97217437FE0077B252 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E74D95217437FE0077B252 /* MainViewController.swift */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
@@ -68,7 +67,6 @@
 		118F290421DB035300660158 /* Maintainer+TCGPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+TCGPlayer.swift"; sourceTree = "<group>"; };
 		118F290621DB040C00660158 /* Maintainer+Keyrune.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+Keyrune.swift"; sourceTree = "<group>"; };
 		118F290821DB051400660158 /* Maintainer+My.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+My.swift"; sourceTree = "<group>"; };
-		119588E02125E63600B5D7C4 /* SetsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetsTableViewCell.swift; sourceTree = "<group>"; };
 		11E74D95217437FE0077B252 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		1F8A6A3006839651BED01AC8 /* Pods-ManaKit_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit_Tests/Pods-ManaKit_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		214271945F84D9EB3A6B8CF1 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
@@ -142,7 +140,6 @@
 		119588DA2125DC9600B5D7C4 /* Sets */ = {
 			isa = PBXGroup;
 			children = (
-				119588E02125E63600B5D7C4 /* SetsTableViewCell.swift */,
 				115151A81F1E221C0061C270 /* SetsViewController.swift */,
 				113D40BF2139BC70000D08FA /* SetsViewModel.swift */,
 			);
@@ -480,7 +477,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				119588E12125E63600B5D7C4 /* SetsTableViewCell.swift in Sources */,
 				11313E63217D4BDA00E31997 /* Maintainer+Scryfall.swift in Sources */,
 				1143684A212FD84B00A5E008 /* DeckViewController.swift in Sources */,
 				118F290521DB035300660158 /* Maintainer+TCGPlayer.swift in Sources */,
@@ -592,7 +588,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -642,7 +638,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";

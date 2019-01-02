@@ -65,6 +65,14 @@ class SetsViewModel: NSObject {
     }
     
     // MARK: Custom methods
+    func isEmpty() -> Bool {
+        if let results = _results {
+            return results.count <= 0
+        } else {
+            return true
+        }
+    }
+
     func object(forRowAt indexPath: IndexPath) -> CMSet {
         guard let results = _results else {
             fatalError("results is nil")
@@ -99,9 +107,9 @@ class SetsViewModel: NSObject {
         _sectionTitles = [String]()
         
         for set in results {
-            if let nameSection = set.myNameSection {
-                if !_sectionTitles.contains(nameSection) {
-                    _sectionTitles.append(nameSection)
+            if let section = set.myYearSection {
+                if !_sectionTitles.contains(section) {
+                    _sectionTitles.append(section)
                 }
             }
         }
@@ -116,7 +124,7 @@ class SetsViewModel: NSObject {
 //            }
 //        }
         
-        _sectionIndexTitles.sort()
-        _sectionTitles.sort()
+//        _sectionIndexTitles.sort()
+//        _sectionTitles.sort()
     }
 }

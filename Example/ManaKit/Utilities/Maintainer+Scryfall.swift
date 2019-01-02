@@ -46,6 +46,15 @@ extension Maintainer {
             for dict in data {
                 if let code = dict["code"] as? String,
                     let name = dict["name"] as? String {
+                    
+                    // skip latest sets
+                    if code == "rna" ||
+                        code == "prna" ||
+                        code == "trna" ||
+                        code == "prw2" {
+                        continue
+                    }
+                    
                     var set: CMSet?
                     var setType: CMSetType?
                     var setBlock: CMSetBlock?
@@ -119,6 +128,14 @@ extension Maintainer {
             for dict in data {
                 if let code = dict["code"] as? String,
                     let parentSetCode = dict["parent_set_code"] as? String {
+                    
+                    // skip latest sets
+                    if code == "rna" ||
+                        code == "prna" ||
+                        code == "trna" ||
+                        code == "prw2" {
+                        continue
+                    }
                     
                     if let childSet = realm.object(ofType: CMSet.self, forPrimaryKey: code),
                         let parentSet = realm.object(ofType: CMSet.self, forPrimaryKey: parentSetCode) {

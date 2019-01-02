@@ -34,7 +34,7 @@ public class ManaKit: NSObject {
     
     public enum Constants {
         public static let ScryfallDateKey     = "ScryfallDateKey"
-        public static let ScryfallDate        = "2018-12-11 09:21 UTC - Realm DB"
+        public static let ScryfallDate        = "2018-12-11 09:21 UTC - *New Realm DB*"
         public static let KeyruneVersion      = "3.3.2"
         public static let EightEditionRelease = "2003-07-28"
         public static let TCGPlayerPricingAge = 24 * 3 // 3 days
@@ -491,25 +491,25 @@ public class ManaKit: NSObject {
                 }.done { xml in
                     let pricing = card.pricing != nil ? card.pricing : CMCardPricing()
                     
-                    for product in xml.xpath("//product") {
-                        if let id = product.xpath("id").first?.text,
-                            let hiprice = product.xpath("hiprice").first?.text,
-                            let lowprice = product.xpath("lowprice").first?.text,
-                            let avgprice = product.xpath("avgprice").first?.text,
-                            let foilavgprice = product.xpath("foilavgprice").first?.text,
-                            let link = product.xpath("link").first?.text {
-                            pricing!.id = Int64(id)!
-                            pricing!.high = Double(hiprice)!
-                            pricing!.low = Double(lowprice)!
-                            pricing!.average = Double(avgprice)!
-                            pricing!.foil = Double(foilavgprice)!
-                            pricing!.link = link
-                        }
-                    }
-                    pricing!.lastUpdate = Date()
-                    card.pricing = pricing
-                    
                     try! self.realm.write {
+                        for product in xml.xpath("//product") {
+                            if let id = product.xpath("id").first?.text,
+                                let hiprice = product.xpath("hiprice").first?.text,
+                                let lowprice = product.xpath("lowprice").first?.text,
+                                let avgprice = product.xpath("avgprice").first?.text,
+                                let foilavgprice = product.xpath("foilavgprice").first?.text,
+                                let link = product.xpath("link").first?.text {
+                                pricing!.id = Int64(id)!
+                                pricing!.high = Double(hiprice)!
+                                pricing!.low = Double(lowprice)!
+                                pricing!.average = Double(avgprice)!
+                                pricing!.foil = Double(foilavgprice)!
+                                pricing!.link = link
+                            }
+                        }
+                        pricing!.lastUpdate = Date()
+                        card.pricing = pricing
+                    
                         self.realm.add(pricing!)
                         self.realm.add(card, update: true)
                         seal.fulfill(())

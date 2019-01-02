@@ -29,7 +29,7 @@ A database of Magic: The Gathering cards. Includes prices and images.
   s.social_media_url = 'https://twitter.com/ManaGuideApp'
   s.swift_version    = '4.2'
   
-  s.ios.deployment_target = '9.0'
+  s.ios.deployment_target = '10.3'
 
   s.source_files = 'ManaKit/Classes/**/*'
   

@@ -35,10 +35,10 @@ class SetViewController: UIViewController {
             tableView.tableHeaderView = searchController.searchBar
         }
         tableView.keyboardDismissMode = .onDrag
-        tableView.register(ManaKit.sharedInstance.nibFromBundle("CardTableViewCell"), forCellReuseIdentifier: CardTableViewCell.reuseIdentifier)
+        tableView.register(ManaKit.sharedInstance.nibFromBundle("CardTableViewCell"),
+                           forCellReuseIdentifier: CardTableViewCell.reuseIdentifier)
         
         title = viewModel.objectTitle()
-        viewModel.fetchData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -46,6 +46,11 @@ class SetViewController: UIViewController {
         
         if #available(iOS 11.0, *) {
             navigationItem.hidesSearchBarWhenScrolling = true
+        }
+        
+        if viewModel.isEmpty() {
+            viewModel.fetchData()
+            tableView.reloadData()
         }
     }
 

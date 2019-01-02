@@ -549,7 +549,6 @@ extension Maintainer {
                 }
             }
         }
-        
         return termOrder
     }
 }

@@ -55,6 +55,7 @@ class Maintainer: NSObject {
     }
 
     func compactDatabase() {
+        print("Compacting database...")
         let path = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])"
         let compactFile = "\(path)/ManaKit.realm"
         let zipFile = "\(compactFile).zip"
@@ -68,6 +69,7 @@ class Maintainer: NSObject {
         
         try! realm.writeCopy(toFile: URL(fileURLWithPath: compactFile))
         SSZipArchive.createZipFile(atPath: zipFile, withFilesAtPaths: [compactFile])
+        print("Done.")
     }
     
     // MARK: Utility methods

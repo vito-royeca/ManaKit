@@ -22,17 +22,17 @@ public class CardTableViewCell: UITableViewCell {
     public var faceOrder = 0
 
     // MARK: Outlets
-    @IBOutlet weak var thumbnailImage: UIImageView!
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var castingCostLabel: UILabel!
-    @IBOutlet weak var annotationLabel: UILabel!
-    @IBOutlet weak var typeImage: UIImageView!
-    @IBOutlet weak var typeLabel: UILabel!
-    @IBOutlet weak var setImage: UILabel!
-    @IBOutlet weak var lowPriceLabel: UILabel!
-    @IBOutlet weak var midPriceLabel: UILabel!
-    @IBOutlet weak var highPriceLabel: UILabel!
-    @IBOutlet weak var foilPriceLabel: UILabel!
+    @IBOutlet public weak var thumbnailImage: UIImageView!
+    @IBOutlet public weak var nameLabel: UILabel!
+    @IBOutlet public weak var castingCostLabel: UILabel!
+    @IBOutlet public weak var annotationLabel: UILabel!
+    @IBOutlet public weak var typeImage: UIImageView!
+    @IBOutlet public weak var typeLabel: UILabel!
+    @IBOutlet public weak var setImage: UILabel!
+    @IBOutlet public weak var lowPriceLabel: UILabel!
+    @IBOutlet public weak var midPriceLabel: UILabel!
+    @IBOutlet public weak var highPriceLabel: UILabel!
+    @IBOutlet public weak var foilPriceLabel: UILabel!
 
     // MARK: Overrides
     override public func awakeFromNib() {
