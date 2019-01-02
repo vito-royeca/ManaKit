@@ -1,3 +1,6 @@
+**Version 4.0.0** @ 01.01.2019
+- Refactor: replaced Core Data with Realm database.
+
 **Version 3.11.2** @ 20.12.2018
 - Refactored Manakit.downloadImage(ofCard card:imageType:faceOrder:) with a helper method downloadImage(url:).
 
