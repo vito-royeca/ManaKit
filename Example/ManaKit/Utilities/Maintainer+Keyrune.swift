@@ -65,7 +65,10 @@ extension Maintainer {
         
             // manual fix
             for set in realm.objects(CMSet.self) {
-                if set.code == "c14" ||
+                if set.code == "med" ||
+                    set.code == "tmed" {
+                    set.myKeyruneCode = "e94c"
+                } else if set.code == "c14" ||
                     set.code == "oc14" ||
                     set.code == "tc14" {
                     set.myKeyruneCode = "e65d" // typo in website

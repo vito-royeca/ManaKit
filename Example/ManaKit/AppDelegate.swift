@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Create data
 //        let maintainer = Maintainer()
-//        maintainer.startActivity(name: "Start")
+//        maintainer.startActivity(name: "Create data...")
 //
 //        firstly {
 //            maintainer.fetchSetsAndCreateCards()

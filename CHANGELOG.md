@@ -1,3 +1,6 @@
+**Version 4.0.1** @ 02.01.2019
+- Updated the Scryfall database to: 2019-01-02 09:35 UTC.
+
 **Version 4.0.0** @ 01.01.2019
 - Refactor: replaced Core Data with Realm database.
 
