@@ -223,7 +223,7 @@ extension Maintainer {
         }
     }
     
-    private func processCardData(dict: [String: Any], languageCode: String? ) -> CMCard {
+    private func processCardData(dict: [String: Any], languageCode: String?) -> CMCard {
         let card = CMCard()
         
         // arena id

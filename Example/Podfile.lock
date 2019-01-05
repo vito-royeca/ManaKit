@@ -1,7 +1,7 @@
 PODS:
   - FontAwesome.swift (1.4.8)
   - Kanna (4.0.2)
-  - ManaKit (4.0.0):
+  - ManaKit (4.0.1):
     - Kanna (~> 4.0.0)
     - PromiseKit
     - RealmSwift
@@ -16,11 +16,11 @@ PODS:
     - PromiseKit/CorePromise
   - PromiseKit/UIKit (6.7.1):
     - PromiseKit/CorePromise
-  - Realm (3.13.0):
-    - Realm/Headers (= 3.13.0)
-  - Realm/Headers (3.13.0)
-  - RealmSwift (3.13.0):
-    - Realm (= 3.13.0)
+  - Realm (3.13.1):
+    - Realm/Headers (= 3.13.1)
+  - Realm/Headers (3.13.1)
+  - RealmSwift (3.13.1):
+    - Realm (= 3.13.1)
   - SDWebImage (4.4.3):
     - SDWebImage/Core (= 4.4.3)
   - SDWebImage/Core (4.4.3)
@@ -52,10 +52,10 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   FontAwesome.swift: fb8637bffb9a588c7e8c753c084565b27b20a39d
   Kanna: c60b61d72554bf04ed1ee074f9b379855cab4892
-  ManaKit: 37a3892c0a477c141b6c2244fcc5eedf01e0a04d
+  ManaKit: 8bc2178f5c7b7fbefc0cd0976b9648309fb7dc22
   PromiseKit: ef376fb8b4e92edfeb66bd403b983eaa07fbde0c
-  Realm: 5edd2ee65406aef591a4f9895de5a3440e51b3d8
-  RealmSwift: be5ebc7930e37cd3376b41cec7f21984528aaa16
+  Realm: 50071da38fe079e0735e47c9f2eae738c68c5996
+  RealmSwift: 8a1e6a02b7a08cd17a31e3115143fb69fe5f3fb9
   SDWebImage: c5594f1a19c48d526d321e548902b56b479cd508
   SSZipArchive: 41455d4b8d2b6ab93990820b50dc697c2554a322
 
