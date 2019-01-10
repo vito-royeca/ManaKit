@@ -8,6 +8,7 @@
 
 import UIKit
 import Kanna
+import KeychainAccess
 import PromiseKit
 import RealmSwift
 import SDWebImage
@@ -34,10 +35,13 @@ public class ManaKit: NSObject {
     
     public enum Constants {
         public static let ScryfallDateKey     = "ScryfallDateKey"
-        public static let ScryfallDate        = "2019-01-04 09:58 UTC"
+        public static let ScryfallDate        = "2019-01-09 09:45 UTC"
         public static let KeyruneVersion      = "3.3.3"
         public static let EightEditionRelease = "2003-07-28"
-        public static let TCGPlayerPricingAge = 24 * 3 // 3 days
+        public static let TcgPlayerApiVersion = "v1.9.0"
+        public static let TcgPlayerApiLimit   = 300
+        public static let TcgPlayerPricingAge = 24 * 3 // 3 days
+        public static let TcgPlayerTokenKey   = "TcgPlayerTokenKey"
         public static let FirebaseDataAge     = 60     // 60 sec
     }
     
@@ -137,9 +141,10 @@ public class ManaKit: NSObject {
                             "Tribal",
                             "Vanguard"]
     
-    fileprivate var tcgPlayerPartnerKey: String?
-    fileprivate var tcgPlayerPublicKey: String?
-    fileprivate var tcgPlayerPrivateKey: String?
+    var tcgPlayerPartnerKey: String?
+    var tcgPlayerPublicKey: String?
+    var tcgPlayerPrivateKey: String?
+    let keychain = Keychain(service: "com.jovitoroyeca.ManaKit")
     
     // MARK: Resource methods
     public func nibFromBundle(_ name: String) -> UINib? {
@@ -461,20 +466,226 @@ public class ManaKit: NSObject {
     }
     
     // MARK: TCGPlayer
-    public func configureTCGPlayer(partnerKey: String, publicKey: String?, privateKey: String?) {
+    public func configureTcgPlayer(partnerKey: String, publicKey: String?, privateKey: String?) {
         tcgPlayerPartnerKey = partnerKey
         tcgPlayerPublicKey = publicKey
         tcgPlayerPrivateKey = privateKey
     }
     
+    public func authenticateTcgPlayer() -> Promise<Void> {
+        return Promise { seal  in
+            guard let _ = tcgPlayerPartnerKey,
+                let tcgPlayerPublicKey = tcgPlayerPublicKey,
+                let tcgPlayerPrivateKey = tcgPlayerPrivateKey else {
+                let error = NSError(domain: "Error", code: 401, userInfo: [NSLocalizedDescriptionKey: "No TCGPlayer keys found."])
+                seal.reject(error)
+                return
+            }
+            
+            if let _ = keychain[Constants.TcgPlayerTokenKey] {
+                seal.fulfill(())
+            } else {
+                guard let urlString = "https://api.tcgplayer.com/token".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+                    let url = URL(string: urlString) else {
+                    fatalError("Malformed url")
+                }
+                let query = "grant_type=client_credentials&client_id=\(tcgPlayerPublicKey)&client_secret=\(tcgPlayerPrivateKey)"
+            
+                var rq = URLRequest(url: url)
+                rq.httpMethod = "POST"
+                rq.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                rq.httpBody = query.data(using: .utf8)
+            
+                firstly {
+                    URLSession.shared.dataTask(.promise, with: rq)
+                }.compactMap {
+                    try JSONSerialization.jsonObject(with: $0.data) as? [String: Any]
+                }.done { json in
+                    guard let token = json["access_token"] as? String else {
+                        let error = NSError(domain: "Error", code: 401, userInfo: [NSLocalizedDescriptionKey: "No TCGPlayer token found."])
+                        seal.reject(error)
+                        return
+                    }
+                    self.keychain[Constants.TcgPlayerTokenKey] = token
+                    seal.fulfill()
+                }.catch { error in
+                    print("\(error)")
+                    seal.reject(error)
+                }
+            }
+        }
+    }
+    
+    public func getTcgPlayerPrices(forSet set: CMSet) -> Promise<Void> {
+        return Promise { seal  in
+            guard let urlString = "http://api.tcgplayer.com/\(Constants.TcgPlayerApiVersion)/pricing/group/\(set.tcgPlayerID)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+                let url = URL(string: urlString) else {
+                    fatalError("Malformed url")
+            }
+            
+            guard let token = keychain[Constants.TcgPlayerTokenKey] else {
+                fatalError("No TCGPlayer token found.")
+            }
+            
+            var rq = URLRequest(url: url)
+            rq.httpMethod = "GET"
+            rq.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            rq.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            
+            firstly {
+                URLSession.shared.dataTask(.promise, with:rq)
+            }.compactMap {
+                try JSONSerialization.jsonObject(with: $0.data) as? [String: Any]
+            }.done { json in
+                guard let results = json["results"] as? [[String: Any]] else {
+                    fatalError("results is nil")
+                }
+                
+                try! self.realm.write {
+                    // delete first
+                    for card in set.cards {
+                        for pricing in card.pricings {
+                            self.realm.delete(pricing)
+                        }
+                        self.realm.add(card)
+                    }
+                    
+                    for dict in results {
+                        if let productId = dict["productId"] as? Int,
+                            let card = self.realm.objects(CMCard.self).filter("tcgPlayerID = %@", productId).first {
+                            
+                            let pricing = CMCardPricing()
+                            pricing.card = card
+                            if let d = dict["lowPrice"] as? Double {
+                                pricing.lowPrice = d
+                            }
+                            if let d = dict["midPrice"] as? Double {
+                                pricing.midPrice = d
+                            }
+                            if let d = dict["highPrice"] as? Double {
+                                pricing.highPrice = d
+                            }
+                            if let d = dict["marketPrice"] as? Double {
+                                pricing.marketPrice = d
+                            }
+                            if let d = dict["directLowPrice"] as? Double {
+                                pricing.directLowPrice = d
+                            }
+                            if let d = dict["subTypeName"] as? String {
+                                if d == "Normal" {
+                                    pricing.isFoil = false
+                                } else if d == "Foil" {
+                                    pricing.isFoil = true
+                                }
+                            }
+                            self.realm.add(pricing)
+                            
+                            card.pricings.append(pricing)
+                            card.tcgPlayerID = Int32(productId)
+                            card.tcgPlayerLstUpdate = Date()
+                            self.realm.add(card)
+                        }
+                    }
+                    seal.fulfill()
+                }
+            }.catch { error in
+                print("\(error)")
+                seal.reject(error)
+            }
+        }
+    }
+    
+    public func getTcgPlayerPrices(forCards cards: [CMCard]) -> Promise<Void> {
+        return Promise { seal  in
+            let productIds = cards.map({ $0.tcgPlayerID }).map(String.init).joined(separator: ",")
+            guard let urlString = "http://api.tcgplayer.com/\(Constants.TcgPlayerApiVersion)/pricing/product/\(productIds)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+                let url = URL(string: urlString) else {
+                fatalError("Malformed url")
+            }
+            
+            guard let token = keychain[Constants.TcgPlayerTokenKey] else {
+                fatalError("No TCGPlayer token found.")
+            }
+            
+            var rq = URLRequest(url: url)
+            rq.httpMethod = "GET"
+            rq.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            rq.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            
+            firstly {
+                URLSession.shared.dataTask(.promise, with:rq)
+            }.compactMap {
+                try JSONSerialization.jsonObject(with: $0.data) as? [String: Any]
+            }.done { json in
+                guard let results = json["results"] as? [[String: Any]] else {
+                    fatalError("results is nil")
+                }
+                
+                try! self.realm.write {
+                    // delete first
+                    for card in cards {
+                        for pricing in card.pricings {
+                            self.realm.delete(pricing)
+                        }
+                        self.realm.add(card)
+                    }
+                    
+                    for dict in results {
+                        if let productId = dict["productId"] as? Int,
+                            let card = cards.filter({ it -> Bool in
+                               it.tcgPlayerID == productId
+                            }).first {
+                            
+                            let pricing = CMCardPricing()
+                            pricing.card = card
+                            if let d = dict["lowPrice"] as? Double {
+                                pricing.lowPrice = d
+                            }
+                            if let d = dict["midPrice"] as? Double {
+                                pricing.midPrice = d
+                            }
+                            if let d = dict["highPrice"] as? Double {
+                                pricing.highPrice = d
+                            }
+                            if let d = dict["marketPrice"] as? Double {
+                                pricing.marketPrice = d
+                            }
+                            if let d = dict["directLowPrice"] as? Double {
+                                pricing.directLowPrice = d
+                            }
+                            if let d = dict["subTypeName"] as? String {
+                                if d == "Normal" {
+                                    pricing.isFoil = false
+                                } else if d == "Foil" {
+                                    pricing.isFoil = true
+                                }
+                            }
+                            self.realm.add(pricing)
+                            
+                            card.pricings.append(pricing)
+                            card.tcgPlayerID = Int32(productId)
+                            card.tcgPlayerLstUpdate = Date()
+                            self.realm.add(card)
+                        }
+                    }
+                    seal.fulfill()
+                }
+            }.catch { error in
+                print("\(error)")
+                seal.reject(error)
+            }
+        }
+    }
+    
+/*
     public func fetchTCGPlayerCardPricing(card: CMCard) -> Promise<Void> {
         return Promise { seal  in
             if card.willUpdateTCGPlayerCardPricing() {
                 guard let tcgPlayerPartnerKey = tcgPlayerPartnerKey,
-                    let set = card.set,
-                    let tcgPlayerSetName = set.tcgplayerName,
+//                    let set = card.set,
+//                    let tcgPlayerSetName = set.tcgplayerName,
                     let cardName = card.name,
-                    let urlString = "http://partner.tcgplayer.com/x3/phl.asmx/p?pk=\(tcgPlayerPartnerKey)&s=\(tcgPlayerSetName)&p=\(cardName)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+                    let urlString = "http://partner.tcgplayer.com/x3/phl.asmx/p?pk=\(tcgPlayerPartnerKey)&s=\("tcgPlayerSetName")&p=\(cardName)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                     let url = URL(string: urlString) else {
                     
                     seal.fulfill(())
@@ -522,15 +733,15 @@ public class ManaKit: NSObject {
             }
         }
     }
-    
+*/
     public func fetchTCGPlayerStorePricing(card: CMCard) -> Promise<Void> {
         return Promise { seal  in
             if card.willUpdateTCGPlayerStorePricing() {
                 guard let tcgPlayerPartnerKey = tcgPlayerPartnerKey,
-                    let set = card.set,
-                    let tcgPlayerSetName = set.tcgplayerName,
+//                    let set = card.set,
+//                    let tcgPlayerSetName = set.tcgplayerName,
                     let cardName = card.name,
-                    let urlString = "http://partner.tcgplayer.com/x3/pv.asmx/p?pk=\(tcgPlayerPartnerKey)&s=\(tcgPlayerSetName)&p=\(cardName)&v=8".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+                    let urlString = "http://partner.tcgplayer.com/x3/pv.asmx/p?pk=\(tcgPlayerPartnerKey)&s=\("tcgPlayerSetName")&p=\(cardName)&v=8".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                     let url = URL(string: urlString) else {
                     
                     seal.fulfill(())
@@ -601,7 +812,7 @@ public class ManaKit: NSObject {
             }
         }
     }
-    
+
     // MARK: Keyrune
     public func keyruneUnicode(forSet set: CMSet) -> String? {
         var unicode:String?

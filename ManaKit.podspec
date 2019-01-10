@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ManaKit'
-  s.version          = '4.0.2'
+  s.version          = '4.0.3'
   s.summary          = 'Core Data implementation of MTGJSON.com.'
 
 # This description is used to generate tags and improve search results.
@@ -40,8 +40,9 @@ A database of Magic: The Gathering cards. Includes prices and images.
   s.pod_target_xcconfig = { 'HEADER_SEARCH_PATHS' => "$(SDKROOT)/usr/include/libxml2" }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  s.frameworks = 'UIKit', 'Kanna', 'PromiseKit', 'RealmSwift', 'SSZipArchive', 'SDWebImage'
+  s.frameworks = 'UIKit', 'Kanna', 'KeychainAccess', 'PromiseKit', 'RealmSwift', 'SSZipArchive', 'SDWebImage'
   s.dependency 'Kanna', '~> 4.0.0'
+  s.dependency 'KeychainAccess'
   s.dependency 'PromiseKit'
   s.dependency 'RealmSwift'
   s.dependency 'SSZipArchive'

@@ -22,8 +22,8 @@ public class CMSet: Object {
     @objc public dynamic var myYearSection: String? = nil
     @objc public dynamic var name: String? = nil
     @objc public dynamic var releaseDate: String? = nil
-    @objc public dynamic var tcgplayerName: String? = nil
-    
+    @objc public dynamic var tcgPlayerID = Int32(0)
+
     // MARK: Relationships
     @objc public dynamic var block: CMSetBlock?
     public let cards = List<CMCard>()

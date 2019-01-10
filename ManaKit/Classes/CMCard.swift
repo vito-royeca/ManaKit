@@ -25,7 +25,7 @@ public class CMCard: Object {
     @objc public dynamic var id: String? = nil
     @objc public dynamic var illustrationID: String? = nil
     @objc public dynamic var imageURIs: Data? = nil
-    @objc public dynamic var internalId: String? = nil
+    @objc public dynamic var internalID = Int32(0)
     @objc public dynamic var isColorshifted = false
     @objc public dynamic var isDigital = false
     @objc public dynamic var isFoil = false
@@ -53,6 +53,8 @@ public class CMCard: Object {
     @objc public dynamic var printedText: String? = nil
     @objc public dynamic var releaseDate: String? = nil
     @objc public dynamic var tcgPlayerPurchaseURI: String? = nil
+    @objc public dynamic var tcgPlayerID = Int32(0)
+    @objc public dynamic var tcgPlayerLstUpdate: Date? = nil
     @objc public dynamic var toughness: String? = nil
     
     // MARK: Relationships
@@ -73,34 +75,35 @@ public class CMCard: Object {
     public let inventories = List<CMInventory>()
     @objc public dynamic var language: CMLanguage?
     @objc public dynamic var layout: CMCardLayout?
+    @objc public dynamic var myType: CMCardType?
+    public let otherLanguages = List<CMCard>()
+    public let otherPrintings = List<CMCard>()
     @objc public dynamic var part: CMCard?
     public let parts = List<CMCard>()
-    @objc public dynamic var pricing: CMCardPricing?
+    public let pricings = List<CMCardPricing>()
     @objc public dynamic var printedTypeLine: CMCardType?
     @objc public dynamic var rarity: CMCardRarity?
     @objc public dynamic var set: CMSet?
     @objc public dynamic var tcgplayerStorePricing: CMStorePricing?
     @objc public dynamic var typeLine: CMCardType?
-    @objc public dynamic var myType: CMCardType?
+    public let variations = List<CMCard>()
     @objc public dynamic var watermark: CMCardWatermark?
     
     // MARK: Primary key
     override public static func primaryKey() -> String? {
-        return "internalId"
+        return "internalID"
     }
 
     // MARK: Custom methods
     public func willUpdateTCGPlayerCardPricing() -> Bool {
         var willUpdate = false
         
-        if let pricing = pricing {
-            if let lastUpdate = pricing.lastUpdate {
-                if let diff = Calendar.current.dateComponents([.hour],
-                                                              from: lastUpdate as Date,
-                                                              to: Date()).hour {
-                    if diff >= ManaKit.Constants.TCGPlayerPricingAge {
-                        willUpdate = true
-                    }
+        if let lastUpdate = tcgPlayerLstUpdate {
+            if let diff = Calendar.current.dateComponents([.hour],
+                                                          from: lastUpdate as Date,
+                                                          to: Date()).hour {
+                if diff >= ManaKit.Constants.TcgPlayerPricingAge {
+                    willUpdate = true
                 }
             }
         } else {
@@ -120,7 +123,7 @@ public class CMCard: Object {
                                                           from: lastUpdate as Date,
                                                           to: Date()).hour {
                 
-                if diff >= ManaKit.Constants.TCGPlayerPricingAge {
+                if diff >= ManaKit.Constants.TcgPlayerPricingAge {
                     willUpdate = true
                 }
             }

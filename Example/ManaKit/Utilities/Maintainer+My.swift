@@ -79,14 +79,14 @@ extension Maintainer {
                         }
                     }
                     
-                    // Firebase id = set.code + _ + card.name + _ + card.name+ number?
+                    // Firebase id = set.code + _ + card.name + _ + number? + _ + languageCode
                     if let _ = card.id,
                         let set = card.set,
                         let setCode = set.code,
                         let language = card.language,
                         let languageCode = language.code,
                         let name = card.name {
-                        var firebaseID = "\(setCode.uppercased())_\(name)_\(name.lowercased())"
+                        var firebaseID = "\(setCode.uppercased())_\(name.lowercased())"
 
                         let variations = realm.objects(CMCard.self).filter("set.code = %@ AND language.code = %@ AND name = %@",
                                                                            setCode,
@@ -110,12 +110,10 @@ extension Maintainer {
                         }
 
                         // add language code for non-english cards
-                        if let language = card.language,
-                            let code = language.code {
-                            if code != "en" {
-                                firebaseID += "_\(code)"
-                            }
+                        if languageCode != "en" {
+                            firebaseID += "_\(languageCode)"
                         }
+                        
                         card.firebaseID = encodeFirebase(key: firebaseID)
                     }
 
@@ -550,5 +548,24 @@ extension Maintainer {
             }
         }
         return termOrder
+    }
+    
+    // MARK: Cleanup
+    func removeIDs()  {
+        let cards = realm.objects(CMCard.self).filter("id != nil")
+        var count = 0
+        print("Removing ID: \(count)/\(cards.count) \(Date())")
+        
+        try! realm.write {
+            for card in cards {
+                card.id = nil
+                realm.add(card)
+                
+                count += 1
+                if count % printMilestone == 0 {
+                    print("Removing ID: \(count)/\(cards.count) \(Date())")
+                }
+            }
+        }
     }
 }

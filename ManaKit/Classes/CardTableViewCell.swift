@@ -8,6 +8,7 @@
 
 import UIKit
 import PromiseKit
+import RealmSwift
 
 public class CardTableViewCell: UITableViewCell {
     public static let reuseIdentifier = "CardCell"
@@ -20,7 +21,8 @@ public class CardTableViewCell: UITableViewCell {
         }
     }
     public var faceOrder = 0
-
+    var token : NotificationToken?
+    
     // MARK: Outlets
     @IBOutlet public weak var thumbnailImage: UIImageView!
     @IBOutlet public weak var nameLabel: UILabel!
@@ -29,9 +31,7 @@ public class CardTableViewCell: UITableViewCell {
     @IBOutlet public weak var typeImage: UIImageView!
     @IBOutlet public weak var typeLabel: UILabel!
     @IBOutlet public weak var setImage: UILabel!
-    @IBOutlet public weak var lowPriceLabel: UILabel!
-    @IBOutlet public weak var midPriceLabel: UILabel!
-    @IBOutlet public weak var highPriceLabel: UILabel!
+    @IBOutlet public weak var normalPriceLabel: UILabel!
     @IBOutlet public weak var foilPriceLabel: UILabel!
 
     // MARK: Overrides
@@ -62,17 +62,10 @@ public class CardTableViewCell: UITableViewCell {
         typeLabel.text = nil
         setImage.text = nil
         
-        lowPriceLabel.text = "NA"
-        lowPriceLabel.textColor = ManaKit.PriceColors.normal
-        
-        midPriceLabel.text = "NA"
-        midPriceLabel.textColor = ManaKit.PriceColors.normal
-        
-        highPriceLabel.text = "NA"
-        highPriceLabel.textColor = ManaKit.PriceColors.normal
-        
+        normalPriceLabel.text = "NA"
+        normalPriceLabel.textColor = UIColor.black
         foilPriceLabel.text = "NA"
-        foilPriceLabel.textColor = ManaKit.PriceColors.normal
+        foilPriceLabel.textColor = UIColor.black
     }
     
     private func updateDataDisplay() {
@@ -166,20 +159,17 @@ public class CardTableViewCell: UITableViewCell {
         typeLabel.text = ManaKit.sharedInstance.typeText(ofCard: card, includePower: true)
         
         // pricing
-        var willFetchPricing = false
-        if let set = card.set {
-            willFetchPricing = !set.isOnlineOnly
-        }
-        if willFetchPricing {
-            firstly {
-                ManaKit.sharedInstance.fetchTCGPlayerCardPricing(card: card)
-            }.done {
-                self.updatePricing()
-            }.catch { error in
-                self.updatePricing()
+        updateCardPricing()
+        
+        token = card.observe { change in
+            switch change {
+            case .change:
+                self.updateCardPricing()
+            case .error(let error):
+                print("An error occurred: \(error)")
+            case .deleted:
+                print("The object was deleted.")
             }
-        } else {
-            updatePricing()
         }
     }
     
@@ -193,33 +183,20 @@ public class CardTableViewCell: UITableViewCell {
         annotationLabel.text = ""
     }
     
-    public func updatePricing() {
-        guard let card = card,
-            let pricing = card.pricing else {
-                lowPriceLabel.text = "NA"
-                lowPriceLabel.textColor = ManaKit.PriceColors.normal
-                
-                midPriceLabel.text = "NA"
-                midPriceLabel.textColor = ManaKit.PriceColors.normal
-                
-                highPriceLabel.text = "NA"
-                highPriceLabel.textColor = ManaKit.PriceColors.normal
-                
-                foilPriceLabel.text = "NA"
-                foilPriceLabel.textColor = ManaKit.PriceColors.normal
-                return
+    private func updateCardPricing() {
+        foilPriceLabel.text = "NA"
+        normalPriceLabel.text = "NA"
+
+        guard let card = card else {
+            return
         }
         
-        lowPriceLabel.text = pricing.low > 0 ? String(format: "$%.2f", pricing.low) : "NA"
-        lowPriceLabel.textColor = pricing.low > 0 ? ManaKit.PriceColors.low : ManaKit.PriceColors.normal
-        
-        midPriceLabel.text = pricing.average > 0 ? String(format: "$%.2f", pricing.average) : "NA"
-        midPriceLabel.textColor = pricing.average > 0 ? ManaKit.PriceColors.mid : ManaKit.PriceColors.normal
-        
-        highPriceLabel.text = pricing.high > 0 ? String(format: "$%.2f", pricing.high) : "NA"
-        highPriceLabel.textColor = pricing.high > 0 ? ManaKit.PriceColors.high : ManaKit.PriceColors.normal
-        
-        foilPriceLabel.text = pricing.foil > 0 ? String(format: "$%.2f", pricing.foil) : "NA"
-        foilPriceLabel.textColor = pricing.foil > 0 ? ManaKit.PriceColors.foil : ManaKit.PriceColors.normal
+        for pricing in card.pricings {
+            if pricing.isFoil {
+                foilPriceLabel.text = pricing.marketPrice > 0 ? String(format: "$%.2f", pricing.marketPrice) : "NA"
+            } else {
+                normalPriceLabel.text = pricing.marketPrice > 0 ? String(format: "$%.2f", pricing.marketPrice) : "NA"
+            }
+        }
     }
 }

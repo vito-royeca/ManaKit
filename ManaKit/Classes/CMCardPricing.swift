@@ -12,23 +12,17 @@ import RealmSwift
 
 public class CMCardPricing: Object {
 
-    @objc public dynamic var average = Double(0)
-    @objc public dynamic var foil = Double(0)
-    @objc public dynamic var high = Double(0)
-    @objc public dynamic var id = Int64(0)
-    @objc public dynamic var lastUpdate: Date? = nil
-    @objc public dynamic var link: String? = nil
-    @objc public dynamic var low = Double(0)
+    
+    @objc public dynamic var lowPrice = Double(0)
+    @objc public dynamic var midPrice = Double(0)
+    @objc public dynamic var highPrice = Double(0)
+    @objc public dynamic var marketPrice = Double(0)
+    @objc public dynamic var directLowPrice = Double(0)
+    @objc public dynamic var isFoil = false
     
     // MARK: Relationships
-    public let cards = List<CMCard>()
-    public let collections = List<CMCollection>()
-    public let decks = List<CMDeck>()
-
-    // MARK: Primary key
-    override public static func primaryKey() -> String? {
-        return "id"
-    }
-
+    @objc public dynamic var card: CMCard?
+    @objc public dynamic var collection: CMCollection?
+    @objc public dynamic var deck: CMDeck?
 }
 

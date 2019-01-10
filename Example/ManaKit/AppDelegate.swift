@@ -30,8 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        }.then {
 //            maintainer.updateSetSymbols()
 //        }.then {
-//            maintainer.updateSetTcgPlayerNames()
-//        }.then {
 //            maintainer.updateOtherCardInformation()
 //        }.then {
 //            maintainer.createComprehensiveRules()
@@ -44,9 +42,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Normal run
         ManaKit.sharedInstance.setupResources()
-        ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "ManaGuide",
+        ManaKit.sharedInstance.configureTcgPlayer(partnerKey: "ManaGuide",
                                                   publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720",
-                                                  privateKey: nil)
+                                                  privateKey: "C018EF82-2A4D-4F7A-A785-04ADEBF2A8E5")
         return true
     }
 

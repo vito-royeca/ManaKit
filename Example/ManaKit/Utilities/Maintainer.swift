@@ -26,6 +26,7 @@ class Maintainer: NSObject {
     
         // MARK: Variables
     var dateStart = Date()
+    var cardPrimaryKey = Int32(1)
     var cachedLanguages = [CMLanguage]()
     var cachedCardTypes = [CMCardType]()
     var cachedSets = [CMSet]()

@@ -28,7 +28,7 @@ public class CMDeck: Object {
     public let cards = List<CMInventory>()
     @objc public dynamic var format: CMCardFormat?
     @objc public dynamic var heroCard: CMCard?
-    @objc public dynamic var pricing: CMCardPricing?
+    public let pricings = List<CMCardPricing>()
     @objc public dynamic var user: CMUser?
     
     // MARK: Primary key

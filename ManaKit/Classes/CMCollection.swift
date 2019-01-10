@@ -23,7 +23,7 @@ public class CMCollection: Object {
     
     // MARK: Relationships
     public let cards = List<CMInventory>()
-    @objc public dynamic var pricing: CMCardPricing?
+    public let pricings = List<CMCardPricing>()
     
     // MARK: Primary key
     override public static func primaryKey() -> String? {

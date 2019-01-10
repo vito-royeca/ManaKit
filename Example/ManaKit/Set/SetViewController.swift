@@ -50,6 +50,7 @@ class SetViewController: UIViewController {
         
         if viewModel.isEmpty() {
             viewModel.fetchData()
+            viewModel.fetchPrices()
             tableView.reloadData()
         }
     }

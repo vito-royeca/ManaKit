@@ -1,3 +1,7 @@
+**Version 4.0.3** @ 10.01.2019
+- Refactor: Now using v1.9.0 TCGPlayer API.
+- Updated the Scryfall database to: 2019-01-09 09:45 UTC.
+
 **Version 4.0.2** @ 04.01.2019
 - Updated the Scryfall database to: 2019-01-04 09:58 UTC.
 

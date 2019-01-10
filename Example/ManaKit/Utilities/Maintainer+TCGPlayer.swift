@@ -174,13 +174,13 @@ extension Maintainer {
                     
                     for dict in results {
                         if let code = dict["abbreviation"] as? String,
-                            let name = dict["name"] as? String {
+                            let groupId = dict["groupId"] as? String {
                             sets.append(["code": code,
-                                         "name": name])
+                                         "groupId": groupId])
                         }
                     }
                     
-                    self.processSets(array: sets)
+//                    self.processSets(array: sets)
                     
                     if offset <= totalItems && sets.count > 0 {
                         self.getMagicSets(categoryId: categoryId, offset: offset + sets.count + 1)
@@ -193,27 +193,27 @@ extension Maintainer {
         
     }
     
-    private func processSets(array: [[String: String]]) {
-        try! realm.write {
-            for set in realm.objects(CMSet.self) {
-                for dict in array {
-                    if let code = dict["code"],
-                        let name = dict["name"] {
-                        if set.code?.lowercased() == code.lowercased() {
-                            set.tcgplayerName = name
-                            realm.add(set)
-                        }
-                    }
-                }
-            }
-        
-            // manual fix
-            for set in realm.objects(CMSet.self) {
-                if let parent = set.parent {
-                    set.tcgplayerName = parent.tcgplayerName
-                    realm.add(set)
-                }
-            }
-        }
-    }
+//    private func processSets(array: [[String: String]]) {
+//        try! realm.write {
+//            for set in realm.objects(CMSet.self) {
+//                for dict in array {
+//                    if let code = dict["code"],
+//                        let groupId = dict["groupId"] {
+//                        if set.code?.lowercased() == code.lowercased() {
+//                            set.tcgPlayerID = Int32(groupId)
+//                            realm.add(set)
+//                        }
+//                    }
+//                }
+//            }
+//
+//            // manual fix
+//            for set in realm.objects(CMSet.self) {
+//                if let parent = set.parent {
+//                    set.tcgplayerName = parent.tcgplayerName
+//                    realm.add(set)
+//                }
+//            }
+//        }
+//    }
 }

@@ -31,7 +31,7 @@ extension Maintainer {
                     self.processSets(data: data)
                     self.createCards()
                     self.updateCards()
-    //                    self.updateCards2()
+//                    self.updateCards2()
                     self.createCardRulings()
                     seal.fulfill(())
                 }
@@ -107,6 +107,9 @@ extension Maintainer {
                     }
                     if let foilOnly = dict["foil_only"] as? Bool {
                         set!.isFoilOnly = foilOnly
+                    }
+                    if let tcgPlayerID = dict["tcgplayer_id"] as? Int {
+                        set!.tcgPlayerID = Int32(tcgPlayerID)
                     }
                     set!.setType = setType
                     set!.block = setBlock
@@ -231,8 +234,9 @@ extension Maintainer {
         
         // id
         card.id = dict["id"] as? String
-        card.internalId = UUID().uuidString
-        
+        card.internalID = cardPrimaryKey
+        cardPrimaryKey += 1
+
         // mtgo
         card.mtgoID = dict["mtgo_id"] as? String
         card.mtgoFoilID = dict["mtgo_foil_id"] as? String
@@ -335,6 +339,11 @@ extension Maintainer {
         // story spotlight
         if let storySpotlight = dict["story_spotlight"] as? Bool {
             card.isStorySpotlight = storySpotlight
+        }
+        
+        // TCGPlayer
+        if let tcgPlayerID = dict["tcgplayer_id"] as? Int {
+            card.tcgPlayerID = Int32(tcgPlayerID)
         }
         
         // timeshifted
@@ -471,7 +480,7 @@ extension Maintainer {
                 }
             }
         }
-        
+
         return card
         
     }
@@ -558,37 +567,33 @@ extension Maintainer {
             }
         }
     }
-/*
-    func updateCards2() {
-        startActivity(name: "updateCards2")
-        
-        let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
-        request.predicate = NSPredicate(format: "id != nil")
-        request.sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: true),
-                                   NSSortDescriptor(key: "name", ascending: true)]
-        let cards = try! context.fetch(request)
-        var count = 0
-        print("Updating cards: \(count)/\(cards.count) \(Date())")
-        
-        reloadCachedCards()
-        for card in cards {
-            // variations
-            createVariations(ofCard: card)
-        
-            // other languages
-            createOtherLanguages(ofCard: card)
-            
-            // other printings
-            createOtherPrintings(ofCard: card)
 
-            count += 1
-            if count % printMilestone == 0 {
-                print("Updating cards: \(count)/\(cards.count) \(Date())")
+    func updateCards2() {
+        let predicate = NSPredicate(format: "id != nil")
+        let sortDescriptors = [SortDescriptor(keyPath: "set.releaseDate", ascending: true),
+                               SortDescriptor(keyPath: "name", ascending: true)]
+        
+        var count = 0
+        let cards = realm.objects(CMCard.self).filter(predicate).sorted(by: sortDescriptors)
+        print("Updating cards2: \(count)/\(cards.count) \(Date())")
+        
+        try! realm.write {
+            for card in cards {
+                // variations
+                createVariations(ofCard: card)
+            
+                // other languages
+                createOtherLanguages(ofCard: card)
+                
+                // other printingss
+                createOtherPrintings(ofCard: card)
+
+                count += 1
+                if count % printMilestone == 0 {
+                    print("Updating cards2: \(count)/\(cards.count) \(Date())")
+                }
             }
         }
-
-        try! context.save()
-        endActivity()
     }
 
     private func createVariations(ofCard card: CMCard) {
@@ -596,15 +601,20 @@ extension Maintainer {
             let code = set.code,
             let language = card.language,
             let languageCode = language.code,
-            let cachedSet = findSet(code: code),
-            let cardSets = cachedSet.cards,
-            let cards = cardSets.allObjects as? [CMCard] {
+            let id = card.id,
+            let name = card.name {
+            let predicate = NSPredicate(format: "set.code = %@ AND language.code = %@ AND id != %@ AND name = %@",
+                                        code,
+                                        languageCode,
+                                        id,
+                                        name)
+            let sortDescriptors = [SortDescriptor(keyPath: "set.releaseDate", ascending: true),
+                                   SortDescriptor(keyPath: "name", ascending: true)]
+            let filteredCards = realm.objects(CMCard.self).filter(predicate).sorted(by: sortDescriptors)
             
-            let filteredCards = cards.filter({ $0.language!.code == languageCode
-                                               && $0.id != card.id
-                                               && $0.name == card.name })
-            for c in filteredCards {
-                card.addToVariations(c)
+            for card in filteredCards {
+                card.variations.append(card)
+                realm.add(card)
             }
         }
     }
@@ -612,13 +622,19 @@ extension Maintainer {
     private func createOtherLanguages(ofCard card: CMCard) {
         if let language = card.language,
             let languageCode = language.code,
+            let id = card.id,
             let name = card.name {
+            let predicate = NSPredicate(format: "language.code != %@ AND id != %@ AND name = %@",
+                                        languageCode,
+                                        id,
+                                        name)
+            let sortDescriptors = [SortDescriptor(keyPath: "set.releaseDate", ascending: true),
+                                   SortDescriptor(keyPath: "name", ascending: true)]
+            let filteredCards = realm.objects(CMCard.self).filter(predicate).sorted(by: sortDescriptors)
             
-            let filteredCards = cachedCards.filter({ $0.language!.code != languageCode
-                                                     && $0.id != card.id
-                                                     && $0.name == name })
-            for c in filteredCards {
-                card.addToOtherLanguages(c)
+            for card in filteredCards {
+                card.otherLanguages.append(card)
+                realm.add(card)
             }
         }
     }
@@ -628,18 +644,24 @@ extension Maintainer {
             let setCode = set.code,
             let language = card.language,
             let languageCode = language.code,
+            let id = card.id,
             let name = card.name {
+            let predicate = NSPredicate(format: "set.code != %@ AND language.code == %@ AND id != %@ && name == %@",
+                                        setCode,
+                                        languageCode,
+                                        id,
+                                        name)
+            let sortDescriptors = [SortDescriptor(keyPath: "set.releaseDate", ascending: true),
+                                   SortDescriptor(keyPath: "name", ascending: true)]
+            let filteredCards = realm.objects(CMCard.self).filter(predicate).sorted(by: sortDescriptors)
             
-            let filteredCards = cachedCards.filter({ $0.set!.code != setCode
-                                                     && $0.language!.code == languageCode
-                                                     && $0.id != card.id
-                                                     && $0.name == name })
-            for c in filteredCards {
-                card.addToOtherPrintings(c)
+            for card in filteredCards {
+                card.otherPrintings.append(card)
+                realm.add(card)
             }
         }
     }
-*/
+
     // MARK: Rulings
     func createCardRulings() {
         guard let path = Bundle.main.path(forResource: rulingsFileName,

@@ -7,6 +7,7 @@
 //
 
 import ManaKit
+import PromiseKit
 import RealmSwift
 
 class SetViewModel: NSObject {
@@ -119,6 +120,22 @@ class SetViewModel: NSObject {
         updateSections()
     }
     
+    func fetchPrices() {
+        guard let set = _set else {
+            return
+        }
+        
+        firstly {
+            ManaKit.sharedInstance.authenticateTcgPlayer()
+        }.then {
+            ManaKit.sharedInstance.getTcgPlayerPrices(forSet: set)
+        }.done {
+            print("Done fetching prices")
+        }.catch { error in
+            print(error)
+        }
+    }
+
     private func updateSections() {
         guard let results = _results else {
             return

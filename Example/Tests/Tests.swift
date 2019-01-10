@@ -10,7 +10,9 @@ class Tests: XCTestCase {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         
         ManaKit.sharedInstance.setupResources()
-        ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "ManaGuide", publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720", privateKey: nil)
+        ManaKit.sharedInstance.configureTcgPlayer(partnerKey: "ManaGuide",
+                                                  publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720",
+                                                  privateKey: nil)
     }
     
     override func tearDown() {
