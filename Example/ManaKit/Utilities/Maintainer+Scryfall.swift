@@ -144,13 +144,12 @@ extension Maintainer {
 
     // MARK: Cards
     func createCards() {
-        guard let path = Bundle.main.path(forResource: cardsFileName,
-                                          ofType: "json",
-                                          inDirectory: "data") else {
+        guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
             return
         }
+        let cardsPath = "\(cachePath)/\(cardsFileName)"
         
-        let data = try! Data(contentsOf: URL(fileURLWithPath: path))
+        let data = try! Data(contentsOf: URL(fileURLWithPath: cardsPath))
         guard let array = try! JSONSerialization.jsonObject(with: data,
                                                             options: .mutableContainers) as? [[String: Any]] else {
             return
@@ -486,13 +485,12 @@ extension Maintainer {
     }
 
     private func updateCards() {
-        guard let path = Bundle.main.path(forResource: cardsFileName,
-                                          ofType: "json",
-                                          inDirectory: "data") else {
+        guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
             return
         }
+        let cardsPath = "\(cachePath)/\(cardsFileName)"
         
-        let data = try! Data(contentsOf: URL(fileURLWithPath: path))
+        let data = try! Data(contentsOf: URL(fileURLWithPath: cardsPath))
         guard let array = try! JSONSerialization.jsonObject(with: data,
                                                             options: .mutableContainers) as? [[String: Any]] else {
             return
@@ -664,13 +662,12 @@ extension Maintainer {
 
     // MARK: Rulings
     func createCardRulings() {
-        guard let path = Bundle.main.path(forResource: rulingsFileName,
-                                          ofType: "json",
-                                          inDirectory: "data") else {
+        guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
             return
         }
+        let rulingsPath = "\(cachePath)/\(cardsFileName)"
         
-        let data = try! Data(contentsOf: URL(fileURLWithPath: path))
+        let data = try! Data(contentsOf: URL(fileURLWithPath: rulingsPath))
         guard let array = try! JSONSerialization.jsonObject(with: data,
                                                             options: .mutableContainers) as? [[String: Any]] else {
             return

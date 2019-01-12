@@ -64,18 +64,21 @@ extension Maintainer {
                         let name = typeLine.name {
                         
                         var types = [String]()
-                        for type in ManaKit.sharedInstance.typeNames {
+                        for type in CardType.allCases {
                             for n in name.components(separatedBy: " ") {
-                                if n == type && !types.contains(type) {
-                                    types.append(type)
+                                let desc = type.description
+                                if n == desc && !types.contains(desc) {
+                                    types.append(desc)
                                 }
                             }
                         }
                         
                         if types.count == 1 {
-                            card.myType = findCardType(with: types.first!, language: enLanguage!)
+                            card.myType = findCardType(with: types.first!,
+                                                       language: enLanguage!)
                         } else if types.count > 1 {
-                            card.myType = findCardType(with: "Multiple", language: enLanguage!)
+                            card.myType = findCardType(with: "Multiple",
+                                                       language: enLanguage!)
                         }
                     }
                     
@@ -129,23 +132,6 @@ extension Maintainer {
             }
         }
     }
-    
-//    func fetchVariations(ofCard card: CMCard) -> [CMCard] {
-//        let predicate = NSPredicate(format: "set.code = %@ AND language.code = %@ AND id != %@ AND name = %@",
-//                                    card.set!.code!,
-//                                    card.language!.code!,
-//                                    card.id!,
-//                                    card.name!)
-//        let sortDescriptors = [SortDescriptor(keyPath: "set.releaseDate", ascending: false),
-//                               SortDescriptor(keyPath: "name", ascending: true),
-//                               SortDescriptor(keyPath: "collectorNumber", ascending: true)]
-//        var cards = [CMCard]()
-//
-//        for card in realm.objects(CMCard.self).filter(predicate).sorted(by: sortDescriptors) {
-//            cards.append(card)
-//        }
-//        return cards
-//    }
     
     func encodeFirebase(key: String) -> String {
         return key.replacingOccurrences(of: ".", with: "P%n*")

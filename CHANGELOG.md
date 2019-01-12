@@ -1,3 +1,7 @@
+**Version 4.0.4** @ 11.01.2019
+- Refactor: ManaKit card and set methods to CMCard and CMSet.
+- Updated the Scryfall database to: 2019-01-11 10:09 UTC.
+
 **Version 4.0.3** @ 10.01.2019
 - Refactor: Now using v1.9.0 TCGPlayer API.
 - Updated the Scryfall database to: 2019-01-09 09:45 UTC.

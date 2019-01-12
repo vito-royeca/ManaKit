@@ -33,23 +33,21 @@ class DeckHeroTableViewCell: UITableViewCell {
                 return
             }
             
-            if let croppedImage = ManaKit.sharedInstance.cardImage(heroCard,
-                                                                   imageType: .artCrop,
-                                                                   faceOrder: faceOrder,
-                                                                   roundCornered: false) {
+            if let croppedImage = heroCard.image(type: .artCrop,
+                                                 faceOrder: faceOrder,
+                                                 roundCornered: false) {
                 heroImageView.image = croppedImage
             } else {
                 heroImageView.image = ManaKit.sharedInstance.imageFromFramework(imageName: .cardBackCropped)
                 
                 firstly {
                     ManaKit.sharedInstance.downloadImage(ofCard: heroCard,
-                                                         imageType: .artCrop,
+                                                         type: .artCrop,
                                                          faceOrder: faceOrder)
                 }.done {
-                    guard let image = ManaKit.sharedInstance.cardImage(heroCard,
-                                                                       imageType: .artCrop,
-                                                                       faceOrder: self.faceOrder,
-                                                                       roundCornered: false) else {
+                    guard let image = heroCard.image(type: .artCrop,
+                                                     faceOrder: self.faceOrder,
+                                                     roundCornered: false) else {
                         return
                     }
                     

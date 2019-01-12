@@ -37,5 +37,21 @@ public class CMSet: Object {
         return "code"
     }
 
+    // MARK: Custom methods
+    public func keyruneUnicode() -> String? {
+        var unicode:String?
+        
+        if let keyruneCode = myKeyruneCode {
+            let charAsInt = Int(keyruneCode, radix: 16)!
+            let uScalar = UnicodeScalar(charAsInt)!
+            unicode = "\(uScalar)"
+        } else {
+            let charAsInt = Int("e684", radix: 16)!
+            let uScalar = UnicodeScalar(charAsInt)!
+            unicode = "\(uScalar)"
+        }
+        
+        return unicode
+    }
 }
 

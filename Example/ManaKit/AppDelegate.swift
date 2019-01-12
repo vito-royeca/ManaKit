@@ -22,29 +22,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
 
         // Create data
-//        let maintainer = Maintainer()
-//        maintainer.startActivity(name: "Create data...")
-//
-//        firstly {
-//            maintainer.fetchSetsAndCreateCards()
-//        }.then {
-//            maintainer.updateSetSymbols()
-//        }.then {
-//            maintainer.updateOtherCardInformation()
-//        }.then {
-//            maintainer.createComprehensiveRules()
-//        }.done {
-//            maintainer.compactDatabase()
-//            maintainer.endActivity()
-//        }.catch { error in
-//            print(error)
-//        }
+        let maintainer = Maintainer()
+        maintainer.startActivity(name: "Create data...")
+        maintainer.unpackScryfallData()
+        
+        firstly {
+            maintainer.fetchSetsAndCreateCards()
+        }.then {
+            maintainer.updateSetSymbols()
+        }.then {
+            maintainer.updateOtherCardInformation()
+        }.then {
+            maintainer.createComprehensiveRules()
+        }.done {
+            maintainer.compactDatabase()
+            maintainer.endActivity()
+        }.catch { error in
+            print(error)
+        }
 
         // Normal run
-        ManaKit.sharedInstance.setupResources()
-        ManaKit.sharedInstance.configureTcgPlayer(partnerKey: "ManaGuide",
-                                                  publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720",
-                                                  privateKey: "C018EF82-2A4D-4F7A-A785-04ADEBF2A8E5")
+//        ManaKit.sharedInstance.setupResources()
+//        ManaKit.sharedInstance.configureTcgPlayer(partnerKey: "ManaGuide",
+//                                                  publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720",
+//                                                  privateKey: "C018EF82-2A4D-4F7A-A785-04ADEBF2A8E5")
         return true
     }
 

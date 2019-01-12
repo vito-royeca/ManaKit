@@ -78,7 +78,7 @@ public class CardTableViewCell: UITableViewCell {
         nameLabel.text = card.displayName
         
         if let releaseDate = card.set!.releaseDate {
-            let isModern = ManaKit.sharedInstance.isModern(card)
+            let isModern = card.isModern()
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd"
             
@@ -115,23 +115,21 @@ public class CardTableViewCell: UITableViewCell {
         }
         
         // thumbnail image
-        if let croppedImage = ManaKit.sharedInstance.cardImage(card,
-                                                               imageType: .artCrop,
-                                                               faceOrder: faceOrder,
-                                                               roundCornered: false) {
+        if let croppedImage = card.image(type: .artCrop,
+                                         faceOrder: faceOrder,
+                                         roundCornered: false) {
             thumbnailImage.image = croppedImage
         } else {
             thumbnailImage.image = ManaKit.sharedInstance.imageFromFramework(imageName: .cardBackCropped)
 
             firstly {
                 ManaKit.sharedInstance.downloadImage(ofCard: card,
-                                                     imageType: .artCrop,
+                                                     type: .artCrop,
                                                      faceOrder: faceOrder)
             }.done {
-                guard let image = ManaKit.sharedInstance.cardImage(card,
-                                                                   imageType: .artCrop,
-                                                                   faceOrder: self.faceOrder,
-                                                                   roundCornered: false) else {
+                guard let image = card.image(type: .artCrop,
+                                             faceOrder: self.faceOrder,
+                                             roundCornered: false) else {
                     return
                 }
 
@@ -150,13 +148,13 @@ public class CardTableViewCell: UITableViewCell {
         
         // set symbol
         if let set = card.set {
-            setImage.text = ManaKit.sharedInstance.keyruneUnicode(forSet: set)
-            setImage.textColor = ManaKit.sharedInstance.keyruneColor(forCard: card)
+            setImage.text = set.keyruneUnicode()
+            setImage.textColor = card.keyruneColor()
         }
 
         // type
-        typeImage.image = ManaKit.sharedInstance.typeImage(ofCard: card)
-        typeLabel.text = ManaKit.sharedInstance.typeText(ofCard: card, includePower: true)
+        typeImage.image = card.typeImage()
+        typeLabel.text = card.typeText(includePower: true)
         
         // pricing
         updateCardPricing()

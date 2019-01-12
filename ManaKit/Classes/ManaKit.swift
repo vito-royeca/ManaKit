@@ -14,8 +14,7 @@ import RealmSwift
 import SDWebImage
 import SSZipArchive
 
-@objc(ManaKit)
-public class ManaKit: NSObject {
+public class ManaKit {
     public enum Fonts {
         public static let preEightEdition      = UIFont(name: "Magic:the Gathering", size: 17.0)
         public static let preEightEditionSmall = UIFont(name: "Magic:the Gathering", size: 15.0)
@@ -34,14 +33,13 @@ public class ManaKit: NSObject {
     }
     
     public enum Constants {
-        public static let ScryfallDateKey     = "ScryfallDateKey"
-        public static let ScryfallDate        = "2019-01-09 09:45 UTC"
+        public static let ScryfallDate        = "2019-01-11 10:09 UTC"
         public static let KeyruneVersion      = "3.3.3"
         public static let EightEditionRelease = "2003-07-28"
         public static let TcgPlayerApiVersion = "v1.9.0"
         public static let TcgPlayerApiLimit   = 300
         public static let TcgPlayerPricingAge = 24 * 3 // 3 days
-        public static let TcgPlayerTokenKey   = "TcgPlayerTokenKey"
+        
         public static let FirebaseDataAge     = 60     // 60 sec
     }
     
@@ -55,55 +53,31 @@ public class ManaKit: NSObject {
         intlCollectorsCardBack = "images/internationalcollectorscardback-hq"
     }
     
-    public enum ImageType: Int {
-        case png
-        case borderCrop
-        case artCrop
-        case large
-        case normal
-        case small
-        
-        var description : String {
-            switch self {
-            
-            case .png: return "png"
-            case .borderCrop: return "border_crop"
-            case .artCrop: return "art_crop"
-            case .large: return "large"
-            case .normal: return "normal"
-            case .small: return "small"
-            }
-        }
-    }
-    
     public enum UserDefaultsKeys {
-        public static let MTGJSONVersionKey   = "kMTGJSONVersionKey"
+        public static let ScryfallDate     = "ScryfallDate"
+        public static let MTGJSONVersion   = "kMTGJSONVersion"
+        public static let TcgPlayerToken   = "TcgPlayerToken"
     }
     
     // MARK: - Shared Instance
     public static let sharedInstance = ManaKit()
     
     // MARK: Variables
-//    private var _dataStack: DataStack?
-//    public var dataStack: DataStack? {
-//        get {
-//            if _dataStack == nil {
-//                guard let bundleURL = Bundle(for: ManaKit.self).url(forResource: "ManaKit", withExtension: "bundle"),
-//                    let bundle = Bundle(url: bundleURL),
-//                    let momURL = bundle.url(forResource: "ManaKit", withExtension: "momd"),
-//                    let objectModel = NSManagedObjectModel(contentsOf: momURL) else {
-//                    return nil
-//                }
-//                _dataStack = DataStack(model: objectModel, storeType: .sqLite)
-//            }
-//            return _dataStack
-//        }
-//        set {
-//            _dataStack = newValue
-//        }
-//    }
+    var tcgPlayerPartnerKey: String?
+    var tcgPlayerPublicKey: String?
+    var tcgPlayerPrivateKey: String?
     
-    private var _realm: Realm?
+    var _keyChain: Keychain?
+    var keychain: Keychain {
+        get {
+            if _keyChain == nil {
+                _keyChain = Keychain(service: "com.jovitoroyeca.ManaKit")
+            }
+            return _keyChain!
+        }
+    }
+    
+    var _realm: Realm?
     public var realm: Realm {
         get {
             if _realm == nil {
@@ -125,26 +99,6 @@ public class ManaKit: NSObject {
             return _realm!
         }
     }
-    
-    public let typeNames = ["Artifact",
-                            "Chaos",
-                            "Conspiracy",
-                            "Creature",
-                            "Enchantment",
-                            "Instant",
-                            "Land",
-                            "Phenomenon",
-                            "Plane",
-                            "Planeswalker",
-                            "Scheme",
-                            "Sorcery",
-                            "Tribal",
-                            "Vanguard"]
-    
-    var tcgPlayerPartnerKey: String?
-    var tcgPlayerPublicKey: String?
-    var tcgPlayerPrivateKey: String?
-    let keychain = Keychain(service: "com.jovitoroyeca.ManaKit")
     
     // MARK: Resource methods
     public func nibFromBundle(_ name: String) -> UINib? {
@@ -175,7 +129,7 @@ public class ManaKit: NSObject {
         let targetPath = "\(docsPath)/\(bundleName).realm"
         var willCopy = true
 
-        if let scryfallDate = UserDefaults.standard.string(forKey: Constants.ScryfallDateKey) {
+        if let scryfallDate = UserDefaults.standard.string(forKey: UserDefaultsKeys.ScryfallDate) {
             if scryfallDate == Constants.ScryfallDate {
                 willCopy = false
             }
@@ -184,9 +138,6 @@ public class ManaKit: NSObject {
         if willCopy {
             print("Copying database file: \(Constants.ScryfallDate)")
 
-            // Shutdown database
-//            realm.close()
-            
             // Remove old database files in docs directory
             for file in try! FileManager.default.contentsOfDirectory(atPath: docsPath) {
                 let path = "\(docsPath)/\(file)"
@@ -220,7 +171,7 @@ public class ManaKit: NSObject {
             resourceValues.isExcludedFromBackup = true
             try! targetURL.setResourceValues(resourceValues)
             
-            UserDefaults.standard.set(Constants.ScryfallDate, forKey: Constants.ScryfallDateKey)
+            UserDefaults.standard.set(Constants.ScryfallDate, forKey: UserDefaultsKeys.ScryfallDate)
             UserDefaults.standard.synchronize()
         }
     }
@@ -251,104 +202,6 @@ public class ManaKit: NSObject {
         }
     }
     
-    // MARK: Database methods
-    public func typeImage(ofCard card: CMCard) -> UIImage? {
-        if let type = card.myType,
-            let name = type.name {
-
-            return ManaKit.sharedInstance.symbolImage(name: name)
-        }
-        
-        return nil
-    }
-    
-    public func typeText(ofCard card: CMCard, includePower: Bool) -> String {
-        var typeText = ""
-        
-        if let language = card.language,
-            let code = language.code {
-            
-            if code == "en" {
-                if let type = card.typeLine,
-                    let name = type.name {
-                    typeText = name
-                }
-            } else {
-                if let type = card.printedTypeLine,
-                    let name = type.name {
-                    typeText = name
-                }
-            }
-            
-            // fallback to default typeLine
-            if typeText.count == 0 {
-                if let type = card.typeLine,
-                    let name = type.name {
-                    typeText = name
-                }
-            }
-            
-            if includePower {
-                if let power = card.power,
-                    let toughness = card.toughness {
-                    typeText.append(" (\(power)/\(toughness))")
-                }
-                
-                if let loyalty = card.loyalty {
-                    typeText.append(" (\(loyalty))")
-                }
-            }
-        }
-        
-        return typeText
-    }
-    
-    public func imageURL(ofCard card: CMCard, imageType: ImageType, faceOrder: Int) -> URL? {
-        var url:URL?
-        var urlString: String?
-        
-        
-        if let imageURIs = card.imageURIs,
-            let dict = NSKeyedUnarchiver.unarchiveObject(with: imageURIs as Data) as? [String: String] {
-            urlString = dict[imageType.description]
-        } else {
-            let faces = card.faces
-            let orderedFaces = faces.sorted(by: {(a, b) -> Bool in
-                return a.faceOrder < b.faceOrder
-            })
-            let face = orderedFaces[faceOrder]
-            
-            if let imageURIs = face.imageURIs,
-                let dict = NSKeyedUnarchiver.unarchiveObject(with: imageURIs as Data) as? [String: String] {
-                urlString = dict[imageType.description]
-            }
-        }
-        
-        if let urlString = urlString {
-            url = URL(string: urlString)
-        }
-        
-        return url
-    }
-    
-    public func isModern(_ card: CMCard) -> Bool {
-        guard let releaseDate = card.set!.releaseDate else {
-            return false
-        }
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        
-        if let eightEditionDate = formatter.date(from: Constants.EightEditionRelease),
-            let setReleaseDate = formatter.date(from: releaseDate) {
-            return setReleaseDate.compare(eightEditionDate) == .orderedDescending ||
-                setReleaseDate.compare(eightEditionDate) == .orderedSame
-        }
-        
-        return false
-    }
-    
-
     // MARK: Image methods
     public func imageFromFramework(imageName: ImageName) -> UIImage? {
         let bundle = Bundle(for: ManaKit.self)
@@ -370,10 +223,9 @@ public class ManaKit: NSObject {
         return UIImage(named: name, in: resourceBundle, compatibleWith: nil)
     }
     
-    public func downloadImage(ofCard card: CMCard, imageType: ImageType, faceOrder: Int) -> Promise<Void> {
-        guard let url = imageURL(ofCard: card,
-                                 imageType: imageType,
-                                 faceOrder: faceOrder) else {
+    public func downloadImage(ofCard card: CMCard, type: CardImageType, faceOrder: Int) -> Promise<Void> {
+        guard let url = card.imageURL(type: type,
+                                      faceOrder: faceOrder) else {
             
             return Promise { seal  in
                 let error = NSError(domain: NSURLErrorDomain,
@@ -383,12 +235,11 @@ public class ManaKit: NSObject {
             }
         }
         
-        let roundCornered = imageType != .artCrop
+        let roundCornered = type != .artCrop
         
-        if let _ = self.cardImage(card,
-                                  imageType: imageType,
-                                  faceOrder: faceOrder,
-                                  roundCornered: roundCornered) {
+        if let _ = card.image(type: type,
+                              faceOrder: faceOrder,
+                              roundCornered: roundCornered) {
             return Promise { seal  in
                 seal.fulfill(())
             }
@@ -432,39 +283,6 @@ public class ManaKit: NSObject {
         }
     }
     
-    public func cardImage(_ card: CMCard, imageType: ImageType, faceOrder: Int, roundCornered: Bool) -> UIImage? {
-        var cardImage: UIImage?
-        
-        guard let url = imageURL(ofCard: card,
-                                 imageType: imageType,
-                                 faceOrder: faceOrder) else {
-            return nil
-        }
-        
-        let imageCache = SDImageCache.init()
-        let cacheKey = url.absoluteString
-        
-        cardImage = imageCache.imageFromDiskCache(forKey: cacheKey)
-        
-        if roundCornered {
-            if let c = cardImage {
-                cardImage = c.roundCornered(card: card)
-            }
-        }
-        
-        return cardImage
-    }
-    
-    public func cardBack(_ card: CMCard) -> UIImage? {
-        if card.set!.code == "ced" {
-            return imageFromFramework(imageName: .collectorsCardBack)
-        } else if card.set!.code == "cei" {
-            return imageFromFramework(imageName: .intlCollectorsCardBack)
-        } else {
-            return imageFromFramework(imageName: .cardBack)
-        }
-    }
-    
     // MARK: TCGPlayer
     public func configureTcgPlayer(partnerKey: String, publicKey: String?, privateKey: String?) {
         tcgPlayerPartnerKey = partnerKey
@@ -482,7 +300,7 @@ public class ManaKit: NSObject {
                 return
             }
             
-            if let _ = keychain[Constants.TcgPlayerTokenKey] {
+            if let _ = keychain[UserDefaultsKeys.TcgPlayerToken] {
                 seal.fulfill(())
             } else {
                 guard let urlString = "https://api.tcgplayer.com/token".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
@@ -506,7 +324,7 @@ public class ManaKit: NSObject {
                         seal.reject(error)
                         return
                     }
-                    self.keychain[Constants.TcgPlayerTokenKey] = token
+                    self.keychain[UserDefaultsKeys.TcgPlayerToken] = token
                     seal.fulfill()
                 }.catch { error in
                     print("\(error)")
@@ -523,7 +341,7 @@ public class ManaKit: NSObject {
                     fatalError("Malformed url")
             }
             
-            guard let token = keychain[Constants.TcgPlayerTokenKey] else {
+            guard let token = keychain[UserDefaultsKeys.TcgPlayerToken] else {
                 fatalError("No TCGPlayer token found.")
             }
             
@@ -603,7 +421,7 @@ public class ManaKit: NSObject {
                 fatalError("Malformed url")
             }
             
-            guard let token = keychain[Constants.TcgPlayerTokenKey] else {
+            guard let token = keychain[UserDefaultsKeys.TcgPlayerToken] else {
                 fatalError("No TCGPlayer token found.")
             }
             
@@ -811,53 +629,5 @@ public class ManaKit: NSObject {
                 seal.fulfill(())
             }
         }
-    }
-
-    // MARK: Keyrune
-    public func keyruneUnicode(forSet set: CMSet) -> String? {
-        var unicode:String?
-        
-        if let keyruneCode = set.myKeyruneCode {
-            let charAsInt = Int(keyruneCode, radix: 16)!
-            let uScalar = UnicodeScalar(charAsInt)!
-            unicode = "\(uScalar)"
-        } else {
-            let charAsInt = Int("e684", radix: 16)!
-            let uScalar = UnicodeScalar(charAsInt)!
-            unicode = "\(uScalar)"
-        }
-        
-        return unicode
-    }
-        
-    public func keyruneColor(forCard card: CMCard) -> UIColor? {
-        guard let set = card.set,
-            let rarity = card.rarity else {
-            return nil
-        }
-        
-        var color:UIColor?
-        
-        if set.code == "tsb" {
-            color = UIColor(hex: "652978") // purple
-        } else {
-            if rarity.name == "Common" {
-                color = UIColor(hex: "1A1718")
-            } else if rarity.name == "Uncommon" {
-                color = UIColor(hex: "707883")
-            } else if rarity.name == "Rare" {
-                color = UIColor(hex: "A58E4A")
-            } else if rarity.name == "Mythic" {
-                color = UIColor(hex: "BF4427")
-            } else if rarity.name == "Special" {
-                color = UIColor(hex: "BF4427")
-            } else if rarity.name == "Timeshifted" {
-                color = UIColor(hex: "652978")
-            } else if rarity.name == "Basic Land" {
-                color = UIColor(hex: "000000")
-            }
-        }
-        
-        return color
     }
 }

@@ -5,11 +5,11 @@
 [![License](https://img.shields.io/cocoapods/l/ManaKit.svg?style=flat)](http://cocoapods.org/pods/ManaKit)
 [![Platform](https://img.shields.io/cocoapods/p/ManaKit.svg?style=flat)](http://cocoapods.org/pods/ManaKit)
 
-A Core Data implementation of [MTGJSON](http://mtgjson.com/).
+A Realm implementation of [Scryfall](http://scryfall.com/).
 
 ## Usage
 
-The singleton `ManaKit` class provides API methods for setting up the Core Data database, getting images embedded in the framework, and a lot more.
+The singleton `ManaKit` class provides API methods for setting up theRealmdatabase, getting images embedded in the framework, and a lot more.
 
 Set up ManaKit in your app delegate class:
 
@@ -18,17 +18,13 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
     
     // Override point for customization after application launch.
     ManaKit.sharedInstance.setupResources()
-    ManaKit.sharedInstance.configureTCGPlayer(partnerKey: "Your_Partner_Key", publicKey: nil, privateKey: nil)
+    ManaKit.sharedInstance.configureTcgPlayer(partnerKey: "Your_Partner_Key", publicKey: nil, privateKey: nil)
         
     return true
 }
 ````
 
-To access the Core Data database, you may use the `mainContext` of `ManaKit`:
-
-```
-let context = ManaKit.sharedInstance.dataStack!.mainContext
-```
+To access the Realm database, you may use the `realm` of `ManaKit`:
 
 `ManaKit` also provides methods to get MTG images.
 

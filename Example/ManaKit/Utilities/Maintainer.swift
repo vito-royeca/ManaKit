@@ -15,8 +15,8 @@ import RealmSwift
 class Maintainer: NSObject {
     // MARK: Constants
     let printMilestone = 1000
-    let cardsFileName   = "scryfall-all-cards"
-    let rulingsFileName = "scryfall-rulings"
+    let cardsFileName   = "scryfall-all-cards.json"
+    let rulingsFileName = "scryfall-rulings.json"
     let comprehensiveRulesFileName = "MagicCompRules 20181005"
     let realm = ManaKit.sharedInstance.realm
     let setCodesForProcessing:[String]? = nil
@@ -69,8 +69,51 @@ class Maintainer: NSObject {
         }
         
         try! realm.writeCopy(toFile: URL(fileURLWithPath: compactFile))
-        SSZipArchive.createZipFile(atPath: zipFile, withFilesAtPaths: [compactFile])
+        SSZipArchive.createZipFile(atPath: zipFile,
+                                   withFilesAtPaths: [compactFile])
         print("Done.")
+    }
+    
+    func unpackScryfallData() {
+        guard let cardsPath = Bundle.main.path(forResource: cardsFileName,
+                                               ofType: "zip",
+                                               inDirectory: "data"),
+            let rulingsPath = Bundle.main.path(forResource: rulingsFileName,
+                                               ofType: "zip",
+                                               inDirectory: "data"),
+            let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
+            return
+        }
+        
+        var willCopy = true
+        
+        if let scryfallDate = UserDefaults.standard.string(forKey: ManaKit.UserDefaultsKeys.ScryfallDate) {
+            if scryfallDate == ManaKit.Constants.ScryfallDate {
+                willCopy = false
+            }
+        }
+        
+        if willCopy {
+            print("Extracting Scryfall files: \(ManaKit.Constants.ScryfallDate)")
+            
+            // Remove old database files in docs directory
+            for file in try! FileManager.default.contentsOfDirectory(atPath: cachePath) {
+                let path = "\(cachePath)/\(file)"
+                if file.hasPrefix("scryfall-") {
+                    try! FileManager.default.removeItem(atPath: path)
+                }
+            }
+            
+            // Unzip
+            SSZipArchive.unzipFile(atPath: cardsPath,
+                                   toDestination: cachePath)
+            SSZipArchive.unzipFile(atPath: rulingsPath,
+                                   toDestination: cachePath)
+            
+            UserDefaults.standard.set(ManaKit.Constants.ScryfallDate,
+                                      forKey: ManaKit.UserDefaultsKeys.ScryfallDate)
+            UserDefaults.standard.synchronize()
+        }
     }
     
     // MARK: Utility methods

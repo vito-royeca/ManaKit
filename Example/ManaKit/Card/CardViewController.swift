@@ -118,26 +118,24 @@ extension CardViewController : UITableViewDataSource {
                 button.isHidden = true
             }
             
-            if let cardImage = ManaKit.sharedInstance.cardImage(card,
-                                                                imageType: .normal,
-                                                                faceOrder: faceOrder,
-                                                                roundCornered: true) {
+            if let cardImage = card.image(type: .normal,
+                                          faceOrder: faceOrder,
+                                          roundCornered: true) {
                 imageView.image = cardImage
                 UIView.animate(withDuration: 1.0, animations: {
                     imageView.transform = CGAffineTransform(rotationAngle: self.flipAngle)
                 })
             } else {
-                imageView.image = ManaKit.sharedInstance.cardBack(card)
+                imageView.image = card.backImage()
 
                 firstly {
                     ManaKit.sharedInstance.downloadImage(ofCard: card,
-                                                         imageType: .normal,
+                                                         type: .normal,
                                                          faceOrder: faceOrder)
                 }.done {
-                    guard let image = ManaKit.sharedInstance.cardImage(self.card,
-                                                                       imageType: .normal,
-                                                                       faceOrder: self.faceOrder,
-                                                                       roundCornered: true) else {
+                    guard let image = self.card.image(type: .normal,
+                                                      faceOrder: self.faceOrder,
+                                                      roundCornered: true) else {
                         return
                     }
                     
