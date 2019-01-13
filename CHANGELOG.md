@@ -1,3 +1,6 @@
+**Version 4.0.5** @ 13.01.2019
+- Updated the Scryfall database to: 2019-01-12 09:23 UTC.
+
 **Version 4.0.4** @ 11.01.2019
 - Refactor: ManaKit card and set methods to CMCard and CMSet.
 - Updated the Scryfall database to: 2019-01-11 10:09 UTC.

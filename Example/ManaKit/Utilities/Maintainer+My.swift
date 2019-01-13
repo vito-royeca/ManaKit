@@ -89,7 +89,7 @@ extension Maintainer {
                         let language = card.language,
                         let languageCode = language.code,
                         let name = card.name {
-                        var firebaseID = "\(setCode.uppercased())_\(name.lowercased())"
+                        var firebaseID = "\(setCode.uppercased())_\(name)"
 
                         let variations = realm.objects(CMCard.self).filter("set.code = %@ AND language.code = %@ AND name = %@",
                                                                            setCode,
@@ -104,7 +104,7 @@ extension Maintainer {
 
                             for c in orderedVariations {
                                 if c.id == card.id {
-                                    firebaseID += "\(index)"
+                                    firebaseID += "_\(index)"
                                     break
                                 } else {
                                     index += 1

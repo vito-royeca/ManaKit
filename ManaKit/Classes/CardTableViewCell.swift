@@ -192,8 +192,10 @@ public class CardTableViewCell: UITableViewCell {
         for pricing in card.pricings {
             if pricing.isFoil {
                 foilPriceLabel.text = pricing.marketPrice > 0 ? String(format: "$%.2f", pricing.marketPrice) : "NA"
+                foilPriceLabel.textColor = pricing.marketPrice > 0 ? UIColor.green : UIColor.black
             } else {
                 normalPriceLabel.text = pricing.marketPrice > 0 ? String(format: "$%.2f", pricing.marketPrice) : "NA"
+                normalPriceLabel.textColor = pricing.marketPrice > 0 ? UIColor.green : UIColor.black
             }
         }
     }

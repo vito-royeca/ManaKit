@@ -665,7 +665,7 @@ extension Maintainer {
         guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
             return
         }
-        let rulingsPath = "\(cachePath)/\(cardsFileName)"
+        let rulingsPath = "\(cachePath)/\(rulingsFileName)"
         
         let data = try! Data(contentsOf: URL(fileURLWithPath: rulingsPath))
         guard let array = try! JSONSerialization.jsonObject(with: data,

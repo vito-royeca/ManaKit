@@ -76,7 +76,6 @@ public class CMCard: Object {
     @objc public dynamic var faceOrder = Int32(0)
     @objc public dynamic var firebaseID: String? = nil
     @objc public dynamic var firebaseRating = Double(0)
-    @objc public dynamic var firebaseRatings = Int32(0)
     @objc public dynamic var firebaseViews = Int64(0)
     @objc public dynamic var firebaseLastUpdate: Date? = nil
     @objc public dynamic var flavorText: String? = nil
