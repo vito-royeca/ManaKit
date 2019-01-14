@@ -117,7 +117,7 @@ extension Maintainer {
                             firebaseID += "_\(languageCode)"
                         }
                         
-                        card.firebaseID = encodeFirebase(key: firebaseID)
+                        card.firebaseID = ManaKit.sharedInstance.encodeFirebase(key: firebaseID)
                     }
 
                     realm.add(card)
@@ -133,24 +133,6 @@ extension Maintainer {
         }
     }
     
-    func encodeFirebase(key: String) -> String {
-        return key.replacingOccurrences(of: ".", with: "P%n*")
-            .replacingOccurrences(of: "$", with: "D%n*")
-            .replacingOccurrences(of: "#", with: "H%n*")
-            .replacingOccurrences(of: "[", with: "On%*")
-            .replacingOccurrences(of: "]", with: "n*C%")
-            .replacingOccurrences(of: "/", with: "*S%n")
-    }
-
-    func decodeFirebase(key: String) -> String {
-        return key.replacingOccurrences(of: "P%n*", with: ".")
-            .replacingOccurrences(of: "D%n*", with: "$")
-            .replacingOccurrences(of: "H%n*", with: "#")
-            .replacingOccurrences(of: "On%*", with: "[")
-            .replacingOccurrences(of: "n*C%", with: "]")
-            .replacingOccurrences(of: "*S%n", with: "/")
-    }
-
     // MARK: Comprehensive rules
     func createComprehensiveRules() -> Promise<Void> {
         return Promise { seal in

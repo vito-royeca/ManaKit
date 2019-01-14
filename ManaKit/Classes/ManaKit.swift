@@ -630,4 +630,42 @@ public class ManaKit {
             }
         }
     }
+    
+    // MARK: Firebase
+    public func newFirebaseKey(from oldFirebaseKey: String) -> String {
+        var parts = oldFirebaseKey.components(separatedBy: "_")
+        var numComponent = ""
+        let capName = parts[1]
+        
+        if parts.filter({ (isIncluded) -> Bool in
+            return isIncluded.lowercased().hasPrefix(capName.lowercased())
+        }).count > 1 {
+            numComponent = parts.remove(at: 2)
+            numComponent = numComponent.replacingOccurrences(of: capName.lowercased(), with: "")
+        }
+        
+        var newKey = parts.joined(separator: "_")
+        if !numComponent.isEmpty {
+            newKey = "\(newKey)_\(numComponent)"
+        }
+        return encodeFirebase(key: newKey)
+    }
+    
+    public func encodeFirebase(key: String) -> String {
+        return key.replacingOccurrences(of: ".", with: "P%n*")
+            .replacingOccurrences(of: "$", with: "D%n*")
+            .replacingOccurrences(of: "#", with: "H%n*")
+            .replacingOccurrences(of: "[", with: "On%*")
+            .replacingOccurrences(of: "]", with: "n*C%")
+            .replacingOccurrences(of: "/", with: "*S%n")
+    }
+    
+    public func decodeFirebase(key: String) -> String {
+        return key.replacingOccurrences(of: "P%n*", with: ".")
+            .replacingOccurrences(of: "D%n*", with: "$")
+            .replacingOccurrences(of: "H%n*", with: "#")
+            .replacingOccurrences(of: "On%*", with: "[")
+            .replacingOccurrences(of: "n*C%", with: "]")
+            .replacingOccurrences(of: "*S%n", with: "/")
+    }
 }
