@@ -24,16 +24,8 @@ public class ManaKit {
         public static let magic2015Small       = UIFont(name: "Beleren", size: 15.0)
     }
 
-    public enum PriceColors {
-        public static let low    = UIColor.red
-        public static let mid    = UIColor.blue
-        public static let high   = UIColor(red:0.00, green:0.50, blue:0.00, alpha:1.0)
-        public static let foil   = UIColor(red:0.60, green:0.51, blue:0.00, alpha:1.0)
-        public static let normal = UIColor.black
-    }
-    
     public enum Constants {
-        public static let ScryfallDate        = "2019-01-13 09:37 UTC"
+        public static let ScryfallDate        = "2019-01-26 09:30 UTC"
         public static let KeyruneVersion      = "3.3.3"
         public static let EightEditionRelease = "2003-07-28"
         public static let TcgPlayerApiVersion = "v1.9.0"
@@ -325,7 +317,7 @@ public class ManaKit {
                         return
                     }
                     self.keychain[UserDefaultsKeys.TcgPlayerToken] = token
-                    seal.fulfill()
+                    seal.fulfill(())
                 }.catch { error in
                     print("\(error)")
                     seal.reject(error)
@@ -404,7 +396,7 @@ public class ManaKit {
                             self.realm.add(card)
                         }
                     }
-                    seal.fulfill()
+                    seal.fulfill(())
                 }
             }.catch { error in
                 print("\(error)")
@@ -486,7 +478,7 @@ public class ManaKit {
                             self.realm.add(card)
                         }
                     }
-                    seal.fulfill()
+                    seal.fulfill(())
                 }
             }.catch { error in
                 print("\(error)")

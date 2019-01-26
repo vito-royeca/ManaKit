@@ -65,7 +65,11 @@ extension Maintainer {
         
             // manual fix
             for set in realm.objects(CMSet.self) {
-                if set.code == "med" ||
+                if set.code == "gk2" ||
+                    set.code == "tgk2" {
+                    set.myKeyruneCode = "e959" // rna guild kit
+                }
+                else if set.code == "med" ||
                     set.code == "tmed" {
                     set.myKeyruneCode = "e94c"
                 } else if set.code == "c14" ||
