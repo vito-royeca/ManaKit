@@ -2,30 +2,30 @@ PODS:
   - FontAwesome.swift (1.4.8)
   - Kanna (4.0.3)
   - KeychainAccess (3.1.2)
-  - ManaKit (4.0.6):
+  - ManaKit (4.0.7):
     - Kanna (~> 4.0.0)
     - KeychainAccess
     - PromiseKit
     - RealmSwift
     - SDWebImage
     - SSZipArchive
-  - PromiseKit (6.8.0):
-    - PromiseKit/CorePromise (= 6.8.0)
-    - PromiseKit/Foundation (= 6.8.0)
-    - PromiseKit/UIKit (= 6.8.0)
-  - PromiseKit/CorePromise (6.8.0)
-  - PromiseKit/Foundation (6.8.0):
+  - PromiseKit (6.8.2):
+    - PromiseKit/CorePromise (= 6.8.2)
+    - PromiseKit/Foundation (= 6.8.2)
+    - PromiseKit/UIKit (= 6.8.2)
+  - PromiseKit/CorePromise (6.8.2)
+  - PromiseKit/Foundation (6.8.2):
     - PromiseKit/CorePromise
-  - PromiseKit/UIKit (6.8.0):
+  - PromiseKit/UIKit (6.8.2):
     - PromiseKit/CorePromise
   - Realm (3.13.1):
     - Realm/Headers (= 3.13.1)
   - Realm/Headers (3.13.1)
   - RealmSwift (3.13.1):
     - Realm (= 3.13.1)
-  - SDWebImage (4.4.3):
-    - SDWebImage/Core (= 4.4.3)
-  - SDWebImage/Core (4.4.3)
+  - SDWebImage (4.4.4):
+    - SDWebImage/Core (= 4.4.4)
+  - SDWebImage/Core (4.4.4)
   - SSZipArchive (2.1.4)
 
 DEPENDENCIES:
@@ -57,11 +57,11 @@ SPEC CHECKSUMS:
   FontAwesome.swift: fb8637bffb9a588c7e8c753c084565b27b20a39d
   Kanna: 0ebbdd0e7e3308f0aafbd569e79c8cadc5eb877c
   KeychainAccess: b3816fddcf28aa29d94b10ec305cd52be14c472b
-  ManaKit: 3f7f21e59d20d5351ad6ba224c23e10d23fe9991
-  PromiseKit: 02c93833283c37ce94ef7d25de63d48d62b0754e
+  ManaKit: 683864c44a12e0e6e2ff93a7f09425eac77f220c
+  PromiseKit: 8200c4555a5b433ac26f5143093cb792ee2c3426
   Realm: 50071da38fe079e0735e47c9f2eae738c68c5996
   RealmSwift: 8a1e6a02b7a08cd17a31e3115143fb69fe5f3fb9
-  SDWebImage: c5594f1a19c48d526d321e548902b56b479cd508
+  SDWebImage: c00ec18ab25d10e5ffac109b0f78d1b4341c9691
   SSZipArchive: 41455d4b8d2b6ab93990820b50dc697c2554a322
 
 PODFILE CHECKSUM: 8b463fa1d93f1f04f7447c257974baf0bed042fe

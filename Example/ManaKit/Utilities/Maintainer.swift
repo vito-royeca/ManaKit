@@ -17,7 +17,7 @@ class Maintainer: NSObject {
     let printMilestone = 1000
     let cardsFileName   = "scryfall-all-cards.json"
     let rulingsFileName = "scryfall-rulings.json"
-    let comprehensiveRulesFileName = "MagicCompRules 20181005"
+    let comprehensiveRulesFileName = "MagicCompRules 20190125.txt"
     let realm = ManaKit.sharedInstance.realm
     let setCodesForProcessing:[String]? = nil
     let tcgplayerAPIVersion = "v1.9.0"

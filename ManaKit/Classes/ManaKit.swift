@@ -25,10 +25,10 @@ public class ManaKit {
     }
 
     public enum Constants {
-        public static let ScryfallDate        = "2019-01-26 09:30 UTC"
+        public static let ScryfallDate        = "2019-01-29 09:34 UTC"
         public static let KeyruneVersion      = "3.3.3"
         public static let EightEditionRelease = "2003-07-28"
-        public static let TcgPlayerApiVersion = "v1.9.0"
+        public static let TcgPlayerApiVersion = "v1.19.0"
         public static let TcgPlayerApiLimit   = 300
         public static let TcgPlayerPricingAge = 24 * 3 // 3 days
         
@@ -46,9 +46,10 @@ public class ManaKit {
     }
     
     public enum UserDefaultsKeys {
-        public static let ScryfallDate     = "ScryfallDate"
-        public static let MTGJSONVersion   = "kMTGJSONVersion"
-        public static let TcgPlayerToken   = "TcgPlayerToken"
+        public static let ScryfallDate          = "ScryfallDate"
+        public static let MTGJSONVersion        = "kMTGJSONVersion"
+        public static let TcgPlayerToken        = "TcgPlayerToken"
+        public static let TcgPlayerExpiration   = "TcgPlayerExpiration"
     }
     
     // MARK: - Shared Instance
@@ -292,9 +293,21 @@ public class ManaKit {
                 return
             }
             
-            if let _ = keychain[UserDefaultsKeys.TcgPlayerToken] {
-                seal.fulfill(())
-            } else {
+            let dateFormat = DateFormatter()
+            var willAuthenticate = true
+            
+            dateFormat.dateStyle = .medium
+            
+            if let _ = keychain[UserDefaultsKeys.TcgPlayerToken],
+                let expiration = keychain[UserDefaultsKeys.TcgPlayerExpiration],
+                let expirationDate = dateFormat.date(from: expiration) {
+                
+                if Date() <= expirationDate {
+                    willAuthenticate = false
+                }
+            }
+            
+            if willAuthenticate {
                 guard let urlString = "https://api.tcgplayer.com/token".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                     let url = URL(string: urlString) else {
                     fatalError("Malformed url")
@@ -311,17 +324,23 @@ public class ManaKit {
                 }.compactMap {
                     try JSONSerialization.jsonObject(with: $0.data) as? [String: Any]
                 }.done { json in
-                    guard let token = json["access_token"] as? String else {
+                    guard let token = json["access_token"] as? String,
+                        let expiresIn = json["expires_in"] as? Double else {
                         let error = NSError(domain: "Error", code: 401, userInfo: [NSLocalizedDescriptionKey: "No TCGPlayer token found."])
                         seal.reject(error)
                         return
                     }
+                    let date = Date().addingTimeInterval(expiresIn)
                     self.keychain[UserDefaultsKeys.TcgPlayerToken] = token
+                    self.keychain[UserDefaultsKeys.TcgPlayerExpiration] = dateFormat.string(from: date)
+                    
                     seal.fulfill(())
                 }.catch { error in
                     print("\(error)")
                     seal.reject(error)
                 }
+            } else {
+                seal.fulfill(())
             }
         }
     }
