@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ManaKit'
-  s.version          = '4.0.8'
+  s.version          = '4.0.9'
   s.summary          = 'Realm implementation of Scryfall.com.'
 
 # This description is used to generate tags and improve search results.

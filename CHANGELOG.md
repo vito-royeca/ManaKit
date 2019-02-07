@@ -1,3 +1,6 @@
+**Version 4.0.9** @ 06.01.2019
+- Updated the Scryfall database to: 2019-02-06 10:27 UTC.
+
 **Version 4.0.8** @ 29.01.2019
 - Updated the Scryfall database to: 2019-01-29 09:34 UTC.
 - Fixed TCGPlayer token expiration.
