@@ -37,6 +37,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        }.done {
 //            maintainer.compactDatabase()
 //            maintainer.endActivity()
+//            NotificationCenter.default.post(name: Notification.Name(rawValue: MaintainerKeys.MaintainanceDone),
+//                                            object: nil,
+//                                            userInfo: nil)
 //        }.catch { error in
 //            print(error)
 //        }

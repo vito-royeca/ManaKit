@@ -39,6 +39,14 @@ class SetsViewController: UIViewController {
         
         tableView.register(ManaKit.sharedInstance.nibFromBundle("SetTableViewCell"),
                            forCellReuseIdentifier: SetTableViewCell.reuseIdentifier)
+        
+        NotificationCenter.default.removeObserver(self,
+                                                  name: NSNotification.Name(rawValue: MaintainerKeys.MaintainanceDone),
+                                                  object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(reloadSets(_:)),
+                                               name: NSNotification.Name(rawValue: MaintainerKeys.MaintainanceDone),
+                                               object: nil)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -67,6 +75,11 @@ class SetsViewController: UIViewController {
                                          languageCode: languageCode)
             dest.viewModel = viewModel
         }
+    }
+    
+    // Notification handler
+    @objc func reloadSets(_ notification: Notification) {
+        tableView.reloadData()
     }
 }
 

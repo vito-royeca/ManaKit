@@ -25,8 +25,8 @@ public class ManaKit {
     }
 
     public enum Constants {
-        public static let ScryfallDate        = "2019-02-06 10:27 UTC"
-        public static let KeyruneVersion      = "3.3.3"
+        public static let ScryfallDate        = "2019-04-13 10:22 UTC"
+        public static let KeyruneVersion      = "3.4.1"
         public static let EightEditionRelease = "2003-07-28"
         public static let TcgPlayerApiVersion = "v1.19.0"
         public static let TcgPlayerApiLimit   = 300
@@ -243,7 +243,7 @@ public class ManaKit {
     
     public func downloadImage(url: URL) -> Promise<Void> {
         return Promise { seal in
-            let downloader = SDWebImageDownloader.shared()
+            let downloader = SDWebImageDownloader.shared
             let cacheKey = url.absoluteString
             let completion = { (image: UIImage?, data: Data?, error: Error?, finished: Bool) in
                 if let error = error {

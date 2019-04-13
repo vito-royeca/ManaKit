@@ -12,6 +12,10 @@ import PromiseKit
 import SSZipArchive
 import RealmSwift
 
+enum MaintainerKeys {
+    static let MaintainanceDone        = "MaintainanceDone"
+}
+
 class Maintainer: NSObject {
     // MARK: Constants
     let printMilestone = 1000

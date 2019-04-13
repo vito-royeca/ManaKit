@@ -1,3 +1,6 @@
+**Version 4.1.0** @ 13.04.2019
+- Updated the Scryfall database to: 2019-04-13 10:22 UTC.
+
 **Version 4.0.9** @ 06.01.2019
 - Updated the Scryfall database to: 2019-02-06 10:27 UTC.
 

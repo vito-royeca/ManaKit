@@ -65,9 +65,11 @@ extension Maintainer {
         
             // manual fix
             for set in realm.objects(CMSet.self) {
-                if set.code == "gk2" ||
-                    set.code == "tgk2" {
-                    set.myKeyruneCode = "e959" // rna guild kit
+                if set.code == "twar" ||
+                    set.code == "pwar" {
+                    set.myKeyruneCode = "e95a" // war of spark promos7tokens
+                } else if set.code == "tgk2" {
+                    set.myKeyruneCode = "e959" // rna guild kit tokens
                 }
                 else if set.code == "med" ||
                     set.code == "tmed" {
@@ -105,7 +107,8 @@ extension Maintainer {
                     set.code == "pwp12" ||
                     set.code == "pwcq" ||
                     set.code == "pf19" ||
-                    set.code == "j12" {
+                    set.code == "j12" ||
+                    set.code == "j19" {
                     set.myKeyruneCode = "e687" // media insert
                     realm.add(set)
                 } else if set.code == "pal99" {
