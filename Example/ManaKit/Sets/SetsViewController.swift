@@ -119,9 +119,8 @@ extension SetsViewController : UITableViewDataSource {
 
 // MARK: UITableViewDelegate
 extension SetsViewController : UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let set = viewModel.object(forRowAt: indexPath)
-        performSegue(withIdentifier: "showSet", sender: set)
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        return nil
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

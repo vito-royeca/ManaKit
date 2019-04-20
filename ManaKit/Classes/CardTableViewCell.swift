@@ -27,6 +27,7 @@ public class CardTableViewCell: UITableViewCell {
     @IBOutlet public weak var thumbnailImage: UIImageView!
     @IBOutlet public weak var nameLabel: UILabel!
     @IBOutlet public weak var castingCostLabel: UILabel!
+    @IBOutlet public weak var castingCostLabel2: UILabel!
     @IBOutlet public weak var annotationLabel: UILabel!
     @IBOutlet public weak var typeImage: UIImageView!
     @IBOutlet public weak var typeLabel: UILabel!
@@ -59,9 +60,9 @@ public class CardTableViewCell: UITableViewCell {
         removeAnnotation()
         nameLabel.text = nil
         castingCostLabel.text = nil
+        castingCostLabel2.text = nil
         typeLabel.text = nil
         setImage.text = nil
-        
         normalPriceLabel.text = "NA"
         foilPriceLabel.text = "NA"
     }
@@ -72,13 +73,15 @@ public class CardTableViewCell: UITableViewCell {
             return
         }
         
-        // name
-        nameLabel.text = card.displayName
+        var nameAttributedString: NSAttributedString?
+        var castingCostAttributedString: NSAttributedString?
         
+        // name
         if let releaseDate = card.set!.releaseDate {
             let isModern = card.isModern()
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd"
+            var font: UIFont?
             
             if let m15Date = formatter.date(from: "2014-07-18"),
                 let setReleaseDate = formatter.date(from: releaseDate) {
@@ -88,10 +91,10 @@ public class CardTableViewCell: UITableViewCell {
                 
                 if setReleaseDate.compare(m15Date) == .orderedSame ||
                     setReleaseDate.compare(m15Date) == .orderedDescending {
-                    nameLabel.font = ManaKit.Fonts.magic2015
+                    font = ManaKit.Fonts.magic2015
                     
                 } else {
-                    nameLabel.font = isModern ? ManaKit.Fonts.eightEdition : ManaKit.Fonts.preEightEdition
+                    font = isModern ? ManaKit.Fonts.eightEdition : ManaKit.Fonts.preEightEdition
                     
                     if !isModern {
                         shadowColor = UIColor.darkGray
@@ -102,14 +105,35 @@ public class CardTableViewCell: UITableViewCell {
                 nameLabel.shadowColor = shadowColor
                 nameLabel.shadowOffset = shadowOffset
             }
+            
+            if let name = card.displayName,
+                let font = font {
+                let attributes = [NSAttributedString.Key.font: font]
+                nameAttributedString = NSAttributedString(string: name, attributes: attributes)
+            }
         }
+        nameLabel.attributedText = nameAttributedString
         
         // casting cost
         if let manaCost = card.manaCost {
             let pointSize = castingCostLabel.font.pointSize
-            castingCostLabel.attributedText = NSAttributedString(symbol: manaCost, pointSize: pointSize)
+            castingCostAttributedString = NSAttributedString(symbol: manaCost, pointSize: pointSize)
+        }
+        
+        if let nameAttributedString = nameAttributedString,
+            let castingCostAttributedString = castingCostAttributedString {
+            let nameSize = sizeOf(attributedString: nameAttributedString, constrainedToWidth: nameLabel.frame.size.width)
+            let ccSize = castingCostAttributedString.widthOf(symbol: card.manaCost!)
+            if  (nameSize.width + ccSize) > nameLabel.frame.size.width {
+                castingCostLabel.text = nil
+                castingCostLabel2.attributedText = castingCostAttributedString
+            } else {
+                castingCostLabel.attributedText = castingCostAttributedString
+                castingCostLabel2.text = nil
+            }
         } else {
             castingCostLabel.text = nil
+            castingCostLabel2.text = nil
         }
         
         // thumbnail image
@@ -194,5 +218,14 @@ public class CardTableViewCell: UITableViewCell {
                 normalPriceLabel.text = pricing.marketPrice > 0 ? String(format: "$%.2f", pricing.marketPrice) : "NA"
             }
         }
+    }
+    
+    private func sizeOf(attributedString: NSAttributedString, constrainedToWidth width: CGFloat) -> CGSize {
+        let framesetter = CTFramesetterCreateWithAttributedString(attributedString)
+        return CTFramesetterSuggestFrameSizeWithConstraints(framesetter,
+                                                            CFRange(location: 0,length: 0),
+                                                            nil,
+                                                            CGSize(width: width, height: CGFloat.greatestFiniteMagnitude),
+                                                            nil)
     }
 }

@@ -25,7 +25,7 @@ public class ManaKit {
     }
 
     public enum Constants {
-        public static let ScryfallDate        = "2019-04-14 10:24 UTC"
+        public static let ScryfallDate        = "2019-04-20 10:39 UTC"
         public static let KeyruneVersion      = "3.4.1"
         public static let EightEditionRelease = "2003-07-28"
         public static let TcgPlayerApiVersion = "v1.19.0"

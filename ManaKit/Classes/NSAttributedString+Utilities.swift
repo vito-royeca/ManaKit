@@ -9,7 +9,7 @@ import UIKit
 import Kanna
 
 public extension NSAttributedString {
-    public convenience init(symbol: String, pointSize: CGFloat) {
+    convenience init(symbol: String, pointSize: CGFloat) {
         let newAttributedString = NSMutableAttributedString()
         let text = symbol.trimmingCharacters(in: CharacterSet.whitespaces)
         var fragmentText = NSMutableString()
@@ -91,7 +91,7 @@ public extension NSAttributedString {
         self.init(attributedString: newAttributedString)
     }
     
-    public convenience init(html: String) {
+    convenience init(html: String) {
         let style = "<style>" +
             "body { font-family: -apple-system; font-size:15; } " +
         "</style>"
@@ -138,6 +138,59 @@ public extension NSAttributedString {
         }
         
         self.init(attributedString: attributedString)
+    }
+    
+    func widthOf(symbol: String) -> CGFloat {
+        let text = symbol.trimmingCharacters(in: CharacterSet.whitespaces)
+        var width = CGFloat(0)
+        var sentinel = 0
+        
+        if text.count == 0 {
+            return width
+        }
+        
+        repeat {
+            for i in sentinel...text.count - 1 {
+                let c = text[text.index(text.startIndex, offsetBy: i)]
+                
+                if c == "{" {
+                    let code = NSMutableString()
+                    
+                    for j in i...text.count - 1 {
+                        let cc = text[text.index(text.startIndex, offsetBy: j)]
+                        code.append(String(cc))
+                        
+                        if cc == "}" {
+                            sentinel = j + 1
+                            break
+                        }
+                    }
+                    
+                    var cleanCode = code.replacingOccurrences(of: "{", with: "")
+                        .replacingOccurrences(of: "}", with: "")
+                        .replacingOccurrences(of: "/", with: "")
+                    
+                    if cleanCode.lowercased() == "chaos" {
+                        cleanCode = "Chaos"
+                    }
+                    
+                    if cleanCode == "100" {
+                        width += 35
+                    } else if cleanCode == "1000000" {
+                        width += 60
+                    } else {
+                        width += CGFloat(16)
+                    }
+                    break
+                    
+                } else {
+                    sentinel += 1
+                }
+                
+            }
+        } while sentinel <= text.count - 1
+        
+        return width
     }
 }
 

@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
 
         if ManaKit.sharedInstance.needsUpgrade() {
-            // Create data
+            // Create database
             let maintainer = Maintainer()
             maintainer.startActivity(name: "Create data...")
             maintainer.unpackScryfallData()
