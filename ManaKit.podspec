@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ManaKit'
-  s.version          = '4.1.3'
+  s.version          = '4.1.4'
   s.summary          = 'Realm implementation of Scryfall.com.'
 
 # This description is used to generate tags and improve search results.
@@ -27,7 +27,7 @@ A database of Magic: The Gathering cards. Includes prices and images.
   s.author           = { 'jovito-royeca' => 'jovit.royeca@gmail.com' }
   s.source           = { :git => 'https://github.com/jovito-royeca/ManaKit.git', :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/ManaGuideApp'
-  s.swift_version    = '4.2'
+  s.swift_version    = '5.0'
   
   s.ios.deployment_target = '10.3'
 
