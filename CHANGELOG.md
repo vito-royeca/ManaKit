@@ -1,4 +1,4 @@
-**Version 4.1.2** @ 13.04.2019
+**Version 4.1.3** @ 13.04.2019
 - Updated the Scryfall database to: 2019-04-20 10:39 UTC.
 - Fixed long names and mana cost display in CardTableViewCell.
 

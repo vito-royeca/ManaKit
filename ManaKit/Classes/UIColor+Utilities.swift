@@ -8,7 +8,7 @@
 import UIKit
 
 public extension UIColor {
-    public convenience init(hex: String) {
+    convenience init(hex: String) {
         var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
         
         if (cString.hasPrefix("#")) {
@@ -31,7 +31,7 @@ public extension UIColor {
         }
     }
     
-    public func toHex() -> String {
+    func toHex() -> String {
         let cgColor = self.cgColor
         let colorRef = cgColor.components
         let r = colorRef?[0] ?? 0
