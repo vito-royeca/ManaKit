@@ -122,7 +122,7 @@ public class CardTableViewCell: UITableViewCell {
         
         if let nameAttributedString = nameAttributedString,
             let castingCostAttributedString = castingCostAttributedString {
-            let nameSize = sizeOf(attributedString: nameAttributedString, constrainedToWidth: nameLabel.frame.size.width)
+            let nameSize = sizeOf(attributedString: nameAttributedString, withFrameSize: nameLabel.frame.size)
             let ccSize = castingCostAttributedString.widthOf(symbol: card.manaCost!)
             if  (nameSize.width + ccSize) > nameLabel.frame.size.width {
                 castingCostLabel.text = nil
@@ -220,12 +220,9 @@ public class CardTableViewCell: UITableViewCell {
         }
     }
     
-    private func sizeOf(attributedString: NSAttributedString, constrainedToWidth width: CGFloat) -> CGSize {
-        let framesetter = CTFramesetterCreateWithAttributedString(attributedString)
-        return CTFramesetterSuggestFrameSizeWithConstraints(framesetter,
-                                                            CFRange(location: 0,length: 0),
-                                                            nil,
-                                                            CGSize(width: width, height: CGFloat.greatestFiniteMagnitude),
-                                                            nil)
+    private func sizeOf(attributedString: NSAttributedString, withFrameSize frameSize: CGSize) -> CGSize {
+        return attributedString.boundingRect(with: frameSize,
+                                             options: NSStringDrawingOptions.usesLineFragmentOrigin,
+                                             context: nil).size
     }
 }

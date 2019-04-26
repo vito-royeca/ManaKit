@@ -63,7 +63,7 @@
                         </userDefinedRuntimeAttributes>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y9M-ig-dNi">
-                        <rect key="frame" x="124" y="8" width="183" height="20"/>
+                        <rect key="frame" x="124" y="4" width="183" height="20"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5R8-Ie-iaQ">
                                 <rect key="frame" x="0.0" y="0.0" width="183" height="20"/>
@@ -98,7 +98,7 @@
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CC" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cpl-71-VEp">
-                        <rect key="frame" x="124" y="28" width="183" height="20"/>
+                        <rect key="frame" x="124" y="24" width="183" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="tBe-iJ-SyN"/>
                         </constraints>
@@ -110,7 +110,7 @@
                         </userDefinedRuntimeAttributes>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5jo-XN-ep7">
-                        <rect key="frame" x="124" y="48" width="183" height="20"/>
+                        <rect key="frame" x="124" y="44" width="183" height="20"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Creature" translatesAutoresizingMaskIntoConstraints="NO" id="Glp-iO-s75">
                                 <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
@@ -144,7 +144,7 @@
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g8i-jA-6bh">
-                        <rect key="frame" x="124" y="71.5" width="183" height="16"/>
+                        <rect key="frame" x="124" y="68" width="183" height="16"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="h88-eR-fJK">
                                 <rect key="frame" x="0.0" y="0.0" width="183" height="16"/>
@@ -195,6 +195,7 @@
                 <constraints>
                     <constraint firstItem="y9M-ig-dNi" firstAttribute="leading" secondItem="rgs-66-M0A" secondAttribute="trailing" constant="13" id="3wF-6U-pDY"/>
                     <constraint firstItem="kXP-dk-0C1" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="6" id="9fZ-uA-9tr"/>
+                    <constraint firstItem="g8i-jA-6bh" firstAttribute="top" secondItem="5jo-XN-ep7" secondAttribute="bottom" constant="4" id="JrD-44-VXt"/>
                     <constraint firstAttribute="trailing" secondItem="y9M-ig-dNi" secondAttribute="trailing" constant="13" id="KpY-dv-Nhe"/>
                     <constraint firstAttribute="trailing" secondItem="Cpl-71-VEp" secondAttribute="trailing" constant="13" id="L5C-3u-Agl"/>
                     <constraint firstItem="5jo-XN-ep7" firstAttribute="top" secondItem="Cpl-71-VEp" secondAttribute="bottom" id="TOk-5X-kUn"/>
@@ -208,9 +209,8 @@
                     <constraint firstItem="g8i-jA-6bh" firstAttribute="leading" secondItem="rgs-66-M0A" secondAttribute="trailing" constant="13" id="jv3-h4-Mg6"/>
                     <constraint firstItem="kXP-dk-0C1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="6" id="lPd-v1-Rbl"/>
                     <constraint firstItem="rgs-66-M0A" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="n3o-cr-YiB"/>
-                    <constraint firstItem="y9M-ig-dNi" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="oje-Yv-jf8"/>
+                    <constraint firstItem="y9M-ig-dNi" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="4" id="oje-Yv-jf8"/>
                     <constraint firstItem="Kbw-1w-5Bx" firstAttribute="bottom" secondItem="rgs-66-M0A" secondAttribute="bottom" id="rOR-ku-1pX"/>
-                    <constraint firstAttribute="bottom" secondItem="g8i-jA-6bh" secondAttribute="bottom" id="uB5-qq-BbV"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
