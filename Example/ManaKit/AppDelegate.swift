@@ -28,6 +28,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             maintainer.unpackScryfallData()
 
             firstly {
+                maintainer.fetchAllCards()
+            }.then {
+                maintainer.fetchRulings()
+            }.then {
                 maintainer.fetchSetsAndCreateCards()
             }.then {
                 maintainer.updateSetSymbols()

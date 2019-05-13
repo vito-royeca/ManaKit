@@ -12,8 +12,95 @@ import PromiseKit
 import RealmSwift
 
 extension Maintainer {
+    // MARK: Database
+    func fetchAllCards() -> Promise<Void> {
+        return Promise { seal in
+            guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
+                fatalError("Malformed cachePath")
+            }
+            let cardsPath = "\(cachePath)/\(ManaKit.Constants.ScryfallDate)_\(cardsFileName)"
+            let willFetch = !FileManager.default.fileExists(atPath: cardsPath)
+            
+            if willFetch {
+                guard let urlString = "https://archive.scryfall.com/json/\(cardsFileName)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+                    let url = URL(string: urlString) else {
+                    fatalError("Malformed url")
+                }
+                var rq = URLRequest(url: url)
+                rq.httpMethod = "GET"
+                
+                print("Fetching Scryfall cards... \(urlString)")
+                firstly {
+                    URLSession.shared.dataTask(.promise, with:rq)
+                }.compactMap {
+                    try JSONSerialization.jsonObject(with: $0.data) as? [[String: Any]]
+                }.done { json in
+                    if let outputStream = OutputStream(toFileAtPath: cardsPath, append: false) {
+                        print("Writing Scryfall cards... \(cardsPath)")
+                        var error: NSError?
+                        outputStream.open()
+                        JSONSerialization.writeJSONObject(json,
+                                                          to: outputStream,
+                                                          options: JSONSerialization.WritingOptions(),
+                                                          error: &error)
+                        outputStream.close()
+                        print("Done!")
+                    }
+                    seal.fulfill(())
+                }.catch { error in
+                    seal.reject(error)
+                }
+            } else {
+                seal.fulfill(())
+            }
+        }
+    }
+    
+    func fetchRulings() -> Promise<Void> {
+        return Promise { seal in
+            guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
+                fatalError("Malformed cachePath")
+            }
+            let rulingsPath = "\(cachePath)/\(ManaKit.Constants.ScryfallDate)_\(rulingsFileName)"
+            let willFetch = !FileManager.default.fileExists(atPath: rulingsPath)
+            
+            if willFetch {
+                guard let urlString = "https://archive.scryfall.com/json/\(rulingsFileName)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+                    let url = URL(string: urlString) else {
+                        fatalError("Malformed url")
+                }
+                var rq = URLRequest(url: url)
+                rq.httpMethod = "GET"
+                
+                print("Fetching Scryfall rulings... \(urlString)")
+                firstly {
+                    URLSession.shared.dataTask(.promise, with:rq)
+                    }.compactMap {
+                        try JSONSerialization.jsonObject(with: $0.data) as? [[String: Any]]
+                    }.done { json in
+                        if let outputStream = OutputStream(toFileAtPath: rulingsPath, append: false) {
+                            print("Writing Scryfall cards... \(rulingsPath)")
+                            var error: NSError?
+                            outputStream.open()
+                            JSONSerialization.writeJSONObject(json,
+                                                              to: outputStream,
+                                                              options: JSONSerialization.WritingOptions(),
+                                                              error: &error)
+                            outputStream.close()
+                            print("Done!")
+                        }
+                        seal.fulfill(())
+                    }.catch { error in
+                    seal.reject(error)
+                }
+            } else {
+                seal.fulfill(())
+            }
+        }
+    }
+
     // MARK: Sets
-    func fetchSetsAndCreateCards() -> Promise<Void>{
+    func fetchSetsAndCreateCards() -> Promise<Void> {
         return Promise { seal in
             guard let urlString = "https://api.scryfall.com/sets".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                 let url = URL(string: urlString) else {
@@ -147,7 +234,7 @@ extension Maintainer {
         guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
             return
         }
-        let cardsPath = "\(cachePath)/\(cardsFileName)"
+        let cardsPath = "\(cachePath)/\(ManaKit.Constants.ScryfallDate)_\(cardsFileName)"
         
         let data = try! Data(contentsOf: URL(fileURLWithPath: cardsPath))
         guard let array = try! JSONSerialization.jsonObject(with: data,
@@ -488,7 +575,7 @@ extension Maintainer {
         guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
             return
         }
-        let cardsPath = "\(cachePath)/\(cardsFileName)"
+        let cardsPath = "\(cachePath)/\(ManaKit.Constants.ScryfallDate)_\(cardsFileName)"
         
         let data = try! Data(contentsOf: URL(fileURLWithPath: cardsPath))
         guard let array = try! JSONSerialization.jsonObject(with: data,
@@ -665,7 +752,7 @@ extension Maintainer {
         guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
             return
         }
-        let rulingsPath = "\(cachePath)/\(rulingsFileName)"
+        let rulingsPath = "\(cachePath)/\(ManaKit.Constants.ScryfallDate)_\(rulingsFileName)"
         
         let data = try! Data(contentsOf: URL(fileURLWithPath: rulingsPath))
         guard let array = try! JSONSerialization.jsonObject(with: data,
