@@ -1,2 +1,0 @@
-Example/ManaKit/data/scryfall-all-cards.json.zip filter=lfs diff=lfs merge=lfs -text
-Example/ManaKit/data/scryfall-rulings.json.zip filter=lfs diff=lfs merge=lfs -text

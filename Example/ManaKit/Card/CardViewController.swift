@@ -80,6 +80,7 @@ extension CardViewController : UITableViewDataSource {
             
             c.faceOrder = faceOrder
             c.card = card
+            c.updateDataDisplay()
             cell = c
             
         case 1:

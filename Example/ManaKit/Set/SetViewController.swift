@@ -84,6 +84,7 @@ extension SetViewController : UITableViewDataSource {
         }
         
         cell.card = viewModel.object(forRowAt: indexPath)
+        cell.updateDataDisplay()
         return cell
     }
     

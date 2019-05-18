@@ -15,13 +15,12 @@ public class CardTableViewCell: UITableViewCell {
     public static let cellHeight = CGFloat(88)
     
     // Variables
-    public var card: CMCard? {
-        didSet {
-            updateDataDisplay()
-        }
-    }
+    public var card: CMCard?
     public var faceOrder = 0
+    
     var token : NotificationToken?
+    var nameAttributedString: NSAttributedString?
+//    var manaCostDisplayed = false
     
     // MARK: Outlets
     @IBOutlet public weak var thumbnailImage: UIImageView!
@@ -67,14 +66,11 @@ public class CardTableViewCell: UITableViewCell {
         foilPriceLabel.text = "NA"
     }
     
-    private func updateDataDisplay() {
+    public func updateDataDisplay() {
         guard let card = card else {
             clearDataDisplay()
             return
         }
-        
-        var nameAttributedString: NSAttributedString?
-        var castingCostAttributedString: NSAttributedString?
         
         // name
         if let releaseDate = card.set!.releaseDate {
@@ -113,27 +109,11 @@ public class CardTableViewCell: UITableViewCell {
             }
         }
         nameLabel.attributedText = nameAttributedString
+        castingCostLabel.text = nil
+        castingCostLabel2.text = nil
         
-        // casting cost
-        if let manaCost = card.manaCost {
-            let pointSize = castingCostLabel.font.pointSize
-            castingCostAttributedString = NSAttributedString(symbol: manaCost, pointSize: pointSize)
-        }
-        
-        if let nameAttributedString = nameAttributedString,
-            let castingCostAttributedString = castingCostAttributedString {
-            let nameSize = sizeOf(attributedString: nameAttributedString, withFrameSize: nameLabel.frame.size)
-            let ccSize = castingCostAttributedString.widthOf(symbol: card.manaCost!)
-            if  (nameSize.width + ccSize) > nameLabel.frame.size.width {
-                castingCostLabel.text = nil
-                castingCostLabel2.attributedText = castingCostAttributedString
-            } else {
-                castingCostLabel.attributedText = castingCostAttributedString
-                castingCostLabel2.text = nil
-            }
-        } else {
-            castingCostLabel.text = nil
-            castingCostLabel2.text = nil
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.displayManaCost()
         }
         
         // thumbnail image
@@ -189,6 +169,33 @@ public class CardTableViewCell: UITableViewCell {
                 print("An error occurred: \(error)")
             case .deleted:
                 print("The object was deleted.")
+            }
+        }
+    }
+    
+    public func displayManaCost() {
+        guard let card = card else {
+            clearDataDisplay()
+            return
+        }
+        
+        var castingCostAttributedString: NSAttributedString?
+
+        if let manaCost = card.manaCost {
+            let pointSize = castingCostLabel.font.pointSize
+            castingCostAttributedString = NSAttributedString(symbol: manaCost, pointSize: pointSize)
+        }
+        
+        if let nameAttributedString = nameAttributedString,
+            let castingCostAttributedString = castingCostAttributedString {
+            let nameSize = sizeOf(attributedString: nameAttributedString, withFrameSize: nameLabel.frame.size)
+            let ccSize = castingCostAttributedString.widthOf(symbol: card.manaCost!)
+            if  (nameSize.width + ccSize) > nameLabel.frame.size.width {
+                castingCostLabel.text = nil
+                castingCostLabel2.attributedText = castingCostAttributedString
+            } else {
+                castingCostLabel.attributedText = castingCostAttributedString
+                castingCostLabel2.text = nil
             }
         }
     }
