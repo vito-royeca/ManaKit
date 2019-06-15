@@ -32,9 +32,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }.then {
                 maintainer.fetchRulings()
             }.then {
-                maintainer.fetchSetsAndCreateCards()
+                maintainer.fetchSets()
             }.then {
                 maintainer.updateSetSymbols()
+            }.then {
+                maintainer.createAndUpdateCards()
             }.then {
                 maintainer.updateOtherCardInformation()
             }.then {
