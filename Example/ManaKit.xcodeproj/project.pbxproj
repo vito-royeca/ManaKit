@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		110BB79522DBD12B004E65D5 /* Maintainer+Rulings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110BB79422DBD12B004E65D5 /* Maintainer+Rulings.swift */; };
 		1129D75B217FF00400D4A006 /* Maintainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1129D75A217FF00400D4A006 /* Maintainer.swift */; };
 		1129D7622180153400D4A006 /* Maintainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1129D75A217FF00400D4A006 /* Maintainer.swift */; };
-		11313E63217D4BDA00E31997 /* Maintainer+Scryfall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11313E62217D4BDA00E31997 /* Maintainer+Scryfall.swift */; };
-		11313E64217D4BDA00E31997 /* Maintainer+Scryfall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11313E62217D4BDA00E31997 /* Maintainer+Scryfall.swift */; };
+		11313E63217D4BDA00E31997 /* Maintainer+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11313E62217D4BDA00E31997 /* Maintainer+Cards.swift */; };
+		11313E64217D4BDA00E31997 /* Maintainer+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11313E62217D4BDA00E31997 /* Maintainer+Cards.swift */; };
 		113D40C02139BC70000D08FA /* SetsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D40BF2139BC70000D08FA /* SetsViewModel.swift */; };
 		114282922141C84C0091F074 /* SetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114282912141C84C0091F074 /* SetViewModel.swift */; };
 		114282952142165A0091F074 /* DecksViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114282942142165A0091F074 /* DecksViewModel.swift */; };
@@ -25,8 +26,8 @@
 		115151BD1F1E256A0061C270 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115151BC1F1E256A0061C270 /* CardViewController.swift */; };
 		117D03EA21A0B34100534E88 /* BSTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117D03E921A0B34100534E88 /* BSTree.swift */; };
 		118F290521DB035300660158 /* Maintainer+TCGPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118F290421DB035300660158 /* Maintainer+TCGPlayer.swift */; };
-		118F290721DB040D00660158 /* Maintainer+Keyrune.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118F290621DB040C00660158 /* Maintainer+Keyrune.swift */; };
-		118F290921DB051400660158 /* Maintainer+My.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118F290821DB051400660158 /* Maintainer+My.swift */; };
+		118F290721DB040D00660158 /* Maintainer+Sets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118F290621DB040C00660158 /* Maintainer+Sets.swift */; };
+		118F290921DB051400660158 /* Maintainer+ComprehensiveRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118F290821DB051400660158 /* Maintainer+ComprehensiveRules.swift */; };
 		11E74D96217437FE0077B252 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E74D95217437FE0077B252 /* MainViewController.swift */; };
 		11E74D97217437FE0077B252 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E74D95217437FE0077B252 /* MainViewController.swift */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
@@ -49,8 +50,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		110BB79422DBD12B004E65D5 /* Maintainer+Rulings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Maintainer+Rulings.swift"; sourceTree = "<group>"; };
 		1129D75A217FF00400D4A006 /* Maintainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Maintainer.swift; sourceTree = "<group>"; };
-		11313E62217D4BDA00E31997 /* Maintainer+Scryfall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Maintainer+Scryfall.swift"; sourceTree = "<group>"; };
+		11313E62217D4BDA00E31997 /* Maintainer+Cards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Maintainer+Cards.swift"; sourceTree = "<group>"; };
 		113D40BF2139BC70000D08FA /* SetsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetsViewModel.swift; sourceTree = "<group>"; };
 		114282912141C84C0091F074 /* SetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetViewModel.swift; sourceTree = "<group>"; };
 		114282942142165A0091F074 /* DecksViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecksViewModel.swift; sourceTree = "<group>"; };
@@ -65,8 +67,8 @@
 		115151BC1F1E256A0061C270 /* CardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardViewController.swift; sourceTree = "<group>"; };
 		117D03E921A0B34100534E88 /* BSTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSTree.swift; sourceTree = "<group>"; };
 		118F290421DB035300660158 /* Maintainer+TCGPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+TCGPlayer.swift"; sourceTree = "<group>"; };
-		118F290621DB040C00660158 /* Maintainer+Keyrune.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+Keyrune.swift"; sourceTree = "<group>"; };
-		118F290821DB051400660158 /* Maintainer+My.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+My.swift"; sourceTree = "<group>"; };
+		118F290621DB040C00660158 /* Maintainer+Sets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+Sets.swift"; sourceTree = "<group>"; };
+		118F290821DB051400660158 /* Maintainer+ComprehensiveRules.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+ComprehensiveRules.swift"; sourceTree = "<group>"; };
 		11E74D95217437FE0077B252 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		1F8A6A3006839651BED01AC8 /* Pods-ManaKit_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit_Tests/Pods-ManaKit_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		214271945F84D9EB3A6B8CF1 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
@@ -158,11 +160,12 @@
 			isa = PBXGroup;
 			children = (
 				117D03E921A0B34100534E88 /* BSTree.swift */,
-				118F290621DB040C00660158 /* Maintainer+Keyrune.swift */,
 				1129D75A217FF00400D4A006 /* Maintainer.swift */,
-				118F290821DB051400660158 /* Maintainer+My.swift */,
-				11313E62217D4BDA00E31997 /* Maintainer+Scryfall.swift */,
+				11313E62217D4BDA00E31997 /* Maintainer+Cards.swift */,
+				118F290821DB051400660158 /* Maintainer+ComprehensiveRules.swift */,
+				118F290621DB040C00660158 /* Maintainer+Sets.swift */,
 				118F290421DB035300660158 /* Maintainer+TCGPlayer.swift */,
+				110BB79422DBD12B004E65D5 /* Maintainer+Rulings.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -482,7 +485,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11313E63217D4BDA00E31997 /* Maintainer+Scryfall.swift in Sources */,
+				11313E63217D4BDA00E31997 /* Maintainer+Cards.swift in Sources */,
 				1143684A212FD84B00A5E008 /* DeckViewController.swift in Sources */,
 				118F290521DB035300660158 /* Maintainer+TCGPlayer.swift in Sources */,
 				1129D75B217FF00400D4A006 /* Maintainer.swift in Sources */,
@@ -496,11 +499,12 @@
 				115151A91F1E221C0061C270 /* SetsViewController.swift in Sources */,
 				115151BD1F1E256A0061C270 /* CardViewController.swift in Sources */,
 				117D03EA21A0B34100534E88 /* BSTree.swift in Sources */,
-				118F290921DB051400660158 /* Maintainer+My.swift in Sources */,
+				110BB79522DBD12B004E65D5 /* Maintainer+Rulings.swift in Sources */,
+				118F290921DB051400660158 /* Maintainer+ComprehensiveRules.swift in Sources */,
 				1142829721423B4A0091F074 /* DeckMainboardViewModel.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				113D40C02139BC70000D08FA /* SetsViewModel.swift in Sources */,
-				118F290721DB040D00660158 /* Maintainer+Keyrune.swift in Sources */,
+				118F290721DB040D00660158 /* Maintainer+Sets.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -509,7 +513,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
-				11313E64217D4BDA00E31997 /* Maintainer+Scryfall.swift in Sources */,
+				11313E64217D4BDA00E31997 /* Maintainer+Cards.swift in Sources */,
 				11E74D97217437FE0077B252 /* MainViewController.swift in Sources */,
 				1129D7622180153400D4A006 /* Maintainer.swift in Sources */,
 			);

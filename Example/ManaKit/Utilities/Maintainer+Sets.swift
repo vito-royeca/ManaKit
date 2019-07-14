@@ -1,19 +1,205 @@
 //
-//  KeyruneMaintainer.swift
+//  Maintainer+Sets.swift
 //  ManaKit_Example
 //
 //  Created by Jovito Royeca on 23/10/2018.
 //  Copyright © 2018 CocoaPods. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import Kanna
 import ManaKit
 import PromiseKit
 import RealmSwift
 
 extension Maintainer {
-    func updateSetSymbols() -> Promise<Void> {
+    func createSets() -> Promise<Void> {
+        return Promise { seal in
+            firstly {
+                self.fetchSets()
+            }.then {
+                self.saveSets()
+            }.then {
+                self.updateSetSymbols()
+            }.done {
+                seal.fulfill(())
+            }.catch { error in
+                seal.reject(error)
+            }
+        }
+    }
+    
+    private func fetchSets() -> Promise<Void> {
+        return Promise { seal in
+            guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
+                fatalError("Malformed cachePath")
+            }
+            let setsPath = "\(cachePath)/\(ManaKit.Constants.ScryfallDate)_\(setsFileName)"
+            let willFetch = !FileManager.default.fileExists(atPath: setsPath)
+            
+            if willFetch {
+                guard let urlString = "https://api.scryfall.com/sets".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+                    let url = URL(string: urlString) else {
+                        fatalError("Malformed url")
+                }
+                var rq = URLRequest(url: url)
+                rq.httpMethod = "GET"
+                
+                print("Fetching Scryfall sets... \(urlString)")
+                firstly {
+                    URLSession.shared.dataTask(.promise, with:rq)
+                }.compactMap {
+                    try JSONSerialization.jsonObject(with: $0.data) as? [String: Any]
+                }.done { json in
+                    if let outputStream = OutputStream(toFileAtPath: setsPath, append: false) {
+                        print("Writing Scryfall sets... \(setsPath)")
+                        var error: NSError?
+                        outputStream.open()
+                        JSONSerialization.writeJSONObject(json,
+                                                          to: outputStream,
+                                                          options: JSONSerialization.WritingOptions(),
+                                                          error: &error)
+                        outputStream.close()
+                        print("Done!")
+                        seal.fulfill(())
+                    }
+                }.catch { error in
+                    seal.reject(error)
+                }
+            } else {
+                seal.fulfill(())
+            }
+        }
+    }
+    
+    private func saveSets() -> Promise<Void> {
+        return Promise { seal in
+            guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
+                fatalError("Malformed cachePath")
+            }
+            let setsPath = "\(cachePath)/\(ManaKit.Constants.ScryfallDate)_\(setsFileName)"
+            
+            let data = try! Data(contentsOf: URL(fileURLWithPath: setsPath))
+            guard let dict = try! JSONSerialization.jsonObject(with: data,
+                                                               options: .mutableContainers) as? [String: Any] else {
+                fatalError("Malformed data")
+            }
+            guard let array = dict["data"] as? [[String: Any]] else {
+                fatalError("Malformed data")
+            }
+            
+            var count = 0
+            print("Creating sets: \(count)/\(array.count) \(Date())")
+            
+            try! realm.write {
+                for dict in array {
+                    if let code = dict["code"] as? String,
+                        let name = dict["name"] as? String {
+                        
+                        var set: CMSet?
+                        var setType: CMSetType?
+                        var setBlock: CMSetBlock?
+                        
+                        if let x = realm.object(ofType: CMSet.self, forPrimaryKey: code) {
+                            set = x
+                        } else {
+                            set = CMSet()
+                            set!.code = code
+                        }
+                        
+                        set!.mtgoCode = dict["mtgo_code"] as? String
+                        set!.name = name
+                        set!.myNameSection = self.sectionFor(name: name)
+                        
+                        // setType
+                        if let set_type = dict["set_type"] as? String {
+                            let capName = capitalize(string: self.displayFor(name: set_type))
+                            
+                            if let x = realm.object(ofType: CMSetType.self, forPrimaryKey: capName) {
+                                setType = x
+                            } else {
+                                setType = CMSetType()
+                                setType!.name = capName
+                            }
+                            
+                            setType!.nameSection = self.sectionFor(name: set_type)
+                            realm.add(setType!)
+                        }
+                        
+                        // block
+                        if let block = dict["block"] as? String {
+                            if let x = realm.object(ofType: CMSetBlock.self, forPrimaryKey: block) {
+                                setBlock = x
+                            } else {
+                                setBlock = CMSetBlock()
+                                setBlock!.name = block
+                            }
+                            
+                            setBlock!.code = dict["block_code"] as? String
+                            setBlock!.nameSection = self.sectionFor(name: block)
+                            realm.add(setBlock!)
+                        }
+                        
+                        // releaseDate
+                        if let releaseAt = dict["released_at"] as? String {
+                            set!.releaseDate = releaseAt
+                            set!.myYearSection = String(releaseAt.prefix(4))
+                        } else {
+                            set!.myYearSection = "Undated"
+                        }
+                        
+                        if let cardCount = dict["card_count"] as? Int {
+                            set!.cardCount = Int32(cardCount)
+                        }
+                        if let digital = dict["digital"] as? Bool {
+                            set!.isOnlineOnly = digital
+                        }
+                        if let foilOnly = dict["foil_only"] as? Bool {
+                            set!.isFoilOnly = foilOnly
+                        }
+                        if let tcgPlayerID = dict["tcgplayer_id"] as? Int {
+                            set!.tcgPlayerID = Int32(tcgPlayerID)
+                        }
+                        set!.setType = setType
+                        set!.block = setBlock
+                        
+                        print("\(code) - \(name)")
+                        realm.add(set!)
+                        
+                        count += 1
+                        if count % printMilestone == 0 {
+                            print("Creating sets: \(count)/\(array.count) \(Date())")
+                        }
+                    }
+                }
+                
+                // parent-child
+                for dict in array {
+                    if let code = dict["code"] as? String,
+                        let parentSetCode = dict["parent_set_code"] as? String,
+                        let childSet = realm.object(ofType: CMSet.self, forPrimaryKey: code),
+                        let parentSet = realm.object(ofType: CMSet.self, forPrimaryKey: parentSetCode) {
+                        
+                        childSet.parent = parentSet
+                        if let releaseDate = parentSet.releaseDate {
+                            childSet.releaseDate = releaseDate
+                            childSet.myYearSection = String(releaseDate.prefix(4))
+                        }
+                        
+                        childSet.setType = parentSet.setType
+                        childSet.block = parentSet.block
+                        print("\(parentSetCode) -> \(code)")
+                        
+                        realm.add(childSet)
+                    }
+                }
+                
+                seal.fulfill(())
+            }
+        }
+    }
+    
+    private func updateSetSymbols() -> Promise<Void> {
         return Promise { seal in
             guard let urlString = "http://andrewgioia.github.io/Keyrune/cheatsheet.html".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                 let url = URL(string: urlString) else {

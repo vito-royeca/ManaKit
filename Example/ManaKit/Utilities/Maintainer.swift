@@ -6,7 +6,7 @@
 //  Copyright © 2018 CocoaPods. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import ManaKit
 import PromiseKit
 import SSZipArchive
@@ -21,7 +21,8 @@ class Maintainer: NSObject {
     let printMilestone = 1000
     let cardsFileName   = "scryfall-all-cards.json"
     let rulingsFileName = "scryfall-rulings.json"
-    let comprehensiveRulesFileName = "MagicCompRules 20190125.txt"
+    let setsFileName    = "scryfall-sets.json"
+    let comprehensiveRulesFileName = "MagicCompRules 20190712"
     let realm = ManaKit.sharedInstance.realm
     let setCodesForProcessing:[String]? = nil
     let tcgplayerAPIVersion = "v1.9.0"
@@ -78,47 +79,47 @@ class Maintainer: NSObject {
         print("Done.")
     }
     
-    func unpackScryfallData() {
-        guard let cardsPath = Bundle.main.path(forResource: cardsFileName,
-                                               ofType: "zip",
-                                               inDirectory: "data"),
-            let rulingsPath = Bundle.main.path(forResource: rulingsFileName,
-                                               ofType: "zip",
-                                               inDirectory: "data"),
-            let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
-            return
-        }
-        
-        var willCopy = true
-        
-        if let scryfallDate = UserDefaults.standard.string(forKey: ManaKit.UserDefaultsKeys.ScryfallDate) {
-            if scryfallDate == ManaKit.Constants.ScryfallDate {
-                willCopy = false
-            }
-        }
-        
-        if willCopy {
-            print("Extracting Scryfall files: \(ManaKit.Constants.ScryfallDate)")
-            
-            // Remove old database files in docs directory
-            for file in try! FileManager.default.contentsOfDirectory(atPath: cachePath) {
-                let path = "\(cachePath)/\(file)"
-                if file.hasPrefix("scryfall-") {
-                    try! FileManager.default.removeItem(atPath: path)
-                }
-            }
-            
-            // Unzip
-            SSZipArchive.unzipFile(atPath: cardsPath,
-                                   toDestination: cachePath)
-            SSZipArchive.unzipFile(atPath: rulingsPath,
-                                   toDestination: cachePath)
-            
-            UserDefaults.standard.set(ManaKit.Constants.ScryfallDate,
-                                      forKey: ManaKit.UserDefaultsKeys.ScryfallDate)
-            UserDefaults.standard.synchronize()
-        }
-    }
+//    func unpackScryfallData() {
+//        guard let cardsPath = Bundle.main.path(forResource: cardsFileName,
+//                                               ofType: "zip",
+//                                               inDirectory: "data"),
+//            let rulingsPath = Bundle.main.path(forResource: rulingsFileName,
+//                                               ofType: "zip",
+//                                               inDirectory: "data"),
+//            let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
+//            return
+//        }
+//        
+//        var willCopy = true
+//        
+//        if let scryfallDate = UserDefaults.standard.string(forKey: ManaKit.UserDefaultsKeys.ScryfallDate) {
+//            if scryfallDate == ManaKit.Constants.ScryfallDate {
+//                willCopy = false
+//            }
+//        }
+//        
+//        if willCopy {
+//            print("Extracting Scryfall files: \(ManaKit.Constants.ScryfallDate)")
+//            
+//            // Remove old database files in docs directory
+//            for file in try! FileManager.default.contentsOfDirectory(atPath: cachePath) {
+//                let path = "\(cachePath)/\(file)"
+//                if file.hasPrefix("scryfall-") {
+//                    try! FileManager.default.removeItem(atPath: path)
+//                }
+//            }
+//            
+//            // Unzip
+//            SSZipArchive.unzipFile(atPath: cardsPath,
+//                                   toDestination: cachePath)
+//            SSZipArchive.unzipFile(atPath: rulingsPath,
+//                                   toDestination: cachePath)
+//            
+//            UserDefaults.standard.set(ManaKit.Constants.ScryfallDate,
+//                                      forKey: ManaKit.UserDefaultsKeys.ScryfallDate)
+//            UserDefaults.standard.synchronize()
+//        }
+//    }
     
     // MARK: Utility methods
     func sectionFor(name: String) -> String? {
@@ -174,6 +175,42 @@ class Maintainer: NSObject {
         let minutes = (interval / 60).truncatingRemainder(dividingBy: 60)
         let hours = (interval / 3600)
         return String(format: "%.2d:%.2d:%.2d", Int(hours), Int(minutes), Int(seconds))
+    }
+    
+    /*
+     * Converts @param string into double equivalents i.e. 100.1a = 100.197
+     * Useful for ordering in NSSortDescriptor.
+     */
+    func order(of string: String) -> Double {
+        var termOrder = Double(0)
+        
+        if let num = Double(string) {
+            termOrder = num
+        } else {
+            let digits = NSCharacterSet.decimalDigits
+            var numString = ""
+            var charString = ""
+            
+            for c in string.unicodeScalars {
+                if c == "." || digits.contains(c) {
+                    numString.append(String(c))
+                } else {
+                    charString.append(String(c))
+                }
+            }
+            
+            if let num = Double(numString) {
+                termOrder = num
+            }
+            
+            if charString.count > 0 {
+                for c in charString.unicodeScalars {
+                    let s = String(c).unicodeScalars
+                    termOrder += Double(s[s.startIndex].value) / 100
+                }
+            }
+        }
+        return termOrder
     }
     
     // MARK: Object finders

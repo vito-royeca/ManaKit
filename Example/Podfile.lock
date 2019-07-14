@@ -1,5 +1,5 @@
 PODS:
-  - FontAwesome.swift (1.7.1)
+  - FontAwesome.swift (1.8.1)
   - Kanna (4.0.3)
   - KeychainAccess (3.2.0)
   - ManaKit (4.1.9):
@@ -9,20 +9,20 @@ PODS:
     - RealmSwift
     - SDWebImage
     - SSZipArchive
-  - PromiseKit (6.8.4):
-    - PromiseKit/CorePromise (= 6.8.4)
-    - PromiseKit/Foundation (= 6.8.4)
-    - PromiseKit/UIKit (= 6.8.4)
-  - PromiseKit/CorePromise (6.8.4)
-  - PromiseKit/Foundation (6.8.4):
+  - PromiseKit (6.10.0):
+    - PromiseKit/CorePromise (= 6.10.0)
+    - PromiseKit/Foundation (= 6.10.0)
+    - PromiseKit/UIKit (= 6.10.0)
+  - PromiseKit/CorePromise (6.10.0)
+  - PromiseKit/Foundation (6.10.0):
     - PromiseKit/CorePromise
-  - PromiseKit/UIKit (6.8.4):
+  - PromiseKit/UIKit (6.10.0):
     - PromiseKit/CorePromise
-  - Realm (3.16.1):
-    - Realm/Headers (= 3.16.1)
-  - Realm/Headers (3.16.1)
-  - RealmSwift (3.16.1):
-    - Realm (= 3.16.1)
+  - Realm (3.17.1):
+    - Realm/Headers (= 3.17.1)
+  - Realm/Headers (3.17.1)
+  - RealmSwift (3.17.1):
+    - Realm (= 3.17.1)
   - SDWebImage (5.0.6):
     - SDWebImage/Core (= 5.0.6)
   - SDWebImage/Core (5.0.6)
@@ -54,13 +54,13 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  FontAwesome.swift: 8d9792fa2d2347055da35bd97752b3960bd75952
+  FontAwesome.swift: 6f55c8ed22a30ab6a8ca94033473161f678dcd4b
   Kanna: 0ebbdd0e7e3308f0aafbd569e79c8cadc5eb877c
   KeychainAccess: 3b1bf8a77eb4c6ea1ce9404c292e48f948954c6b
   ManaKit: 193f417c9e9d66708f776221af561f78ea1ee196
-  PromiseKit: 51794a832647e7b819336dc2279039ce9f1cc49b
-  Realm: 601cacc51d8be3b17a377ef787be0f6ee0e76cf1
-  RealmSwift: 486f2e09d5a8ccff63ed66e48d0846b111deb5e5
+  PromiseKit: 1fdaeb6c0a94a5114fcb814ff3d772b86886ad4e
+  Realm: c204f1a890f07dea43b14132a6aad118c054b8f2
+  RealmSwift: 4d3c9233544b9cd08a8913e0872b9038eb99b054
   SDWebImage: 920f1a2ff1ca8296ad34f6e0510a1ef1d70ac965
   SSZipArchive: fa16b8cc4cdeceb698e5e5d9f67e9558532fbf23
 

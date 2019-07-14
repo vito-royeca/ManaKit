@@ -25,20 +25,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Create database
             let maintainer = Maintainer()
             maintainer.startActivity(name: "Create data...")
-            maintainer.unpackScryfallData()
+//            maintainer.unpackScryfallData()
 
             firstly {
-                maintainer.fetchAllCards()
+                maintainer.createSets()
             }.then {
-                maintainer.fetchRulings()
+                maintainer.createCards()
             }.then {
-                maintainer.fetchSets()
-            }.then {
-                maintainer.updateSetSymbols()
-            }.then {
-                maintainer.createAndUpdateCards()
-            }.then {
-                maintainer.updateOtherCardInformation()
+                maintainer.createRulings()
             }.then {
                 maintainer.createComprehensiveRules()
             }.done {

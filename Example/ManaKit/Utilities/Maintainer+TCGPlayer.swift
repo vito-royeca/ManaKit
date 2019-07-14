@@ -6,7 +6,7 @@
 //  Copyright © 2018 CocoaPods. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import ManaKit
 import PromiseKit
 import RealmSwift

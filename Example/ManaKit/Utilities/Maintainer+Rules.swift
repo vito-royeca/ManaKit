@@ -1,140 +1,75 @@
 //
-//  MyMaintainer.swift
+//  MyMaintainer+Rules.swift
 //  ManaKit_Example
 //
 //  Created by Jovito Royeca on 23/10/2018.
 //  Copyright © 2018 CocoaPods. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import ManaKit
 import RealmSwift
 import PromiseKit
 
 extension Maintainer {
-    func updateOtherCardInformation() -> Promise<Void> {
+    func createRulings() -> Promise<Void> {
         return Promise { seal in
-            let sortDescriptors = [SortDescriptor(keyPath: "set.releaseDate", ascending: true),
-                                   SortDescriptor(keyPath: "name", ascending: true)]
-            let cards = realm.objects(CMCard.self).filter("id != nil").sorted(by: sortDescriptors)
-            var count = 0
-            print("Updating cards: \(count)/\(cards.count) \(Date())")
-            
-            // reload the date
-            cachedCardTypes.removeAll()
-            for object in realm.objects(CMCardType.self) {
-                cachedCardTypes.append(object)
+            firstly {
+                self.fetchRulings()
+            }.then {
+                self.saveRulings()
+            }.done {
+                seal.fulfill(())
+            }.catch { error in
+                seal.reject(error)
             }
-            
-            cachedLanguages.removeAll()
-            for object in realm.objects(CMLanguage.self) {
-                cachedLanguages.append(object)
+        }
+    }
+    
+    func fetchRulings() -> Promise<Void> {
+        return Promise { seal in
+            guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
+                fatalError("Malformed cachePath")
             }
-            let enLanguage = findLanguage(with: "en")
+            let rulingsPath = "\(cachePath)/\(ManaKit.Constants.ScryfallDate)_\(rulingsFileName)"
+            let willFetch = !FileManager.default.fileExists(atPath: rulingsPath)
             
-            // update the cards
-            try! realm.write {
-                for card in cards {
-                    // displayName
-                    var displayName: String?
-                    if let language = card.language,
-                        let code = language.code {
-                        displayName = code == "en" ? card.name : card.printedName
-                        
-                        if displayName == nil {
-                            displayName = card.name
-                        }
-                    }
-                    card.displayName = displayName
-                    
-                    // myNameSection
-                    if let _ = card.id,
-                        let name = card.name {
-                        card.myNameSection = sectionFor(name: name)
-                    }
-
-                    // myNumberOrder
-                    if let _ = card.id,
-                        let collectorNumber = card.collectorNumber {
-                        card.myNumberOrder = order(of: collectorNumber)
-                    }
-
-                    // myType
-                    if let typeLine = card.typeLine,
-                        let name = typeLine.name {
-                        
-                        var types = [String]()
-                        for type in CardType.allCases {
-                            for n in name.components(separatedBy: " ") {
-                                let desc = type.description
-                                if n == desc && !types.contains(desc) {
-                                    types.append(desc)
-                                }
-                            }
-                        }
-                        
-                        if types.count == 1 {
-                            card.myType = findCardType(with: types.first!,
-                                                       language: enLanguage!)
-                        } else if types.count > 1 {
-                            card.myType = findCardType(with: "Multiple",
-                                                       language: enLanguage!)
-                        }
-                    }
-                    
-                    // Firebase id = set.code + _ + card.name + _ + number? + _ + languageCode
-                    if let _ = card.id,
-                        let set = card.set,
-                        let setCode = set.code,
-                        let language = card.language,
-                        let languageCode = language.code,
-                        let name = card.name {
-                        var firebaseID = "\(setCode.uppercased())_\(name)"
-
-                        let variations = realm.objects(CMCard.self).filter("set.code = %@ AND language.code = %@ AND name = %@",
-                                                                           setCode,
-                                                                           languageCode,
-                                                                           name)
-                        
-                        if variations.count > 1 {
-                            let orderedVariations = variations.sorted(by: {(a, b) -> Bool in
-                                return a.myNumberOrder < b.myNumberOrder
-                            })
-                            var index = 1
-
-                            for c in orderedVariations {
-                                if c.id == card.id {
-                                    firebaseID += "_\(index)"
-                                    break
-                                } else {
-                                    index += 1
-                                }
-                            }
-                        }
-
-                        // add language code for non-english cards
-                        if languageCode != "en" {
-                            firebaseID += "_\(languageCode)"
-                        }
-                        
-                        card.firebaseID = ManaKit.sharedInstance.encodeFirebase(key: firebaseID)
-                    }
-
-                    realm.add(card)
-                    
-                    count += 1
-                    if count % printMilestone == 0 {
-                        print("Updating cards: \(count)/\(cards.count) \(Date())")
-                    }
+            if willFetch {
+                guard let urlString = "https://archive.scryfall.com/json/\(rulingsFileName)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+                    let url = URL(string: urlString) else {
+                        fatalError("Malformed url")
                 }
+                var rq = URLRequest(url: url)
+                rq.httpMethod = "GET"
                 
+                print("Fetching Scryfall rulings... \(urlString)")
+                firstly {
+                    URLSession.shared.dataTask(.promise, with:rq)
+                }.compactMap {
+                    try JSONSerialization.jsonObject(with: $0.data) as? [[String: Any]]
+                }.done { json in
+                    if let outputStream = OutputStream(toFileAtPath: rulingsPath, append: false) {
+                        print("Writing Scryfall rulings... \(rulingsPath)")
+                        var error: NSError?
+                        outputStream.open()
+                        JSONSerialization.writeJSONObject(json,
+                                                          to: outputStream,
+                                                          options: JSONSerialization.WritingOptions(),
+                                                          error: &error)
+                        outputStream.close()
+                        print("Done!")
+                    }
+                    seal.fulfill(())
+                }.catch { error in
+                    seal.reject(error)
+                }
+            } else {
                 seal.fulfill(())
             }
         }
     }
     
-    // MARK: Comprehensive rules
-    func createComprehensiveRules() -> Promise<Void> {
+    private func saveRulings() -> Promise<Void> {
         return Promise { seal in
             guard let path = Bundle.main.path(forResource: comprehensiveRulesFileName,
                                               ofType: "txt",
@@ -243,7 +178,7 @@ extension Maintainer {
         }
     }
 
-    func parseData(fromLines lines: [String], startLine: String, endLine: String, includeStartLine: Bool, includeEndLine: Bool) -> String? {
+    private func parseData(fromLines lines: [String], startLine: String, endLine: String, includeStartLine: Bool, includeEndLine: Bool) -> String? {
         var text: String?
         var isParsing = false
         
@@ -281,7 +216,7 @@ extension Maintainer {
         return text
     }
     
-    func parseRules(fromLines lines: [String]) {
+    private func parseRules(fromLines lines: [String]) {
         let startLine = "Credits"
         let endLine = "Glossary"
         var isParsing = false
@@ -355,7 +290,7 @@ extension Maintainer {
         }
     }
     
-    func findParent(forRule rule: CMRule, withTerm term: String) -> CMRule? {
+    private func findParent(forRule rule: CMRule, withTerm term: String) -> CMRule? {
         guard let parent = realm.objects(CMRule.self).filter("term = %@", term).first else {
             return nil
         }
@@ -374,7 +309,7 @@ extension Maintainer {
         return nil
     }
     
-    func parseGlossary(fromLines lines: [String], parent: CMRule?) {
+    private func parseGlossary(fromLines lines: [String], parent: CMRule?) {
         let startLine = "Glossary"
         let endLine = "Credits"
         var isParsing = false
@@ -482,44 +417,8 @@ extension Maintainer {
         }
     }
     
-    /*
-     * Converts @param string into double equivalents i.e. 100.1a = 100.197
-     * Useful for ordering in NSSortDescriptor.
-     */
-    private func order(of string: String) -> Double {
-        var termOrder = Double(0)
-        
-        if let num = Double(string) {
-            termOrder = num
-        } else {
-            let digits = NSCharacterSet.decimalDigits
-            var numString = ""
-            var charString = ""
-            
-            for c in string.unicodeScalars {
-                if c == "." || digits.contains(c) {
-                    numString.append(String(c))
-                } else {
-                    charString.append(String(c))
-                }
-            }
-            
-            if let num = Double(numString) {
-                termOrder = num
-            }
-            
-            if charString.count > 0 {
-                for c in charString.unicodeScalars {
-                    let s = String(c).unicodeScalars
-                    termOrder += Double(s[s.startIndex].value) / 100
-                }
-            }
-        }
-        return termOrder
-    }
-    
     // MARK: Cleanup
-    func removeIDs()  {
+    private func removeIDs()  {
         let cards = realm.objects(CMCard.self).filter("id != nil")
         var count = 0
         print("Removing ID: \(count)/\(cards.count) \(Date())")
