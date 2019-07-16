@@ -113,7 +113,7 @@ class DeckMainboardViewModel: NSObject {
     }
     
     private func updateSections() {
-        guard let results = _results else {
+        guard let _ = _results else {
             return
         }
         

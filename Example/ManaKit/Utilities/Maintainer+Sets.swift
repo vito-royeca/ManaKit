@@ -294,7 +294,8 @@ extension Maintainer {
                     set.code == "pwcq" ||
                     set.code == "pf19" ||
                     set.code == "j12" ||
-                    set.code == "j19" {
+                    set.code == "j19" ||
+                    set.code == "ppp1" {
                     set.myKeyruneCode = "e687" // media insert
                     realm.add(set)
                 } else if set.code == "pal99" {

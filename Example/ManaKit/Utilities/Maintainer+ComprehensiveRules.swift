@@ -280,9 +280,9 @@ extension Maintainer {
             if isParsing {
                 if line == "" {
                     if term != nil && definition != nil {
-                        var nextLine = lines[lines.index(of: lastDefinition!)! + 1]
+                        var nextLine = lines[lines.firstIndex(of: lastDefinition!)! + 1]
                         if nextLine == "" {
-                            nextLine = lines[lines.index(of: lastDefinition!)! + 2]
+                            nextLine = lines[lines.firstIndex(of: lastDefinition!)! + 2]
                         }
                         
                         let isList = nextLine.hasPrefix("1") ||

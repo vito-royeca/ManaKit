@@ -20,6 +20,10 @@ extension Maintainer {
                 self.saveCards()
             }.then {
                 self.updateCards()
+            }.then {
+                self.updateCards2()
+            }.then {
+                self.updateCards3()
             }.done {
                 seal.fulfill(())
             }.catch { error in
@@ -500,41 +504,45 @@ extension Maintainer {
         }
     }
 
-    func updateCards2() {
-        let predicate = NSPredicate(format: "id != nil")
-        let sortDescriptors = [SortDescriptor(keyPath: "set.releaseDate", ascending: true),
-                               SortDescriptor(keyPath: "name", ascending: true)]
-        
-        var count = 0
-        let cards = realm.objects(CMCard.self).filter(predicate).sorted(by: sortDescriptors)
-        print("Updating cards2: \(count)/\(cards.count) \(Date())")
-        
-        try! realm.write {
-            for card in cards {
-                // variations
-                createVariations(ofCard: card)
+    func updateCards2() -> Promise<Void> {
+        return Promise { seal in
+            let predicate = NSPredicate(format: "id != nil")
+            let sortDescriptors = [SortDescriptor(keyPath: "set.releaseDate", ascending: true),
+                                   SortDescriptor(keyPath: "name", ascending: true)]
             
-                // other languages
-                createOtherLanguages(ofCard: card)
+            var count = 0
+            let cards = realm.objects(CMCard.self).filter(predicate).sorted(by: sortDescriptors)
+            print("Updating cards2: \(count)/\(cards.count) \(Date())")
+            
+            try! realm.write {
+                for card in cards {
+                    // variations
+                    createVariations(ofCard: card)
                 
-                // other printingss
-                createOtherPrintings(ofCard: card)
+                    // other languages
+                    createOtherLanguages(ofCard: card)
+                    
+                    // other printingss
+                    createOtherPrintings(ofCard: card)
 
-                count += 1
-                if count % printMilestone == 0 {
-                    print("Updating cards2: \(count)/\(cards.count) \(Date())")
+                    count += 1
+                    if count % printMilestone == 0 {
+                        print("Updating cards2: \(count)/\(cards.count) \(Date())")
+                    }
                 }
+
+                seal.fulfill(())
             }
         }
     }
 
-    func updateOtherCardInformation() -> Promise<Void> {
+    func updateCards3() -> Promise<Void> {
         return Promise { seal in
             let sortDescriptors = [SortDescriptor(keyPath: "set.releaseDate", ascending: true),
                                    SortDescriptor(keyPath: "name", ascending: true)]
             let cards = realm.objects(CMCard.self).filter("id != nil").sorted(by: sortDescriptors)
             var count = 0
-            print("Updating cards: \(count)/\(cards.count) \(Date())")
+            print("Updating cards3: \(count)/\(cards.count) \(Date())")
             
             // reload the date
             cachedCardTypes.removeAll()
@@ -640,7 +648,7 @@ extension Maintainer {
                     
                     count += 1
                     if count % printMilestone == 0 {
-                        print("Updating cards: \(count)/\(cards.count) \(Date())")
+                        print("Updating cards3: \(count)/\(cards.count) \(Date())")
                     }
                 }
                 
