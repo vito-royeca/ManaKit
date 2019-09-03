@@ -14,12 +14,22 @@ import RealmSwift
 
 extension Maintainer {
     func createSets() -> Promise<Void> {
+//        return Promise { seal in
+//            firstly {
+//                self.fetchSets()
+//            }.then {
+//                self.saveSets()
+//            }.then {
+//                self.updateSetSymbols()
+//            }.done {
+//                seal.fulfill(())
+//            }.catch { error in
+//                seal.reject(error)
+//            }
+//        }
+        
         return Promise { seal in
             firstly {
-                self.fetchSets()
-            }.then {
-                self.saveSets()
-            }.then {
                 self.updateSetSymbols()
             }.done {
                 seal.fulfill(())
@@ -251,13 +261,23 @@ extension Maintainer {
         
             // manual fix
             for set in realm.objects(CMSet.self) {
-                if set.code == "twar" ||
+                if set.code == "grixis" {
+                    set.myKeyruneCode = "e924" // HOU icon for GRIXIS cube
+                } else if set.code == "tc19" ||
+                    set.code == "oc19" {
+                    set.myKeyruneCode = "e95f" // commander 2019 tokens
+                } else if set.code == "pm20" ||
+                    set.code == "tm20" {
+                    set.myKeyruneCode = "e95d" // core set 2020 promos/tokens
+                } else if set.code == "pmh1" ||
+                    set.code == "tmh1" {
+                    set.myKeyruneCode = "e95b" // modern horizons promos/tokens
+                } else if set.code == "twar" ||
                     set.code == "pwar" {
-                    set.myKeyruneCode = "e95a" // war of spark promos7tokens
+                    set.myKeyruneCode = "e95a" // war of spark promos/tokens
                 } else if set.code == "tgk2" {
                     set.myKeyruneCode = "e959" // rna guild kit tokens
-                }
-                else if set.code == "med" ||
+                } else if set.code == "med" ||
                     set.code == "tmed" {
                     set.myKeyruneCode = "e94c"
                 } else if set.code == "c14" ||

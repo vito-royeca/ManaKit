@@ -22,7 +22,7 @@ class Maintainer: NSObject {
     let cardsFileName   = "scryfall-all-cards.json"
     let rulingsFileName = "scryfall-rulings.json"
     let setsFileName    = "scryfall-sets.json"
-    let comprehensiveRulesFileName = "MagicCompRules 20190712"
+    let comprehensiveRulesFileName = "MagicCompRules 20190823"
     let realm = ManaKit.sharedInstance.realm
     let setCodesForProcessing:[String]? = nil
     let tcgplayerAPIVersion = "v1.9.0"

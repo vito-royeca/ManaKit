@@ -1,6 +1,10 @@
+**Version 5.0.1** @ 02.09.2019
+- Updated the Scryfall database to: 2019-09-02 10:27 UTC.
+- Updated Comprehensive Rules to 2019-08-23.
+
 **Version 5.0.0** @ 15.07.2019
 - Updated the Scryfall database to: 2019-07-14 10:23 UTC.
-- Updated Comprehensive Rules to 2009-07-12.
+- Updated Comprehensive Rules to 2019-07-12.
 
 **Version 4.1.9** @ 05.05.2019
 - Updated the Scryfall database to: 2019-05-16 10:52 UTC.
