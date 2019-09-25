@@ -19,7 +19,8 @@ class SetsViewModel: NSObject {
     private var _results: Results<CMSet>? = nil
     
     // MARK: Settings
-    private let _sortDescriptors = [SortDescriptor(keyPath: "releaseDate", ascending: false)]
+    private let _sortDescriptors = [SortDescriptor(keyPath: "releaseDate", ascending: false),
+                                    SortDescriptor(keyPath: "name", ascending: true)]
     private var _sectionName = "myYearSection"
     
     // MARK: UITableView methods
