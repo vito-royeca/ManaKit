@@ -38,7 +38,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }.done {
                 maintainer.compactDatabase()
                 maintainer.endActivity()
-                UserDefaults.standard.set(ManaKit.Constants.ScryfallDate, forKey: ManaKit.UserDefaultsKeys.ScryfallDate)
+                UserDefaults.standard.set(ManaKit.Constants.ScryfallDate,
+                                          forKey: ManaKit.UserDefaultsKeys.ScryfallDate)
                 UserDefaults.standard.synchronize()
 
                 ManaKit.sharedInstance.setupResources()
