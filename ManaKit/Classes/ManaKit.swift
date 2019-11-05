@@ -25,14 +25,14 @@ public class ManaKit {
     }
 
     public enum Constants {
-        public static let ScryfallDate        = "2019-09-29 10:24 UTC"
-        public static let KeyruneVersion      = "3.5.0"
+        public static let ScryfallDate        = "2019-11-02 10:25 UTC"
+        public static let KeyruneVersion      = "3.6.2"
         public static let EightEditionRelease = "2003-07-28"
         public static let TcgPlayerApiVersion = "v1.19.0"
         public static let TcgPlayerApiLimit   = 300
         public static let TcgPlayerPricingAge = 24 * 3 // 3 days
-        
         public static let FirebaseDataAge     = 60     // 60 sec
+        public static let APIURL              = "http://192.168.1.108:1993"
     }
     
     public enum ImageName: String {

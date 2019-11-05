@@ -21,26 +21,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
 
-        if ManaKit.sharedInstance.needsUpgrade() {
+//        if ManaKit.sharedInstance.needsUpgrade() {
             // Create database
             let maintainer = Maintainer()
-            maintainer.startActivity(name: "Create data...")
+            maintainer.startActivity(name: "Create Data")
 //            maintainer.unpackScryfallData()
 
             firstly {
-                maintainer.createSets()
+                maintainer.fetchSets()
             }.then {
-                maintainer.createCards()
+                maintainer.fetchSetSymbols()
             }.then {
-                maintainer.createRulings()
+                maintainer.fetchAllCards()
             }.then {
-                maintainer.createComprehensiveRules()
+                maintainer.createPGData()
             }.done {
                 maintainer.compactDatabase()
                 maintainer.endActivity()
-                UserDefaults.standard.set(ManaKit.Constants.ScryfallDate,
-                                          forKey: ManaKit.UserDefaultsKeys.ScryfallDate)
-                UserDefaults.standard.synchronize()
+//                UserDefaults.standard.set(ManaKit.Constants.ScryfallDate,
+//                                          forKey: ManaKit.UserDefaultsKeys.ScryfallDate)
+//                UserDefaults.standard.synchronize()
 
                 ManaKit.sharedInstance.setupResources()
                 ManaKit.sharedInstance.configureTcgPlayer(partnerKey: "ManaGuide",
@@ -53,13 +53,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }.catch { error in
                 print(error)
             }
-        } else {
-            // Normal run
-            ManaKit.sharedInstance.setupResources()
-            ManaKit.sharedInstance.configureTcgPlayer(partnerKey: "ManaGuide",
-                                                      publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720",
-                                                      privateKey: "C018EF82-2A4D-4F7A-A785-04ADEBF2A8E5")
-        }
+//        } else {
+//            // Normal run
+//            ManaKit.sharedInstance.setupResources()
+//            ManaKit.sharedInstance.configureTcgPlayer(partnerKey: "ManaGuide",
+//                                                      publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720",
+//                                                      privateKey: "C018EF82-2A4D-4F7A-A785-04ADEBF2A8E5")
+//        }
         return true
     }
 

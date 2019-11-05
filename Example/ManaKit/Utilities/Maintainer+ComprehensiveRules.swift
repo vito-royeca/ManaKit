@@ -1,5 +1,5 @@
 //
-//  MyMaintainer+ComprehensiveRules.swift
+//  Maintainer+ComprehensiveRules.swift
 //  ManaKit_Example
 //
 //  Created by Jovito Royeca on 23/10/2018.
