@@ -34,6 +34,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }.then {
                 maintainer.fetchAllCards()
             }.then {
+                maintainer.fetchRulings()
+            }.then {
                 maintainer.createPGData()
             }.done {
                 maintainer.compactDatabase()

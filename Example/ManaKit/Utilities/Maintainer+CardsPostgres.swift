@@ -9,7 +9,6 @@
 import Foundation
 import ManaKit
 import PromiseKit
-import RealmSwift
 
 extension Maintainer {
     func createArtistPromise(artist: String) -> Promise<(data: Data, response: URLResponse)> {
@@ -37,34 +36,38 @@ extension Maintainer {
         }
         name_section = sectionFor(name: name_section) ?? "null"
         
-        let parameters = """
-                         name=\(artist)&
-                         first_name=\(first_name)&
-                         last_name=\(last_name)&
-                         name_section=\(name_section)
-                         """
+        let httpBody = """
+                        name=\(artist)&
+                        first_name=\(first_name)&
+                        last_name=\(last_name)&
+                        name_section=\(name_section)
+                        """
         let urlString = "\(ManaKit.Constants.APIURL)/artists"
         
-        return createNodePromise(urlString: urlString, parameters: parameters)
+        return createNodePromise(urlString: urlString,
+                                 httpMethod: "POST",
+                                 httpBody: httpBody)
     }
     
     func createRarityPromise(rarity: String) -> Promise<(data: Data, response: URLResponse)> {
         let capName = capitalize(string: displayFor(name: rarity))
         let nameSection = sectionFor(name: rarity) ?? "null"
         
-        let parameters = """
-                         name=\(capName)&
-                         name_section=\(nameSection)
-                         """
+        let httpBody = """
+                        name=\(capName)&
+                        name_section=\(nameSection)
+                        """
         let urlString = "\(ManaKit.Constants.APIURL)/rarities"
         
-        return createNodePromise(urlString: urlString, parameters: parameters)
+        return createNodePromise(urlString: urlString,
+                                 httpMethod: "POST",
+                                 httpBody: httpBody)
     }
     
     func createLanguagePromise(code: String, displayCode: String, name: String) -> Promise<(data: Data, response: URLResponse)> {
         let nameSection = sectionFor(name: name) ?? "null"
         
-        let parameters = """
+        let httpBody = """
                          code=\(code)&
                          display_code=\(displayCode)&
                          name=\(name)&
@@ -72,54 +75,62 @@ extension Maintainer {
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/languages"
         
-        return createNodePromise(urlString: urlString, parameters: parameters)
+        return createNodePromise(urlString: urlString,
+                                 httpMethod: "POST",
+                                 httpBody: httpBody)
     }
     
     func createLayoutPromise(name: String, description_: String) -> Promise<(data: Data, response: URLResponse)> {
         let capName = capitalize(string: displayFor(name: name))
         let nameSection = sectionFor(name: name) ?? "null"
         
-        let parameters = """
+        let httpBody = """
                          name=\(capName)&
                          name_section=\(nameSection)&
                          description_=\(description_)
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/layouts"
         
-        return createNodePromise(urlString: urlString, parameters: parameters)
+        return createNodePromise(urlString: urlString,
+                                 httpMethod: "POST",
+                                 httpBody: httpBody)
     }
     
     func createWatermarkPromise(watermark: String) -> Promise<(data: Data, response: URLResponse)> {
         let capName = capitalize(string: displayFor(name: watermark))
         let nameSection = sectionFor(name: watermark) ?? "null"
         
-        let parameters = """
+        let httpBody = """
                          name=\(capName)&
                          name_section=\(nameSection)
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/watermarks"
         
-        return createNodePromise(urlString: urlString, parameters: parameters)
+        return createNodePromise(urlString: urlString,
+                                 httpMethod: "POST",
+                                 httpBody: httpBody)
     }
     
     func createFramePromise(name: String, description_: String) -> Promise<(data: Data, response: URLResponse)> {
         let capName = capitalize(string: displayFor(name: name))
         let nameSection = sectionFor(name: name) ?? "null"
         
-        let parameters = """
+        let httpBody = """
                          name=\(capName)&
                          name_section=\(nameSection)&
                          description_=\(description_)
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/frames"
         
-        return createNodePromise(urlString: urlString, parameters: parameters)
+        return createNodePromise(urlString: urlString,
+                                 httpMethod: "POST",
+                                 httpBody: httpBody)
     }
     
     func createFrameEffectPromise(id: String, name: String, description_: String) -> Promise<(data: Data, response: URLResponse)> {
         let nameSection = sectionFor(name: name) ?? "null"
         
-        let parameters = """
+        let httpBody = """
                          id=\(id)&
                          name=\(name)&
                          name_section=\(nameSection)&
@@ -127,13 +138,15 @@ extension Maintainer {
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/frameeffects"
         
-        return createNodePromise(urlString: urlString, parameters: parameters)
+        return createNodePromise(urlString: urlString,
+                                 httpMethod: "POST",
+                                 httpBody: httpBody)
     }
     
     func createColorPromise(symbol: String, name: String, isManaColor: Bool) -> Promise<(data: Data, response: URLResponse)> {
         let nameSection = sectionFor(name: name) ?? "null"
         
-        let parameters = """
+        let httpBody = """
                          symbol=\(symbol)&
                          name=\(name)&
                          name_section=\(nameSection)&
@@ -141,46 +154,54 @@ extension Maintainer {
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/colors"
         
-        return createNodePromise(urlString: urlString, parameters: parameters)
+        return createNodePromise(urlString: urlString,
+                                 httpMethod: "POST",
+                                 httpBody: httpBody)
     }
     
     func createFormatPromise(name: String) -> Promise<(data: Data, response: URLResponse)> {
         let capName = capitalize(string: displayFor(name: name))
         let nameSection = sectionFor(name: name) ?? "null"
         
-        let parameters = """
+        let httpBody = """
                          name=\(capName)&
                          name_section=\(nameSection)
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/formats"
         
-        return createNodePromise(urlString: urlString, parameters: parameters)
+        return createNodePromise(urlString: urlString,
+                                 httpMethod: "POST",
+                                 httpBody: httpBody)
     }
     
     func createLegalityPromise(name: String) -> Promise<(data: Data, response: URLResponse)> {
         let capName = capitalize(string: displayFor(name: name))
         let nameSection = sectionFor(name: name) ?? "null"
         
-        let parameters = """
+        let httpBody = """
                          name=\(capName)&
                          name_section=\(nameSection)
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/legalities"
         
-        return createNodePromise(urlString: urlString, parameters: parameters)
+        return createNodePromise(urlString: urlString,
+                                 httpMethod: "POST",
+                                 httpBody: httpBody)
     }
     
     func createCardTypePromise(name: String, parent: String) -> Promise<(data: Data, response: URLResponse)> {
         let nameSection = sectionFor(name: name) ?? "null"
         
-        let parameters = """
+        let httpBody = """
                          name=\(name)&
                          name_section=\(nameSection)&
                          cmcardtype_parent=\(parent)&
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/cardtypes"
         
-        return createNodePromise(urlString: urlString, parameters: parameters)
+        return createNodePromise(urlString: urlString,
+                                 httpMethod: "POST",
+                                 httpBody: httpBody)
     }
     
     func createCardPromise(dict: [String: Any]) -> Promise<(data: Data, response: URLResponse)> {
@@ -289,6 +310,20 @@ extension Maintainer {
         }
         let type_line = dict["type_line"] ?? "null"
         let printed_type_line = dict["printed_type_line"] ?? "null"
+        var cmcardtype_subtypes = "null"
+        if let tl = dict["type_line"] as? String {
+            let subtypes = extractSubtypesFrom(tl)
+            cmcardtype_subtypes = "\(subtypes)"
+                .replacingOccurrences(of: "[", with: "{")
+                .replacingOccurrences(of: "]", with: "}")
+        }
+        var cmcardtype_supertypes = "null"
+        if let tl = dict["type_line"] as? String {
+            let supertypes = extractSupertypesFrom(tl)
+            cmcardtype_supertypes = "\(supertypes)"
+                .replacingOccurrences(of: "[", with: "{")
+                .replacingOccurrences(of: "]", with: "}")
+        }
         
         // unhandled...
         // all_parts
@@ -304,23 +339,16 @@ extension Maintainer {
 //                /// cached data here ///
 //
         //            try! realm.write {
-        //                for x in cachedCardTypes {
-        //                    realm.add(x)
-        //                }
         //                for x in cachedBorderColors {
         //                    realm.add(x)
         //                }
-        //                for x in cachedRulings {
-        //                    realm.add(x)
-        //                }
-
 //                // border color
 //                if let borderColor = dict["border_color"] as? String,
 //                    let x = findCardBorderColor(with: borderColor) {
 //                    card.borderColor = x
 //                }
 //
-        let parameters =
+        let httpBody =
             """
             collector_number=\(collector_number)&
             cmc=\(cmc)&
@@ -373,10 +401,14 @@ extension Maintainer {
             cmcolor_indicators=\(cmcolor_indicators)&
             cmlegalities=\(cmlegalities)&
             type_line=\(type_line)&
-            printed_type_line=\(printed_type_line)
+            printed_type_line=\(printed_type_line)&
+            cmcardtype_subtypes=\(cmcardtype_subtypes)&
+            cmcardtype_supertypes=\(cmcardtype_supertypes)
             """
         let urlString = "\(ManaKit.Constants.APIURL)/cards"
         
-        return createNodePromise(urlString: urlString, parameters: parameters)
+        return createNodePromise(urlString: urlString,
+                                 httpMethod: "POST",
+                                 httpBody: httpBody)
     }
 }

@@ -50,6 +50,9 @@
 		8BBEB8B22365FE080044BFC8 /* Maintainer+Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBEB8B12365FE080044BFC8 /* Maintainer+Realm.swift */; };
 		8BBEB8B4236602150044BFC8 /* Maintainer+CardsRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBEB8B3236602150044BFC8 /* Maintainer+CardsRealm.swift */; };
 		8BBEB8B6236602260044BFC8 /* Maintainer+CardsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBEB8B5236602260044BFC8 /* Maintainer+CardsPostgres.swift */; };
+		8BDB513C2372545C00DF53B0 /* Maintainer+RulingsRealm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDB513B2372545C00DF53B0 /* Maintainer+RulingsRealm.swift */; };
+		8BDB513E2372547600DF53B0 /* Maintainer+RulingsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDB513D2372547600DF53B0 /* Maintainer+RulingsPostgres.swift */; };
+		8BDB513F237257BD00DF53B0 /* Maintainer+RulingsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDB513D2372547600DF53B0 /* Maintainer+RulingsPostgres.swift */; };
 		E87244F322436E85B57736A1 /* Pods_ManaKit_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3641FE50D690CB6D714FAE9 /* Pods_ManaKit_Example.framework */; };
 /* End PBXBuildFile section */
 
@@ -104,6 +107,8 @@
 		8BBEB8B12365FE080044BFC8 /* Maintainer+Realm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Maintainer+Realm.swift"; sourceTree = "<group>"; };
 		8BBEB8B3236602150044BFC8 /* Maintainer+CardsRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Maintainer+CardsRealm.swift"; sourceTree = "<group>"; };
 		8BBEB8B5236602260044BFC8 /* Maintainer+CardsPostgres.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Maintainer+CardsPostgres.swift"; sourceTree = "<group>"; };
+		8BDB513B2372545C00DF53B0 /* Maintainer+RulingsRealm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Maintainer+RulingsRealm.swift"; sourceTree = "<group>"; };
+		8BDB513D2372547600DF53B0 /* Maintainer+RulingsPostgres.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Maintainer+RulingsPostgres.swift"; sourceTree = "<group>"; };
 		933905FD05F69001F1434BA3 /* Pods_ManaKit_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ManaKit_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3641FE50D690CB6D714FAE9 /* Pods_ManaKit_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ManaKit_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F97030AAD27F370F0BC2219A /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
@@ -186,6 +191,8 @@
 				118F290821DB051400660158 /* Maintainer+ComprehensiveRules.swift */,
 				8BBEB8B12365FE080044BFC8 /* Maintainer+Realm.swift */,
 				110BB79422DBD12B004E65D5 /* Maintainer+Rulings.swift */,
+				8BDB513D2372547600DF53B0 /* Maintainer+RulingsPostgres.swift */,
+				8BDB513B2372545C00DF53B0 /* Maintainer+RulingsRealm.swift */,
 				118F290621DB040C00660158 /* Maintainer+Sets.swift */,
 				8BBEB8AF2364FF440044BFC8 /* Maintainer+SetsPostgres.swift */,
 				8BBEB8AD2364FF240044BFC8 /* Maintainer+SetsRealm.swift */,
@@ -517,6 +524,7 @@
 				114282952142165A0091F074 /* DecksViewModel.swift in Sources */,
 				8BBEB8B4236602150044BFC8 /* Maintainer+CardsRealm.swift in Sources */,
 				8BBEB8B22365FE080044BFC8 /* Maintainer+Realm.swift in Sources */,
+				8BDB513E2372547600DF53B0 /* Maintainer+RulingsPostgres.swift in Sources */,
 				115151BB1F1E25470061C270 /* SetViewController.swift in Sources */,
 				8BBEB8B6236602260044BFC8 /* Maintainer+CardsPostgres.swift in Sources */,
 				1142829921424C0C0091F074 /* DeckHeroTableViewCell.swift in Sources */,
@@ -532,6 +540,7 @@
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				113D40C02139BC70000D08FA /* SetsViewModel.swift in Sources */,
 				8BBEB8AE2364FF240044BFC8 /* Maintainer+SetsRealm.swift in Sources */,
+				8BDB513C2372545C00DF53B0 /* Maintainer+RulingsRealm.swift in Sources */,
 				118F290721DB040D00660158 /* Maintainer+Sets.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -544,6 +553,7 @@
 				8B1E238D236693B9002E15D3 /* Maintainer+CardsRealm.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
 				8B1E2390236693C5002E15D3 /* Maintainer+Rulings.swift in Sources */,
+				8BDB513F237257BD00DF53B0 /* Maintainer+RulingsPostgres.swift in Sources */,
 				8B1E2393236693CD002E15D3 /* Maintainer+SetsRealm.swift in Sources */,
 				8B1E2392236693CA002E15D3 /* Maintainer+SetsPostgres.swift in Sources */,
 				8B1E2391236693C7002E15D3 /* Maintainer+Sets.swift in Sources */,

@@ -519,87 +519,23 @@ extension Maintainer {
         
         for dict in array {
             if let typeLine = dict["type_line"] as? String {
-                let emdash = "\u{2014}"
-                var types = [String]()
-                
-                if typeLine.contains("//") {
-                    for type in typeLine.components(separatedBy: "//") {
-                        let s = type.components(separatedBy: emdash)
-                        
-                        if let first = s.first,
-                            let last = s.last {
-                            
-                            for f in first.components(separatedBy: " ") {
-                                if !f.isEmpty && f != emdash {
-                                    types.append(f.trimmingCharacters(in: .whitespacesAndNewlines))
-                                }
-                            }
-                            types.append(last.trimmingCharacters(in: .whitespacesAndNewlines))
-                        }
-                    }
-                } else if typeLine.contains(emdash) {
-                    let s = typeLine.components(separatedBy: emdash)
-                    
-                    if let first = s.first,
-                        let last = s.last {
-                        
-                        for f in first.components(separatedBy: " ") {
-                            if !f.isEmpty && f != emdash {
-                                types.append(f.trimmingCharacters(in: .whitespacesAndNewlines))
-                            }
-                        }
-                        types.append(last.trimmingCharacters(in: .whitespacesAndNewlines))
-                    }
-                } else {
-                    types.append(typeLine)
-                }
-                
-                types.reverse()
-                for i in 0...types.count-1 {
-                    let type = types[i]
-                    var parent = "null"
-                    var isFound = false
-                    
-                    if type.isEmpty {
-                        continue
-                    }
-                    for t in filteredData {
-                        if let s = t["name"],
-                            s == type {
-                            isFound = true
-                        }
-                    }
-                    if !isFound {
-                        if i+1 <= types.count-1 {
-                            parent = types[i+1]
-                        }
-                        
-                        filteredData.append([
-                            "name": type,
-                            "parent": parent
-                        ])
-                    }
-                }
- 
+                filteredData.append(contentsOf: extractTypesFrom(typeLine))
             }
         }
-        filteredData = filteredData.sorted {
-            if let nameA = $0["name"],
-                let parentA = $0["parent"],
-                let nameB = $1["name"],
-                let parentB = $1["parent"] {
-                
-                if parentA == "null" {
-                    return true
-                } else if parentB == "null" {
-                    return false
-                } else {
-                    return nameA < nameB
-                }
+        
+        // add the null-parents first
+        var newFilteredData = [[String: String]]()
+        for dict in filteredData {
+            if dict["parent"] == "null" {
+                newFilteredData.append(dict)
             }
-                
-            return false
         }
+        for dict in filteredData {
+            if dict["parent"] != "null" {
+                newFilteredData.append(dict)
+            }
+        }
+        filteredData = newFilteredData
         
         let promises: [()->Promise<(data: Data, response: URLResponse)>] = filteredData.map { type in
             return {
@@ -609,6 +545,131 @@ extension Maintainer {
         }
         
         return promises
+    }
+    
+    func extractTypesFrom(_ typeLine: String) -> [[String: String]]  {
+        var filteredTypes = [[String: String]]()
+        let emdash = "\u{2014}"
+        var types = [String]()
+        
+        if typeLine.contains("//") {
+            for type in typeLine.components(separatedBy: "//") {
+                let s = type.components(separatedBy: emdash)
+                
+                if let first = s.first,
+                    let last = s.last {
+                    
+                    for f in first.components(separatedBy: " ") {
+                        if !f.isEmpty && f != emdash {
+                            types.append(f.trimmingCharacters(in: .whitespacesAndNewlines))
+                        }
+                    }
+                    types.append(last.trimmingCharacters(in: .whitespacesAndNewlines))
+                }
+            }
+        } else if typeLine.contains(emdash) {
+            let s = typeLine.components(separatedBy: emdash)
+            
+            if let first = s.first,
+                let last = s.last {
+                
+                for f in first.components(separatedBy: " ") {
+                    if !f.isEmpty && f != emdash {
+                        types.append(f.trimmingCharacters(in: .whitespacesAndNewlines))
+                    }
+                }
+                types.append(last.trimmingCharacters(in: .whitespacesAndNewlines))
+            }
+        } else {
+            types.append(typeLine)
+        }
+        
+        types.reverse()
+        for i in 0...types.count-1 {
+            let type = types[i]
+            var parent = "null"
+            var isFound = false
+            
+            if type.isEmpty {
+                continue
+            }
+            for t in filteredTypes {
+                if let s = t["name"],
+                    s == type {
+                    isFound = true
+                }
+            }
+            if !isFound {
+                if i+1 <= types.count-1 {
+                    parent = types[i+1]
+                }
+                
+                filteredTypes.append([
+                    "name": type,
+                    "parent": parent
+                ])
+            }
+        }
+        
+        return filteredTypes
+    }
+    
+    func extractSupertypesFrom(_ typeLine: String) -> [String]  {
+        let emdash = "\u{2014}"
+        var types = [String]()
+        
+        if typeLine.contains("//") {
+            for type in typeLine.components(separatedBy: "//") {
+                let s = type.components(separatedBy: emdash)
+                
+                if let first = s.first {
+                    for f in first.components(separatedBy: " ") {
+                        if !f.isEmpty && f != emdash {
+                            types.append(f.trimmingCharacters(in: .whitespacesAndNewlines))
+                        }
+                    }
+                }
+            }
+        } else if typeLine.contains(emdash) {
+            let s = typeLine.components(separatedBy: emdash)
+            
+            if let first = s.first {
+                for f in first.components(separatedBy: " ") {
+                    if !f.isEmpty && f != emdash {
+                        types.append(f.trimmingCharacters(in: .whitespacesAndNewlines))
+                    }
+                }
+            }
+        } else {
+            types.append(typeLine)
+        }
+        
+        return types
+    }
+    
+    func extractSubtypesFrom(_ typeLine: String) -> [String]  {
+        let emdash = "\u{2014}"
+        var types = [String]()
+        
+        if typeLine.contains("//") {
+            for type in typeLine.components(separatedBy: "//") {
+                let s = type.components(separatedBy: emdash)
+                
+                if let last = s.last {
+                    types.append(last.trimmingCharacters(in: .whitespacesAndNewlines))
+                }
+            }
+        } else if typeLine.contains(emdash) {
+            let s = typeLine.components(separatedBy: emdash)
+            
+            if let last = s.last {
+                types.append(last.trimmingCharacters(in: .whitespacesAndNewlines))
+            }
+        } else {
+            types.append(typeLine)
+        }
+        
+        return types
     }
     
 //    private func updateCards() -> Promise<Void> {

@@ -55,9 +55,11 @@ class Maintainer: NSObject {
         return Promise { seal in
             let setsArray = setsData()
             let cardsArray = cardsData()
-
+            let rulingsArray = rulingsData()
+            var promises = [()->Promise<(data: Data, response: URLResponse)>]()
+            
             // sets
-//            var promises = filterSetBlocks(array: setsArray)
+//            promises.append(contentsOf: filterSetBlocks(array: setsArray))
 //            promises.append(contentsOf: filterSetTypes(array: setsArray))
 //            promises.append(contentsOf: setsArray.map { dict in
 //                return {
@@ -79,11 +81,17 @@ class Maintainer: NSObject {
 //            promises.append(contentsOf: filterTypes(array: cardsArray))
 //            promises.append(contentsOf: cardsArray.map { dict in
 //                return {
-//                    return self.createOrUpdatePGCardPromise(dict: dict)
+//                    return self.createCardPromise(dict: dict)
 //                }
 //            })
             
-            let promises = filterTypes(array: cardsArray)
+            // test only
+            promises.append(self.createDeleteRulingPromise)
+            promises.append(contentsOf: rulingsArray.map { dict in
+                return {
+                    return self.createRulingPromise(dict: dict)
+                }
+            })
             execInSequence(promises: promises)
             seal.fulfill(())
         }
@@ -193,18 +201,20 @@ class Maintainer: NSObject {
         return termOrder
     }
     
-    func createNodePromise(urlString: String, parameters: String) -> Promise<(data: Data, response: URLResponse)> {
-            guard let cleanURL = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-                let url = URL(string: cleanURL) else {
-                fatalError("Malformed url")
-            }
-            
-            var rq = URLRequest(url: url)
-            rq.httpMethod = "POST"
-            rq.setValue("application/json", forHTTPHeaderField: "Accept")
-            rq.httpBody = parameters.replacingOccurrences(of: "\n", with: "").data(using: .utf8)
+    func createNodePromise(urlString: String, httpMethod: String, httpBody: String?) -> Promise<(data: Data, response: URLResponse)> {
+        guard let cleanURL = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+            let url = URL(string: cleanURL) else {
+            fatalError("Malformed url")
+        }
         
-            return URLSession.shared.dataTask(.promise, with: rq)
+        var rq = URLRequest(url: url)
+        rq.httpMethod = httpMethod.uppercased()
+        rq.setValue("application/json", forHTTPHeaderField: "Accept")
+        if let httpBody = httpBody {
+            rq.httpBody = httpBody.replacingOccurrences(of: "\n", with: "").data(using: .utf8)
+        }
+    
+        return URLSession.shared.dataTask(.promise, with: rq)
     }
     
     func execInSequence(promises: [()->Promise<(data: Data, response: URLResponse)>]) {

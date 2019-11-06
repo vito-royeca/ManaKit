@@ -14,26 +14,30 @@ import PromiseKit
 extension Maintainer {
     func createSetBlockPromise(blockCode: String, block: String) -> Promise<(data: Data, response: URLResponse)> {
         let name_section = self.sectionFor(name: block) ?? "null"
-        let parameters = """
+        let httpBody = """
                          code=\(blockCode)&
                          name=\(block)&
                          name_section=\(name_section)
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/setblocks"
         
-        return createNodePromise(urlString: urlString, parameters: parameters)
+        return createNodePromise(urlString: urlString,
+                                 httpMethod: "POST",
+                                 httpBody: httpBody)
     }
 
     func createSetTypePromise(setType: String) -> Promise<(data: Data, response: URLResponse)> {
         let capName = capitalize(string: self.displayFor(name: setType))
         let name_section = self.sectionFor(name: setType) ?? "null"
-        let parameters = """
+        let httpBody = """
                          name=\(capName)&
                          name_section=\(name_section)
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/settypes"
                 
-        return createNodePromise(urlString: urlString, parameters: parameters)
+        return createNodePromise(urlString: urlString,
+                                 httpMethod: "POST",
+                                 httpBody: httpBody)
     }
     
     func createSetPromise(dict: [String: Any]) -> Promise<(data: Data, response: URLResponse)> {
@@ -60,7 +64,8 @@ extension Maintainer {
             set_type_cap = capitalize(string: self.displayFor(name: set_type))
         }
         let cmset_parent = dict["parent_set_code"] ?? "null"
-        let parameters = """
+        
+        let httpBody = """
                          card_count=\(card_count)&
                          code=\(code)&
                          is_foil_only=\(is_foil_only)&
@@ -78,7 +83,9 @@ extension Maintainer {
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/sets"
         
-        return createNodePromise(urlString: urlString, parameters: parameters)
+        return createNodePromise(urlString: urlString,
+                                 httpMethod: "POST",
+                                 httpBody: httpBody)
     }
     
     func createKeyrunePromises(array: [[String: Any]]) -> [()->Promise<(data: Data, response: URLResponse)>] {
@@ -268,9 +275,11 @@ extension Maintainer {
     }
     
     private func createKeyruneCodePromise(code: String, keyruneCode: String) -> Promise<(data: Data, response: URLResponse)> {
-        let parameters = "my_keyrune_code=\(keyruneCode)"
+        let httpBody = "my_keyrune_code=\(keyruneCode)"
         let urlString = "\(ManaKit.Constants.APIURL)/sets/updatekeyrune/\(code)"
         
-        return createNodePromise(urlString: urlString, parameters: parameters)
+        return createNodePromise(urlString: urlString,
+                                 httpMethod: "POST",
+                                 httpBody: httpBody)
     }
 }

@@ -12,21 +12,7 @@ import PromiseKit
 import RealmSwift
 
 extension Maintainer {
-    func createRulings() -> Promise<Void> {
-        return Promise { seal in
-            firstly {
-                self.fetchRulings()
-            }.then {
-                self.saveRulings()
-            }.done {
-                seal.fulfill(())
-            }.catch { error in
-                seal.reject(error)
-            }
-        }
-    }
-    
-    private func fetchRulings() -> Promise<Void> {
+    func fetchRulings() -> Promise<Void> {
         return Promise { seal in
             guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
                 fatalError("Malformed cachePath")
@@ -69,54 +55,18 @@ extension Maintainer {
         }
     }
     
-    private func saveRulings() -> Promise<Void> {
-        return Promise { seal in
-            guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
-                fatalError("Malformed cachePath")
-            }
-            let rulingsPath = "\(cachePath)/\(ManaKit.Constants.ScryfallDate)_\(rulingsFileName)"
-            
-            let data = try! Data(contentsOf: URL(fileURLWithPath: rulingsPath))
-            guard let array = try! JSONSerialization.jsonObject(with: data,
-                                                                options: .mutableContainers) as? [[String: Any]] else {
-                                                                    fatalError("Malformed data")
-            }
-            
-            var count = 0
-            print("Creating rulings: \(count)/\(array.count) \(Date())")
-            
-            try! realm.write {
-                // delete existing cardRulings first
-                for object in realm.objects(CMCardRuling.self) {
-                    realm.delete(object)
-                }
-                for object in realm.objects(CMRuling.self) {
-                    realm.delete(object)
-                }
-                
-                for dict in array {
-                    if let oracleID = dict["oracle_id"] as? String,
-                        let publishedAt = dict["published_at"] as? String,
-                        let comment = dict["comment"] as? String {
-                        
-                        let ruling = findRuling(withDate: publishedAt, andText: comment)
-                        
-                        for card in realm.objects(CMCard.self).filter("oracleID == %@", oracleID) {
-                            let cardRuling = CMCardRuling()
-                            
-                            cardRuling.ruling = ruling
-                            cardRuling.card = card
-                            card.cardRulings.append(cardRuling)
-                        }
-                        
-                        count += 1
-                        if count % printMilestone == 0 {
-                            print("Creating rulings: \(count)/\(array.count) \(Date())")
-                        }
-                    }
-                }
-                seal.fulfill(())
-            }
+    func rulingsData() -> [[String: Any]] {
+        guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
+            fatalError("Malformed cachePath")
         }
+        let setsPath = "\(cachePath)/\(ManaKit.Constants.ScryfallDate)_\(rulingsFileName)"
+        
+        let data = try! Data(contentsOf: URL(fileURLWithPath: setsPath))
+        guard let array = try! JSONSerialization.jsonObject(with: data,
+                                                           options: .mutableContainers) as? [[String: Any]] else {
+            fatalError("Malformed data")
+        }
+        
+        return array
     }
 }
