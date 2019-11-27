@@ -33,25 +33,25 @@ class Tests: XCTestCase {
     }
     
     func testSuppliers() {
-        let expectation = XCTestExpectation(description: "testSuppliers()")
-        
-        if let card = ManaKit.sharedInstance.realm.objects(CMCard.self).filter("name == %@ AND set.code == %@", "Air Elemental", "XLN").first {
-            firstly {
-                ManaKit.sharedInstance.fetchTCGPlayerStorePricing(card: card)
-            }.done {
-                if let storePricing = card.tcgplayerStorePricing {
-                    for supplier in storePricing.suppliers {
-                        print("\(supplier)")
-                    }
-                }
-                
-                expectation.fulfill()
-            }.catch { error in
-                XCTFail("\(error.localizedDescription)")
-            }
-        }
-        
-        wait(for: [expectation], timeout: 20.0)
+//        let expectation = XCTestExpectation(description: "testSuppliers()")
+//
+//        if let card = ManaKit.sharedInstance.realm.objects(CMCard.self).filter("name == %@ AND set.code == %@", "Air Elemental", "XLN").first {
+//            firstly {
+//                ManaKit.sharedInstance.fetchTCGPlayerStorePricing(card: card)
+//            }.done {
+//                if let storePricing = card.tcgplayerStorePricing {
+//                    for supplier in storePricing.suppliers {
+//                        print("\(supplier)")
+//                    }
+//                }
+//
+//                expectation.fulfill()
+//            }.catch { error in
+//                XCTFail("\(error.localizedDescription)")
+//            }
+//        }
+//
+//        wait(for: [expectation], timeout: 20.0)
     }
     
 }

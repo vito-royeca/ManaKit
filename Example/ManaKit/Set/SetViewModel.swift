@@ -8,7 +8,6 @@
 
 import ManaKit
 import PromiseKit
-import RealmSwift
 
 class SetViewModel: NSObject {
     // MARK: Variables

@@ -31,10 +31,10 @@ extension Maintainer {
             }
             
         } else {
-            first_name = names.first ?? "null"
+            first_name = names.first ?? "NULL"
             name_section = first_name
         }
-        name_section = sectionFor(name: name_section) ?? "null"
+        name_section = sectionFor(name: name_section) ?? "NULL"
         
         let httpBody = """
                         name=\(artist)&
@@ -51,7 +51,7 @@ extension Maintainer {
     
     func createRarityPromise(rarity: String) -> Promise<(data: Data, response: URLResponse)> {
         let capName = capitalize(string: displayFor(name: rarity))
-        let nameSection = sectionFor(name: rarity) ?? "null"
+        let nameSection = sectionFor(name: rarity) ?? "NULL"
         
         let httpBody = """
                         name=\(capName)&
@@ -65,7 +65,7 @@ extension Maintainer {
     }
     
     func createLanguagePromise(code: String, displayCode: String, name: String) -> Promise<(data: Data, response: URLResponse)> {
-        let nameSection = sectionFor(name: name) ?? "null"
+        let nameSection = sectionFor(name: name) ?? "NULL"
         
         let httpBody = """
                          code=\(code)&
@@ -82,12 +82,12 @@ extension Maintainer {
     
     func createLayoutPromise(name: String, description_: String) -> Promise<(data: Data, response: URLResponse)> {
         let capName = capitalize(string: displayFor(name: name))
-        let nameSection = sectionFor(name: name) ?? "null"
+        let nameSection = sectionFor(name: name) ?? "NULL"
         
         let httpBody = """
                          name=\(capName)&
                          name_section=\(nameSection)&
-                         description_=\(description_)
+                         description=\(description_)
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/layouts"
         
@@ -96,9 +96,9 @@ extension Maintainer {
                                  httpBody: httpBody)
     }
     
-    func createWatermarkPromise(watermark: String) -> Promise<(data: Data, response: URLResponse)> {
-        let capName = capitalize(string: displayFor(name: watermark))
-        let nameSection = sectionFor(name: watermark) ?? "null"
+    func createWatermarkPromise(name: String) -> Promise<(data: Data, response: URLResponse)> {
+        let capName = capitalize(string: displayFor(name: name))
+        let nameSection = sectionFor(name: name) ?? "NULL"
         
         let httpBody = """
                          name=\(capName)&
@@ -113,12 +113,12 @@ extension Maintainer {
     
     func createFramePromise(name: String, description_: String) -> Promise<(data: Data, response: URLResponse)> {
         let capName = capitalize(string: displayFor(name: name))
-        let nameSection = sectionFor(name: name) ?? "null"
+        let nameSection = sectionFor(name: name) ?? "NULL"
         
         let httpBody = """
                          name=\(capName)&
                          name_section=\(nameSection)&
-                         description_=\(description_)
+                         description=\(description_)
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/frames"
         
@@ -128,13 +128,13 @@ extension Maintainer {
     }
     
     func createFrameEffectPromise(id: String, name: String, description_: String) -> Promise<(data: Data, response: URLResponse)> {
-        let nameSection = sectionFor(name: name) ?? "null"
+        let nameSection = sectionFor(name: name) ?? "NULL"
         
         let httpBody = """
                          id=\(id)&
                          name=\(name)&
                          name_section=\(nameSection)&
-                         description_=\(description_)
+                         description=\(description_)
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/frameeffects"
         
@@ -144,7 +144,7 @@ extension Maintainer {
     }
     
     func createColorPromise(symbol: String, name: String, isManaColor: Bool) -> Promise<(data: Data, response: URLResponse)> {
-        let nameSection = sectionFor(name: name) ?? "null"
+        let nameSection = sectionFor(name: name) ?? "NULL"
         
         let httpBody = """
                          symbol=\(symbol)&
@@ -161,7 +161,7 @@ extension Maintainer {
     
     func createFormatPromise(name: String) -> Promise<(data: Data, response: URLResponse)> {
         let capName = capitalize(string: displayFor(name: name))
-        let nameSection = sectionFor(name: name) ?? "null"
+        let nameSection = sectionFor(name: name) ?? "NULL"
         
         let httpBody = """
                          name=\(capName)&
@@ -176,7 +176,7 @@ extension Maintainer {
     
     func createLegalityPromise(name: String) -> Promise<(data: Data, response: URLResponse)> {
         let capName = capitalize(string: displayFor(name: name))
-        let nameSection = sectionFor(name: name) ?? "null"
+        let nameSection = sectionFor(name: name) ?? "NULL"
         
         let httpBody = """
                          name=\(capName)&
@@ -190,12 +190,12 @@ extension Maintainer {
     }
     
     func createCardTypePromise(name: String, parent: String) -> Promise<(data: Data, response: URLResponse)> {
-        let nameSection = sectionFor(name: name) ?? "null"
+        let nameSection = sectionFor(name: name) ?? "NULL"
         
         let httpBody = """
                          name=\(name)&
                          name_section=\(nameSection)&
-                         cmcardtype_parent=\(parent)&
+                         cmcardtype_parent=\(parent)
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/cardtypes"
         
@@ -204,11 +204,39 @@ extension Maintainer {
                                  httpBody: httpBody)
     }
     
+    func createComponentPromise(name: String) -> Promise<(data: Data, response: URLResponse)> {
+        let capName = capitalize(string: displayFor(name: name))
+        let nameSection = sectionFor(name: name) ?? "NULL"
+        
+        let httpBody = """
+                         name=\(capName)&
+                         name_section=\(nameSection)
+                         """
+        let urlString = "\(ManaKit.Constants.APIURL)/components"
+        
+        return createNodePromise(urlString: urlString,
+                                 httpMethod: "POST",
+                                 httpBody: httpBody)
+    }
+    
+    func createFacePromise(card: String, cardFace: String) -> Promise<(data: Data, response: URLResponse)> {
+        
+        let httpBody = """
+                         cmcard=\(card)&
+                         cmcard_face=\(cardFace)
+                         """
+        let urlString = "\(ManaKit.Constants.APIURL)/cardfaces"
+        
+        return createNodePromise(urlString: urlString,
+                                 httpMethod: "POST",
+                                 httpBody: httpBody)
+    }
+    
     func createCardPromise(dict: [String: Any]) -> Promise<(data: Data, response: URLResponse)> {
-        let collector_number = dict["collector_number"] ?? "null"
+        let collector_number = dict["collector_number"] ?? "NULL"
         let cmc = dict["cmc"] ?? Double(0)
-        let flavor_text = dict["flavor_text"] ?? "null"
-        var image_uris = "null"
+        let flavor_text = dict["flavor_text"] ?? "NULL"
+        var image_uris = "{}"
         if let imageUris = dict["image_uris"] as? [String: String] {
             // remove the key (?APIKEY) in the url
             var newImageUris = [String: String]()
@@ -227,8 +255,8 @@ extension Maintainer {
         let is_oversized = dict["oversized"] ?? false
         let is_reserved = dict["reserved"] ?? false
         let is_story_spotlight = dict["story_spotlight"] ?? false
-        let loyalty = dict["loyalty"] ?? "null"
-        let mana_cost = dict["mana_cost"] ?? "null"
+        let loyalty = dict["loyalty"] ?? "NULL"
+        let mana_cost = dict["mana_cost"] ?? "NULL"
         var multiverse_ids = "{}"
         if let a = dict["multiverse_ids"] as? [Int],
             !a.isEmpty {
@@ -236,40 +264,39 @@ extension Maintainer {
                 .replacingOccurrences(of: "[", with: "{")
                 .replacingOccurrences(of: "]", with: "}")
         }
-        var my_name_section = "null";
+        var my_name_section = "NULL";
         if let name = dict["name"] as? String {
-            my_name_section = self.sectionFor(name: name) ?? "null"
+            my_name_section = self.sectionFor(name: name) ?? "NULL"
         }
-        let name = dict["name"] ?? "null"
-        let oracle_text = dict["oracle_text"] ?? "null"
-        let power = dict["power"] ?? "null"
-        let printed_name = dict["printed_name"] ?? "null"
-        let printed_text = dict["printed_text"] ?? "null"
-        let toughness = dict["toughness"] ?? "null"
-        let arena_id = dict["arena_id"] ?? "null"
-        let mtgo_id = dict["mtgo_id"] ?? "null"
-        let tcgplayer_id = dict["tcgplayer_id"] ?? "null"
-        let hand_modifier = dict["hand_modifier"] ?? "null"
-        let life_modifier = dict["life_modifier"] ?? "null"
+        let name = dict["name"] ?? "NULL"
+        let oracle_text = dict["oracle_text"] ?? "NULL"
+        let power = dict["power"] ?? "NULL"
+        let printed_name = dict["printed_name"] ?? "NULL"
+        let printed_text = dict["printed_text"] ?? "NULL"
+        let toughness = dict["toughness"] ?? "NULL"
+        let arena_id = dict["arena_id"] ?? "NULL"
+        let mtgo_id = dict["mtgo_id"] ?? "NULL"
+        let tcgplayer_id = dict["tcgplayer_id"] ?? "NULL"
+        let hand_modifier = dict["hand_modifier"] ?? "NULL"
+        let life_modifier = dict["life_modifier"] ?? "NULL"
         let is_booster = dict["booster"] ?? false
         let is_digital = dict["digital"] ?? false
         let is_promo = dict["promo"] ?? false
-        let released_at = dict["released_at"] ?? "null"
+        let released_at = dict["released_at"] ?? "NULL"
         let is_textless = dict["textless"] ?? false
-        let is_variation = dict["variation"] ?? false
-        let mtgo_foil_id = dict["mtgo_foil_id"] ?? "null"
+        let mtgo_foil_id = dict["mtgo_foil_id"] ?? "NULL"
         let is_reprint = dict["reprint"] ?? false
-        let id = dict["id"] ?? "null"
-        let card_back_id = dict["card_back_id"] ?? "null"
-        let oracle_id = dict["oracle_id"] ?? "null"
-        let illustration_id = dict["illustration_id"] ?? "null"
-        let cmartist = dict["artist"] ?? "null"
-        let cmset = dict["set"] ?? "null"
-        let cmrarity = capitalize(string: dict["rarity"] as? String ?? "null")
-        let cmlanguage = dict["lang"] ?? "null"
-        let cmlayout = capitalize(string: dict["layout"] as? String ?? "null")
-        let cmwatermark = capitalize(string: dict["watermark"] as? String ?? "null")
-        let cmframe = capitalize(string: dict["frame"] as? String ?? "null")
+        let id = dict["id"] ?? "NULL"
+        let card_back_id = dict["card_back_id"] ?? "NULL"
+        let oracle_id = dict["oracle_id"] ?? "NULL"
+        let illustration_id = dict["illustration_id"] ?? "NULL"
+        let cmartist = dict["artist"] ?? "NULL"
+        let cmset = dict["set"] ?? "NULL"
+        let cmrarity = capitalize(string: dict["rarity"] as? String ?? "NULL")
+        let cmlanguage = dict["lang"] ?? "NULL"
+        let cmlayout = capitalize(string: displayFor(name: dict["layout"] as? String ?? "NULL"))//capitalize(string: dict["layout"] as? String ?? "NULL")
+        let cmwatermark = capitalize(string: dict["watermark"] as? String ?? "NULL")
+        let cmframe = capitalize(string: dict["frame"] as? String ?? "NULL")
         var cmframe_effects = "{}"
         if let a = dict["frame_effects"] as? [String],
             !a.isEmpty {
@@ -298,7 +325,7 @@ extension Maintainer {
                 .replacingOccurrences(of: "[", with: "{")
                 .replacingOccurrences(of: "]", with: "}")
         }
-        var cmlegalities = "null"
+        var cmlegalities = "{}"
         if let legalities = dict["legalities"] as? [String: String] {
             var newLegalities = [String: String]()
             for (k,v) in legalities {
@@ -308,46 +335,46 @@ extension Maintainer {
                 .replacingOccurrences(of: "[", with: "{")
                 .replacingOccurrences(of: "]", with: "}")
         }
-        let type_line = dict["type_line"] ?? "null"
-        let printed_type_line = dict["printed_type_line"] ?? "null"
-        var cmcardtype_subtypes = "null"
+        var cmparts = "{}"
+        if let parts = dict["all_parts"] as? [String: String] {
+            var newParts = [String: Any]()
+            for (k,v) in parts {
+                newParts["cmcard"] = id
+                if k == "component" {
+                    newParts["cmcomponent"] = capitalize(string: displayFor(name: v))
+                } else if k == "id" {
+                    newParts["cmcard_part"] = v
+                }
+            }
+            cmparts = "\(newParts)"
+                .replacingOccurrences(of: "[", with: "{")
+                .replacingOccurrences(of: "]", with: "}")
+        }
+        let type_line = dict["type_line"] ?? "NULL"
+        let printed_type_line = dict["printed_type_line"] ?? "NULL"
+        var cmcardtype_subtypes = "{}"
         if let tl = dict["type_line"] as? String {
             let subtypes = extractSubtypesFrom(tl)
             cmcardtype_subtypes = "\(subtypes)"
                 .replacingOccurrences(of: "[", with: "{")
                 .replacingOccurrences(of: "]", with: "}")
         }
-        var cmcardtype_supertypes = "null"
+        var cmcardtype_supertypes = "{}"
         if let tl = dict["type_line"] as? String {
             let supertypes = extractSupertypesFrom(tl)
             cmcardtype_supertypes = "\(supertypes)"
                 .replacingOccurrences(of: "[", with: "{")
                 .replacingOccurrences(of: "]", with: "}")
         }
+        let face_order = dict["face_order"] ?? 0
         
         // unhandled...
-        // all_parts
-        // card_faces
         // border_color
         // games
         // promo_types
-        // variation_of
         // preview.previewed_at
         // preview.source_uri
         // preview.source
-        // related cards
-//                /// cached data here ///
-//
-        //            try! realm.write {
-        //                for x in cachedBorderColors {
-        //                    realm.add(x)
-        //                }
-//                // border color
-//                if let borderColor = dict["border_color"] as? String,
-//                    let x = findCardBorderColor(with: borderColor) {
-//                    card.borderColor = x
-//                }
-//
         let httpBody =
             """
             collector_number=\(collector_number)&
@@ -381,7 +408,6 @@ extension Maintainer {
             is_promo=\(is_promo)&
             released_at=\(released_at)&
             is_textless=\(is_textless)&
-            is_variation=\(is_variation)&
             mtgo_foil_id=\(mtgo_foil_id)&
             is_reprint=\(is_reprint)&
             id=\(id)&
@@ -400,10 +426,12 @@ extension Maintainer {
             cmcolor_identities=\(cmcolor_identities)&
             cmcolor_indicators=\(cmcolor_indicators)&
             cmlegalities=\(cmlegalities)&
+            cmparts=\(cmparts)&
             type_line=\(type_line)&
             printed_type_line=\(printed_type_line)&
             cmcardtype_subtypes=\(cmcardtype_subtypes)&
-            cmcardtype_supertypes=\(cmcardtype_supertypes)
+            cmcardtype_supertypes=\(cmcardtype_supertypes)&
+            face_order=\(face_order)
             """
         let urlString = "\(ManaKit.Constants.APIURL)/cards"
         

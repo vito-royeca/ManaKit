@@ -9,7 +9,6 @@
 import Foundation
 import ManaKit
 import PromiseKit
-import RealmSwift
 
 extension Maintainer {
     func fetchRulings() -> Promise<Void> {

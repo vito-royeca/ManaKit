@@ -23,10 +23,10 @@ class MainViewController: UITabBarController {
                                                  style: .solid,
                                                  textColor: UIColor.blue,
                                                  size: CGSize(width: 30, height: 30))
-        items[1].image = UIImage.fontAwesomeIcon(name: .cubes,
-                                                 style: .solid,
-                                                 textColor: UIColor.blue,
-                                                 size: CGSize(width: 30, height: 30))
+//        items[1].image = UIImage.fontAwesomeIcon(name: .cubes,
+//                                                 style: .solid,
+//                                                 textColor: UIColor.blue,
+//                                                 size: CGSize(width: 30, height: 30))
     }
     
 

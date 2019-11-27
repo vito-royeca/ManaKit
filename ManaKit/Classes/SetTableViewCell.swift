@@ -87,32 +87,33 @@ public class SetTableViewCell: UITableViewCell {
             zhsButton.isEnabled = false
             zhtButton.isEnabled = false
             
-            for language in set.languages {
-                if language.code == "en" {
-                    enButton.isEnabled = true
-                } else if language.code == "es" {
-                    esButton.isEnabled = true
-                } else if language.code == "fr" {
-                    frButton.isEnabled = true
-                } else if language.code == "de" {
-                    deButton.isEnabled = true
-                } else if language.code == "it" {
-                    itButton.isEnabled = true
-                } else if language.code == "pt" {
-                    ptButton.isEnabled = true
-                } else if language.code == "ja" {
-                    jaButton.isEnabled = true
-                } else if language.code == "ko" {
-                    koButton.isEnabled = true
-                } else if language.code == "ru" {
-                    ruButton.isEnabled = true
-                } else if language.code == "zhs" {
-                    zhsButton.isEnabled = true
-                } else if language.code == "zht" {
-                    zhtButton.isEnabled = true
+            for l in set.languages ?? NSSet() {
+                if let language = l as? CMLanguage {
+                    if language.code == "en" {
+                        enButton.isEnabled = true
+                    } else if language.code == "es" {
+                        esButton.isEnabled = true
+                    } else if language.code == "fr" {
+                        frButton.isEnabled = true
+                    } else if language.code == "de" {
+                        deButton.isEnabled = true
+                    } else if language.code == "it" {
+                        itButton.isEnabled = true
+                    } else if language.code == "pt" {
+                        ptButton.isEnabled = true
+                    } else if language.code == "ja" {
+                        jaButton.isEnabled = true
+                    } else if language.code == "ko" {
+                        koButton.isEnabled = true
+                    } else if language.code == "ru" {
+                        ruButton.isEnabled = true
+                    } else if language.code == "zhs" {
+                        zhsButton.isEnabled = true
+                    } else if language.code == "zht" {
+                        zhtButton.isEnabled = true
+                    }
                 }
             }
-            
         }
     }
     public var delegate: SetTableViewCellDelegate?

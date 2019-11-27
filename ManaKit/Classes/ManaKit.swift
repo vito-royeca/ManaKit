@@ -10,9 +10,8 @@ import UIKit
 import Kanna
 import KeychainAccess
 import PromiseKit
-import RealmSwift
 import SDWebImage
-import SSZipArchive
+import Sync
 
 public class ManaKit {
     public enum Fonts {
@@ -25,14 +24,14 @@ public class ManaKit {
     }
 
     public enum Constants {
-        public static let ScryfallDate        = "2019-11-02 10:25 UTC"
+        public static let ScryfallDate        = "2019-11-24 10:24 UTC"
         public static let KeyruneVersion      = "3.6.2"
         public static let EightEditionRelease = "2003-07-28"
         public static let TcgPlayerApiVersion = "v1.19.0"
         public static let TcgPlayerApiLimit   = 300
         public static let TcgPlayerPricingAge = 24 * 3 // 3 days
         public static let FirebaseDataAge     = 60     // 60 sec
-        public static let APIURL              = "http://192.168.1.108:1993"
+        public static let APIURL              = "http://192.168.1.182:1993"
     }
     
     public enum ImageName: String {
@@ -70,26 +69,23 @@ public class ManaKit {
         }
     }
     
-    var _realm: Realm?
-    public var realm: Realm {
+    // MARK: Public variables
+    private var _dataStack: DataStack?
+    public var dataStack: DataStack? {
         get {
-            if _realm == nil {
-                guard let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String else {
-                    fatalError("Can't find bundleName")
+            if _dataStack == nil {
+                guard let bundleURL = Bundle(for: ManaKit.self).url(forResource: "ManaKit", withExtension: "bundle"),
+                    let bundle = Bundle(url: bundleURL),
+                    let momURL = bundle.url(forResource: "ManaKit", withExtension: "momd"),
+                    let objectModel = NSManagedObjectModel(contentsOf: momURL) else {
+                    return nil
                 }
-                var config = Realm.Configuration()
-                
-                
-                // Use the default directory, but replace the filename with ManaKit
-                config.fileURL = config.fileURL!.deletingLastPathComponent().appendingPathComponent("\(bundleName).realm")
-                
-                // Set this as the configuration used for the default Realm
-                Realm.Configuration.defaultConfiguration = config
-                
-                // Open the Realm with the configuration
-                _realm = try! Realm(configuration: config)
+                _dataStack = DataStack(model: objectModel, storeType: .sqLite)
             }
-            return _realm!
+            return _dataStack
+        }
+        set {
+            _dataStack = newValue
         }
     }
     
@@ -104,74 +100,9 @@ public class ManaKit {
         return UINib(nibName: name, bundle: resourceBundle)
     }
     
-    public func needsUpgrade() -> Bool {
-        var willUpgrade = true
-        
-        if let scryfallDate = UserDefaults.standard.string(forKey: UserDefaultsKeys.ScryfallDate) {
-            if scryfallDate == Constants.ScryfallDate {
-                willUpgrade = false
-            }
-        }
-        
-        return willUpgrade
-    }
-    
     public func setupResources() {
         copyDatabaseFile()
         loadCustomFonts()
-    }
-    
-    func copyDatabaseFile() {
-        let bundle = Bundle(for: ManaKit.self)
-        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
-            let resourceBundle = Bundle(url: bundleURL),
-            let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first,
-            let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first,
-            let sourcePath = resourceBundle.path(forResource: "ManaKit.realm", ofType: "zip"),
-            let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String else {
-            return
-        }
-        let targetPath = "\(docsPath)/\(bundleName).realm"
-
-        if needsUpgrade() {
-            print("Copying database file: \(Constants.ScryfallDate)")
-
-            // Remove old database files in docs directory
-            for file in try! FileManager.default.contentsOfDirectory(atPath: docsPath) {
-                let path = "\(docsPath)/\(file)"
-                if file.hasPrefix(bundleName) {
-                    try! FileManager.default.removeItem(atPath: path)
-                }
-            }
-            
-            // remove the contents of crop directory
-            let cropPath = "\(cachePath)/crop/"
-            if FileManager.default.fileExists(atPath: cropPath) {
-                for file in try! FileManager.default.contentsOfDirectory(atPath: cropPath) {
-                    let path = "\(cropPath)/\(file)"
-                    try! FileManager.default.removeItem(atPath: path)
-                }
-            }
-
-            // delete image cache
-            let imageCache = SDImageCache.init()
-            imageCache.clearDisk(onCompletion: nil)
-            
-            // Unzip
-            SSZipArchive.unzipFile(atPath: sourcePath, toDestination: docsPath)
-            
-            // rename
-            try! FileManager.default.moveItem(atPath: "\(docsPath)/ManaKit.realm", toPath: targetPath)
-            
-            // skip from iCloud backups!
-            var targetURL = URL(fileURLWithPath: targetPath)
-            var resourceValues = URLResourceValues()
-            resourceValues.isExcludedFromBackup = true
-            try! targetURL.setResourceValues(resourceValues)
-            
-            UserDefaults.standard.set(Constants.ScryfallDate, forKey: UserDefaultsKeys.ScryfallDate)
-            UserDefaults.standard.synchronize()
-        }
     }
     
     func loadCustomFonts() {
@@ -200,487 +131,41 @@ public class ManaKit {
         }
     }
     
-    // MARK: Image methods
-    public func imageFromFramework(imageName: ImageName) -> UIImage? {
-        let bundle = Bundle(for: ManaKit.self)
-        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
-            let resourceBundle = Bundle(url: bundleURL) else {
-                return nil
-        }
-        
-        return UIImage(named: imageName.rawValue, in: resourceBundle, compatibleWith: nil)
-    }
-    
-    public func symbolImage(name: String) -> UIImage? {
-        let bundle = Bundle(for: ManaKit.self)
-        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
-            let resourceBundle = Bundle(url: bundleURL) else {
-                return nil
-        }
-        
-        return UIImage(named: name, in: resourceBundle, compatibleWith: nil)
-    }
-    
-    public func downloadImage(ofCard card: CMCard, type: CardImageType, faceOrder: Int) -> Promise<Void> {
-        guard let url = card.imageURL(type: type,
-                                      faceOrder: faceOrder) else {
-            
-            return Promise { seal  in
-                let error = NSError(domain: NSURLErrorDomain,
-                                    code: 404,
-                                    userInfo: [NSLocalizedDescriptionKey: "No valid URL for image"])
-                seal.reject(error)
-            }
-        }
-        
-        let roundCornered = type != .artCrop
-        
-        if let _ = card.image(type: type,
-                              faceOrder: faceOrder,
-                              roundCornered: roundCornered) {
-            return Promise { seal  in
-                seal.fulfill(())
-            }
-        } else {
-            return downloadImage(url: url)
-        }
-    }
-    
-    public func downloadImage(url: URL) -> Promise<Void> {
-        return Promise { seal in
-            let cacheKey = url.absoluteString
-            let completion = { (image: UIImage?, data: Data?, error: Error?, finished: Bool) in
-                if let error = error {
-                    seal.reject(error)
-                } else {
-                    if let image = image {
-                        let imageCache = SDImageCache.init()
-                        let imageCacheCompletion = {
-                            seal.fulfill(())
-                        }
-                        
-                        imageCache.store(image,
-                                         forKey: cacheKey,
-                                         toDisk: true,
-                                         completion: imageCacheCompletion)
-                        
-                    } else {
-                        let error = NSError(domain: NSURLErrorDomain,
-                                            code: 404,
-                                            userInfo: [NSLocalizedDescriptionKey: "Image not found: \(url)"])
-                        seal.reject(error)
-                    }
-                }
-            }
-            
-            SDWebImageDownloader.shared.downloadImage(with: url,
-                                                      options: .lowPriority,
-                                                      progress: nil,
-                                                      completed: completion)
-        }
-    }
-    
-    // MARK: TCGPlayer
-    public func configureTcgPlayer(partnerKey: String, publicKey: String?, privateKey: String?) {
-        tcgPlayerPartnerKey = partnerKey
-        tcgPlayerPublicKey = publicKey
-        tcgPlayerPrivateKey = privateKey
-    }
-    
-    public func authenticateTcgPlayer() -> Promise<Void> {
-        return Promise { seal  in
-            guard let _ = tcgPlayerPartnerKey,
-                let tcgPlayerPublicKey = tcgPlayerPublicKey,
-                let tcgPlayerPrivateKey = tcgPlayerPrivateKey else {
-                let error = NSError(domain: "Error", code: 401, userInfo: [NSLocalizedDescriptionKey: "No TCGPlayer keys found."])
-                seal.reject(error)
-                return
-            }
-            
-            let dateFormat = DateFormatter()
-            var willAuthenticate = true
-            
-            dateFormat.dateStyle = .medium
-            
-            if let _ = keychain[UserDefaultsKeys.TcgPlayerToken],
-                let expiration = keychain[UserDefaultsKeys.TcgPlayerExpiration],
-                let expirationDate = dateFormat.date(from: expiration) {
-                
-                if Date() <= expirationDate {
-                    willAuthenticate = false
-                }
-            }
-            
-            if willAuthenticate {
-                guard let urlString = "https://api.tcgplayer.com/token".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-                    let url = URL(string: urlString) else {
-                    fatalError("Malformed url")
-                }
-                let query = "grant_type=client_credentials&client_id=\(tcgPlayerPublicKey)&client_secret=\(tcgPlayerPrivateKey)"
-            
-                var rq = URLRequest(url: url)
-                rq.httpMethod = "POST"
-                rq.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                rq.httpBody = query.data(using: .utf8)
-            
-                firstly {
-                    URLSession.shared.dataTask(.promise, with: rq)
-                }.compactMap {
-                    try JSONSerialization.jsonObject(with: $0.data) as? [String: Any]
-                }.done { json in
-                    guard let token = json["access_token"] as? String,
-                        let expiresIn = json["expires_in"] as? Double else {
-                        let error = NSError(domain: "Error", code: 401, userInfo: [NSLocalizedDescriptionKey: "No TCGPlayer token found."])
-                        seal.reject(error)
-                        return
-                    }
-                    let date = Date().addingTimeInterval(expiresIn)
-                    self.keychain[UserDefaultsKeys.TcgPlayerToken] = token
-                    self.keychain[UserDefaultsKeys.TcgPlayerExpiration] = dateFormat.string(from: date)
-                    
-                    seal.fulfill(())
-                }.catch { error in
-                    print("\(error)")
-                    seal.reject(error)
-                }
-            } else {
-                seal.fulfill(())
-            }
-        }
-    }
-    
-    public func getTcgPlayerPrices(forSet set: CMSet) -> Promise<Void> {
-        return Promise { seal  in
-            guard let urlString = "http://api.tcgplayer.com/\(Constants.TcgPlayerApiVersion)/pricing/group/\(set.tcgPlayerID)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-                let url = URL(string: urlString) else {
-                    fatalError("Malformed url")
-            }
-            
-            guard let token = keychain[UserDefaultsKeys.TcgPlayerToken] else {
-                fatalError("No TCGPlayer token found.")
-            }
-            
-            var rq = URLRequest(url: url)
-            rq.httpMethod = "GET"
-            rq.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            rq.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-            
-            firstly {
-                URLSession.shared.dataTask(.promise, with:rq)
-            }.compactMap {
-                try JSONSerialization.jsonObject(with: $0.data) as? [String: Any]
-            }.done { json in
-                guard let results = json["results"] as? [[String: Any]] else {
-                    fatalError("results is nil")
-                }
-                
-                try! self.realm.write {
-                    // delete first
-                    for card in set.cards {
-                        for pricing in card.pricings {
-                            self.realm.delete(pricing)
-                        }
-                        self.realm.add(card)
-                    }
-                    
-                    for dict in results {
-                        if let productId = dict["productId"] as? Int,
-                            let card = self.realm.objects(CMCard.self).filter("tcgPlayerID = %@", productId).first {
-                            
-                            let pricing = CMCardPricing()
-                            pricing.card = card
-                            if let d = dict["lowPrice"] as? Double {
-                                pricing.lowPrice = d
-                            }
-                            if let d = dict["midPrice"] as? Double {
-                                pricing.midPrice = d
-                            }
-                            if let d = dict["highPrice"] as? Double {
-                                pricing.highPrice = d
-                            }
-                            if let d = dict["marketPrice"] as? Double {
-                                pricing.marketPrice = d
-                            }
-                            if let d = dict["directLowPrice"] as? Double {
-                                pricing.directLowPrice = d
-                            }
-                            if let d = dict["subTypeName"] as? String {
-                                if d == "Normal" {
-                                    pricing.isFoil = false
-                                } else if d == "Foil" {
-                                    pricing.isFoil = true
-                                }
-                            }
-                            self.realm.add(pricing)
-                            
-                            card.pricings.append(pricing)
-                            card.tcgPlayerID = Int32(productId)
-                            card.tcgPlayerLstUpdate = Date()
-                            self.realm.add(card)
-                        }
-                    }
-                    seal.fulfill(())
-                }
-            }.catch { error in
-                print("\(error)")
-                seal.reject(error)
-            }
-        }
-    }
-    
-    public func getTcgPlayerPrices(forCards cards: [CMCard]) -> Promise<Void> {
-        return Promise { seal  in
-            let productIds = cards.map({ $0.tcgPlayerID }).map(String.init).joined(separator: ",")
-            guard let urlString = "http://api.tcgplayer.com/\(Constants.TcgPlayerApiVersion)/pricing/product/\(productIds)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-                let url = URL(string: urlString) else {
-                fatalError("Malformed url")
-            }
-            
-            guard let token = keychain[UserDefaultsKeys.TcgPlayerToken] else {
-                fatalError("No TCGPlayer token found.")
-            }
-            
-            var rq = URLRequest(url: url)
-            rq.httpMethod = "GET"
-            rq.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            rq.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-            
-            firstly {
-                URLSession.shared.dataTask(.promise, with:rq)
-            }.compactMap {
-                try JSONSerialization.jsonObject(with: $0.data) as? [String: Any]
-            }.done { json in
-                guard let results = json["results"] as? [[String: Any]] else {
-                    fatalError("results is nil")
-                }
-                
-                try! self.realm.write {
-                    // delete first
-                    for card in cards {
-                        for pricing in card.pricings {
-                            self.realm.delete(pricing)
-                        }
-                        self.realm.add(card)
-                    }
-                    
-                    for dict in results {
-                        if let productId = dict["productId"] as? Int,
-                            let card = cards.filter({ it -> Bool in
-                               it.tcgPlayerID == productId
-                            }).first {
-                            
-                            let pricing = CMCardPricing()
-                            pricing.card = card
-                            if let d = dict["lowPrice"] as? Double {
-                                pricing.lowPrice = d
-                            }
-                            if let d = dict["midPrice"] as? Double {
-                                pricing.midPrice = d
-                            }
-                            if let d = dict["highPrice"] as? Double {
-                                pricing.highPrice = d
-                            }
-                            if let d = dict["marketPrice"] as? Double {
-                                pricing.marketPrice = d
-                            }
-                            if let d = dict["directLowPrice"] as? Double {
-                                pricing.directLowPrice = d
-                            }
-                            if let d = dict["subTypeName"] as? String {
-                                if d == "Normal" {
-                                    pricing.isFoil = false
-                                } else if d == "Foil" {
-                                    pricing.isFoil = true
-                                }
-                            }
-                            self.realm.add(pricing)
-                            
-                            card.pricings.append(pricing)
-                            card.tcgPlayerID = Int32(productId)
-                            card.tcgPlayerLstUpdate = Date()
-                            self.realm.add(card)
-                        }
-                    }
-                    seal.fulfill(())
-                }
-            }.catch { error in
-                print("\(error)")
-                seal.reject(error)
-            }
-        }
-    }
-    
-/*
-    public func fetchTCGPlayerCardPricing(card: CMCard) -> Promise<Void> {
-        return Promise { seal  in
-            if card.willUpdateTCGPlayerCardPricing() {
-                guard let tcgPlayerPartnerKey = tcgPlayerPartnerKey,
-//                    let set = card.set,
-//                    let tcgPlayerSetName = set.tcgplayerName,
-                    let cardName = card.name,
-                    let urlString = "http://partner.tcgplayer.com/x3/phl.asmx/p?pk=\(tcgPlayerPartnerKey)&s=\("tcgPlayerSetName")&p=\(cardName)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-                    let url = URL(string: urlString) else {
-                    
-                    seal.fulfill(())
-                    return
-                }
-                
-                var rq = URLRequest(url: url)
-                rq.httpMethod = "GET"
-                
-                firstly {
-                    URLSession.shared.dataTask(.promise, with: rq)
-                }.map {
-                    try! XML(xml: $0.data, encoding: .utf8)
-                }.done { xml in
-                    let pricing = card.pricing != nil ? card.pricing : CMCardPricing()
-                    
-                    try! self.realm.write {
-                        for product in xml.xpath("//product") {
-                            if let id = product.xpath("id").first?.text,
-                                let hiprice = product.xpath("hiprice").first?.text,
-                                let lowprice = product.xpath("lowprice").first?.text,
-                                let avgprice = product.xpath("avgprice").first?.text,
-                                let foilavgprice = product.xpath("foilavgprice").first?.text,
-                                let link = product.xpath("link").first?.text {
-                                pricing!.id = Int64(id)!
-                                pricing!.high = Double(hiprice)!
-                                pricing!.low = Double(lowprice)!
-                                pricing!.average = Double(avgprice)!
-                                pricing!.foil = Double(foilavgprice)!
-                                pricing!.link = link
-                            }
-                        }
-                        pricing!.lastUpdate = Date()
-                        card.pricing = pricing
-                    
-                        self.realm.add(pricing!)
-                        self.realm.add(card, update: true)
-                        seal.fulfill(())
-                    }
-                }.catch { error in
-                    seal.reject(error)
-                }
-            } else {
-                seal.fulfill(())
-            }
-        }
-    }
-*/
-    public func fetchTCGPlayerStorePricing(card: CMCard) -> Promise<Void> {
-        return Promise { seal  in
-            if card.willUpdateTCGPlayerStorePricing() {
-                guard let tcgPlayerPartnerKey = tcgPlayerPartnerKey,
-//                    let set = card.set,
-//                    let tcgPlayerSetName = set.tcgplayerName,
-                    let cardName = card.name,
-                    let urlString = "http://partner.tcgplayer.com/x3/pv.asmx/p?pk=\(tcgPlayerPartnerKey)&s=\("tcgPlayerSetName")&p=\(cardName)&v=8".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-                    let url = URL(string: urlString) else {
-                    
-                    seal.fulfill(())
-                    return
-                }
-                
-                var rq = URLRequest(url: url)
-                rq.httpMethod = "GET"
-            
-                firstly {
-                    URLSession.shared.dataTask(.promise, with: rq)
-                }.map {
-                    try! XML(xml: $0.data, encoding: .utf8)
-                }.done { xml in
-                    try! self.realm.write {
-                        var storePricing: CMStorePricing?
-                        
-                        // cleanup existing storePricing, if there is any
-                        if let sp = card.tcgplayerStorePricing {
-                            for sup in sp.suppliers {
-                                self.realm.delete(sup)
-                            }
-                            self.realm.delete(sp)
-                            storePricing = sp
-                        } else {
-                            storePricing = CMStorePricing()
-                        }
-                        
-                        for supplier in xml.xpath("//supplier") {
-                            if let name = supplier.xpath("name").first?.text,
-                                let condition = supplier.xpath("condition").first?.text,
-                                let qty = supplier.xpath("qty").first?.text,
-                                let price = supplier.xpath("price").first?.text,
-                                let link = supplier.xpath("link").first?.text {
-                                
-                                let id = "\(name)_\(condition)_\(qty)_\(price)"
-                                var sup: CMStoreSupplier?
-                                
-                                if let s = self.realm.objects(CMStoreSupplier.self).filter("id = %@", id).first {
-                                    sup = s
-                                } else {
-                                    sup = CMStoreSupplier()
-                                }
-                                sup!.id = id
-                                sup!.name = name
-                                sup!.condition = condition
-                                sup!.qty = Int32(qty)!
-                                sup!.price = Double(price)!
-                                sup!.link = link
-                                self.realm.add(sup!)
-                                storePricing!.suppliers.append(sup!)
-                            }
-                        }
-                        if let note = xml.xpath("//note").first?.text {
-                            storePricing!.notes = note
-                        }
-                        storePricing!.lastUpdate = Date()
-                        self.realm.add(storePricing!)
-                        
-                        seal.fulfill(())
-                    }
-                    
-                }.catch { error in
-                    seal.reject(error)
-                }
-            } else {
-                seal.fulfill(())
-            }
-        }
-    }
-    
     // MARK: Firebase
-    public func newFirebaseKey(from oldFirebaseKey: String) -> String {
-        var parts = oldFirebaseKey.components(separatedBy: "_")
-        var numComponent = ""
-        let capName = parts[1]
-        
-        if parts.filter({ (isIncluded) -> Bool in
-            return isIncluded.lowercased().hasPrefix(capName.lowercased())
-        }).count > 1 {
-            numComponent = parts.remove(at: 2)
-            numComponent = numComponent.replacingOccurrences(of: capName.lowercased(), with: "")
-        }
-        
-        var newKey = parts.joined(separator: "_")
-        if !numComponent.isEmpty {
-            newKey = "\(newKey)_\(numComponent)"
-        }
-        return encodeFirebase(key: newKey)
-    }
-    
-    public func encodeFirebase(key: String) -> String {
-        return key.replacingOccurrences(of: ".", with: "P%n*")
-            .replacingOccurrences(of: "$", with: "D%n*")
-            .replacingOccurrences(of: "#", with: "H%n*")
-            .replacingOccurrences(of: "[", with: "On%*")
-            .replacingOccurrences(of: "]", with: "n*C%")
-            .replacingOccurrences(of: "/", with: "*S%n")
-    }
-    
-    public func decodeFirebase(key: String) -> String {
-        return key.replacingOccurrences(of: "P%n*", with: ".")
-            .replacingOccurrences(of: "D%n*", with: "$")
-            .replacingOccurrences(of: "H%n*", with: "#")
-            .replacingOccurrences(of: "On%*", with: "[")
-            .replacingOccurrences(of: "n*C%", with: "]")
-            .replacingOccurrences(of: "*S%n", with: "/")
-    }
+//    public func newFirebaseKey(from oldFirebaseKey: String) -> String {
+//        var parts = oldFirebaseKey.components(separatedBy: "_")
+//        var numComponent = ""
+//        let capName = parts[1]
+//
+//        if parts.filter({ (isIncluded) -> Bool in
+//            return isIncluded.lowercased().hasPrefix(capName.lowercased())
+//        }).count > 1 {
+//            numComponent = parts.remove(at: 2)
+//            numComponent = numComponent.replacingOccurrences(of: capName.lowercased(), with: "")
+//        }
+//
+//        var newKey = parts.joined(separator: "_")
+//        if !numComponent.isEmpty {
+//            newKey = "\(newKey)_\(numComponent)"
+//        }
+//        return encodeFirebase(key: newKey)
+//    }
+//
+//    public func encodeFirebase(key: String) -> String {
+//        return key.replacingOccurrences(of: ".", with: "P%n*")
+//            .replacingOccurrences(of: "$", with: "D%n*")
+//            .replacingOccurrences(of: "#", with: "H%n*")
+//            .replacingOccurrences(of: "[", with: "On%*")
+//            .replacingOccurrences(of: "]", with: "n*C%")
+//            .replacingOccurrences(of: "/", with: "*S%n")
+//    }
+//
+//    public func decodeFirebase(key: String) -> String {
+//        return key.replacingOccurrences(of: "P%n*", with: ".")
+//            .replacingOccurrences(of: "D%n*", with: "$")
+//            .replacingOccurrences(of: "H%n*", with: "#")
+//            .replacingOccurrences(of: "On%*", with: "[")
+//            .replacingOccurrences(of: "n*C%", with: "]")
+//            .replacingOccurrences(of: "*S%n", with: "/")
+//    }
 }

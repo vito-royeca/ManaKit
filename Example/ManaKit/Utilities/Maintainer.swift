@@ -10,7 +10,6 @@ import Foundation
 import ManaKit
 import PromiseKit
 import SSZipArchive
-import RealmSwift
 
 enum MaintainerKeys {
     static let MaintainanceDone        = "MaintainanceDone"
@@ -24,7 +23,6 @@ class Maintainer: NSObject {
     let setsFileName    = "scryfall-sets.json"
     let keyruneFileName = "keyrune.html"
     let comprehensiveRulesFileName = "MagicCompRules 20190823"
-    let realm = ManaKit.sharedInstance.realm
     let setCodesForProcessing:[String]? = nil
     let tcgplayerAPIVersion = "v1.9.0"
     let tcgplayerAPILimit = 300
@@ -33,20 +31,6 @@ class Maintainer: NSObject {
     // MARK: Variables
     var dateStart = Date()
     var cardPrimaryKey = Int32(1)
-    var cachedLanguages = [CMLanguage]()
-    var cachedCardTypes = [CMCardType]()
-    var cachedSets = [CMSet]()
-    var cachedCardColors = [CMCardColor]()
-    var cachedBorderColors = [CMCardBorderColor]()
-    var cachedLayouts = [CMCardLayout]()
-    var cachedArtists = [CMCardArtist]()
-    var cachedFrames = [CMCardFrame]()
-    var cachedFrameEffects = [CMCardFrameEffect]()
-    var cachedRarities = [CMCardRarity]()
-    var cachedWatermarks = [CMCardWatermark]()
-    var cachedFormats = [CMCardFormat]()
-    var cachedLegalities = [CMLegality]()
-    var cachedRulings = [CMRuling]()
     var countIndex = 0
     var countTotal = 0
     
@@ -58,17 +42,14 @@ class Maintainer: NSObject {
             let rulingsArray = rulingsData()
             var promises = [()->Promise<(data: Data, response: URLResponse)>]()
             
-            // sets
+//            // sets
 //            promises.append(contentsOf: filterSetBlocks(array: setsArray))
 //            promises.append(contentsOf: filterSetTypes(array: setsArray))
-//            promises.append(contentsOf: setsArray.map { dict in
-//                return {
-//                    return self.createOrUpdatePGSetPromise(dict: dict)
-//                }
-//            })
-//            promises.append(contentsOf: createOrUpdatePGKeyrunePromises(array: setsArray))
+//            promises.append(contentsOf: filterSets(array: setsArray))
+//            promises.append(contentsOf: createKeyrunePromises(array: setsArray))
 //
 //            // cards
+//            promises.append(contentsOf: filterArtists(array: cardsArray))
 //            promises.append(contentsOf: filterRarities(array: cardsArray))
 //            promises.append(contentsOf: filterLanguages(array: cardsArray))
 //            promises.append(contentsOf: filterWatermarks(array: cardsArray))
@@ -79,19 +60,24 @@ class Maintainer: NSObject {
 //            promises.append(contentsOf: filterFormats(array: cardsArray))
 //            promises.append(contentsOf: filterLegalities(array: cardsArray))
 //            promises.append(contentsOf: filterTypes(array: cardsArray))
+//            promises.append(contentsOf: filterComponents(array: cardsArray))
 //            promises.append(contentsOf: cardsArray.map { dict in
 //                return {
 //                    return self.createCardPromise(dict: dict)
 //                }
 //            })
+//            promises.append(contentsOf: filterFaces(array: cardsArray))
+            
+            // rulings
+//            promises.append(self.createDeleteRulingPromise)
+//            promises.append(contentsOf: rulingsArray.map { dict in
+//                return {
+//                    return self.createRulingPromise(dict: dict)
+//                }
+//            })
             
             // test only
-            promises.append(self.createDeleteRulingPromise)
-            promises.append(contentsOf: rulingsArray.map { dict in
-                return {
-                    return self.createRulingPromise(dict: dict)
-                }
-            })
+            
             execInSequence(promises: promises)
             seal.fulfill(())
         }

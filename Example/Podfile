@@ -10,9 +10,8 @@ def default_pods
     pod 'Kanna', '~> 4.0.0'
     pod 'KeychainAccess'
     pod 'PromiseKit'
-    pod 'RealmSwift'
-    pod 'SSZipArchive'
     pod 'SDWebImage'
+    pod 'Sync'
 end
 
 target 'ManaKit_Example' do

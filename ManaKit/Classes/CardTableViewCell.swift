@@ -8,7 +8,6 @@
 
 import UIKit
 import PromiseKit
-import RealmSwift
 
 public class CardTableViewCell: UITableViewCell {
     public static let reuseIdentifier = "CardCell"
@@ -18,7 +17,6 @@ public class CardTableViewCell: UITableViewCell {
     public var card: CMCard?
     public var faceOrder = 0
     
-    var token : NotificationToken?
     var nameAttributedString: NSAttributedString?
 //    var manaCostDisplayed = false
     
@@ -160,17 +158,6 @@ public class CardTableViewCell: UITableViewCell {
         
         // pricing
         updateCardPricing()
-        
-        token = card.observe { change in
-            switch change {
-            case .change:
-                self.updateCardPricing()
-            case .error(let error):
-                print("An error occurred: \(error)")
-            case .deleted:
-                print("The object was deleted.")
-            }
-        }
     }
     
     public func displayManaCost() {
@@ -218,13 +205,13 @@ public class CardTableViewCell: UITableViewCell {
             return
         }
         
-        for pricing in card.pricings {
-            if pricing.isFoil {
-                foilPriceLabel.text = pricing.marketPrice > 0 ? String(format: "$%.2f", pricing.marketPrice) : "NA"
-            } else {
-                normalPriceLabel.text = pricing.marketPrice > 0 ? String(format: "$%.2f", pricing.marketPrice) : "NA"
-            }
-        }
+//        for pricing in card.pricings {
+//            if pricing.isFoil {
+//                foilPriceLabel.text = pricing.marketPrice > 0 ? String(format: "$%.2f", pricing.marketPrice) : "NA"
+//            } else {
+//                normalPriceLabel.text = pricing.marketPrice > 0 ? String(format: "$%.2f", pricing.marketPrice) : "NA"
+//            }
+//        }
     }
     
     private func sizeOf(attributedString: NSAttributedString, withFrameSize frameSize: CGSize) -> CGSize {

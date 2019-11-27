@@ -10,7 +10,6 @@ import Foundation
 import Kanna
 import ManaKit
 import PromiseKit
-import RealmSwift
 
 extension Maintainer {
     func fetchSets() -> Promise<Void> {
@@ -74,7 +73,9 @@ extension Maintainer {
                 rq.httpMethod = "GET"
                 
                 firstly {
-                    URLSession.shared.downloadTask(.promise, with: rq, to: URL(fileURLWithPath: keyrunePath))
+                    URLSession.shared.downloadTask(.promise,
+                                                   with: rq,
+                                                   to: URL(fileURLWithPath: keyrunePath))
                 }.done { _ in
                     seal.fulfill(())
                 }.catch { error in
@@ -98,7 +99,7 @@ extension Maintainer {
         let promises: [()->Promise<(data: Data, response: URLResponse)>] = filteredData.map { (blockCode, block) in
             return {
                 return self.createSetBlockPromise(blockCode: blockCode,
-                                                                block: block)
+                                                  block: block)
             }
         }
         return promises
@@ -118,6 +119,20 @@ extension Maintainer {
                 return self.createSetTypePromise(setType: setType)
             }
         }
+        return promises
+    }
+    
+    func filterSets(array: [[String: Any]]) -> [()->Promise<(data: Data, response: URLResponse)>] {
+        let filteredData = array.sorted(by: {
+            $0["parent_set_code"] as? String ?? "" < $1["parent_set_code"] as? String ?? ""
+        })
+        
+        let promises: [()->Promise<(data: Data, response: URLResponse)>] = filteredData.map { dict in
+            return {
+                return self.createSetPromise(dict: dict)
+            }
+        }
+        
         return promises
     }
     

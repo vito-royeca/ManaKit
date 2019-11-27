@@ -64,16 +64,16 @@ class SetsViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showSet" {
-            guard let dest = segue.destination as? SetViewController,
-                let dict = sender as? [String: Any],
-                let set = dict["set"] as? CMSet,
-                let languageCode = dict["languageCode"] as? String  else {
-                return
-            }
-            
-            let viewModel = SetViewModel(withSet: set,
-                                         languageCode: languageCode)
-            dest.viewModel = viewModel
+//            guard let dest = segue.destination as? SetViewController,
+//                let dict = sender as? [String: Any],
+//                let set = dict["set"] as? CMSet,
+//                let languageCode = dict["languageCode"] as? String  else {
+//                return
+//            }
+//            
+//            let viewModel = SetViewModel(withSet: set,
+//                                         languageCode: languageCode)
+//            dest.viewModel = viewModel
         }
     }
     

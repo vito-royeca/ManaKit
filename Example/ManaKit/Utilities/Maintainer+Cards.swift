@@ -188,7 +188,7 @@ extension Maintainer {
         }
         let promises: [()->Promise<(data: Data, response: URLResponse)>] = filteredData.map { watermark in
             return {
-                return self.createWatermarkPromise(watermark: watermark)
+                return self.createWatermarkPromise(name: watermark)
             }
         }
         
@@ -496,46 +496,36 @@ extension Maintainer {
         return promises
     }
     
-//    private func split(supertype: String) -> [String] {
-//        var types = [String]()
-//
-//        let supertypes = first.components(separatedBy: " ")
-//
-//            if supertypes.count > 1 {
-//                cleanTypes = [String]()
-//
-//                for type in supertypes {
-//                    cleanTypes.append(type)
-//                }
-//                cleanTypes.append(last)
-//
-//                types = cleanTypes
-//            }
-//
-//    }
-    
     func filterTypes(array: [[String: Any]]) -> [()->Promise<(data: Data, response: URLResponse)>] {
         var filteredData = [[String: String]]()
         
         for dict in array {
             if let typeLine = dict["type_line"] as? String {
-                filteredData.append(contentsOf: extractTypesFrom(typeLine))
+                for extractedType in extractTypesFrom(typeLine) {
+                    var isFound = false
+                    
+                    if let name = extractedType["name"] {
+                        for filtered in filteredData {
+                            if let name2 = filtered["name"] {
+                                isFound = name == name2
+                                
+                                if isFound {
+                                    break
+                                }
+                            }
+                        }
+                        
+                        if !isFound {
+                            filteredData.append(extractedType)
+                        }
+                    }
+                }
             }
         }
         
-        // add the null-parents first
-        var newFilteredData = [[String: String]]()
-        for dict in filteredData {
-            if dict["parent"] == "null" {
-                newFilteredData.append(dict)
-            }
-        }
-        for dict in filteredData {
-            if dict["parent"] != "null" {
-                newFilteredData.append(dict)
-            }
-        }
-        filteredData = newFilteredData
+        filteredData = filteredData.sorted(by: {
+            $0["parent"] ?? "" < $1["parent"] ?? ""
+        })
         
         let promises: [()->Promise<(data: Data, response: URLResponse)>] = filteredData.map { type in
             return {
@@ -547,7 +537,87 @@ extension Maintainer {
         return promises
     }
     
-    func extractTypesFrom(_ typeLine: String) -> [[String: String]]  {
+    func filterComponents(array: [[String: Any]]) -> [()->Promise<(data: Data, response: URLResponse)>] {
+        var filteredData = [String]()
+        
+        for dict in array {
+            if let parts = dict["all_parts"] as? [[String: Any]] {
+                for part in parts {
+                    if let component = part["component"] as? String {
+                        if !filteredData.contains(component) {
+                            filteredData.append(component)
+                        }
+                    }
+                }
+            }
+        }
+        
+        let promises: [()->Promise<(data: Data, response: URLResponse)>] = filteredData.map { component in
+            return {
+                return self.createComponentPromise(name: component)
+            }
+        }
+        
+        return promises
+    }
+    
+    func filterFaces(array: [[String: Any]]) -> [()->Promise<(data: Data, response: URLResponse)>] {
+        var promises = [()->Promise<(data: Data, response: URLResponse)>]()
+        var facesArray = [[String: Any]]()
+        var filteredData = [[String: Any]]()
+        var cardFaceData = [[String: String]]()
+        
+        for dict in array {
+            if let id = dict["id"] as? String,
+                let faces = dict["card_faces"] as? [[String: Any]] {
+             
+                for i in 0...faces.count-1 {
+                    let face = faces[i]
+                    let faceId = "\(id)-\(face["name"] ?? "")"
+                    var newFace = [String: Any]()
+                    
+                    for (k,v) in face {
+                        newFace[k] = v
+                    }
+                    newFace["id"] = faceId
+                    newFace["face_order"] = i
+                    
+                    facesArray.append(face)
+                    filteredData.append(newFace)
+                    cardFaceData.append(["cmcard": id,
+                                         "cmcard_face": faceId])
+                }
+            }
+        }
+        
+        promises.append(contentsOf: filterArtists(array: facesArray))
+        promises.append(contentsOf: filterRarities(array: facesArray))
+        promises.append(contentsOf: filterLanguages(array: facesArray))
+        promises.append(contentsOf: filterWatermarks(array: facesArray))
+        promises.append(contentsOf: filterLayouts(array: facesArray))
+        promises.append(contentsOf: filterFrames(array: facesArray))
+        promises.append(contentsOf: filterFrameEffects(array: facesArray))
+        promises.append(contentsOf: filterColors(array: facesArray))
+        promises.append(contentsOf: filterFormats(array: facesArray))
+        promises.append(contentsOf: filterLegalities(array: facesArray))
+        promises.append(contentsOf: filterTypes(array: facesArray))
+        promises.append(contentsOf: filterComponents(array: facesArray))
+        promises.append(contentsOf: filteredData.map { dict in
+            return {
+                return self.createCardPromise(dict: dict)
+            }
+        })
+        promises.append(contentsOf: cardFaceData.map { face in
+            return {
+                return self.createFacePromise(card: face["cmcard"] ?? "null",
+                                              cardFace: face["cmcard_face"] ?? "null")
+            }
+        })
+        
+        return promises
+    }
+    
+    private func extractTypesFrom(_ typeLine: String) -> [[String: String]]  {
         var filteredTypes = [[String: String]]()
         let emdash = "\u{2014}"
         var types = [String]()
@@ -561,10 +631,17 @@ extension Maintainer {
                     
                     for f in first.components(separatedBy: " ") {
                         if !f.isEmpty && f != emdash {
-                            types.append(f.trimmingCharacters(in: .whitespacesAndNewlines))
+                            let trimmed = f.trimmingCharacters(in: .whitespacesAndNewlines)
+                            if !types.contains(trimmed) {
+                                types.append(trimmed)
+                            }
                         }
                     }
-                    types.append(last.trimmingCharacters(in: .whitespacesAndNewlines))
+                    
+                    let trimmed = last.trimmingCharacters(in: .whitespacesAndNewlines)
+                    if !types.contains(trimmed) {
+                        types.append(trimmed)
+                    }
                 }
             }
         } else if typeLine.contains(emdash) {
@@ -575,13 +652,22 @@ extension Maintainer {
                 
                 for f in first.components(separatedBy: " ") {
                     if !f.isEmpty && f != emdash {
-                        types.append(f.trimmingCharacters(in: .whitespacesAndNewlines))
+                        let trimmed = f.trimmingCharacters(in: .whitespacesAndNewlines)
+                        if !types.contains(trimmed) {
+                            types.append(trimmed)
+                        }
                     }
                 }
-                types.append(last.trimmingCharacters(in: .whitespacesAndNewlines))
+                
+                let trimmed = last.trimmingCharacters(in: .whitespacesAndNewlines)
+                if !types.contains(trimmed) {
+                    types.append(trimmed)
+                }
             }
         } else {
-            types.append(typeLine)
+            if !types.contains(typeLine) {
+                types.append(typeLine)
+            }
         }
         
         types.reverse()
@@ -593,10 +679,9 @@ extension Maintainer {
             if type.isEmpty {
                 continue
             }
-            for t in filteredTypes {
-                if let s = t["name"],
-                    s == type {
-                    isFound = true
+            for filteredType in filteredTypes {
+                if let name = filteredType["name"] {
+                    isFound = name == type
                 }
             }
             if !isFound {
@@ -625,7 +710,10 @@ extension Maintainer {
                 if let first = s.first {
                     for f in first.components(separatedBy: " ") {
                         if !f.isEmpty && f != emdash {
-                            types.append(f.trimmingCharacters(in: .whitespacesAndNewlines))
+                            let trimmed = f.trimmingCharacters(in: .whitespacesAndNewlines)
+                            if !types.contains(trimmed) {
+                                types.append(trimmed)
+                            }
                         }
                     }
                 }
@@ -636,12 +724,17 @@ extension Maintainer {
             if let first = s.first {
                 for f in first.components(separatedBy: " ") {
                     if !f.isEmpty && f != emdash {
-                        types.append(f.trimmingCharacters(in: .whitespacesAndNewlines))
+                        let trimmed = f.trimmingCharacters(in: .whitespacesAndNewlines)
+                        if !types.contains(trimmed) {
+                            types.append(trimmed)
+                        }
                     }
                 }
             }
         } else {
-            types.append(typeLine)
+            if !types.contains(typeLine) {
+                types.append(typeLine)
+            }
         }
         
         return types
@@ -656,138 +749,30 @@ extension Maintainer {
                 let s = type.components(separatedBy: emdash)
                 
                 if let last = s.last {
-                    types.append(last.trimmingCharacters(in: .whitespacesAndNewlines))
+                    let trimmed = last.trimmingCharacters(in: .whitespacesAndNewlines)
+                    if !types.contains(trimmed) {
+                        types.append(trimmed)
+                    }
                 }
             }
         } else if typeLine.contains(emdash) {
             let s = typeLine.components(separatedBy: emdash)
             
             if let last = s.last {
-                types.append(last.trimmingCharacters(in: .whitespacesAndNewlines))
+                let trimmed = last.trimmingCharacters(in: .whitespacesAndNewlines)
+                if !types.contains(trimmed) {
+                    types.append(trimmed)
+                }
             }
         } else {
-            types.append(typeLine)
+            if !types.contains(typeLine) {
+                types.append(typeLine)
+            }
         }
         
         return types
     }
     
-//    private func updateCards() -> Promise<Void> {
-//        return Promise { seal in
-//            guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
-//                fatalError("Malformed cachePath")
-//            }
-//            let cardsPath = "\(cachePath)/\(ManaKit.Constants.ScryfallDate)_\(cardsFileName)"
-//
-//            let data = try! Data(contentsOf: URL(fileURLWithPath: cardsPath))
-//            guard let array = try! JSONSerialization.jsonObject(with: data,
-//                                                                options: .mutableContainers) as? [[String: Any]] else {
-//                fatalError("Malformed data")
-//            }
-//
-//            var count = 0
-//            print("Updating cards: \(count)/\(array.count) \(Date())")
-//
-//            try! realm.write {
-//                for dict in array {
-//                    if let id = dict["id"] as? String {
-//                        var card: CMCard?
-//
-//                        // all parts
-//                        if let allParts = dict["all_parts"] as? [[String: Any]] {
-//                            if card == nil {
-//                                card = realm.objects(CMCard.self).filter("id = %@", id).first
-//                            }
-//
-//                            if let c = card {
-//                                for allPart in allParts {
-//                                    if let allPartId = allPart["id"] as? String,
-//                                        let name = allPart["name"] as? String,
-//                                        !allPartId.isEmpty {
-//
-//                                        if name == c.name {
-//                                            continue
-//                                        }
-//                                        if let part = realm.objects(CMCard.self).filter("id = %@", allPartId).first {
-//                                            part.part = c
-//                                            realm.add(part)
-//                                            c.parts.append(part)
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-//
-//                        // card faces
-//                        if let cardFaces = dict["card_faces"] as? [[String: Any]],
-//                            let lang = dict["lang"] as? String {
-//                            if card == nil {
-//                                card = realm.objects(CMCard.self).filter("id = %@", id).first
-//                            }
-//
-//                            if let c = card {
-//                                var index = 0
-//                                for cardFace in cardFaces {
-//                                    let face = processCardData(dict: cardFace,
-//                                                               languageCode: lang)
-//                                    face.face = c
-//                                    face.set = c.set
-//                                    face.language = c.language
-//                                    face.faceOrder = Int32(index)
-//                                    realm.add(face)
-//                                    c.faces.append(face)
-//
-//                                    index += 1
-//                                }
-//                            }
-//                        }
-//
-//                        if let card = card {
-//                            realm.add(card)
-//                        }
-//                        count += 1
-//                        if count % printMilestone == 0 {
-//                            print("Updating cards: \(count)/\(array.count) \(Date())")
-//                        }
-//
-//                    }
-//                }
-//                seal.fulfill(())
-//            }
-//        }
-//    }
-
-//    func updateCards2() -> Promise<Void> {
-//        return Promise { seal in
-//            let predicate = NSPredicate(format: "id != nil")
-//            let sortDescriptors = [SortDescriptor(keyPath: "set.releaseDate", ascending: true),
-//                                   SortDescriptor(keyPath: "name", ascending: true)]
-//
-//            var count = 0
-//            let cards = realm.objects(CMCard.self).filter(predicate).sorted(by: sortDescriptors)
-//            print("Updating cards2: \(count)/\(cards.count) \(Date())")
-//
-//            try! realm.write {
-//                for card in cards {
-//                    // variations
-//                    createVariations(ofCard: card)
-//
-//                    // other languages
-//                    createOtherLanguages(ofCard: card)
-//
-//                    // other printingss
-//                    createOtherPrintings(ofCard: card)
-//
-//                    count += 1
-//                    if count % printMilestone == 0 {
-//                        print("Updating cards2: \(count)/\(cards.count) \(Date())")
-//                    }
-//                }
-//
-//                seal.fulfill(())
-//            }
-//        }
-//    }
 //
 //    func updateCards3() -> Promise<Void> {
 //        return Promise { seal in
