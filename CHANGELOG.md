@@ -1,3 +1,7 @@
+**Version 6.0.1** @ 27.11.2019
+- Reverted back to using Core Data.
+- Removed Realm.io code.
+
 **Version 5.0.3** @ 29.09.2019
 - Updated the Scryfall database to: 2019-09-29 10:24 UTC.
 

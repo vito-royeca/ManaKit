@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/cocoapods/l/ManaKit.svg?style=flat)](http://cocoapods.org/pods/ManaKit)
 [![Platform](https://img.shields.io/cocoapods/p/ManaKit.svg?style=flat)](http://cocoapods.org/pods/ManaKit)
 
-A Realm implementation of [Scryfall](http://scryfall.com/).
+A Core Data implementation of [Scryfall](http://scryfall.com/).
 
 ## Usage
 
