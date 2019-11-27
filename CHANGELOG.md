@@ -1,4 +1,4 @@
-**Version 6.0.1** @ 27.11.2019
+**Version 6.0.0** @ 27.11.2019
 - Reverted back to using Core Data.
 - Removed Realm.io code.
 
