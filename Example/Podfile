@@ -9,6 +9,7 @@ def default_pods
     pod 'FontAwesome.swift'
     pod 'Kanna', '~> 4.0.0'
     pod 'KeychainAccess'
+    pod 'MBProgressHUD'
     pod 'PromiseKit'
     pod 'SDWebImage'
     pod 'Sync'

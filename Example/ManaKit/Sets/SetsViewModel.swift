@@ -8,6 +8,7 @@
 
 import ManaKit
 import CoreData
+import PromiseKit
 
 class SetsViewModel: NSObject {
     // MARK: Variables
@@ -89,24 +90,58 @@ class SetsViewModel: NSObject {
         }
         return fetchedResultsController.fetchedObjects
     }
-    
-    func fetchData() {
-        let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
-        let count = queryString.count
-        
-        if count > 0 {
-            if count == 1 {
-                request.predicate = NSPredicate(format: "name BEGINSWITH[cd] %@ OR code BEGINSWITH[cd] %@", queryString, queryString)
-            } else {
-                request.predicate = NSPredicate(format: "name CONTAINS[cd] %@ OR code CONTAINS[cd] %@", queryString, queryString)
-            }
-        }
-        request.sortDescriptors = _sortDescriptors
-        
-        _fetchedResultsController = getFetchedResultsController(with: request)
-        updateSections()
+
+    func willFetchRemoteData() -> Bool {
+        return ManaKit.sharedInstance.willFetchData(name: String(describing: CMSet.self),
+                                                    query: nil)
     }
     
+    func deleteDataInformation() {
+        let objectFinder = ["name": String(describing: CMSet.self) as AnyObject]
+        return ManaKit.sharedInstance.deleteObject(String(describing: DataInformation.self),
+                                                   objectFinder: objectFinder)
+    }
+    
+    func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
+        let urlString = "\(ManaKit.Constants.APIURL)/sets"
+        
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "GET",
+                                                        httpBody: nil)
+    }
+    
+    func saveLocalData(data: [[String: Any]]) -> Promise<Void> {
+        return Promise { seal in
+            ManaKit.sharedInstance.dataStack?.sync(data,
+                                                   inEntityNamed: "CMSet",
+                                                   completion:{ error in
+                                                    seal.fulfill(())
+            })
+        }
+    }
+    
+    func fetchLocalData() -> Promise<Void> {
+        return Promise { seal in
+            let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
+            let count = self.queryString.count
+            
+            if count > 0 {
+                if count == 1 {
+                    request.predicate = NSPredicate(format: "name BEGINSWITH[cd] %@ OR code BEGINSWITH[cd] %@", self.queryString, self.queryString)
+                } else {
+                    request.predicate = NSPredicate(format: "name CONTAINS[cd] %@ OR code CONTAINS[cd] %@", self.queryString, self.queryString)
+                }
+            }
+            request.sortDescriptors = self._sortDescriptors
+            
+            self._fetchedResultsController = self.getFetchedResultsController(with: request)
+            self.updateSections()
+            
+            seal.fulfill(())
+        }
+    }
+    
+    // MARK: private methods
     private func getFetchedResultsController(with fetchRequest: NSFetchRequest<CMSet>?) -> NSFetchedResultsController<CMSet> {
         var request: NSFetchRequest<CMSet>?
         
@@ -141,7 +176,6 @@ class SetsViewModel: NSObject {
     
     private func updateSections() {
         guard let fetchedResultsController = _fetchedResultsController,
-//            let sets = fetchedResultsController.fetchedObjects,
             let sections = fetchedResultsController.sections else {
             return
         }

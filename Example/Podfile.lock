@@ -2,13 +2,14 @@ PODS:
   - FontAwesome.swift (1.8.2)
   - Kanna (4.0.3)
   - KeychainAccess (4.1.0)
-  - ManaKit (5.0.3):
+  - ManaKit (6.0.0):
     - Kanna (~> 4.0.0)
     - KeychainAccess
     - PromiseKit
     - SDWebImage
     - SSZipArchive
     - Sync
+  - MBProgressHUD (1.1.0)
   - PromiseKit (6.12.0):
     - PromiseKit/CorePromise (= 6.12.0)
     - PromiseKit/Foundation (= 6.12.0)
@@ -29,6 +30,7 @@ DEPENDENCIES:
   - Kanna (~> 4.0.0)
   - KeychainAccess
   - ManaKit (from `../`)
+  - MBProgressHUD
   - PromiseKit
   - SDWebImage
   - Sync
@@ -38,6 +40,7 @@ SPEC REPOS:
     - FontAwesome.swift
     - Kanna
     - KeychainAccess
+    - MBProgressHUD
     - PromiseKit
     - SDWebImage
     - SSZipArchive
@@ -51,12 +54,13 @@ SPEC CHECKSUMS:
   FontAwesome.swift: 7938d6a03113ff3f39001bde7f50be8a0903d605
   Kanna: 0ebbdd0e7e3308f0aafbd569e79c8cadc5eb877c
   KeychainAccess: 445e28864fe6d3458b41fa211bcdc39890e8bd5a
-  ManaKit: 4d0f868e5a940984e8b76ac96dac0de18705163b
+  ManaKit: a96af4fd53a9a5cc6b44d9610fd14e7af8dad19e
+  MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   PromiseKit: c06835ba442ce5454ce3cdde470232804a6e4ff8
   SDWebImage: 6ac2eb96571bff96ecde31a987172c5934a0eb7d
   SSZipArchive: fa16b8cc4cdeceb698e5e5d9f67e9558532fbf23
   Sync: a6288926bee65a1ac3c72055446c558776af43f3
 
-PODFILE CHECKSUM: 9f9a297f810878eaa4b2e40fc027b4a97c4fb83f
+PODFILE CHECKSUM: 23e6c3795c6be15f133a5cb3bb00afa96c6db70c
 
 COCOAPODS: 1.8.4

@@ -7,21 +7,24 @@
 //
 
 import ManaKit
+import CoreData
 import PromiseKit
 
 class SetViewModel: NSObject {
     // MARK: Variables
     var queryString = ""
+    var searchCancelled = false
     
     private var _set: CMSet?
     private var _languageCode: String?
     private var _sectionIndexTitles = [String]()
     private var _sectionTitles = [String]()
-    private var _results: Results<CMCard>? = nil
+    private let context = ManaKit.sharedInstance.dataStack!.viewContext
+    private var _fetchedResultsController: NSFetchedResultsController<CMCard>?
     
     // MARK: Settings
-    private let _sortDescriptors = [SortDescriptor(keyPath: "name", ascending: true),
-                                    SortDescriptor(keyPath: "collectorNumber", ascending: true)]
+    private let _sortDescriptors = [NSSortDescriptor(key: "name", ascending: true),
+                                    NSSortDescriptor(key: "collectorNumber", ascending: true)]
     private var _sectionName = "myNameSection"
     
     // MARK: Overrides
@@ -33,19 +36,21 @@ class SetViewModel: NSObject {
     
     // MARK: UITableView methods
     func numberOfRows(inSection section: Int) -> Int {
-        guard let results = _results else {
+        guard let fetchedResultsController = _fetchedResultsController,
+            let sections = fetchedResultsController.sections else {
             return 0
         }
         
-        return results.filter("\(_sectionName) == %@", _sectionTitles[section]).count
+        return sections[section].numberOfObjects
     }
     
     func numberOfSections() -> Int {
-        guard let _ = _results else {
-            return 0
+        guard let fetchedResultsController = _fetchedResultsController,
+            let sections = fetchedResultsController.sections else {
+                return 0
         }
         
-        return _sectionTitles.count
+        return sections.count
     }
     
     func sectionIndexTitles() -> [String]? {
@@ -66,27 +71,20 @@ class SetViewModel: NSObject {
     }
     
     func titleForHeaderInSection(section: Int) -> String? {
-        guard let _ = _results else {
+        guard let fetchedResultsController = _fetchedResultsController,
+            let sections = fetchedResultsController.sections else {
             return nil
         }
         
-        return _sectionTitles[section]
+        return sections[section].name
     }
     
     // MARK: Custom methods
     func isEmpty() -> Bool {
-        if let results = _results {
-            return results.count <= 0
-        } else {
+        guard let objects = allObjects() else {
             return true
         }
-    }
-
-    func object(forRowAt indexPath: IndexPath) -> CMCard {
-        guard let results = _results else {
-            fatalError("results is nil")
-        }
-        return results.filter("\(_sectionName) == %@", _sectionTitles[indexPath.section])[indexPath.row]
+        return objects.count == 0
     }
     
     func objectTitle() -> String? {
@@ -95,76 +93,187 @@ class SetViewModel: NSObject {
         }
         return set.name
     }
-
-    func fetchData() {
-        guard let set = _set,
-            let languageCode = _languageCode else {
-            return
+    
+    func object(forRowAt indexPath: IndexPath) -> CMCard {
+        guard let fetchedResultsController = _fetchedResultsController else {
+            fatalError("fetchedResultsController is nil")
         }
-        
-        var predicate = NSPredicate(format: "set.code = %@ AND language.code = %@ AND id != nil", set.code!, languageCode)
-        let count = queryString.count
-        
-        if count > 0 {
-            if count == 1 {
-                let newPredicate = NSPredicate(format: "name BEGINSWITH[cd] %@", queryString)
-                predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, newPredicate])
-            } else {
-                let newPredicate = NSPredicate(format: "name CONTAINS[cd] %@", queryString)
-                predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, newPredicate])
-            }
-        }
-        
-        _results = ManaKit.sharedInstance.realm.objects(CMCard.self).filter(predicate).sorted(by: _sortDescriptors)
-        updateSections()
+        return fetchedResultsController.object(at: indexPath)
     }
     
-    func fetchPrices() {
-        guard let set = _set else {
-            return
+    func allObjects() -> [CMCard]? {
+        guard let fetchedResultsController = _fetchedResultsController else {
+            return nil
+        }
+        return fetchedResultsController.fetchedObjects
+    }
+
+    func willFetchRemoteData() -> Bool {
+        guard let set = _set,
+            let setCode = set.code,
+            let languageCode = _languageCode else {
+            fatalError("set and languageCode are nil")
         }
         
-        firstly {
-            ManaKit.sharedInstance.authenticateTcgPlayer()
-        }.then {
-            ManaKit.sharedInstance.getTcgPlayerPrices(forSet: set)
-        }.done {
-            print("Done fetching prices")
-        }.catch { error in
-            print(error)
+        return ManaKit.sharedInstance.willFetchData(name: String(describing: CMSet.self),
+                                                    query: "/cards/\(setCode)/\(languageCode)")
+    }
+    
+    func deleteDataInformation() {
+        guard let set = _set,
+            let setCode = set.code,
+            let languageCode = _languageCode else {
+            fatalError("set and languageCode are nil")
+        }
+        let objectFinder = ["name": String(describing: CMSet.self) as AnyObject,
+                            "query": "/cards/\(setCode)/\(languageCode)" as AnyObject]
+        
+        return ManaKit.sharedInstance.deleteObject(String(describing: DataInformation.self),
+                                                   objectFinder: objectFinder)
+    }
+    
+    func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
+        guard let set = _set,
+            let setCode = set.code,
+            let languageCode = _languageCode else {
+            fatalError("set and languageCode are nil")
+        }
+        let urlString = "\(ManaKit.Constants.APIURL)/cards/\(setCode)/\(languageCode)"
+        
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "GET",
+                                                        httpBody: nil)
+    }
+    
+    func saveLocalData(data: [[String: Any]]) -> Promise<Void> {
+        return Promise { seal in
+            ManaKit.sharedInstance.dataStack?.sync(data,
+                                                   inEntityNamed: "CMCard",
+                                                   completion: { error in
+                                                    seal.fulfill(())
+            })
+            
+        }
+    }
+    
+    func fetchLocalData() -> Promise<Void> {
+        return Promise { seal in
+            guard let set = _set,
+                let languageCode = _languageCode else {
+                seal.fulfill(())
+                return
+            }
+            
+            let request: NSFetchRequest<CMCard> = CMCard.fetchRequest()
+            let count = queryString.count
+            var predicate = NSPredicate(format: "set.code = %@ AND language.code = %@", set.code!, languageCode)
+            
+            
+            if count > 0 {
+                if count == 1 {
+                    let newPredicate = NSPredicate(format: "name BEGINSWITH[cd] %@", queryString)
+                    predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, newPredicate])
+                } else {
+                    let newPredicate = NSPredicate(format: "name CONTAINS[cd] %@", queryString)
+                    predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, newPredicate])
+                }
+            }
+            request.predicate = predicate
+            request.sortDescriptors = self._sortDescriptors
+            
+            self._fetchedResultsController = self.getFetchedResultsController(with: request)
+            self.updateSections()
+            
+            seal.fulfill(())
         }
     }
 
+    // MARK: private methods
+    private func getFetchedResultsController(with fetchRequest: NSFetchRequest<CMCard>?) -> NSFetchedResultsController<CMCard> {
+        var request: NSFetchRequest<CMCard>?
+        
+        if let fetchRequest = fetchRequest {
+            request = fetchRequest
+        } else {
+            // Create a default fetchRequest
+            request = CMCard.fetchRequest()
+            request!.sortDescriptors = _sortDescriptors
+        }
+        
+        // Create Fetched Results Controller
+        let frc = NSFetchedResultsController(fetchRequest: request!,
+                                             managedObjectContext: context,
+                                             sectionNameKeyPath: _sectionName,
+                                             cacheName: nil)
+        
+        // Configure Fetched Results Controller
+        frc.delegate = self
+        
+        // perform fetch
+        do {
+            try frc.performFetch()
+        } catch {
+            let fetchError = error as NSError
+            print("Unable to Perform Fetch Request")
+            print("\(fetchError), \(fetchError.localizedDescription)")
+        }
+        
+        return frc
+    }
+    
+//    func fetchPrices() {
+//        guard let set = _set else {
+//            return
+//        }
+//
+//        firstly {
+//            ManaKit.sharedInstance.authenticateTcgPlayer()
+//        }.then {
+//            ManaKit.sharedInstance.getTcgPlayerPrices(forSet: set)
+//        }.done {
+//            print("Done fetching prices")
+//        }.catch { error in
+//            print(error)
+//        }
+//    }
+
     private func updateSections() {
-        guard let results = _results else {
+        guard let fetchedResultsController = _fetchedResultsController,
+            let sections = fetchedResultsController.sections else {
             return
         }
         
         _sectionIndexTitles = [String]()
         _sectionTitles = [String]()
         
-        for set in results {
-            if let section = set.myNameSection {
-                if !_sectionTitles.contains(section) {
-                    _sectionTitles.append(section)
-                }
-
-                if !_sectionIndexTitles.contains(section) {
-                    _sectionIndexTitles.append(section)
-                }
-            }
-        }
+//        for card in results {
+//            if let section = set.myNameSection {
+//                if !_sectionTitles.contains(section) {
+//                    _sectionTitles.append(section)
+//                }
 //
-//        let count = sections.count
-//        if count > 0 {
-//            for i in 0...count - 1 {
-//                if let sectionTitle = sections[i].indexTitle {
-//                    _sectionTitles.append(sectionTitle)
+//                if !_sectionIndexTitles.contains(section) {
+//                    _sectionIndexTitles.append(section)
 //                }
 //            }
 //        }
+
+        let count = sections.count
+            if count > 0 {
+                for i in 0...count - 1 {
+//                if let sectionTitle = sections[i].indexTitle {
+//                    _sectionTitles.append(sectionTitle)
+//                }
+                _sectionTitles.append(sections[i].name)
+            }
+        }
         
-//        _sectionIndexTitles.sort()
-//        _sectionTitles.sort()
+        _sectionIndexTitles.sort()
+        _sectionTitles.sort()
     }
+}
+
+// MARK: NSFetchedResultsControllerDelegate
+extension SetViewModel : NSFetchedResultsControllerDelegate {
+    
 }

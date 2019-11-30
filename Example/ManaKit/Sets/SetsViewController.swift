@@ -8,6 +8,8 @@
 
 import UIKit
 import ManaKit
+import MBProgressHUD
+import PromiseKit
 
 class SetsViewController: UIViewController {
 
@@ -47,6 +49,8 @@ class SetsViewController: UIViewController {
                                                selector: #selector(reloadSets(_:)),
                                                name: NSNotification.Name(rawValue: MaintainerKeys.MaintainanceDone),
                                                object: nil)
+        
+        fetchData()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -55,31 +59,61 @@ class SetsViewController: UIViewController {
         if #available(iOS 11.0, *) {
             navigationItem.hidesSearchBarWhenScrolling = true
         }
-        
-        if viewModel.isEmpty() {
-            viewModel.fetchData()
-            tableView.reloadData()
-        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showSet" {
-//            guard let dest = segue.destination as? SetViewController,
-//                let dict = sender as? [String: Any],
-//                let set = dict["set"] as? CMSet,
-//                let languageCode = dict["languageCode"] as? String  else {
-//                return
-//            }
-//            
-//            let viewModel = SetViewModel(withSet: set,
-//                                         languageCode: languageCode)
-//            dest.viewModel = viewModel
+            guard let dest = segue.destination as? SetViewController,
+                let dict = sender as? [String: Any],
+                let set = dict["set"] as? CMSet,
+                let languageCode = dict["languageCode"] as? String  else {
+                return
+            }
+            
+            let viewModel = SetViewModel(withSet: set,
+                                         languageCode: languageCode)
+            dest.viewModel = viewModel
         }
     }
     
     // Notification handler
     @objc func reloadSets(_ notification: Notification) {
         tableView.reloadData()
+    }
+    
+    // MARK: Custom methods
+    func fetchData() {
+        if viewModel.willFetchRemoteData() {
+            MBProgressHUD.showAdded(to: view, animated: true)
+            
+            firstly {
+                viewModel.fetchRemoteData()
+            }.compactMap { (data, result) in
+                try JSONSerialization.jsonObject(with: data) as? [[String: Any]]
+            }.then { data in
+                self.viewModel.saveLocalData(data: data)
+            }.then {
+                self.viewModel.fetchLocalData()
+            }.done {
+                MBProgressHUD.hide(for: self.view, animated: true)
+                self.tableView.reloadData()
+            }.catch { error in
+                self.viewModel.deleteDataInformation()
+                MBProgressHUD.hide(for: self.view, animated: true)
+                self.tableView.reloadData()
+            }
+        } else {
+            firstly {
+                self.viewModel.fetchLocalData()
+            }.done {
+                MBProgressHUD.hide(for: self.view, animated: true)
+                self.tableView.reloadData()
+            }.catch { error in
+                self.viewModel.deleteDataInformation()
+                MBProgressHUD.hide(for: self.view, animated: true)
+                self.tableView.reloadData()
+            }
+        }
     }
 }
 
@@ -136,12 +170,11 @@ extension SetsViewController : UISearchResultsUpdating {
         }
         
         viewModel.queryString = text
-        viewModel.fetchData()
-        tableView.reloadData()
+        fetchData()
     }
 }
 
-// MARK: UISearchResultsUpdating
+// MARK: UISearchBarDelegate
 extension SetsViewController : UISearchBarDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         viewModel.searchCancelled = false

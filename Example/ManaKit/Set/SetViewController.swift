@@ -7,8 +7,9 @@
 //
 
 import UIKit
-import CoreData
 import ManaKit
+import MBProgressHUD
+import PromiseKit
 
 class SetViewController: UIViewController {
 
@@ -24,9 +25,11 @@ class SetViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        definesPresentationContext = true
         searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        searchController.searchBar.placeholder = "Filter"
         searchController.dimsBackgroundDuringPresentation = false
+        definesPresentationContext = true
         
         if #available(iOS 11.0, *) {
             navigationItem.searchController = searchController
@@ -39,6 +42,7 @@ class SetViewController: UIViewController {
                            forCellReuseIdentifier: CardTableViewCell.reuseIdentifier)
         
         title = viewModel.objectTitle()
+        fetchData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -47,22 +51,51 @@ class SetViewController: UIViewController {
         if #available(iOS 11.0, *) {
             navigationItem.hidesSearchBarWhenScrolling = true
         }
-        
-        if viewModel.isEmpty() {
-            viewModel.fetchData()
-            viewModel.fetchPrices()
-            tableView.reloadData()
-        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showCard" {
-            guard let dest = segue.destination as? CardViewController,
-                let card = sender as? CMCard else {
-                return
-            }
+//            guard let dest = segue.destination as? CardViewController,
+//                let card = sender as? CMCard else {
+//                return
+//            }
+//
+//            dest.card = card
+        }
+    }
+    
+    // MARK: Custom methods
+    func fetchData() {
+        if viewModel.willFetchRemoteData() {
+            MBProgressHUD.showAdded(to: view, animated: true)
             
-            dest.card = card
+            firstly {
+                viewModel.fetchRemoteData()
+            }.compactMap { (data, result) in
+                try JSONSerialization.jsonObject(with: data) as? [[String: Any]]
+            }.then { data in
+                self.viewModel.saveLocalData(data: data)
+            }.then {
+                self.viewModel.fetchLocalData()
+            }.done {
+                MBProgressHUD.hide(for: self.view, animated: true)
+                self.tableView.reloadData()
+            }.catch { error in
+                self.viewModel.deleteDataInformation()
+                MBProgressHUD.hide(for: self.view, animated: true)
+                self.tableView.reloadData()
+            }
+        } else {
+            firstly {
+                self.viewModel.fetchLocalData()
+            }.done {
+                MBProgressHUD.hide(for: self.view, animated: true)
+                self.tableView.reloadData()
+            }.catch { error in
+                self.viewModel.deleteDataInformation()
+                MBProgressHUD.hide(for: self.view, animated: true)
+                self.tableView.reloadData()
+            }
         }
     }
 }
@@ -121,8 +154,25 @@ extension SetViewController : UISearchResultsUpdating {
         }
         
         viewModel.queryString = text
-        viewModel.fetchData()
-        tableView.reloadData()
+        fetchData()
     }
 }
 
+// MARK: UISearchBarDelegate
+extension SetViewController : UISearchBarDelegate {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        viewModel.searchCancelled = false
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        viewModel.searchCancelled = true
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        if viewModel.searchCancelled {
+            searchBar.text = viewModel.queryString
+        } else {
+            viewModel.queryString = searchBar.text ?? ""
+        }
+    }
+}

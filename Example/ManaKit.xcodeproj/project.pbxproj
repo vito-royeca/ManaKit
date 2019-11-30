@@ -29,6 +29,12 @@
 		8B1E2390236693C5002E15D3 /* Maintainer+Rulings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110BB79422DBD12B004E65D5 /* Maintainer+Rulings.swift */; };
 		8B1E2391236693C7002E15D3 /* Maintainer+Sets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118F290621DB040C00660158 /* Maintainer+Sets.swift */; };
 		8B1E2392236693CA002E15D3 /* Maintainer+SetsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBEB8AF2364FF440044BFC8 /* Maintainer+SetsPostgres.swift */; };
+		8B219CC42391722400593E19 /* SetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B219CC22391722400593E19 /* SetViewModel.swift */; };
+		8B219CC52391722400593E19 /* SetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B219CC22391722400593E19 /* SetViewModel.swift */; };
+		8B219CC62391722400593E19 /* SetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B219CC32391722400593E19 /* SetViewController.swift */; };
+		8B219CC72391722400593E19 /* SetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B219CC32391722400593E19 /* SetViewController.swift */; };
+		8B219CC92391BEB700593E19 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B219CC82391BEB700593E19 /* ViewModel.swift */; };
+		8B219CCA2391BEB700593E19 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B219CC82391BEB700593E19 /* ViewModel.swift */; };
 		8BBEB8B02364FF440044BFC8 /* Maintainer+SetsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBEB8AF2364FF440044BFC8 /* Maintainer+SetsPostgres.swift */; };
 		8BBEB8B6236602260044BFC8 /* Maintainer+CardsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBEB8B5236602260044BFC8 /* Maintainer+CardsPostgres.swift */; };
 		8BDB513E2372547600DF53B0 /* Maintainer+RulingsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDB513D2372547600DF53B0 /* Maintainer+RulingsPostgres.swift */; };
@@ -71,6 +77,9 @@
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		790E2C95DAEEFCC5990EEE22 /* ManaKit.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = ManaKit.podspec; path = ../ManaKit.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		88F0F057FC286A584E82D4CE /* Pods-ManaKit_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit_Tests/Pods-ManaKit_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		8B219CC22391722400593E19 /* SetViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetViewModel.swift; sourceTree = "<group>"; };
+		8B219CC32391722400593E19 /* SetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetViewController.swift; sourceTree = "<group>"; };
+		8B219CC82391BEB700593E19 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		8BBEB8AF2364FF440044BFC8 /* Maintainer+SetsPostgres.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Maintainer+SetsPostgres.swift"; sourceTree = "<group>"; };
 		8BBEB8B5236602260044BFC8 /* Maintainer+CardsPostgres.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Maintainer+CardsPostgres.swift"; sourceTree = "<group>"; };
 		8BDB513D2372547600DF53B0 /* Maintainer+RulingsPostgres.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Maintainer+RulingsPostgres.swift"; sourceTree = "<group>"; };
@@ -102,6 +111,8 @@
 		114A53B0213F954C0046CC82 /* Set */ = {
 			isa = PBXGroup;
 			children = (
+				8B219CC32391722400593E19 /* SetViewController.swift */,
+				8B219CC22391722400593E19 /* SetViewModel.swift */,
 			);
 			path = Set;
 			sourceTree = "<group>";
@@ -183,6 +194,7 @@
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
 				11E74D95217437FE0077B252 /* MainViewController.swift */,
+				8B219CC82391BEB700593E19 /* ViewModel.swift */,
 			);
 			name = "Example for ManaKit";
 			path = ManaKit;
@@ -366,6 +378,7 @@
 				"${BUILT_PRODUCTS_DIR}/FontAwesome.swift/FontAwesome_swift.framework",
 				"${BUILT_PRODUCTS_DIR}/Kanna/Kanna.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/ManaKit/ManaKit.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
@@ -377,6 +390,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FontAwesome_swift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kanna.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ManaKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
@@ -398,6 +412,7 @@
 				"${BUILT_PRODUCTS_DIR}/FontAwesome.swift/FontAwesome_swift.framework",
 				"${BUILT_PRODUCTS_DIR}/Kanna/Kanna.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/ManaKit/ManaKit.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
@@ -409,6 +424,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FontAwesome_swift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kanna.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ManaKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
@@ -448,13 +464,16 @@
 				11313E63217D4BDA00E31997 /* Maintainer+Cards.swift in Sources */,
 				1129D75B217FF00400D4A006 /* Maintainer.swift in Sources */,
 				8BDB513E2372547600DF53B0 /* Maintainer+RulingsPostgres.swift in Sources */,
+				8B219CC42391722400593E19 /* SetViewModel.swift in Sources */,
 				8BBEB8B6236602260044BFC8 /* Maintainer+CardsPostgres.swift in Sources */,
 				11E74D96217437FE0077B252 /* MainViewController.swift in Sources */,
 				115151A91F1E221C0061C270 /* SetsViewController.swift in Sources */,
 				115151BD1F1E256A0061C270 /* CardViewController.swift in Sources */,
 				110BB79522DBD12B004E65D5 /* Maintainer+Rulings.swift in Sources */,
 				8BBEB8B02364FF440044BFC8 /* Maintainer+SetsPostgres.swift in Sources */,
+				8B219CC92391BEB700593E19 /* ViewModel.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				8B219CC62391722400593E19 /* SetViewController.swift in Sources */,
 				113D40C02139BC70000D08FA /* SetsViewModel.swift in Sources */,
 				118F290721DB040D00660158 /* Maintainer+Sets.swift in Sources */,
 			);
@@ -469,9 +488,12 @@
 				8B1E2390236693C5002E15D3 /* Maintainer+Rulings.swift in Sources */,
 				8BDB513F237257BD00DF53B0 /* Maintainer+RulingsPostgres.swift in Sources */,
 				8B1E2392236693CA002E15D3 /* Maintainer+SetsPostgres.swift in Sources */,
+				8B219CC52391722400593E19 /* SetViewModel.swift in Sources */,
 				8B1E2391236693C7002E15D3 /* Maintainer+Sets.swift in Sources */,
 				11313E64217D4BDA00E31997 /* Maintainer+Cards.swift in Sources */,
 				11E74D97217437FE0077B252 /* MainViewController.swift in Sources */,
+				8B219CC72391722400593E19 /* SetViewController.swift in Sources */,
+				8B219CCA2391BEB700593E19 /* ViewModel.swift in Sources */,
 				1129D7622180153400D4A006 /* Maintainer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

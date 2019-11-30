@@ -30,9 +30,6 @@ class Maintainer: NSObject {
     
     // MARK: Variables
     var dateStart = Date()
-    var cardPrimaryKey = Int32(1)
-    var countIndex = 0
-    var countTotal = 0
     
     // MARK: Custom methods
     func createPGData() -> Promise<Void> {
@@ -49,32 +46,32 @@ class Maintainer: NSObject {
 //            promises.append(contentsOf: createKeyrunePromises(array: setsArray))
 //
 //            // cards
-//            promises.append(contentsOf: filterArtists(array: cardsArray))
-//            promises.append(contentsOf: filterRarities(array: cardsArray))
-//            promises.append(contentsOf: filterLanguages(array: cardsArray))
-//            promises.append(contentsOf: filterWatermarks(array: cardsArray))
-//            promises.append(contentsOf: filterLayouts(array: cardsArray))
-//            promises.append(contentsOf: filterFrames(array: cardsArray))
-//            promises.append(contentsOf: filterFrameEffects(array: cardsArray))
-//            promises.append(contentsOf: filterColors(array: cardsArray))
-//            promises.append(contentsOf: filterFormats(array: cardsArray))
-//            promises.append(contentsOf: filterLegalities(array: cardsArray))
-//            promises.append(contentsOf: filterTypes(array: cardsArray))
-//            promises.append(contentsOf: filterComponents(array: cardsArray))
-//            promises.append(contentsOf: cardsArray.map { dict in
-//                return {
-//                    return self.createCardPromise(dict: dict)
-//                }
-//            })
-//            promises.append(contentsOf: filterFaces(array: cardsArray))
+            promises.append(contentsOf: filterArtists(array: cardsArray))
+            promises.append(contentsOf: filterRarities(array: cardsArray))
+            promises.append(contentsOf: filterLanguages(array: cardsArray))
+            promises.append(contentsOf: filterWatermarks(array: cardsArray))
+            promises.append(contentsOf: filterLayouts(array: cardsArray))
+            promises.append(contentsOf: filterFrames(array: cardsArray))
+            promises.append(contentsOf: filterFrameEffects(array: cardsArray))
+            promises.append(contentsOf: filterColors(array: cardsArray))
+            promises.append(contentsOf: filterFormats(array: cardsArray))
+            promises.append(contentsOf: filterLegalities(array: cardsArray))
+            promises.append(contentsOf: filterTypes(array: cardsArray))
+            promises.append(contentsOf: filterComponents(array: cardsArray))
+            promises.append(contentsOf: cardsArray.map { dict in
+                return {
+                    return self.createCardPromise(dict: dict)
+                }
+            })
+            promises.append(contentsOf: filterFaces(array: cardsArray))
             
             // rulings
-//            promises.append(self.createDeleteRulingPromise)
-//            promises.append(contentsOf: rulingsArray.map { dict in
-//                return {
-//                    return self.createRulingPromise(dict: dict)
-//                }
-//            })
+            promises.append(self.createDeleteRulingPromise)
+            promises.append(contentsOf: rulingsArray.map { dict in
+                return {
+                    return self.createRulingPromise(dict: dict)
+                }
+            })
             
             // test only
             
@@ -83,18 +80,6 @@ class Maintainer: NSObject {
         }
     }
     
-    func startActivity(name: String) {
-        dateStart = Date()
-        print("Starting \(name) on... \(dateStart)")
-    }
-    
-    func endActivity() {
-        let dateEnd = Date()
-        let timeDifference = dateEnd.timeIntervalSince(dateStart)
-        print("Total Time Elapsed: \(self.dateStart) - \(dateEnd) = \(self.format(timeDifference))")
-        print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
-    }
-
     // MARK: Utility methods
     func sectionFor(name: String) -> String? {
         if name.count == 0 {
@@ -140,17 +125,6 @@ class Maintainer: NSObject {
         }
     }
     
-    func format(_ interval: TimeInterval) -> String {
-        if interval == 0 {
-            return "HH:mm:ss"
-        }
-        
-        let seconds = interval.truncatingRemainder(dividingBy: 60)
-        let minutes = (interval / 60).truncatingRemainder(dividingBy: 60)
-        let hours = (interval / 3600)
-        return String(format: "%.2d:%.2d:%.2d", Int(hours), Int(minutes), Int(seconds))
-    }
-    
     /*
      * Converts @param string into double equivalents i.e. 100.1a = 100.197
      * Useful for ordering in NSSortDescriptor.
@@ -187,43 +161,53 @@ class Maintainer: NSObject {
         return termOrder
     }
     
-    func createNodePromise(urlString: String, httpMethod: String, httpBody: String?) -> Promise<(data: Data, response: URLResponse)> {
-        guard let cleanURL = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-            let url = URL(string: cleanURL) else {
-            fatalError("Malformed url")
-        }
-        
-        var rq = URLRequest(url: url)
-        rq.httpMethod = httpMethod.uppercased()
-        rq.setValue("application/json", forHTTPHeaderField: "Accept")
-        if let httpBody = httpBody {
-            rq.httpBody = httpBody.replacingOccurrences(of: "\n", with: "").data(using: .utf8)
-        }
-    
-        return URLSession.shared.dataTask(.promise, with: rq)
-    }
-    
     func execInSequence(promises: [()->Promise<(data: Data, response: URLResponse)>]) {
         var promise = promises.first!()
-        countIndex = 0
-        countTotal = promises.count
         
-        print("Start creating data: \(self.countIndex)/\(self.countTotal) \(Date())")
+        let countTotal = promises.count
+        var countIndex = 0
+        
+        print("Start exec: \(countIndex)/\(countTotal) \(Date())")
         for next in promises {
             promise = promise.then { n -> Promise<(data: Data, response: URLResponse)> in
-                self.countIndex += 1
-                if self.countIndex % self.printMilestone == 0 {
-                    print("Creating... \(self.countIndex)/\(self.countTotal) \(Date())")
+                countIndex += 1
+                
+                if countIndex % self.printMilestone == 0 {
+                    print("Exec... \(countIndex)/\(countTotal) \(Date())")
                 }
                 return next()
             }
         }
         promise.done {_ in
-            print("Done creating data: \(self.countIndex)/\(self.countTotal) \(Date())")
+            print("Done exec: \(countIndex)/\(countTotal) \(Date())")
             self.endActivity()
         }.catch { error in
             print(error)
         }
+    }
+    
+    func startActivity(name: String) {
+        dateStart = Date()
+        print("Starting \(name) on... \(dateStart)")
+    }
+    
+    func endActivity() {
+        let dateEnd = Date()
+        let timeDifference = dateEnd.timeIntervalSince(dateStart)
+        
+        print("Total Time Elapsed on: \(dateStart) - \(dateEnd) = \(format(timeDifference))")
+        print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
+    }
+
+    func format(_ interval: TimeInterval) -> String {
+        if interval == 0 {
+            return "HH:mm:ss"
+        }
+        
+        let seconds = interval.truncatingRemainder(dividingBy: 60)
+        let minutes = (interval / 60).truncatingRemainder(dividingBy: 60)
+        let hours = (interval / 3600)
+        return String(format: "%.2d:%.2d:%.2d", Int(hours), Int(minutes), Int(seconds))
     }
 }
 

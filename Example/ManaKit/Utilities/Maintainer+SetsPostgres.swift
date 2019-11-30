@@ -21,9 +21,9 @@ extension Maintainer {
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/setblocks"
         
-        return createNodePromise(urlString: urlString,
-                                 httpMethod: "POST",
-                                 httpBody: httpBody)
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "POST",
+                                                        httpBody: httpBody)
     }
 
     func createSetTypePromise(setType: String) -> Promise<(data: Data, response: URLResponse)> {
@@ -35,9 +35,9 @@ extension Maintainer {
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/settypes"
                 
-        return createNodePromise(urlString: urlString,
-                                 httpMethod: "POST",
-                                 httpBody: httpBody)
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "POST",
+                                                        httpBody: httpBody)
     }
     
     func createSetPromise(dict: [String: Any]) -> Promise<(data: Data, response: URLResponse)> {
@@ -83,9 +83,9 @@ extension Maintainer {
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/sets"
         
-        return createNodePromise(urlString: urlString,
-                                 httpMethod: "POST",
-                                 httpBody: httpBody)
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "POST",
+                                                        httpBody: httpBody)
     }
     
     func createKeyrunePromises(array: [[String: Any]]) -> [()->Promise<(data: Data, response: URLResponse)>] {
@@ -278,8 +278,8 @@ extension Maintainer {
         let httpBody = "my_keyrune_code=\(keyruneCode)"
         let urlString = "\(ManaKit.Constants.APIURL)/sets/updatekeyrune/\(code)"
         
-        return createNodePromise(urlString: urlString,
-                                 httpMethod: "POST",
-                                 httpBody: httpBody)
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "POST",
+                                                        httpBody: httpBody)
     }
 }

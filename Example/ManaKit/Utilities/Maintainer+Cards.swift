@@ -11,7 +11,7 @@ import ManaKit
 import PromiseKit
 
 extension Maintainer {
-    func fetchAllCards() -> Promise<Void> {
+    func fetchCardsData() -> Promise<Void> {
         return Promise { seal in
             guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
                 fatalError("Malformed cachePath")

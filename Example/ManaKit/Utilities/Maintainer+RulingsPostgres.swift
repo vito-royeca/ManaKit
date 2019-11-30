@@ -23,16 +23,16 @@ extension Maintainer {
                         """
         let urlString = "\(ManaKit.Constants.APIURL)/rulings"
         
-        return createNodePromise(urlString: urlString,
-                                 httpMethod: "POST",
-                                 httpBody: httpBody)
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "POST",
+                                                        httpBody: httpBody)
     }
     
     func createDeleteRulingPromise() -> Promise<(data: Data, response: URLResponse)> {
         let urlString = "\(ManaKit.Constants.APIURL)/rulings"
         
-        return createNodePromise(urlString: urlString,
-                                 httpMethod: "DELETE",
-                                 httpBody: nil)
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "DELETE",
+                                                        httpBody: nil)
     }
 }

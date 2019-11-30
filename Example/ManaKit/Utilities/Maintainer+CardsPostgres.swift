@@ -44,9 +44,9 @@ extension Maintainer {
                         """
         let urlString = "\(ManaKit.Constants.APIURL)/artists"
         
-        return createNodePromise(urlString: urlString,
-                                 httpMethod: "POST",
-                                 httpBody: httpBody)
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "POST",
+                                                        httpBody: httpBody)
     }
     
     func createRarityPromise(rarity: String) -> Promise<(data: Data, response: URLResponse)> {
@@ -59,9 +59,9 @@ extension Maintainer {
                         """
         let urlString = "\(ManaKit.Constants.APIURL)/rarities"
         
-        return createNodePromise(urlString: urlString,
-                                 httpMethod: "POST",
-                                 httpBody: httpBody)
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "POST",
+                                                        httpBody: httpBody)
     }
     
     func createLanguagePromise(code: String, displayCode: String, name: String) -> Promise<(data: Data, response: URLResponse)> {
@@ -75,9 +75,9 @@ extension Maintainer {
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/languages"
         
-        return createNodePromise(urlString: urlString,
-                                 httpMethod: "POST",
-                                 httpBody: httpBody)
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "POST",
+                                                        httpBody: httpBody)
     }
     
     func createLayoutPromise(name: String, description_: String) -> Promise<(data: Data, response: URLResponse)> {
@@ -91,9 +91,9 @@ extension Maintainer {
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/layouts"
         
-        return createNodePromise(urlString: urlString,
-                                 httpMethod: "POST",
-                                 httpBody: httpBody)
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "POST",
+                                                        httpBody: httpBody)
     }
     
     func createWatermarkPromise(name: String) -> Promise<(data: Data, response: URLResponse)> {
@@ -106,9 +106,9 @@ extension Maintainer {
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/watermarks"
         
-        return createNodePromise(urlString: urlString,
-                                 httpMethod: "POST",
-                                 httpBody: httpBody)
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "POST",
+                                                        httpBody: httpBody)
     }
     
     func createFramePromise(name: String, description_: String) -> Promise<(data: Data, response: URLResponse)> {
@@ -122,9 +122,9 @@ extension Maintainer {
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/frames"
         
-        return createNodePromise(urlString: urlString,
-                                 httpMethod: "POST",
-                                 httpBody: httpBody)
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "POST",
+                                                        httpBody: httpBody)
     }
     
     func createFrameEffectPromise(id: String, name: String, description_: String) -> Promise<(data: Data, response: URLResponse)> {
@@ -138,9 +138,9 @@ extension Maintainer {
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/frameeffects"
         
-        return createNodePromise(urlString: urlString,
-                                 httpMethod: "POST",
-                                 httpBody: httpBody)
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "POST",
+                                                        httpBody: httpBody)
     }
     
     func createColorPromise(symbol: String, name: String, isManaColor: Bool) -> Promise<(data: Data, response: URLResponse)> {
@@ -154,9 +154,9 @@ extension Maintainer {
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/colors"
         
-        return createNodePromise(urlString: urlString,
-                                 httpMethod: "POST",
-                                 httpBody: httpBody)
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "POST",
+                                                        httpBody: httpBody)
     }
     
     func createFormatPromise(name: String) -> Promise<(data: Data, response: URLResponse)> {
@@ -169,9 +169,9 @@ extension Maintainer {
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/formats"
         
-        return createNodePromise(urlString: urlString,
-                                 httpMethod: "POST",
-                                 httpBody: httpBody)
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "POST",
+                                                        httpBody: httpBody)
     }
     
     func createLegalityPromise(name: String) -> Promise<(data: Data, response: URLResponse)> {
@@ -184,9 +184,9 @@ extension Maintainer {
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/legalities"
         
-        return createNodePromise(urlString: urlString,
-                                 httpMethod: "POST",
-                                 httpBody: httpBody)
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "POST",
+                                                        httpBody: httpBody)
     }
     
     func createCardTypePromise(name: String, parent: String) -> Promise<(data: Data, response: URLResponse)> {
@@ -199,9 +199,9 @@ extension Maintainer {
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/cardtypes"
         
-        return createNodePromise(urlString: urlString,
-                                 httpMethod: "POST",
-                                 httpBody: httpBody)
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "POST",
+                                                        httpBody: httpBody)
     }
     
     func createComponentPromise(name: String) -> Promise<(data: Data, response: URLResponse)> {
@@ -214,9 +214,9 @@ extension Maintainer {
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/components"
         
-        return createNodePromise(urlString: urlString,
-                                 httpMethod: "POST",
-                                 httpBody: httpBody)
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "POST",
+                                                        httpBody: httpBody)
     }
     
     func createFacePromise(card: String, cardFace: String) -> Promise<(data: Data, response: URLResponse)> {
@@ -227,9 +227,9 @@ extension Maintainer {
                          """
         let urlString = "\(ManaKit.Constants.APIURL)/cardfaces"
         
-        return createNodePromise(urlString: urlString,
-                                 httpMethod: "POST",
-                                 httpBody: httpBody)
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "POST",
+                                                        httpBody: httpBody)
     }
     
     func createCardPromise(dict: [String: Any]) -> Promise<(data: Data, response: URLResponse)> {
@@ -435,8 +435,8 @@ extension Maintainer {
             """
         let urlString = "\(ManaKit.Constants.APIURL)/cards"
         
-        return createNodePromise(urlString: urlString,
-                                 httpMethod: "POST",
-                                 httpBody: httpBody)
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "POST",
+                                                        httpBody: httpBody)
     }
 }

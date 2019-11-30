@@ -12,7 +12,7 @@ import ManaKit
 import PromiseKit
 
 extension Maintainer {
-    func fetchSets() -> Promise<Void> {
+    func fetchSetsData() -> Promise<Void> {
         return Promise { seal in
             guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
                 fatalError("Malformed cachePath")
