@@ -31,7 +31,9 @@ public class CardTableViewCell: UITableViewCell {
     @IBOutlet public weak var setImage: UILabel!
     @IBOutlet public weak var normalPriceLabel: UILabel!
     @IBOutlet public weak var foilPriceLabel: UILabel!
-
+    @IBOutlet public weak var nameView: UIView!
+    @IBOutlet public weak var typeView: UIView!
+    
     // MARK: Overrides
     override public func awakeFromNib() {
         super.awakeFromNib()
@@ -177,12 +179,14 @@ public class CardTableViewCell: UITableViewCell {
             let castingCostAttributedString = castingCostAttributedString {
             let nameSize = sizeOf(attributedString: nameAttributedString, withFrameSize: nameLabel.frame.size)
             let ccSize = castingCostAttributedString.widthOf(symbol: card.manaCost!)
+            
             if  (nameSize.width + ccSize) > nameLabel.frame.size.width {
                 castingCostLabel.text = nil
                 castingCostLabel2.attributedText = castingCostAttributedString
             } else {
                 castingCostLabel.attributedText = castingCostAttributedString
                 castingCostLabel2.text = nil
+                typeView.topAnchor.constraint(equalTo: nameView.bottomAnchor, constant: 8).isActive = true
             }
         }
     }

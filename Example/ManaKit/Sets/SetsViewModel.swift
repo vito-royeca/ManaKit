@@ -10,99 +10,18 @@ import ManaKit
 import CoreData
 import PromiseKit
 
-class SetsViewModel: NSObject {
-    // MARK: Variables
-    var queryString = ""
-    var searchCancelled = false
-
-    private var _sectionIndexTitles = [String]()
-    private var _sectionTitles = [String]()
-    private let context = ManaKit.sharedInstance.dataStack!.viewContext
-    private var _fetchedResultsController: NSFetchedResultsController<CMSet>?
-    
-    // MARK: Settings
-    private let _sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: false)]
-    private var _sectionName = "myYearSection"
-    
-    // MARK: UITableView methods
-    func numberOfRows(inSection section: Int) -> Int {
-        guard let fetchedResultsController = _fetchedResultsController,
-            let sections = fetchedResultsController.sections else {
-            return 0
-        }
+class SetsViewModel: BaseViewModel {
+    // MARK: initialization
+    override init() {
+        super.init()
         
-        return sections[section].numberOfObjects
-    }
-    
-    func numberOfSections() -> Int {
-        guard let fetchedResultsController = _fetchedResultsController,
-            let sections = fetchedResultsController.sections else {
-                return 0
-        }
-        
-        return sections.count
-    }
-    
-    func sectionIndexTitles() -> [String]? {
-        return _sectionIndexTitles
-    }
-    
-    func sectionForSectionIndexTitle(title: String, at index: Int) -> Int {
-        var sectionIndex = 0
-        
-        for i in 0..._sectionTitles.count - 1 {
-            if _sectionTitles[i].hasPrefix(title) {
-                sectionIndex = i
-                break
-            }
-        }
-        
-        return sectionIndex
-    }
-    
-    func titleForHeaderInSection(section: Int) -> String? {
-        guard let fetchedResultsController = _fetchedResultsController,
-            let sections = fetchedResultsController.sections else {
-            return nil
-        }
-        
-        return sections[section].name
-    }
-    
-    // MARK: Custom methods
-    func isEmpty() -> Bool {
-        guard let objects = allObjects() else {
-            return true
-        }
-        return objects.count == 0
-    }
-    
-    func object(forRowAt indexPath: IndexPath) -> CMSet {
-        guard let fetchedResultsController = _fetchedResultsController else {
-            fatalError("fetchedResultsController is nil")
-        }
-        return fetchedResultsController.object(at: indexPath)
-    }
-    
-    func allObjects() -> [CMSet]? {
-        guard let fetchedResultsController = _fetchedResultsController else {
-            return nil
-        }
-        return fetchedResultsController.fetchedObjects
+        entitiyName = String(describing: CMSet.self)
+        sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: false)]
+        sectionName = "myYearSection"
     }
 
-    func willFetchRemoteData() -> Bool {
-        return ManaKit.sharedInstance.willFetchData(name: String(describing: CMSet.self),
-                                                    query: nil)
-    }
-    
-    func deleteDataInformation() {
-        let objectFinder = ["name": String(describing: CMSet.self) as AnyObject]
-        return ManaKit.sharedInstance.deleteObject(String(describing: DataInformation.self),
-                                                   objectFinder: objectFinder)
-    }
-    
-    func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
+    // MARK: Overrides
+    override func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
         let urlString = "\(ManaKit.Constants.APIURL)/sets"
         
         return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
@@ -110,103 +29,22 @@ class SetsViewModel: NSObject {
                                                         httpBody: nil)
     }
     
-    func saveLocalData(data: [[String: Any]]) -> Promise<Void> {
-        return Promise { seal in
-            ManaKit.sharedInstance.dataStack?.sync(data,
-                                                   inEntityNamed: "CMSet",
-                                                   completion:{ error in
-                                                    seal.fulfill(())
-            })
-        }
-    }
-    
-    func fetchLocalData() -> Promise<Void> {
-        return Promise { seal in
-            let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
-            let count = self.queryString.count
-            
-            if count > 0 {
-                if count == 1 {
-                    request.predicate = NSPredicate(format: "name BEGINSWITH[cd] %@ OR code BEGINSWITH[cd] %@", self.queryString, self.queryString)
-                } else {
-                    request.predicate = NSPredicate(format: "name CONTAINS[cd] %@ OR code CONTAINS[cd] %@", self.queryString, self.queryString)
-                }
-            }
-            request.sortDescriptors = self._sortDescriptors
-            
-            self._fetchedResultsController = self.getFetchedResultsController(with: request)
-            self.updateSections()
-            
-            seal.fulfill(())
-        }
-    }
-    
-    // MARK: private methods
-    private func getFetchedResultsController(with fetchRequest: NSFetchRequest<CMSet>?) -> NSFetchedResultsController<CMSet> {
-        var request: NSFetchRequest<CMSet>?
+    override func composePredicate() -> NSPredicate? {
+        let count = self.queryString.count
+        var predicate: NSPredicate?
         
-        if let fetchRequest = fetchRequest {
-            request = fetchRequest
-        } else {
-            // Create a default fetchRequest
-            request = CMSet.fetchRequest()
-            request!.sortDescriptors = _sortDescriptors
-        }
-        
-        // Create Fetched Results Controller
-        let frc = NSFetchedResultsController(fetchRequest: request!,
-                                             managedObjectContext: context,
-                                             sectionNameKeyPath: _sectionName,
-                                             cacheName: nil)
-        
-        // Configure Fetched Results Controller
-        frc.delegate = self
-        
-        // perform fetch
-        do {
-            try frc.performFetch()
-        } catch {
-            let fetchError = error as NSError
-            print("Unable to Perform Fetch Request")
-            print("\(fetchError), \(fetchError.localizedDescription)")
-        }
-        
-        return frc
-    }
-    
-    private func updateSections() {
-        guard let fetchedResultsController = _fetchedResultsController,
-            let sections = fetchedResultsController.sections else {
-            return
-        }
-        
-//        _sectionIndexTitles = [String]()
-        _sectionTitles = [String]()
-        
-//        for set in sets {
-//            if let nameSection = set.myNameSection {
-//                if !_sectionIndexTitles.contains(nameSection) {
-//                    _sectionIndexTitles.append(nameSection)
-//                }
-//            }
-//        }
-        
-        let count = sections.count
         if count > 0 {
-            for i in 0...count - 1 {
-//                if let sectionTitle = sections[i].indexTitle {
-//                    _sectionTitles.append(sectionTitle)
-//                }
-                _sectionTitles.append(sections[i].name)
+            if count == 1 {
+                predicate = NSPredicate(format: "name BEGINSWITH[cd] %@ OR code BEGINSWITH[cd] %@", self.queryString, self.queryString)
+            } else {
+                predicate = NSPredicate(format: "name CONTAINS[cd] %@ OR code CONTAINS[cd] %@", self.queryString, self.queryString)
             }
         }
-        
-        _sectionIndexTitles.sort()
-        _sectionTitles.sort()
+        return predicate
+    }
+    
+    override func composeFetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
+        return CMSet.fetchRequest()
     }
 }
 
-// MARK: NSFetchedResultsControllerDelegate
-extension SetsViewModel : NSFetchedResultsControllerDelegate {
-    
-}

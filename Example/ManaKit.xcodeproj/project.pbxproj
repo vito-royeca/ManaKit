@@ -15,7 +15,6 @@
 		113D40C02139BC70000D08FA /* SetsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D40BF2139BC70000D08FA /* SetsViewModel.swift */; };
 		115151A91F1E221C0061C270 /* SetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115151A81F1E221C0061C270 /* SetsViewController.swift */; };
 		115151B91F1E24130061C270 /* data in Resources */ = {isa = PBXBuildFile; fileRef = 115151B81F1E24130061C270 /* data */; };
-		115151BD1F1E256A0061C270 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115151BC1F1E256A0061C270 /* CardViewController.swift */; };
 		118F290721DB040D00660158 /* Maintainer+Sets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118F290621DB040C00660158 /* Maintainer+Sets.swift */; };
 		11E74D96217437FE0077B252 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E74D95217437FE0077B252 /* MainViewController.swift */; };
 		11E74D97217437FE0077B252 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E74D95217437FE0077B252 /* MainViewController.swift */; };
@@ -33,8 +32,16 @@
 		8B219CC52391722400593E19 /* SetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B219CC22391722400593E19 /* SetViewModel.swift */; };
 		8B219CC62391722400593E19 /* SetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B219CC32391722400593E19 /* SetViewController.swift */; };
 		8B219CC72391722400593E19 /* SetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B219CC32391722400593E19 /* SetViewController.swift */; };
-		8B219CC92391BEB700593E19 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B219CC82391BEB700593E19 /* ViewModel.swift */; };
-		8B219CCA2391BEB700593E19 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B219CC82391BEB700593E19 /* ViewModel.swift */; };
+		8B219CC92391BEB700593E19 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B219CC82391BEB700593E19 /* BaseViewModel.swift */; };
+		8B219CCA2391BEB700593E19 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B219CC82391BEB700593E19 /* BaseViewModel.swift */; };
+		8B2F2F9223933F75005DEB46 /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2F2F9123933F75005DEB46 /* CardViewModel.swift */; };
+		8B2F2F9423934246005DEB46 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2F2F9323934246005DEB46 /* CardViewController.swift */; };
+		8B2F2F95239344D1005DEB46 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2F2F9323934246005DEB46 /* CardViewController.swift */; };
+		8B2F2F96239344D5005DEB46 /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2F2F9123933F75005DEB46 /* CardViewModel.swift */; };
+		8B2F2F982393454E005DEB46 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2F2F972393454E005DEB46 /* BaseViewController.swift */; };
+		8B2F2F992393454E005DEB46 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2F2F972393454E005DEB46 /* BaseViewController.swift */; };
+		8B2F2F9A23934746005DEB46 /* SetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115151A81F1E221C0061C270 /* SetsViewController.swift */; };
+		8B2F2F9B2393475F005DEB46 /* SetsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D40BF2139BC70000D08FA /* SetsViewModel.swift */; };
 		8BBEB8B02364FF440044BFC8 /* Maintainer+SetsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBEB8AF2364FF440044BFC8 /* Maintainer+SetsPostgres.swift */; };
 		8BBEB8B6236602260044BFC8 /* Maintainer+CardsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBEB8B5236602260044BFC8 /* Maintainer+CardsPostgres.swift */; };
 		8BDB513E2372547600DF53B0 /* Maintainer+RulingsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDB513D2372547600DF53B0 /* Maintainer+RulingsPostgres.swift */; };
@@ -59,7 +66,6 @@
 		113D40BF2139BC70000D08FA /* SetsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetsViewModel.swift; sourceTree = "<group>"; };
 		115151A81F1E221C0061C270 /* SetsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetsViewController.swift; sourceTree = "<group>"; };
 		115151B81F1E24130061C270 /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = data; sourceTree = "<group>"; };
-		115151BC1F1E256A0061C270 /* CardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardViewController.swift; sourceTree = "<group>"; };
 		118F290621DB040C00660158 /* Maintainer+Sets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+Sets.swift"; sourceTree = "<group>"; };
 		11E74D95217437FE0077B252 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		1F8A6A3006839651BED01AC8 /* Pods-ManaKit_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit_Tests/Pods-ManaKit_Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -79,7 +85,10 @@
 		88F0F057FC286A584E82D4CE /* Pods-ManaKit_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit_Tests/Pods-ManaKit_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		8B219CC22391722400593E19 /* SetViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetViewModel.swift; sourceTree = "<group>"; };
 		8B219CC32391722400593E19 /* SetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetViewController.swift; sourceTree = "<group>"; };
-		8B219CC82391BEB700593E19 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		8B219CC82391BEB700593E19 /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
+		8B2F2F9123933F75005DEB46 /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
+		8B2F2F9323934246005DEB46 /* CardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardViewController.swift; sourceTree = "<group>"; };
+		8B2F2F972393454E005DEB46 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BaseViewController.swift; path = Utilities/BaseViewController.swift; sourceTree = "<group>"; };
 		8BBEB8AF2364FF440044BFC8 /* Maintainer+SetsPostgres.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Maintainer+SetsPostgres.swift"; sourceTree = "<group>"; };
 		8BBEB8B5236602260044BFC8 /* Maintainer+CardsPostgres.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Maintainer+CardsPostgres.swift"; sourceTree = "<group>"; };
 		8BDB513D2372547600DF53B0 /* Maintainer+RulingsPostgres.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Maintainer+RulingsPostgres.swift"; sourceTree = "<group>"; };
@@ -129,7 +138,8 @@
 		119588DD2125E24F00B5D7C4 /* Card */ = {
 			isa = PBXGroup;
 			children = (
-				115151BC1F1E256A0061C270 /* CardViewController.swift */,
+				8B2F2F9323934246005DEB46 /* CardViewController.swift */,
+				8B2F2F9123933F75005DEB46 /* CardViewModel.swift */,
 			);
 			path = Card;
 			sourceTree = "<group>";
@@ -194,7 +204,8 @@
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
 				11E74D95217437FE0077B252 /* MainViewController.swift */,
-				8B219CC82391BEB700593E19 /* ViewModel.swift */,
+				8B219CC82391BEB700593E19 /* BaseViewModel.swift */,
+				8B2F2F972393454E005DEB46 /* BaseViewController.swift */,
 			);
 			name = "Example for ManaKit";
 			path = ManaKit;
@@ -465,14 +476,16 @@
 				1129D75B217FF00400D4A006 /* Maintainer.swift in Sources */,
 				8BDB513E2372547600DF53B0 /* Maintainer+RulingsPostgres.swift in Sources */,
 				8B219CC42391722400593E19 /* SetViewModel.swift in Sources */,
+				8B2F2F9223933F75005DEB46 /* CardViewModel.swift in Sources */,
 				8BBEB8B6236602260044BFC8 /* Maintainer+CardsPostgres.swift in Sources */,
 				11E74D96217437FE0077B252 /* MainViewController.swift in Sources */,
+				8B2F2F982393454E005DEB46 /* BaseViewController.swift in Sources */,
 				115151A91F1E221C0061C270 /* SetsViewController.swift in Sources */,
-				115151BD1F1E256A0061C270 /* CardViewController.swift in Sources */,
 				110BB79522DBD12B004E65D5 /* Maintainer+Rulings.swift in Sources */,
 				8BBEB8B02364FF440044BFC8 /* Maintainer+SetsPostgres.swift in Sources */,
-				8B219CC92391BEB700593E19 /* ViewModel.swift in Sources */,
+				8B219CC92391BEB700593E19 /* BaseViewModel.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				8B2F2F9423934246005DEB46 /* CardViewController.swift in Sources */,
 				8B219CC62391722400593E19 /* SetViewController.swift in Sources */,
 				113D40C02139BC70000D08FA /* SetsViewModel.swift in Sources */,
 				118F290721DB040D00660158 /* Maintainer+Sets.swift in Sources */,
@@ -484,16 +497,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B1E238C236693B6002E15D3 /* Maintainer+CardsPostgres.swift in Sources */,
+				8B2F2F9B2393475F005DEB46 /* SetsViewModel.swift in Sources */,
+				8B2F2F9A23934746005DEB46 /* SetsViewController.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
 				8B1E2390236693C5002E15D3 /* Maintainer+Rulings.swift in Sources */,
 				8BDB513F237257BD00DF53B0 /* Maintainer+RulingsPostgres.swift in Sources */,
 				8B1E2392236693CA002E15D3 /* Maintainer+SetsPostgres.swift in Sources */,
+				8B2F2F992393454E005DEB46 /* BaseViewController.swift in Sources */,
 				8B219CC52391722400593E19 /* SetViewModel.swift in Sources */,
+				8B2F2F96239344D5005DEB46 /* CardViewModel.swift in Sources */,
 				8B1E2391236693C7002E15D3 /* Maintainer+Sets.swift in Sources */,
 				11313E64217D4BDA00E31997 /* Maintainer+Cards.swift in Sources */,
 				11E74D97217437FE0077B252 /* MainViewController.swift in Sources */,
 				8B219CC72391722400593E19 /* SetViewController.swift in Sources */,
-				8B219CCA2391BEB700593E19 /* ViewModel.swift in Sources */,
+				8B2F2F95239344D1005DEB46 /* CardViewController.swift in Sources */,
+				8B219CCA2391BEB700593E19 /* BaseViewModel.swift in Sources */,
 				1129D7622180153400D4A006 /* Maintainer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

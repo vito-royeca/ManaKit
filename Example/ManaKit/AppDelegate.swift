@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 //        if ManaKit.sharedInstance.needsUpgrade() {
             // Create database
-            /*let maintainer = Maintainer()
+            let maintainer = Maintainer()
             maintainer.startActivity(name: "Create Data")
 
             firstly {
@@ -52,10 +52,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                 userInfo: nil)
             }.catch { error in
                 print(error)
-            }*/
+            }
 //        } else {
 //            // Normal run
-            ManaKit.sharedInstance.setupResources()
+//            ManaKit.sharedInstance.setupResources()
 //            ManaKit.sharedInstance.configureTcgPlayer(partnerKey: "ManaGuide",
 //                                                      publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720",
 //                                                      privateKey: "C018EF82-2A4D-4F7A-A785-04ADEBF2A8E5")

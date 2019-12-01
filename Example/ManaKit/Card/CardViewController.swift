@@ -12,28 +12,23 @@ import FontAwesome_swift
 import ManaKit
 import PromiseKit
 
-class CardViewController: UIViewController {
-
+class CardViewController: BaseViewController {
     // MARK: Variables
-    var card: CMCard!
     var faceOrder = 0
     var flipAngle = CGFloat(0)
 
-    // MARK: Outlets
-    @IBOutlet weak var tableView: UITableView!
-    
     // MARK: overrides
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         tableView.register(ManaKit.sharedInstance.nibFromBundle("CardTableViewCell"), forCellReuseIdentifier: "CardCell")
-        title = card.displayName
     }
     
     // MARK: Custom methods
     @objc func buttonAction() {
-        guard let layout = card.layout,
+        guard let card = viewModel.allObjects()?.first as? CMCard,
+            let layout = card.layout,
             let layoutName = layout.name else {
             fatalError("Missing card layout")
         }
@@ -78,6 +73,10 @@ extension CardViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell:UITableViewCell?
         
+        guard let card = viewModel.allObjects()?.first as? CMCard else {
+            return UITableViewCell(frame: CGRect.zero)
+        }
+        
         switch indexPath.row {
         case 0:
             guard let c = tableView.dequeueReusableCell(withIdentifier: "CardCell") as? CardTableViewCell else {
@@ -96,31 +95,32 @@ extension CardViewController : UITableViewDataSource {
                 fatalError("Unexpected indexPath: \(indexPath)")
             }
             
-            guard let layout = card.layout,
-                let layoutName = layout.name else {
-                fatalError("Missing card layout")
-            }
+            if let layout = card.layout,
+                let layoutName = layout.name {
             
-            button.layer.cornerRadius = button.frame.height / 2
-            button.setTitle(nil, for: .normal)
-            button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
-            
-            if layoutName == "Double faced token" ||
-                layoutName == "Transform" {
-                button.isHidden = false
-                button.setImage(UIImage.fontAwesomeIcon(name: .sync,
-                                                        style: .solid,
-                                                        textColor: UIColor.white,
-                                                        size: CGSize(width: 30, height: 30)),
-                                for: .normal)
-            } else if layoutName == "Flip" ||
-                layoutName == "Planar" {
-                button.isHidden = false
-                button.setImage(UIImage.fontAwesomeIcon(name: .redo,
-                                                        style: .solid,
-                                                        textColor: UIColor.white,
-                                                        size: CGSize(width: 30, height: 30)),
-                                for: .normal)
+                button.layer.cornerRadius = button.frame.height / 2
+                button.setTitle(nil, for: .normal)
+                button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+                
+                if layoutName == "Double faced token" ||
+                    layoutName == "Transform" {
+                    button.isHidden = false
+                    button.setImage(UIImage.fontAwesomeIcon(name: .sync,
+                                                            style: .solid,
+                                                            textColor: UIColor.white,
+                                                            size: CGSize(width: 30, height: 30)),
+                                    for: .normal)
+                } else if layoutName == "Flip" ||
+                    layoutName == "Planar" {
+                    button.isHidden = false
+                    button.setImage(UIImage.fontAwesomeIcon(name: .redo,
+                                                            style: .solid,
+                                                            textColor: UIColor.white,
+                                                            size: CGSize(width: 30, height: 30)),
+                                    for: .normal)
+                } else {
+                    button.isHidden = true
+                }
             } else {
                 button.isHidden = true
             }
@@ -140,9 +140,9 @@ extension CardViewController : UITableViewDataSource {
                                                          type: .normal,
                                                          faceOrder: faceOrder)
                 }.done {
-                    guard let image = self.card.image(type: .normal,
-                                                      faceOrder: self.faceOrder,
-                                                      roundCornered: true) else {
+                    guard let image = card.image(type: .normal,
+                                                 faceOrder: self.faceOrder,
+                                                 roundCornered: true) else {
                         return
                     }
                     
@@ -165,6 +165,7 @@ extension CardViewController : UITableViewDataSource {
             cell = UITableViewCell(frame: CGRect.zero)
         }
         
+        cell!.selectionStyle = .none
         return cell!
     }
 }

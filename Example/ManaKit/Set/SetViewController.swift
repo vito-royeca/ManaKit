@@ -11,15 +11,7 @@ import ManaKit
 import MBProgressHUD
 import PromiseKit
 
-class SetViewController: UIViewController {
-
-    // MARK: Variables
-    let searchController = UISearchController(searchResultsController: nil)
-    var viewModel: SetViewModel!
-    
-    // MARK: Outlets
-    @IBOutlet weak var tableView: UITableView!
-    
+class SetViewController: BaseViewController {
     // MARK: Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,9 +32,6 @@ class SetViewController: UIViewController {
         tableView.keyboardDismissMode = .onDrag
         tableView.register(ManaKit.sharedInstance.nibFromBundle("CardTableViewCell"),
                            forCellReuseIdentifier: CardTableViewCell.reuseIdentifier)
-        
-        title = viewModel.objectTitle()
-        fetchData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -55,47 +44,14 @@ class SetViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showCard" {
-//            guard let dest = segue.destination as? CardViewController,
-//                let card = sender as? CMCard else {
-//                return
-//            }
-//
-//            dest.card = card
-        }
-    }
-    
-    // MARK: Custom methods
-    func fetchData() {
-        if viewModel.willFetchRemoteData() {
-            MBProgressHUD.showAdded(to: view, animated: true)
-            
-            firstly {
-                viewModel.fetchRemoteData()
-            }.compactMap { (data, result) in
-                try JSONSerialization.jsonObject(with: data) as? [[String: Any]]
-            }.then { data in
-                self.viewModel.saveLocalData(data: data)
-            }.then {
-                self.viewModel.fetchLocalData()
-            }.done {
-                MBProgressHUD.hide(for: self.view, animated: true)
-                self.tableView.reloadData()
-            }.catch { error in
-                self.viewModel.deleteDataInformation()
-                MBProgressHUD.hide(for: self.view, animated: true)
-                self.tableView.reloadData()
+            guard let dest = segue.destination as? CardViewController,
+                let card = sender as? CMCard,
+                let id = card.id else {
+                return
             }
-        } else {
-            firstly {
-                self.viewModel.fetchLocalData()
-            }.done {
-                MBProgressHUD.hide(for: self.view, animated: true)
-                self.tableView.reloadData()
-            }.catch { error in
-                self.viewModel.deleteDataInformation()
-                MBProgressHUD.hide(for: self.view, animated: true)
-                self.tableView.reloadData()
-            }
+
+            let viewModel = CardViewModel(withId: id)
+            dest.viewModel = viewModel
         }
     }
 }
@@ -116,8 +72,10 @@ extension SetViewController : UITableViewDataSource {
             fatalError("Unexpected indexPath: \(indexPath)")
         }
         
-        cell.card = viewModel.object(forRowAt: indexPath)
+        cell.selectionStyle = .none
+        cell.card = viewModel.object(forRowAt: indexPath) as? CMCard
         cell.updateDataDisplay()
+        
         return cell
     }
     

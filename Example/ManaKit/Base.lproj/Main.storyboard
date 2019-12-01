@@ -160,7 +160,7 @@
             </objects>
             <point key="canvasLocation" x="3026.0869565217395" y="55.434782608695656"/>
         </scene>
-        <!--Card View Controller-->
+        <!--Card-->
         <scene sceneID="4nq-HA-qo9">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="tPc-rT-BIt" customClass="CardViewController" customModule="ManaKit_Example" customModuleProvider="target" sceneMemberID="viewController">
@@ -237,7 +237,7 @@
                         </constraints>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" id="kRw-t6-Xw3"/>
+                    <navigationItem key="navigationItem" title="Card" id="kRw-t6-Xw3"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="CTH-Wc-USR" id="fue-uL-FRP"/>

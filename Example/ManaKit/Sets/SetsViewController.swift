@@ -11,15 +11,7 @@ import ManaKit
 import MBProgressHUD
 import PromiseKit
 
-class SetsViewController: UIViewController {
-
-    // MARK: Variables
-    let searchController = UISearchController(searchResultsController: nil)
-    let viewModel = SetsViewModel()
-
-    // MARK: Outlets
-    @IBOutlet weak var tableView: UITableView!
-    
+class SetsViewController: BaseViewController {
     // MARK: Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,8 +41,6 @@ class SetsViewController: UIViewController {
                                                selector: #selector(reloadSets(_:)),
                                                name: NSNotification.Name(rawValue: MaintainerKeys.MaintainanceDone),
                                                object: nil)
-        
-        fetchData()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -80,41 +70,6 @@ class SetsViewController: UIViewController {
     @objc func reloadSets(_ notification: Notification) {
         tableView.reloadData()
     }
-    
-    // MARK: Custom methods
-    func fetchData() {
-        if viewModel.willFetchRemoteData() {
-            MBProgressHUD.showAdded(to: view, animated: true)
-            
-            firstly {
-                viewModel.fetchRemoteData()
-            }.compactMap { (data, result) in
-                try JSONSerialization.jsonObject(with: data) as? [[String: Any]]
-            }.then { data in
-                self.viewModel.saveLocalData(data: data)
-            }.then {
-                self.viewModel.fetchLocalData()
-            }.done {
-                MBProgressHUD.hide(for: self.view, animated: true)
-                self.tableView.reloadData()
-            }.catch { error in
-                self.viewModel.deleteDataInformation()
-                MBProgressHUD.hide(for: self.view, animated: true)
-                self.tableView.reloadData()
-            }
-        } else {
-            firstly {
-                self.viewModel.fetchLocalData()
-            }.done {
-                MBProgressHUD.hide(for: self.view, animated: true)
-                self.tableView.reloadData()
-            }.catch { error in
-                self.viewModel.deleteDataInformation()
-                MBProgressHUD.hide(for: self.view, animated: true)
-                self.tableView.reloadData()
-            }
-        }
-    }
 }
 
 // MARK: UITableViewDataSource
@@ -133,8 +88,10 @@ extension SetsViewController : UITableViewDataSource {
             fatalError("Unexpected indexPath: \(indexPath)")
         }
         
-        cell.set = viewModel.object(forRowAt: indexPath)
+        cell.selectionStyle = .none
+        cell.set = viewModel.object(forRowAt: indexPath) as? CMSet
         cell.delegate = self
+        
         return cell
     }
     

@@ -25,38 +25,24 @@ extension ManaKit {
         return willUpgrade
     }
     
-//    public func fetchSupportData()-> Promise<Void> {
-//        return Promise { seal in
-//            let array = ["CMLanguage", "CMSetBlock", "CMSetType", "CMColor"]
-//            var promises = [()->Promise<(data: Data, response: URLResponse)>]()
-//            
-//            if willFetchData(name: "CMClanguage") {
-//                let urlString = "\(ManaKit.Constants.APIURL)/languages"
-//                promises.append({ return self.createNodePromise(urlString: urlString,
-//                                                                httpMethod: "GET",
-//                                                                httpBody: nil) })
-//            }
-//            
-//            
-//            
-//            ManaKit.sharedInstance.execInSequence(promises: promises)
-//            seal.fulfill(())
-//        }
-//    }
-    
-    public func willFetchData(name: String, query: String?) -> Bool {
-        var objectFinder = ["name": name as AnyObject]
+    public func willFetchCache(_ entityName: String, objectFinder: [String: AnyObject]?) -> Bool {
+        var newObjectFinder = ["name": entityName]
+        var query: String?
         var willFetch = true
         
-        if let query = query {
-            objectFinder["query"] = query as AnyObject
+        if let objectFinder = objectFinder {
+            query = ""
+            for k in objectFinder.keys.sorted() {
+                query!.append("\(k):\(objectFinder[k]!),")
+            }
+            newObjectFinder["query"] = query
         }
-        
-        if let dataInformation = findObject(String(describing: DataInformation.self),
-                                            objectFinder: objectFinder,
-                                            createIfNotFound: true) as? DataInformation {
+
+        if let dataCache = findObject(String(describing: DataCache.self),
+                                             objectFinder: newObjectFinder as [String : AnyObject],
+                                             createIfNotFound: true) as? DataCache {
             
-            if let dateUpdated = dataInformation.dateUpdated {
+            if let dateUpdated = dataCache.dateUpdated {
                 if let diff = Calendar.current.dateComponents([.hour],
                                                               from: dateUpdated as Date,
                                                               to: Date()).hour {
@@ -65,9 +51,12 @@ extension ManaKit {
             }
             
             if willFetch {
-                dataInformation.name = name
-                dataInformation.query = query
-                dataInformation.dateUpdated = Date()
+                dataCache.name = entityName
+                dataCache.query = query
+                if let objectFinder = objectFinder {
+                    dataCache.objectFinder = NSKeyedArchiver.archivedData(withRootObject: objectFinder)
+                }
+                dataCache.dateUpdated = Date()
                 saveContext()
             }
         }
@@ -75,6 +64,22 @@ extension ManaKit {
         return willFetch
     }
 
+    public func deleteCache(_ entityName: String, objectFinder: [String: AnyObject]?) {
+        var newObjectFinder = ["name": entityName]
+        var query: String?
+        
+        if let objectFinder = objectFinder {
+            query = ""
+            for k in objectFinder.keys.sorted() {
+                query!.append("\(k):\(objectFinder[k]!),")
+            }
+            newObjectFinder["query"] = query
+        }
+        
+        deleteObject(String(describing: DataCache.self),
+                     objectFinder: newObjectFinder as [String : AnyObject])
+    }
+    
     public func findObject(_ entityName: String,
                            objectFinder: [String: AnyObject]?,
                            createIfNotFound: Bool) -> NSManagedObject? {

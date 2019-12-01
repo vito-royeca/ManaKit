@@ -108,7 +108,7 @@ extension Maintainer {
         var promises: [()->Promise<(data: Data, response: URLResponse)>] = keyrunes.map { (setCode, keyruneCode) in
             return {
                 return self.createKeyruneCodePromise(code: setCode,
-                                                               keyruneCode: keyruneCode)
+                                                     keyruneCode: keyruneCode)
             }
         }
         
@@ -116,7 +116,7 @@ extension Maintainer {
         promises.append(contentsOf: keyrunes.map { (setCode, keyruneCode) in
             return {
                 return self.createKeyruneCodePromise(code: setCode,
-                                                               keyruneCode: keyruneCode)
+                                                     keyruneCode: keyruneCode)
             }
         })
         
@@ -162,7 +162,9 @@ extension Maintainer {
                     code == "pf19" ||
                     code == "j12" ||
                     code == "j19" ||
-                    code == "ppp1" {
+                    code == "ppp1" ||
+                    code == "pf20" ||
+                    code == "sld" {
                     keyruneCodes[code] = "e687"  // media insert
                  } else if code == "pal99" {
                     keyruneCodes[code] = "e622"  // urza's saga
@@ -213,61 +215,68 @@ extension Maintainer {
                     code == "pwp10" ||
                     code == "pal05" {
                     keyruneCodes[code] = "e688"  // dci
-                 } else if code == "ana" {
+                } else if code == "ana"  ||
+                    code == "ha1" {
                     keyruneCodes[code] = "e943"  // arena league
-                 } else if code == "ced" {
+                } else if code == "ced" {
                     keyruneCodes[code] = "e926"  // CE
-                 } else if code == "dvd" ||
+                } else if code == "dvd" ||
                     code == "tdvd"{
                     keyruneCodes[code] = "e66b" // divine vs demonic
-                 } else if code == "gvl" ||
+                } else if code == "gvl" ||
                     code == "tgvl"{
                     keyruneCodes[code] = "e66c"  // garruk vs liliana
-                 } else if code == "jvc" ||
+                } else if code == "jvc" ||
                     code == "tjvc"{
                     keyruneCodes[code] = "e66a"  // jace vs chandra
-                 } else if code == "dd1" {
+                } else if code == "dd1" {
                     keyruneCodes[code] = "e669"  // elves vs goblins
-                 } else if code == "pdtp" {
+                } else if code == "pdtp" {
                     keyruneCodes[code] = "e915"  // xbox media promo
-                 } else if code == "pdp12" {
+                } else if code == "pdp12" {
                     keyruneCodes[code] = "e60f"  // m13
-                 } else if code == "pdp13" {
+                } else if code == "pdp13" {
                     keyruneCodes[code] = "e610"  // m14
-                 } else if code == "pdp14" {
+                } else if code == "pdp14" {
                     keyruneCodes[code] = "e611"  // m15
-                 } else if code == "fbb" {
+                } else if code == "fbb" {
                     keyruneCodes[code] = "e603"  // revised / 3ed
-                 } else if code == "phuk" ||
+                } else if code == "phuk" ||
                     code == "psal" {
                     keyruneCodes[code] = "e909"  // Salvat 2005
-                 } else if code == "phpr" ||
+                } else if code == "phpr" ||
                     code == "pbok" {
                     keyruneCodes[code] = "e68a"  // book inserts
-                 } else if code == "pi13" ||
+                } else if code == "pi13" ||
                     code == "pi14" {
                     keyruneCodes[code] = "e92c"  // IDW promo
-                 } else if code == "cei" {
+                } else if code == "cei" {
                     keyruneCodes[code] = "e927"  // cei
-                 } else if code == "pmoa" ||
+                } else if code == "pmoa" ||
                     code == "prm" {
                     keyruneCodes[code] = "e91b"  // magic online
-                 } else if code == "td0" {
+                } else if code == "td0" {
                     keyruneCodes[code] = "e91e"  // magic online deck series
-                 } else if code == "ren" ||
+                } else if code == "ren" ||
                     code == "rin" {
                     keyruneCodes[code] = "e917"  // rennaisance
-                 } else if code == "pmps07" ||
+                } else if code == "pmps07" ||
                     code == "pmps08" ||
                     code == "pmps09" ||
                     code == "pmps10" ||
                     code == "pmps11" {
                     keyruneCodes[code] = "e919"  // magic premiere shop
-                 } else if code == "ps11" {
+                } else if code == "ps11" {
                     keyruneCodes[code] = "e90a"  // Salvat 2011
-                 } else if code == "sum" {
+                } else if code == "sum" {
                     keyruneCodes[code] = "e605"  // Summer Magic / Edgar
-                 }
+                } else if code == "peld" ||      // Throne of Eldraine
+                    code == "teld" {
+                    keyruneCodes[code] = "e95e"
+                } else if code == "peld" ||      // Throne of Eldraine
+                    code == "teld" {
+                    keyruneCodes[code] = "e95e"
+                }
             }
         }
             

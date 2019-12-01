@@ -40,10 +40,10 @@ class Maintainer: NSObject {
             var promises = [()->Promise<(data: Data, response: URLResponse)>]()
             
 //            // sets
-//            promises.append(contentsOf: filterSetBlocks(array: setsArray))
-//            promises.append(contentsOf: filterSetTypes(array: setsArray))
-//            promises.append(contentsOf: filterSets(array: setsArray))
-//            promises.append(contentsOf: createKeyrunePromises(array: setsArray))
+            promises.append(contentsOf: filterSetBlocks(array: setsArray))
+            promises.append(contentsOf: filterSetTypes(array: setsArray))
+            promises.append(contentsOf: filterSets(array: setsArray))
+            promises.append(contentsOf: createKeyrunePromises(array: setsArray))
 //
 //            // cards
             promises.append(contentsOf: filterArtists(array: cardsArray))
