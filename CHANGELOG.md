@@ -1,4 +1,4 @@
-**Version 6.0.2** @ 14.12.2019
+**Version 6.0.3** @ 14.12.2019
 - Added Swift Package Manager.
 
 **Version 6.0.1** @ 27.11.2019
