@@ -97,8 +97,8 @@ class Maintainer: NSObject {
     }
     
     private func createPGData() -> Promise<Void> {
-        return createVariationsPromise()
-//        return Promise { seal in
+//        return createVariationsPromise()
+        return Promise { seal in
 //            let setsArray = setsData()
 //            let cardsArray = cardsData()
 //            let rulingsArray = rulingsData()
@@ -149,8 +149,8 @@ class Maintainer: NSObject {
 //            promises.append(self.createScryfallPromise)
 //
 //            execInSequence(promises: promises)
-//            seal.fulfill(())
-//        }
+            seal.fulfill(())
+        }
     }
     
     // MARK: Utility methods
