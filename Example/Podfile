@@ -22,3 +22,7 @@ end
 target 'ManaKit_Tests' do
     default_pods
 end
+
+target 'ManaKit CLI' do
+    default_pods
+end

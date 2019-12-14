@@ -36,7 +36,7 @@
 		8B3799FA23A5716D005D0171 /* SwiftKueryPostgreSQL in Frameworks */ = {isa = PBXBuildFile; productRef = 8B3799F923A5716D005D0171 /* SwiftKueryPostgreSQL */; };
 		8B379A3C23A57DFE005D0171 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B379A3B23A57DFD005D0171 /* Images.xcassets */; };
 		8B379A8123A58568005D0171 /* Pods_ManaKit_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3641FE50D690CB6D714FAE9 /* Pods_ManaKit_Example.framework */; };
-		8B379A8223A58568005D0171 /* Pods_ManaKit_Example.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D3641FE50D690CB6D714FAE9 /* Pods_ManaKit_Example.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		8B379A8223A58568005D0171 /* Pods_ManaKit_Example.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D3641FE50D690CB6D714FAE9 /* Pods_ManaKit_Example.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8B379A9C23A58643005D0171 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B379A9B23A58643005D0171 /* main.swift */; };
 		8B379AA223A58691005D0171 /* SwiftKuery in Frameworks */ = {isa = PBXBuildFile; productRef = 8B379AA123A58691005D0171 /* SwiftKuery */; };
 		8B379AA423A58691005D0171 /* SwiftKueryPostgreSQL in Frameworks */ = {isa = PBXBuildFile; productRef = 8B379AA323A58691005D0171 /* SwiftKueryPostgreSQL */; };
@@ -50,10 +50,11 @@
 		8B379AD223A5880A005D0171 /* Maintainer+CardsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B379AC923A5880A005D0171 /* Maintainer+CardsPostgres.swift */; };
 		8B379AD323A5880A005D0171 /* Maintainer+Sets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B379ACA23A5880A005D0171 /* Maintainer+Sets.swift */; };
 		8B379AD423A5880A005D0171 /* Maintainer+Rulings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B379ACB23A5880A005D0171 /* Maintainer+Rulings.swift */; };
-		8B379ADF23A58989005D0171 /* Kanna in Frameworks */ = {isa = PBXBuildFile; productRef = 8B379ADE23A58989005D0171 /* Kanna */; };
-		8B379AE123A58989005D0171 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8B379AE023A58989005D0171 /* PromiseKit */; };
-		8B379AE323A58DAE005D0171 /* ManaKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B379AE223A58DAE005D0171 /* ManaKit.framework */; };
-		8B379AE423A58DAE005D0171 /* ManaKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8B379AE223A58DAE005D0171 /* ManaKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8B379AEC23A5933D005D0171 /* Kanna in Frameworks */ = {isa = PBXBuildFile; productRef = 8B379AEB23A5933D005D0171 /* Kanna */; };
+		8B379AF123A59574005D0171 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 8B379AF023A59574005D0171 /* SDWebImage */; };
+		8B379AF223A5979F005D0171 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B379AC123A587DF005D0171 /* BaseViewController.swift */; };
+		8B379AF423A59847005D0171 /* ManaKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8B379AF323A59847005D0171 /* ManaKit */; };
+		A55212ED0DA3AD51B24F0B35 /* Pods_ManaKit_CLI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C1846A94DC7BA12434CB0E8 /* Pods_ManaKit_CLI.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,17 +88,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
-		8B379AE523A58DAE005D0171 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				8B379AE423A58DAE005D0171 /* ManaKit.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -109,6 +99,7 @@
 		214271945F84D9EB3A6B8CF1 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		2D89F6B01AAE12E2ACA0565E /* Pods-ManaKit_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit_Example/Pods-ManaKit_Example.release.xcconfig"; sourceTree = "<group>"; };
 		312A945215A5EFF14E33E17E /* Pods-ManaKit_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit_Example/Pods-ManaKit_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		4C1846A94DC7BA12434CB0E8 /* Pods_ManaKit_CLI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ManaKit_CLI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD01AFB9204008FA782 /* ManaKit_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ManaKit_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -156,7 +147,9 @@
 		8B379AD523A58822005D0171 /* Kanna.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Kanna.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B379AE223A58DAE005D0171 /* ManaKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ManaKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		933905FD05F69001F1434BA3 /* Pods_ManaKit_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ManaKit_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A3CF7BE620061841B7E3CC50 /* Pods-ManaKit CLI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit CLI.release.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit CLI/Pods-ManaKit CLI.release.xcconfig"; sourceTree = "<group>"; };
 		D3641FE50D690CB6D714FAE9 /* Pods_ManaKit_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ManaKit_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		ECAE5C28537E82FF0C45FA7A /* Pods-ManaKit CLI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit CLI.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit CLI/Pods-ManaKit CLI.debug.xcconfig"; sourceTree = "<group>"; };
 		F97030AAD27F370F0BC2219A /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -184,11 +177,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B379AE123A58989005D0171 /* PromiseKit in Frameworks */,
+				8B379AF423A59847005D0171 /* ManaKit in Frameworks */,
+				8B379AF123A59574005D0171 /* SDWebImage in Frameworks */,
 				8B379AA223A58691005D0171 /* SwiftKuery in Frameworks */,
-				8B379AE323A58DAE005D0171 /* ManaKit.framework in Frameworks */,
-				8B379ADF23A58989005D0171 /* Kanna in Frameworks */,
 				8B379AA423A58691005D0171 /* SwiftKueryPostgreSQL in Frameworks */,
+				8B379AEC23A5933D005D0171 /* Kanna in Frameworks */,
+				A55212ED0DA3AD51B24F0B35 /* Pods_ManaKit_CLI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -236,6 +230,8 @@
 				2D89F6B01AAE12E2ACA0565E /* Pods-ManaKit_Example.release.xcconfig */,
 				1F8A6A3006839651BED01AC8 /* Pods-ManaKit_Tests.debug.xcconfig */,
 				88F0F057FC286A584E82D4CE /* Pods-ManaKit_Tests.release.xcconfig */,
+				ECAE5C28537E82FF0C45FA7A /* Pods-ManaKit CLI.debug.xcconfig */,
+				A3CF7BE620061841B7E3CC50 /* Pods-ManaKit CLI.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -342,6 +338,7 @@
 				8B379A4C23A58175005D0171 /* ManaKit.framework */,
 				D3641FE50D690CB6D714FAE9 /* Pods_ManaKit_Example.framework */,
 				933905FD05F69001F1434BA3 /* Pods_ManaKit_Tests.framework */,
+				4C1846A94DC7BA12434CB0E8 /* Pods_ManaKit_CLI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -398,8 +395,6 @@
 			dependencies = (
 			);
 			name = ManaKit_Example;
-			packageProductDependencies = (
-			);
 			productName = ManaKit;
 			productReference = 607FACD01AFB9204008FA782 /* ManaKit_Example.app */;
 			productType = "com.apple.product-type.application";
@@ -432,10 +427,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8B379A9D23A58643005D0171 /* Build configuration list for PBXNativeTarget "ManaKit CLI" */;
 			buildPhases = (
+				1AD837ACD76433EA053B3C9F /* [CP] Check Pods Manifest.lock */,
 				8B379A9523A58643005D0171 /* Sources */,
 				8B379A9623A58643005D0171 /* Frameworks */,
 				8B379A9723A58643005D0171 /* CopyFiles */,
-				8B379AE523A58DAE005D0171 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -445,8 +440,9 @@
 			packageProductDependencies = (
 				8B379AA123A58691005D0171 /* SwiftKuery */,
 				8B379AA323A58691005D0171 /* SwiftKueryPostgreSQL */,
-				8B379ADE23A58989005D0171 /* Kanna */,
-				8B379AE023A58989005D0171 /* PromiseKit */,
+				8B379AEB23A5933D005D0171 /* Kanna */,
+				8B379AF023A59574005D0171 /* SDWebImage */,
+				8B379AF323A59847005D0171 /* ManaKit */,
 			);
 			productName = "ManaKit CLI";
 			productReference = 8B379A9923A58643005D0171 /* ManaKit CLI */;
@@ -459,7 +455,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1120;
-				LastUpgradeCheck = 1000;
+				LastUpgradeCheck = 1120;
 				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
@@ -492,6 +488,8 @@
 				8B3799F423A57108005D0171 /* XCRemoteSwiftPackageReference "Swift-Kuery-PostgreSQL" */,
 				8B379AD823A588FD005D0171 /* XCRemoteSwiftPackageReference "Kanna" */,
 				8B379ADB23A58931005D0171 /* XCRemoteSwiftPackageReference "PromiseKit" */,
+				8B379AE623A5926F005D0171 /* XCRemoteSwiftPackageReference "ManaKit" */,
+				8B379AEF23A59574005D0171 /* XCRemoteSwiftPackageReference "SDWebImage" */,
 			);
 			productRefGroup = 607FACD11AFB9204008FA782 /* Products */;
 			projectDirPath = "";
@@ -538,6 +536,28 @@
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-ManaKit_Example-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		1AD837ACD76433EA053B3C9F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ManaKit CLI-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -623,6 +643,7 @@
 			files = (
 				8B2F2F9B2393475F005DEB46 /* SetsViewModel.swift in Sources */,
 				8B2F2F9A23934746005DEB46 /* SetsViewController.swift in Sources */,
+				8B379AF223A5979F005D0171 /* BaseViewController.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
 				8B219CC52391722400593E19 /* SetViewModel.swift in Sources */,
 				8B2F2F96239344D5005DEB46 /* CardViewModel.swift in Sources */,
@@ -898,13 +919,16 @@
 		};
 		8B379A9E23A58643005D0171 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = ECAE5C28537E82FF0C45FA7A /* Pods-ManaKit CLI.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -922,13 +946,16 @@
 		};
 		8B379A9F23A58643005D0171 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A3CF7BE620061841B7E3CC50 /* Pods-ManaKit CLI.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "$(SRCROOT)/ManaKit/Info.plist";
@@ -1015,6 +1042,22 @@
 				minimumVersion = 6.12.0;
 			};
 		};
+		8B379AE623A5926F005D0171 /* XCRemoteSwiftPackageReference "ManaKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/vito-royeca/ManaKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.2;
+			};
+		};
+		8B379AEF23A59574005D0171 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.4.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1038,15 +1081,20 @@
 			package = 8B3799F423A57108005D0171 /* XCRemoteSwiftPackageReference "Swift-Kuery-PostgreSQL" */;
 			productName = SwiftKueryPostgreSQL;
 		};
-		8B379ADE23A58989005D0171 /* Kanna */ = {
+		8B379AEB23A5933D005D0171 /* Kanna */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8B379AD823A588FD005D0171 /* XCRemoteSwiftPackageReference "Kanna" */;
 			productName = Kanna;
 		};
-		8B379AE023A58989005D0171 /* PromiseKit */ = {
+		8B379AF023A59574005D0171 /* SDWebImage */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 8B379ADB23A58931005D0171 /* XCRemoteSwiftPackageReference "PromiseKit" */;
-			productName = PromiseKit;
+			package = 8B379AEF23A59574005D0171 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+		8B379AF323A59847005D0171 /* ManaKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B379AE623A5926F005D0171 /* XCRemoteSwiftPackageReference "ManaKit" */;
+			productName = ManaKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
