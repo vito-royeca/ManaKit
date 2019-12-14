@@ -18,23 +18,23 @@ extension CMComponent {
 
     @NSManaged public var name: String?
     @NSManaged public var nameSection: String?
-    @NSManaged public var cardComponentParts: NSSet?
+    @NSManaged public var componentParts: NSSet?
 
 }
 
 // MARK: Generated accessors for cardComponentParts
 extension CMComponent {
 
-    @objc(addCardComponentPartsObject:)
-    @NSManaged public func addToCardComponentParts(_ value: CMCardComponentPart)
+    @objc(addComponentPartsObject:)
+    @NSManaged public func addToComponentParts(_ value: CMCardComponentPart)
 
-    @objc(removeCardComponentPartsObject:)
-    @NSManaged public func removeFromCardComponentParts(_ value: CMCardComponentPart)
+    @objc(removeComponentPartsObject:)
+    @NSManaged public func removeFromComponentParts(_ value: CMCardComponentPart)
 
-    @objc(addCardComponentParts:)
-    @NSManaged public func addToCardComponentParts(_ values: NSSet)
+    @objc(addComponentParts:)
+    @NSManaged public func addToComponentParts(_ values: NSSet)
 
-    @objc(removeCardComponentParts:)
-    @NSManaged public func removeFromCardComponentParts(_ values: NSSet)
+    @objc(removeComponentParts:)
+    @NSManaged public func removeFromComponentParts(_ values: NSSet)
 
 }

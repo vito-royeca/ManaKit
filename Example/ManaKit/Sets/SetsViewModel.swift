@@ -15,20 +15,12 @@ class SetsViewModel: BaseViewModel {
     override init() {
         super.init()
         
-        entitiyName = String(describing: CMSet.self)
+        entityName = String(describing: CMSet.self)
         sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: false)]
         sectionName = "myYearSection"
     }
 
     // MARK: Overrides
-    override func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
-        let urlString = "\(ManaKit.Constants.APIURL)/sets"
-        
-        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
-                                                        httpMethod: "GET",
-                                                        httpBody: nil)
-    }
-    
     override func composePredicate() -> NSPredicate? {
         let count = self.queryString.count
         var predicate: NSPredicate?
@@ -45,6 +37,14 @@ class SetsViewModel: BaseViewModel {
     
     override func composeFetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
         return CMSet.fetchRequest()
+    }
+    
+    override func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
+        let urlString = "\(ManaKit.Constants.APIURL)/sets"
+        
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "GET",
+                                                        httpBody: nil)
     }
 }
 

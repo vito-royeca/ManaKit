@@ -219,6 +219,14 @@ extension Maintainer {
                                                         httpBody: httpBody)
     }
     
+    func createDeleteFacesPromise() -> Promise<(data: Data, response: URLResponse)> {
+        let urlString = "\(ManaKit.Constants.APIURL)/cardfaces"
+        
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "DELETE",
+                                                        httpBody: nil)
+    }
+    
     func createFacePromise(card: String, cardFace: String) -> Promise<(data: Data, response: URLResponse)> {
         
         let httpBody = """
@@ -230,6 +238,53 @@ extension Maintainer {
         return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
                                                         httpMethod: "POST",
                                                         httpBody: httpBody)
+    }
+    
+    func createDeletePartsPromise() -> Promise<(data: Data, response: URLResponse)> {
+        let urlString = "\(ManaKit.Constants.APIURL)/cardparts"
+        
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "DELETE",
+                                                        httpBody: nil)
+    }
+    
+    func createPartPromise(card: String, component: String, cardPart: String) -> Promise<(data: Data, response: URLResponse)> {
+        let capName = capitalize(string: displayFor(name: component))
+        
+        let httpBody = """
+                         cmcard=\(card)&
+                         cmcomponent=\(capName)&
+                         cmcard_part=\(cardPart)
+                         """
+        let urlString = "\(ManaKit.Constants.APIURL)/cardparts"
+        
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "POST",
+                                                        httpBody: httpBody)
+    }
+    
+    func createOtherPrintingsPromise() -> Promise<(data: Data, response: URLResponse)> {
+        let urlString = "\(ManaKit.Constants.APIURL)/cardotherprintings"
+        
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "POST",
+                                                        httpBody: nil)
+    }
+    
+    func createOtherLanguagesPromise() -> Promise<(data: Data, response: URLResponse)> {
+        let urlString = "\(ManaKit.Constants.APIURL)/cardotherlanguages"
+        
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "POST",
+                                                        httpBody: nil)
+    }
+    
+    func createVariationsPromise() -> Promise<(data: Data, response: URLResponse)> {
+        let urlString = "\(ManaKit.Constants.APIURL)/cardvariations"
+        
+        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+                                                        httpMethod: "POST",
+                                                        httpBody: nil)
     }
     
     func createCardPromise(dict: [String: Any]) -> Promise<(data: Data, response: URLResponse)> {
@@ -335,21 +390,6 @@ extension Maintainer {
                 .replacingOccurrences(of: "[", with: "{")
                 .replacingOccurrences(of: "]", with: "}")
         }
-        var cmparts = "{}"
-        if let parts = dict["all_parts"] as? [String: String] {
-            var newParts = [String: Any]()
-            for (k,v) in parts {
-                newParts["cmcard"] = id
-                if k == "component" {
-                    newParts["cmcomponent"] = capitalize(string: displayFor(name: v))
-                } else if k == "id" {
-                    newParts["cmcard_part"] = v
-                }
-            }
-            cmparts = "\(newParts)"
-                .replacingOccurrences(of: "[", with: "{")
-                .replacingOccurrences(of: "]", with: "}")
-        }
         let type_line = dict["type_line"] ?? "NULL"
         let printed_type_line = dict["printed_type_line"] ?? "NULL"
         var cmcardtype_subtypes = "{}"
@@ -426,7 +466,6 @@ extension Maintainer {
             cmcolor_identities=\(cmcolor_identities)&
             cmcolor_indicators=\(cmcolor_indicators)&
             cmlegalities=\(cmlegalities)&
-            cmparts=\(cmparts)&
             type_line=\(type_line)&
             printed_type_line=\(printed_type_line)&
             cmcardtype_subtypes=\(cmcardtype_subtypes)&

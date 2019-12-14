@@ -617,6 +617,38 @@ extension Maintainer {
         return promises
     }
     
+    func filterParts(array: [[String: Any]]) -> [()->Promise<(data: Data, response: URLResponse)>] {
+        var promises = [()->Promise<(data: Data, response: URLResponse)>]()
+        var cardPartData = [[String: String]]()
+        
+        for dict in array {
+            if let id = dict["id"] as? String,
+                let parts = dict["all_parts"] as? [[String: Any]] {
+             
+                for i in 0...parts.count-1 {
+                    let part = parts[i]
+                    
+                    if let partId = part["id"] as? String,
+                        let component = part["component"] as? String {
+                        cardPartData.append(["cmcard": id,
+                                             "cmcomponent": component,
+                                             "cmcard_part": partId])
+                    }
+                }
+            }
+        }
+        
+        promises.append(contentsOf: cardPartData.map { part in
+            return {
+                return self.createPartPromise(card: part["cmcard"] ?? "null",
+                                              component: part["cmcomponent"] ?? "null",
+                                              cardPart: part["cmcard_part"] ?? "null")
+            }
+        })
+        
+        return promises
+    }
+
     private func extractTypesFrom(_ typeLine: String) -> [[String: String]]  {
         var filteredTypes = [[String: String]]()
         let emdash = "\u{2014}"

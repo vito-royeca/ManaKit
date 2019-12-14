@@ -28,7 +28,7 @@ extension Maintainer {
                                                         httpBody: httpBody)
     }
     
-    func createDeleteRulingPromise() -> Promise<(data: Data, response: URLResponse)> {
+    func createDeleteRulingsPromise() -> Promise<(data: Data, response: URLResponse)> {
         let urlString = "\(ManaKit.Constants.APIURL)/rulings"
         
         return ManaKit.sharedInstance.createNodePromise(urlString: urlString,

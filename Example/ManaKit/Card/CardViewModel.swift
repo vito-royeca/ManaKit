@@ -19,7 +19,7 @@ class CardViewModel: BaseViewModel {
         super.init()
         _id = id
         
-        entitiyName = String(describing: CMCard.self)
+        entityName = String(describing: CMCard.self)
         sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
     }
     
@@ -30,7 +30,7 @@ class CardViewModel: BaseViewModel {
         }
         let objectFinder = ["id": id] as [String : AnyObject]
         
-        return ManaKit.sharedInstance.willFetchCache(entitiyName,
+        return ManaKit.sharedInstance.willFetchCache(entityName,
                                                      objectFinder: objectFinder)
     }
     
@@ -40,7 +40,7 @@ class CardViewModel: BaseViewModel {
         }
         let objectFinder = ["id": id] as [String : AnyObject]
         
-        return ManaKit.sharedInstance.deleteCache(entitiyName,
+        return ManaKit.sharedInstance.deleteCache(entityName,
                                                   objectFinder: objectFinder)
     }
     

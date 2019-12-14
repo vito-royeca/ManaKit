@@ -6,7 +6,6 @@
 //  Copyright © 2018 CocoaPods. All rights reserved.
 //
 
-import Foundation
 import ManaKit
 import PromiseKit
 import SSZipArchive
@@ -32,20 +31,77 @@ class Maintainer: NSObject {
     var dateStart = Date()
     
     // MARK: Custom methods
-    func createPGData() -> Promise<Void> {
+    func checkServerInfo() {
+        let viewModel = ServerInfoViewModel()
+        
+        firstly {
+            viewModel.fetchRemoteData()
+        }.compactMap { (data, result) in
+            try JSONSerialization.jsonObject(with: data) as? [[String: Any]]
+        }.then { data in
+            viewModel.saveLocalData(data: data)
+        }.then {
+            viewModel.fetchLocalData()
+        }.done {
+            if let serverInfo = viewModel.allObjects()?.first as? ServerInfo {
+                if serverInfo.scryfallVersion != ManaKit.Constants.ScryfallDate {
+                    viewModel.deleteAllCache()
+                    self.updateDatabase()
+                } else {
+                    self.endCheckServerInfo()
+                }
+            }
+        }.catch { error in
+            print(error)
+        }
+    }
+
+    private func updateDatabase() {
+        startActivity(name: "Create Data")
+        
+        firstly {
+            fetchSetsData()
+        }.then {
+            self.fetchSetSymbols()
+        }.then {
+            self.fetchCardsData()
+        }.then {
+            self.fetchRulings()
+        }.then {
+            self.createPGData()
+        }.done {
+            self.endActivity()
+            self.endCheckServerInfo()
+        }.catch { error in
+            print(error)
+        }
+    }
+
+    private func endCheckServerInfo() {
+        ManaKit.sharedInstance.setupResources()
+        ManaKit.sharedInstance.configureTcgPlayer(partnerKey: "ManaGuide",
+                                                  publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720",
+                                                  privateKey: "C018EF82-2A4D-4F7A-A785-04ADEBF2A8E5")
+
+        NotificationCenter.default.post(name: Notification.Name(rawValue: MaintainerKeys.MaintainanceDone),
+                                        object: nil,
+                                        userInfo: nil)
+    }
+    
+    private func createPGData() -> Promise<Void> {
         return Promise { seal in
             let setsArray = setsData()
             let cardsArray = cardsData()
             let rulingsArray = rulingsData()
             var promises = [()->Promise<(data: Data, response: URLResponse)>]()
             
-//            // sets
+            // sets
             promises.append(contentsOf: filterSetBlocks(array: setsArray))
             promises.append(contentsOf: filterSetTypes(array: setsArray))
             promises.append(contentsOf: filterSets(array: setsArray))
             promises.append(contentsOf: createKeyrunePromises(array: setsArray))
-//
-//            // cards
+
+            // cards
             promises.append(contentsOf: filterArtists(array: cardsArray))
             promises.append(contentsOf: filterRarities(array: cardsArray))
             promises.append(contentsOf: filterLanguages(array: cardsArray))
@@ -63,17 +119,25 @@ class Maintainer: NSObject {
                     return self.createCardPromise(dict: dict)
                 }
             })
+
+            // parts
+            promises.append(createDeletePartsPromise)
+            promises.append(contentsOf: filterParts(array: cardsArray))
+
+            // faces
+            promises.append(createDeleteFacesPromise)
             promises.append(contentsOf: filterFaces(array: cardsArray))
             
             // rulings
-            promises.append(self.createDeleteRulingPromise)
+            promises.append(createDeleteRulingsPromise)
             promises.append(contentsOf: rulingsArray.map { dict in
                 return {
                     return self.createRulingPromise(dict: dict)
                 }
             })
-            
-            // test only
+
+            // server info
+            promises.append(self.createScryfallPromise)
             
             execInSequence(promises: promises)
             seal.fulfill(())

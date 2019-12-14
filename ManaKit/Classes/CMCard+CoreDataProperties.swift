@@ -58,7 +58,7 @@ extension CMCard {
     @NSManaged public var printedTypeLine: String?
     @NSManaged public var typeLine: String?
     @NSManaged public var artist: CMArtist?
-    @NSManaged public var cardFormatLegalities: NSSet?
+    @NSManaged public var formatLegalities: NSSet?
     @NSManaged public var colorIdentities: NSSet?
     @NSManaged public var colorIndicators: NSSet?
     @NSManaged public var colors: NSSet?
@@ -69,33 +69,30 @@ extension CMCard {
     @NSManaged public var layout: CMLayout?
     @NSManaged public var otherLanguages: NSSet?
     @NSManaged public var otherPrintings: NSSet?
-    @NSManaged public var part: CMCard?
-    @NSManaged public var parts: NSSet?
     @NSManaged public var rarity: CMRarity?
     @NSManaged public var set: CMSet?
     @NSManaged public var variations: NSSet?
     @NSManaged public var watermark: CMWatermark?
     @NSManaged public var subtypes: NSSet?
     @NSManaged public var supertypes: NSSet?
-    @NSManaged public var cardComponentParts: NSSet?
-    @NSManaged public var cardComponents: NSSet?
+    @NSManaged public var componentParts: NSSet?
 
 }
 
-// MARK: Generated accessors for cardFormatLegalities
+// MARK: Generated accessors for formatLegalities
 extension CMCard {
 
-    @objc(addCardFormatLegalitiesObject:)
-    @NSManaged public func addToCardFormatLegalities(_ value: CMCardFormatLegality)
+    @objc(addFormatLegalitiesObject:)
+    @NSManaged public func addToFormatLegalities(_ value: CMCardFormatLegality)
 
-    @objc(removeCardFormatLegalitiesObject:)
-    @NSManaged public func removeFromCardFormatLegalities(_ value: CMCardFormatLegality)
+    @objc(removeFormatLegalitiesObject:)
+    @NSManaged public func removeFromFormatLegalities(_ value: CMCardFormatLegality)
 
-    @objc(addCardFormatLegalities:)
-    @NSManaged public func addToCardFormatLegalities(_ values: NSSet)
+    @objc(addFormatLegalities:)
+    @NSManaged public func addToFormatLegalities(_ values: NSSet)
 
-    @objc(removeCardFormatLegalities:)
-    @NSManaged public func removeFromCardFormatLegalities(_ values: NSSet)
+    @objc(removeFormatLegalities:)
+    @NSManaged public func removeFromFormatLegalities(_ values: NSSet)
 
 }
 
@@ -201,23 +198,6 @@ extension CMCard {
 
 }
 
-// MARK: Generated accessors for parts
-extension CMCard {
-
-    @objc(addPartsObject:)
-    @NSManaged public func addToParts(_ value: CMCard)
-
-    @objc(removePartsObject:)
-    @NSManaged public func removeFromParts(_ value: CMCard)
-
-    @objc(addParts:)
-    @NSManaged public func addToParts(_ values: NSSet)
-
-    @objc(removeParts:)
-    @NSManaged public func removeFromParts(_ values: NSSet)
-
-}
-
 // MARK: Generated accessors for variations
 extension CMCard {
 
@@ -269,7 +249,7 @@ extension CMCard {
 
 }
 
-// MARK: Generated accessors for cardComponentParts
+// MARK: Generated accessors for CardComponentParts
 extension CMCard {
 
     @objc(addCardComponentPartsObject:)
@@ -282,23 +262,23 @@ extension CMCard {
     @NSManaged public func addToCardComponentParts(_ values: NSSet)
 
     @objc(removeCardComponentParts:)
-    @NSManaged public func removeFromCardComponentParts(_ values: NSSet)
+    @NSManaged public func removeCardComponentParts(_ values: NSSet)
 
 }
 
-// MARK: Generated accessors for cardComponents
+// MARK: Generated accessors for PartComponentParts
 extension CMCard {
 
-    @objc(addCardComponentsObject:)
-    @NSManaged public func addToCardComponents(_ value: CMCardComponentPart)
+    @objc(addPartComponentPartsObject:)
+    @NSManaged public func addToPartComponentParts(_ value: CMCardComponentPart)
 
-    @objc(removeCardComponentsObject:)
-    @NSManaged public func removeFromCardComponents(_ value: CMCardComponentPart)
+    @objc(removePartComponentPartsObject:)
+    @NSManaged public func removeFromPartComponentParts(_ value: CMCardComponentPart)
 
-    @objc(addCardComponents:)
-    @NSManaged public func addToCardComponents(_ values: NSSet)
+    @objc(addPartComponentParts:)
+    @NSManaged public func addToPartComponentParts(_ values: NSSet)
 
-    @objc(removeCardComponents:)
-    @NSManaged public func removeFromCardComponents(_ values: NSSet)
+    @objc(removePartComponentParts:)
+    @NSManaged public func removePartComponentParts(_ values: NSSet)
 
 }

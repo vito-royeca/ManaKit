@@ -6,14 +6,13 @@
 //  Copyright © 2019 CocoaPods. All rights reserved.
 //
 
-import UIKit
 import CoreData
 import ManaKit
 import PromiseKit
 
 class BaseViewModel: NSObject {
     // MARK: public variables
-    var entitiyName = ""
+    var entityName = ""
     var sortDescriptors: [NSSortDescriptor]?
     var sectionName: String?
     var title: String?
@@ -94,13 +93,23 @@ class BaseViewModel: NSObject {
     }
     
     func willFetchCache() -> Bool {
-        return ManaKit.sharedInstance.willFetchCache(entitiyName,
+        return ManaKit.sharedInstance.willFetchCache(entityName,
                                                      objectFinder: nil)
     }
     
     func deleteCache() {
-        return ManaKit.sharedInstance.deleteCache(entitiyName,
-                                                   objectFinder: nil)
+        ManaKit.sharedInstance.deleteCache(entityName,
+                                           objectFinder: nil)
+    }
+    
+    func deleteAllCache() {
+        let entities = [String(describing: CMSet.self),
+                        String(describing: CMCard.self)]
+        
+        for entity in entities {
+            ManaKit.sharedInstance.deleteCache(entity,
+                                               objectFinder: nil)
+        }
     }
     
     func composePredicate() -> NSPredicate? {
@@ -112,7 +121,7 @@ class BaseViewModel: NSObject {
     }
 
     func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
-        let urlString = "\(ManaKit.Constants.APIURL)/sets"
+        let urlString = "\(ManaKit.Constants.APIURL)/"
         
         return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
                                                         httpMethod: "GET",
@@ -125,7 +134,7 @@ class BaseViewModel: NSObject {
                 seal.fulfill(())
             }
             ManaKit.sharedInstance.dataStack?.sync(data,
-                                                   inEntityNamed: entitiyName,
+                                                   inEntityNamed: entityName,
                                                    predicate: composePredicate(),
                                                    operations: [.all],
                                                    completion: completion)
@@ -183,7 +192,7 @@ class BaseViewModel: NSObject {
             request = fetchRequest
         } else {
             // Create a default fetchRequest
-            request = NSFetchRequest<NSFetchRequestResult>(entityName: entitiyName)
+            request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
             request!.predicate = composePredicate()
             request!.sortDescriptors = sortDescriptors
         }

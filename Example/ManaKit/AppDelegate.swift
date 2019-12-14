@@ -21,46 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
 
-//        if ManaKit.sharedInstance.needsUpgrade() {
-            // Create database
-            let maintainer = Maintainer()
-            maintainer.startActivity(name: "Create Data")
-
-            firstly {
-                maintainer.fetchSetsData()
-            }.then {
-                maintainer.fetchSetSymbols()
-            }.then {
-                maintainer.fetchCardsData()
-            }.then {
-                maintainer.fetchRulings()
-            }.then {
-                maintainer.createPGData()
-            }.done {
-                maintainer.endActivity()
-//                UserDefaults.standard.set(ManaKit.Constants.ScryfallDate,
-//                                          forKey: ManaKit.UserDefaultsKeys.ScryfallDate)
-//                UserDefaults.standard.synchronize()
-
-                ManaKit.sharedInstance.setupResources()
-                ManaKit.sharedInstance.configureTcgPlayer(partnerKey: "ManaGuide",
-                                                          publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720",
-                                                          privateKey: "C018EF82-2A4D-4F7A-A785-04ADEBF2A8E5")
-
-                NotificationCenter.default.post(name: Notification.Name(rawValue: MaintainerKeys.MaintainanceDone),
-                                                object: nil,
-                                                userInfo: nil)
-            }.catch { error in
-                print(error)
-            }
-//        } else {
-//            // Normal run
-//            ManaKit.sharedInstance.setupResources()
-//            ManaKit.sharedInstance.configureTcgPlayer(partnerKey: "ManaGuide",
-//                                                      publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720",
-//                                                      privateKey: "C018EF82-2A4D-4F7A-A785-04ADEBF2A8E5")
-//        }
-        ManaKit.sharedInstance.setupResources()
+        let maintainer = Maintainer()
+        maintainer.checkServerInfo()
+        
         return true
     }
 

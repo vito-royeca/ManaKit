@@ -13,18 +13,6 @@ import SSZipArchive
 import Sync
 
 extension ManaKit {
-    public func needsUpgrade() -> Bool {
-        var willUpgrade = true
-        
-        if let scryfallDate = UserDefaults.standard.string(forKey: UserDefaultsKeys.ScryfallDate) {
-            if scryfallDate == Constants.ScryfallDate {
-                willUpgrade = false
-            }
-        }
-        
-        return willUpgrade
-    }
-    
     public func willFetchCache(_ entityName: String, objectFinder: [String: AnyObject]?) -> Bool {
         var newObjectFinder = ["name": entityName]
         var query: String?
@@ -38,9 +26,9 @@ extension ManaKit {
             newObjectFinder["query"] = query
         }
 
-        if let dataCache = findObject(String(describing: DataCache.self),
+        if let dataCache = findObject(String(describing: LocalCache.self),
                                              objectFinder: newObjectFinder as [String : AnyObject],
-                                             createIfNotFound: true) as? DataCache {
+                                             createIfNotFound: true) as? LocalCache {
             
             if let dateUpdated = dataCache.dateUpdated {
                 if let diff = Calendar.current.dateComponents([.hour],
@@ -76,7 +64,7 @@ extension ManaKit {
             newObjectFinder["query"] = query
         }
         
-        deleteObject(String(describing: DataCache.self),
+        deleteObject(String(describing: LocalCache.self),
                      objectFinder: newObjectFinder as [String : AnyObject])
     }
     

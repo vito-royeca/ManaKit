@@ -24,8 +24,7 @@ public class ManaKit {
     }
 
     public enum Constants {
-        public static let ScryfallDate        = "2019-11-30 10:24 UTC"
-        public static let KeyruneVersion      = "3.6.2"
+        public static let ScryfallDate        = "2019-12-09 10:23 UTC"
         public static let EightEditionRelease = "2003-07-28"
         public static let ManaGuideDataAge    = 24 * 3 // 3 days
         public static let TcgPlayerApiVersion = "v1.19.0"
@@ -47,6 +46,7 @@ public class ManaKit {
     
     public enum UserDefaultsKeys {
         public static let ScryfallDate          = "ScryfallDate"
+        public static let KeyruneVersion        = "KeyruneVersion"
         public static let MTGJSONVersion        = "kMTGJSONVersion"
         public static let TcgPlayerToken        = "TcgPlayerToken"
         public static let TcgPlayerExpiration   = "TcgPlayerExpiration"

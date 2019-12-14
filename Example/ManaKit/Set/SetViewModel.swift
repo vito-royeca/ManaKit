@@ -21,7 +21,7 @@ class SetViewModel: BaseViewModel {
         _set = set
         _languageCode = languageCode
         
-        entitiyName = String(describing: CMCard.self)
+        entityName = String(describing: CMCard.self)
         sortDescriptors = [NSSortDescriptor(key: "name", ascending: true),
                            NSSortDescriptor(key: "collectorNumber", ascending: true)]
         sectionName = "myNameSection"
@@ -50,7 +50,7 @@ class SetViewModel: BaseViewModel {
         let objectFinder = ["setCode": setCode,
                             "languageCode": languageCode] as [String : AnyObject]
         
-        return ManaKit.sharedInstance.willFetchCache(entitiyName,
+        return ManaKit.sharedInstance.willFetchCache(entityName,
                                                      objectFinder: objectFinder)
     }
     
@@ -63,8 +63,8 @@ class SetViewModel: BaseViewModel {
         let objectFinder = ["setCode": setCode,
                             "languageCode": languageCode] as [String : AnyObject]
         
-        return ManaKit.sharedInstance.deleteCache(entitiyName,
-                                                  objectFinder: objectFinder)
+        ManaKit.sharedInstance.deleteCache(entityName,
+                                           objectFinder: objectFinder)
     }
     
     override func composePredicate() -> NSPredicate? {
