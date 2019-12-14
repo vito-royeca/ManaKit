@@ -9,6 +9,8 @@
 import ManaKit
 import PromiseKit
 import SSZipArchive
+import SwiftKuery
+import SwiftKueryPostgreSQL
 
 enum MaintainerKeys {
     static let MaintainanceDone        = "MaintainanceDone"
@@ -26,9 +28,15 @@ class Maintainer: NSObject {
     let tcgplayerAPIVersion = "v1.9.0"
     let tcgplayerAPILimit = 300
     var tcgplayerAPIToken = ""
+    let connection = PostgreSQLConnection(host: "192.168.1.183",
+                                          port: 5432,
+                                          options: [.databaseName("managuide_dev"),
+                                                    .userName("managuide"),
+                                                    .password("DarkC0nfidant")])
     
     // MARK: Variables
     var dateStart = Date()
+//    var connection: PGConnection?
     
     // MARK: Custom methods
     func checkServerInfo() {
@@ -89,59 +97,60 @@ class Maintainer: NSObject {
     }
     
     private func createPGData() -> Promise<Void> {
-        return Promise { seal in
-            let setsArray = setsData()
-            let cardsArray = cardsData()
-            let rulingsArray = rulingsData()
-            var promises = [()->Promise<(data: Data, response: URLResponse)>]()
-            
-            // sets
-            promises.append(contentsOf: filterSetBlocks(array: setsArray))
-            promises.append(contentsOf: filterSetTypes(array: setsArray))
-            promises.append(contentsOf: filterSets(array: setsArray))
-            promises.append(contentsOf: createKeyrunePromises(array: setsArray))
-
-            // cards
-            promises.append(contentsOf: filterArtists(array: cardsArray))
-            promises.append(contentsOf: filterRarities(array: cardsArray))
-            promises.append(contentsOf: filterLanguages(array: cardsArray))
-            promises.append(contentsOf: filterWatermarks(array: cardsArray))
-            promises.append(contentsOf: filterLayouts(array: cardsArray))
-            promises.append(contentsOf: filterFrames(array: cardsArray))
-            promises.append(contentsOf: filterFrameEffects(array: cardsArray))
-            promises.append(contentsOf: filterColors(array: cardsArray))
-            promises.append(contentsOf: filterFormats(array: cardsArray))
-            promises.append(contentsOf: filterLegalities(array: cardsArray))
-            promises.append(contentsOf: filterTypes(array: cardsArray))
-            promises.append(contentsOf: filterComponents(array: cardsArray))
-            promises.append(contentsOf: cardsArray.map { dict in
-                return {
-                    return self.createCardPromise(dict: dict)
-                }
-            })
-
-            // parts
-            promises.append(createDeletePartsPromise)
-            promises.append(contentsOf: filterParts(array: cardsArray))
-
-            // faces
-            promises.append(createDeleteFacesPromise)
-            promises.append(contentsOf: filterFaces(array: cardsArray))
-            
-            // rulings
-            promises.append(createDeleteRulingsPromise)
-            promises.append(contentsOf: rulingsArray.map { dict in
-                return {
-                    return self.createRulingPromise(dict: dict)
-                }
-            })
-
-            // server info
-            promises.append(self.createScryfallPromise)
-            
-            execInSequence(promises: promises)
-            seal.fulfill(())
-        }
+        return createVariationsPromise()
+//        return Promise { seal in
+//            let setsArray = setsData()
+//            let cardsArray = cardsData()
+//            let rulingsArray = rulingsData()
+//            var promises = [()->Promise<(data: Data, response: URLResponse)>]()
+//
+//            // sets
+//            promises.append(contentsOf: filterSetBlocks(array: setsArray))
+//            promises.append(contentsOf: filterSetTypes(array: setsArray))
+//            promises.append(contentsOf: filterSets(array: setsArray))
+//            promises.append(contentsOf: createKeyrunePromises(array: setsArray))
+//
+//            // cards
+//            promises.append(contentsOf: filterArtists(array: cardsArray))
+//            promises.append(contentsOf: filterRarities(array: cardsArray))
+//            promises.append(contentsOf: filterLanguages(array: cardsArray))
+//            promises.append(contentsOf: filterWatermarks(array: cardsArray))
+//            promises.append(contentsOf: filterLayouts(array: cardsArray))
+//            promises.append(contentsOf: filterFrames(array: cardsArray))
+//            promises.append(contentsOf: filterFrameEffects(array: cardsArray))
+//            promises.append(contentsOf: filterColors(array: cardsArray))
+//            promises.append(contentsOf: filterFormats(array: cardsArray))
+//            promises.append(contentsOf: filterLegalities(array: cardsArray))
+//            promises.append(contentsOf: filterTypes(array: cardsArray))
+//            promises.append(contentsOf: filterComponents(array: cardsArray))
+//            promises.append(contentsOf: cardsArray.map { dict in
+//                return {
+//                    return self.createCardPromise(dict: dict)
+//                }
+//            })
+//
+//            // parts
+//            promises.append(createDeletePartsPromise)
+//            promises.append(contentsOf: filterParts(array: cardsArray))
+//
+//            // faces
+//            promises.append(createDeleteFacesPromise)
+//            promises.append(contentsOf: filterFaces(array: cardsArray))
+//
+//            // rulings
+//            promises.append(createDeleteRulingsPromise)
+//            promises.append(contentsOf: rulingsArray.map { dict in
+//                return {
+//                    return self.createRulingPromise(dict: dict)
+//                }
+//            })
+//
+//            // server info
+//            promises.append(self.createScryfallPromise)
+//
+//            execInSequence(promises: promises)
+//            seal.fulfill(())
+//        }
     }
     
     // MARK: Utility methods

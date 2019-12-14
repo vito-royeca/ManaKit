@@ -9,6 +9,8 @@
 import Foundation
 import ManaKit
 import PromiseKit
+import SwiftKuery
+import SwiftKueryPostgreSQL
 
 extension Maintainer {
     func createArtistPromise(artist: String) -> Promise<(data: Data, response: URLResponse)> {
@@ -279,12 +281,28 @@ extension Maintainer {
                                                         httpBody: nil)
     }
     
-    func createVariationsPromise() -> Promise<(data: Data, response: URLResponse)> {
-        let urlString = "\(ManaKit.Constants.APIURL)/cardvariations"
-        
-        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
-                                                        httpMethod: "POST",
-                                                        httpBody: nil)
+    func createVariationsPromise() -> Promise<Void> {
+        return Promise { seal in
+            connection.connect() { result in
+                if !result.success {
+                    if let error = result.asError {
+                        seal.reject(error)
+                        return
+                    }
+                }
+                let callback = { (result: QueryResult) in
+                    if !result.success {
+                        if let error = result.asError {
+                            seal.reject(error)
+                            return
+                        }
+                    }
+                    seal.fulfill(())
+                }
+                self.connection.execute("select createOrUpdateVariations()",
+                                        onCompletion: callback)
+            }
+        }
     }
     
     func createCardPromise(dict: [String: Any]) -> Promise<(data: Data, response: URLResponse)> {

@@ -30,23 +30,23 @@ extension Maintainer {
                 print("Fetching Scryfall rulings... \(urlString)")
                 firstly {
                     URLSession.shared.dataTask(.promise, with:rq)
-                    }.compactMap {
+                }.compactMap {
                         try JSONSerialization.jsonObject(with: $0.data) as? [[String: Any]]
-                    }.done { json in
-                        if let outputStream = OutputStream(toFileAtPath: rulingsPath, append: false) {
-                            print("Writing Scryfall rulings... \(rulingsPath)")
-                            var error: NSError?
-                            outputStream.open()
-                            JSONSerialization.writeJSONObject(json,
-                                                              to: outputStream,
-                                                              options: JSONSerialization.WritingOptions(),
-                                                              error: &error)
-                            outputStream.close()
-                            print("Done!")
-                        }
-                        seal.fulfill(())
-                    }.catch { error in
-                        seal.reject(error)
+                }.done { json in
+                    if let outputStream = OutputStream(toFileAtPath: rulingsPath, append: false) {
+                        print("Writing Scryfall rulings... \(rulingsPath)")
+                        var error: NSError?
+                        outputStream.open()
+                        JSONSerialization.writeJSONObject(json,
+                                                          to: outputStream,
+                                                          options: JSONSerialization.WritingOptions(),
+                                                          error: &error)
+                        outputStream.close()
+                        print("Done!")
+                    }
+                    seal.fulfill(())
+                }.catch { error in
+                    seal.reject(error)
                 }
             } else {
                 seal.fulfill(())

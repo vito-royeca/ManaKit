@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -44,6 +44,10 @@
 		8B2F2F992393454E005DEB46 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2F2F972393454E005DEB46 /* BaseViewController.swift */; };
 		8B2F2F9A23934746005DEB46 /* SetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115151A81F1E221C0061C270 /* SetsViewController.swift */; };
 		8B2F2F9B2393475F005DEB46 /* SetsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D40BF2139BC70000D08FA /* SetsViewModel.swift */; };
+		8B3799F323A570F8005D0171 /* SwiftKuery in Frameworks */ = {isa = PBXBuildFile; productRef = 8B3799F223A570F8005D0171 /* SwiftKuery */; };
+		8B3799F623A57108005D0171 /* SwiftKueryPostgreSQL in Frameworks */ = {isa = PBXBuildFile; productRef = 8B3799F523A57108005D0171 /* SwiftKueryPostgreSQL */; };
+		8B3799F823A5716D005D0171 /* SwiftKuery in Frameworks */ = {isa = PBXBuildFile; productRef = 8B3799F723A5716D005D0171 /* SwiftKuery */; };
+		8B3799FA23A5716D005D0171 /* SwiftKueryPostgreSQL in Frameworks */ = {isa = PBXBuildFile; productRef = 8B3799F923A5716D005D0171 /* SwiftKueryPostgreSQL */; };
 		8B6F7C9E239C6570001A5C58 /* Maintainer+ServerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F7C9D239C6570001A5C58 /* Maintainer+ServerInfo.swift */; };
 		8B6F7C9F239C6570001A5C58 /* Maintainer+ServerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B6F7C9D239C6570001A5C58 /* Maintainer+ServerInfo.swift */; };
 		8BBEB8B02364FF440044BFC8 /* Maintainer+SetsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BBEB8AF2364FF440044BFC8 /* Maintainer+SetsPostgres.swift */; };
@@ -108,7 +112,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B3799F623A57108005D0171 /* SwiftKueryPostgreSQL in Frameworks */,
 				E87244F322436E85B57736A1 /* Pods_ManaKit_Example.framework in Frameworks */,
+				8B3799F323A570F8005D0171 /* SwiftKuery in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,7 +122,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B3799FA23A5716D005D0171 /* SwiftKueryPostgreSQL in Frameworks */,
 				81FBE2FC6087A3856C094E66 /* Pods_ManaKit_Tests.framework in Frameworks */,
+				8B3799F823A5716D005D0171 /* SwiftKuery in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,6 +297,10 @@
 			dependencies = (
 			);
 			name = ManaKit_Example;
+			packageProductDependencies = (
+				8B3799F223A570F8005D0171 /* SwiftKuery */,
+				8B3799F523A57108005D0171 /* SwiftKueryPostgreSQL */,
+			);
 			productName = ManaKit;
 			productReference = 607FACD01AFB9204008FA782 /* ManaKit_Example.app */;
 			productType = "com.apple.product-type.application";
@@ -309,6 +321,10 @@
 				607FACE71AFB9204008FA782 /* PBXTargetDependency */,
 			);
 			name = ManaKit_Tests;
+			packageProductDependencies = (
+				8B3799F723A5716D005D0171 /* SwiftKuery */,
+				8B3799F923A5716D005D0171 /* SwiftKueryPostgreSQL */,
+			);
 			productName = Tests;
 			productReference = 607FACE51AFB9204008FA782 /* ManaKit_Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -345,6 +361,10 @@
 				Base,
 			);
 			mainGroup = 607FACC71AFB9204008FA782;
+			packageReferences = (
+				8B3799F123A570F8005D0171 /* XCRemoteSwiftPackageReference "Swift-Kuery" */,
+				8B3799F423A57108005D0171 /* XCRemoteSwiftPackageReference "Swift-Kuery-PostgreSQL" */,
+			);
 			productRefGroup = 607FACD11AFB9204008FA782 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -400,29 +420,12 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_Example/Pods-ManaKit_Example-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/FontAwesome.swift/FontAwesome_swift.framework",
-				"${BUILT_PRODUCTS_DIR}/Kanna/Kanna.framework",
-				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
-				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/ManaKit/ManaKit.framework",
-				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
-				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
-				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
-				"${BUILT_PRODUCTS_DIR}/Sync/Sync.framework",
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_Example/Pods-ManaKit_Example-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FontAwesome_swift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kanna.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ManaKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sync.framework",
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_Example/Pods-ManaKit_Example-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -434,29 +437,12 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_Tests/Pods-ManaKit_Tests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/FontAwesome.swift/FontAwesome_swift.framework",
-				"${BUILT_PRODUCTS_DIR}/Kanna/Kanna.framework",
-				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
-				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/ManaKit/ManaKit.framework",
-				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
-				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
-				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
-				"${BUILT_PRODUCTS_DIR}/Sync/Sync.framework",
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_Tests/Pods-ManaKit_Tests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FontAwesome_swift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kanna.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ManaKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sync.framework",
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_Tests/Pods-ManaKit_Tests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -667,7 +653,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -682,7 +669,10 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ManaKit/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -704,7 +694,10 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ManaKit/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -731,7 +724,11 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -751,7 +748,11 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -791,6 +792,48 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8B3799F123A570F8005D0171 /* XCRemoteSwiftPackageReference "Swift-Kuery" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/IBM-Swift/Swift-Kuery.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.1;
+			};
+		};
+		8B3799F423A57108005D0171 /* XCRemoteSwiftPackageReference "Swift-Kuery-PostgreSQL" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/IBM-Swift/Swift-Kuery-PostgreSQL.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8B3799F223A570F8005D0171 /* SwiftKuery */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B3799F123A570F8005D0171 /* XCRemoteSwiftPackageReference "Swift-Kuery" */;
+			productName = SwiftKuery;
+		};
+		8B3799F523A57108005D0171 /* SwiftKueryPostgreSQL */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B3799F423A57108005D0171 /* XCRemoteSwiftPackageReference "Swift-Kuery-PostgreSQL" */;
+			productName = SwiftKueryPostgreSQL;
+		};
+		8B3799F723A5716D005D0171 /* SwiftKuery */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B3799F123A570F8005D0171 /* XCRemoteSwiftPackageReference "Swift-Kuery" */;
+			productName = SwiftKuery;
+		};
+		8B3799F923A5716D005D0171 /* SwiftKueryPostgreSQL */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B3799F423A57108005D0171 /* XCRemoteSwiftPackageReference "Swift-Kuery-PostgreSQL" */;
+			productName = SwiftKueryPostgreSQL;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 607FACC81AFB9204008FA782 /* Project object */;
 }

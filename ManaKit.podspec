@@ -47,4 +47,5 @@ A database of Magic: The Gathering cards. Includes prices and images.
   s.dependency 'SSZipArchive'
   s.dependency 'SDWebImage'
   s.dependency 'Sync'
+
 end
