@@ -36,6 +36,15 @@
           "revision": "7ef9a314b12c1a31edb0d09d41fcba93143fe772",
           "version": "5.4.0"
         }
+      },
+      {
+        "package": "SSZipArchive",
+        "repositoryURL": "https://github.com/vito-royeca/ZipArchive.git",
+        "state": {
+          "branch": null,
+          "revision": "9065099ef3d9680307c584223541d30fe0143d07",
+          "version": "2.2.4"
+        }
       }
     ]
   },

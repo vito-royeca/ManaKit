@@ -8,8 +8,7 @@
 
 import Foundation
 
-print("Hey, World!")
-
+print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
 let maintainer = Maintainer()
 maintainer.checkServerInfo()
 

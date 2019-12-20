@@ -18,7 +18,7 @@ let package = Package(
         .package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", from: "4.1.0"),
         .package(url: "https://github.com/mxcl/PromiseKit.git", from: "6.10.0"),
         .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.4.0"),
-        //.package(url: "https://github.com/ZipArchive/ZipArchive.git", from: "2.2.2"),
+        .package(url: "https://github.com/vito-royeca/ZipArchive.git", from: "2.2.4"),
         //.package(url: "https://github.com/3lvis/Sync.git", from: "6.0.0"),
     ],
     targets: [
@@ -26,9 +26,9 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "ManaKit",
-            dependencies: []),
+            dependencies: ["Kanna", "KeychainAccess", "PromiseKit", "SDWebImage", "SSZipArchive"/*, "Sync"*/]),
         .testTarget(
             name: "ManaKitTests",
-            dependencies: ["ManaKit", "Kanna", "KeychainAccess", "PromiseKit", "SDWebImage", /*"SSZipArchive", "Sync"*/]),
+            dependencies: ["ManaKit", "Kanna", "KeychainAccess", "PromiseKit", "SDWebImage", "SSZipArchive"/*, "Sync"*/]),
     ]
 )

@@ -1,15 +1,9 @@
-platform :ios, "10.3"
 use_frameworks!
 
 def default_pods
-    inherit! :search_paths
-    
     pod 'ManaKit', :path => '../'
     
-    pod 'FontAwesome.swift'
-    pod 'Kanna', '~> 4.0.0'
-    pod 'KeychainAccess'
-    pod 'MBProgressHUD'
+    pod 'Kanna'
     pod 'PromiseKit'
     pod 'SDWebImage'
     pod 'Sync'
@@ -17,12 +11,20 @@ end
 
 target 'ManaKit_Example' do
     default_pods
-end
+    platform :ios, "10.3"
 
-target 'ManaKit_Tests' do
-    default_pods
+    pod 'FontAwesome.swift'
+    pod 'KeychainAccess'
+    pod 'MBProgressHUD'
 end
 
 target 'ManaKit CLI' do
     default_pods
+    platform :osx, "10.13"
 end
+
+target 'ManaKit_App' do
+    default_pods
+    platform :osx, "10.13"
+end
+
