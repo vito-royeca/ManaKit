@@ -75,9 +75,9 @@ class Maintainer: NSObject {
             self.fetchCardsData()
         }.then {
             self.fetchRulings()
-        }/*.then {
+        }.then {
             self.createPGData()
-        }*/.then {
+        }.then {
             self.createOtherPGData()
         }.then {
             self.createScryfallPromise()
@@ -99,6 +99,7 @@ class Maintainer: NSObject {
             let setsArray = self.setsData()
             let cardsArray = self.cardsData()
             let rulingsArray = self.rulingsData()
+            let rulesArray = self.rulesData()
             var promises = [()->Promise<Void>]()
             
             // sets
@@ -129,27 +130,34 @@ class Maintainer: NSObject {
             // parts
             promises.append({
                 return self.createDeletePartsPromise(connection: connection)
-                
+
             })
             promises.append(contentsOf: self.filterParts(array: cardsArray, connection: connection))
 
             // faces
             promises.append({
                 return self.createDeleteFacesPromise(connection: connection)
-                
+
             })
             promises.append(contentsOf: self.filterFaces(array: cardsArray, connection: connection))
 
             // rulings
             promises.append({
                 return self.createDeleteRulingsPromise(connection: connection)
-                
+
             })
             promises.append(contentsOf: rulingsArray.map { dict in
                 return {
                     return self.createRulingPromise(dict: dict, connection: connection)
                 }
             })
+            
+            // rules
+            promises.append({
+                return self.createDeleteRulesPromise(connection: connection)
+
+            })
+            promises.append(contentsOf: filterRules(lines: rulesArray, connection: connection))
 
             // close the connection
             promises.append({

@@ -212,6 +212,12 @@
     </entity>
     <entity name="MGRule" representedClassName="MGRule" syncable="YES">
         <attribute name="definition" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
         <attribute name="order" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="term" optional="YES" attributeType="String"/>
         <attribute name="termSection" optional="YES" attributeType="String"/>
@@ -317,15 +323,15 @@
         <element name="MGLanguage" positionX="-18" positionY="171" width="128" height="133"/>
         <element name="MGLayout" positionX="9" positionY="171" width="128" height="103"/>
         <element name="MGLegality" positionX="9" positionY="180" width="128" height="88"/>
+        <element name="MGLocalCache" positionX="-9" positionY="135" width="128" height="103"/>
         <element name="MGRarity" positionX="-27" positionY="135" width="128" height="88"/>
-        <element name="MGRule" positionX="0" positionY="162" width="128" height="133"/>
+        <element name="MGRule" positionX="0" positionY="162" width="128" height="148"/>
         <element name="MGRuling" positionX="-27" positionY="135" width="128" height="88"/>
+        <element name="MGServerInfo" positionX="-9" positionY="135" width="128" height="88"/>
         <element name="MGSet" positionX="-63" positionY="-18" width="128" height="328"/>
         <element name="MGSetBlock" positionX="-18" positionY="144" width="128" height="103"/>
         <element name="MGSetType" positionX="-27" positionY="135" width="128" height="88"/>
         <element name="MGStore" positionX="-9" positionY="135" width="128" height="73"/>
         <element name="MGWatermark" positionX="-27" positionY="135" width="128" height="88"/>
-        <element name="MGLocalCache" positionX="-9" positionY="135" width="128" height="103"/>
-        <element name="MGServerInfo" positionX="-9" positionY="135" width="128" height="88"/>
     </elements>
 </model>

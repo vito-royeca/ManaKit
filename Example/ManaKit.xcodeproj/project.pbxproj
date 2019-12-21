@@ -75,6 +75,9 @@
 		8B7BF82B23A608550030AAC9 /* Maintainer+ServerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF80023A608550030AAC9 /* Maintainer+ServerInfo.swift */; };
 		8B7BF82C23A608550030AAC9 /* Maintainer+ServerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF80023A608550030AAC9 /* Maintainer+ServerInfo.swift */; };
 		8B7BF82D23A608550030AAC9 /* Maintainer+ServerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF80023A608550030AAC9 /* Maintainer+ServerInfo.swift */; };
+		8B9B0E8923ADB457005FDD23 /* Maintainer+ComprehensiveRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9B0E8823ADB457005FDD23 /* Maintainer+ComprehensiveRules.swift */; };
+		8B9B0E8A23ADB457005FDD23 /* Maintainer+ComprehensiveRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9B0E8823ADB457005FDD23 /* Maintainer+ComprehensiveRules.swift */; };
+		8B9B0E8B23ADEE69005FDD23 /* data in Resources */ = {isa = PBXBuildFile; fileRef = 115151B81F1E24130061C270 /* data */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -185,6 +188,7 @@
 		8B7BF7FD23A608550030AAC9 /* Maintainer+SetsPostgres.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+SetsPostgres.swift"; sourceTree = "<group>"; };
 		8B7BF7FF23A608550030AAC9 /* Maintainer+CardsPostgres.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+CardsPostgres.swift"; sourceTree = "<group>"; };
 		8B7BF80023A608550030AAC9 /* Maintainer+ServerInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+ServerInfo.swift"; sourceTree = "<group>"; };
+		8B9B0E8823ADB457005FDD23 /* Maintainer+ComprehensiveRules.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+ComprehensiveRules.swift"; sourceTree = "<group>"; };
 		933905FD05F69001F1434BA3 /* Pods_ManaKit_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ManaKit_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C51EFE570A26CCBB9742879C /* Pods_ManaKit_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ManaKit_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3641FE50D690CB6D714FAE9 /* Pods_ManaKit_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ManaKit_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -443,6 +447,7 @@
 				8B7BF7FC23A608550030AAC9 /* Maintainer.swift */,
 				8B7BF7F923A608550030AAC9 /* Maintainer+Cards.swift */,
 				8B7BF7FF23A608550030AAC9 /* Maintainer+CardsPostgres.swift */,
+				8B9B0E8823ADB457005FDD23 /* Maintainer+ComprehensiveRules.swift */,
 				8B7BF7FB23A608550030AAC9 /* Maintainer+Rulings.swift */,
 				8B7BF7FA23A608550030AAC9 /* Maintainer+RulingsPostgres.swift */,
 				8B7BF80023A608550030AAC9 /* Maintainer+ServerInfo.swift */,
@@ -633,6 +638,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B9B0E8B23ADEE69005FDD23 /* data in Resources */,
 				8B7BF7C823A5FA420030AAC9 /* Main.storyboard in Resources */,
 				8B7BF7C523A5FA420030AAC9 /* Preview Assets.xcassets in Resources */,
 				8B7BF7C223A5FA420030AAC9 /* Assets.xcassets in Resources */,
@@ -817,6 +823,7 @@
 				8B2F2F9223933F75005DEB46 /* CardViewModel.swift in Sources */,
 				8B379AC223A587DF005D0171 /* BaseViewController.swift in Sources */,
 				8B7BF80123A608550030AAC9 /* Maintainer+Sets.swift in Sources */,
+				8B9B0E8923ADB457005FDD23 /* Maintainer+ComprehensiveRules.swift in Sources */,
 				8B7BF81023A608550030AAC9 /* Maintainer+Rulings.swift in Sources */,
 				11E74D96217437FE0077B252 /* MainViewController.swift in Sources */,
 				115151A91F1E221C0061C270 /* SetsViewController.swift in Sources */,
@@ -856,6 +863,7 @@
 				8B7BF81223A608550030AAC9 /* Maintainer+Rulings.swift in Sources */,
 				8B7BF81C23A608550030AAC9 /* Maintainer+SetsPostgres.swift in Sources */,
 				8B7BF80323A608550030AAC9 /* Maintainer+Sets.swift in Sources */,
+				8B9B0E8A23ADB457005FDD23 /* Maintainer+ComprehensiveRules.swift in Sources */,
 				8B7BF81723A608550030AAC9 /* Maintainer.swift in Sources */,
 				8B7BF80823A608550030AAC9 /* Maintainer+Cards.swift in Sources */,
 				8B7BF7C023A5FA400030AAC9 /* ContentView.swift in Sources */,

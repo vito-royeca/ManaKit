@@ -16,6 +16,7 @@ extension MGRule {
         return NSFetchRequest<MGRule>(entityName: "MGRule")
     }
 
+    @NSManaged public var id: Int32
     @NSManaged public var definition: String?
     @NSManaged public var order: Double
     @NSManaged public var term: String?

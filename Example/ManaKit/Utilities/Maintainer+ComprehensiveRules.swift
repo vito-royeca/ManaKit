@@ -1,5 +1,5 @@
 //
-//  Maintainer+ComprehensiveRules.swift
+//  Maintainer+Rules.swift
 //  ManaKit_Example
 //
 //  Created by Jovito Royeca on 23/10/2018.
@@ -8,118 +8,124 @@
 
 import Foundation
 import ManaKit
-import RealmSwift
 import PromiseKit
+import SwiftKuery
+import SwiftKueryPostgreSQL
 
 extension Maintainer {
-    func createComprehensiveRules() -> Promise<Void> {
-        return Promise { seal in
-            guard let path = Bundle.main.path(forResource: comprehensiveRulesFileName,
-                                              ofType: "txt",
-                                              inDirectory: "data") else {
-                fatalError("Malformed data")
-            }
-            
-            // delete existing data first
-            try! realm.write {
-                for object in realm.objects(CMRule.self) {
-                    realm.delete(object)
-                }
-            
-                let data = try! String(contentsOfFile: path, encoding: .ascii)
-                let lines = data.components(separatedBy: .newlines)
-                var startLine:String? = nil
-                var endLine:String? = nil
-                var includeStartLine = false
-                var includeEndLine = false
-                
-                // parse the introduction
-                var object: CMRule?
-                if let o = realm.objects(CMRule.self).filter("term = %@", "Introduction").first {
-                    object = o
-                } else {
-                    object = CMRule()
-                }
-                object!.term = "Introduction"
-                object!.order = 0
-                object!.definition = nil
-                realm.add(object!)
-                
-                // parse the greetings
-                var object2: CMRule?
-                startLine = "Magic: The Gathering Comprehensive Rules"
-                endLine = "Contents"
-                includeStartLine = true
-                includeEndLine = false
-                if let text = parseData(fromLines: lines,
-                                        startLine: startLine!,
-                                        endLine: endLine!,
-                                        includeStartLine: includeStartLine,
-                                        includeEndLine: includeEndLine) {
-                    if let o = realm.objects(CMRule.self).filter("parent = %@", object!).first {
-                        object2 = o
-                    } else {
-                        object2 = CMRule()
-                    }
-                    object2!.term = nil
-                    object2!.order = 0.1
-                    object2!.definition = text
-                    object2!.parent = object
-                    realm.add(object2!)
-                }
-                
-                // parse the rules
-                parseRules(fromLines: lines)
-                
-                // parse the glossary
-                if let o = realm.objects(CMRule.self).filter("term = %@", "Glossary").first {
-                    object = o
-                } else {
-                    object = CMRule()
-                }
-                object!.term = "Glossary"
-                object!.order = 10000
-                object!.definition = nil
-                realm.add(object!)
-                parseGlossary(fromLines: lines, parent: object!)
-                
-                
-                // parse the credits
-                if let o = realm.objects(CMRule.self).filter("term = %@", "Credits").first {
-                    object = o
-                } else {
-                    object = CMRule()
-                }
-                object!.term = "Credits"
-                object!.order = 11000
-                object!.definition = nil
-                realm.add(object!)
-                
-                startLine = "Magic: The Gathering Original Game Design: Richard Garfield"
-                endLine = "Published by Wizards of the Coast LLC"
-                includeStartLine = true
-                includeEndLine = true
-                if let text = parseData(fromLines: lines,
-                                        startLine: startLine!,
-                                        endLine: endLine!,
-                                        includeStartLine: includeStartLine,
-                                        includeEndLine: includeEndLine) {
-                    if let o = realm.objects(CMRule.self).filter("parent = %@", object!).first {
-                        object2 = o
-                    } else {
-                        object2 = CMRule()
-                    }
-                    object2!.term = nil
-                    object2!.order = 11000.1
-                    object2!.definition = text
-                    object2!.parent = object
-                }
-                
-                seal.fulfill(())
+    func rulesData() -> [String] {
+        guard let path = Bundle.main.path(forResource: comprehensiveRulesFileName,
+                                          ofType: "txt",
+                                          inDirectory: "data") else {
+            fatalError("Malformed data")
+        }
+        
+        let data = try! String(contentsOfFile: path, encoding: .ascii)
+        let lines = data.components(separatedBy: .newlines)
+        
+        return lines
+    }
+    
+    func filterRules(lines: [String], connection: PostgreSQLConnection) -> [()->Promise<Void>] {
+        var rules = [[String: Any]]()
+        var id = 0
+        
+        var startLine:String? = nil
+        var endLine:String? = nil
+        var includeStartLine = false
+        var includeEndLine = false
+        
+        // Introduction
+        rules.append(["term": "Introduction",
+                      "order": 0,
+                      "id": id])
+        
+        // Greetings
+        startLine = "Magic: The Gathering Comprehensive Rules"
+        endLine = "Contents"
+        includeStartLine = true
+        includeEndLine = false
+        id = id + 1
+        if let text = parseData(fromLines: lines,
+                                startLine: startLine!,
+                                endLine: endLine!,
+                                includeStartLine: includeStartLine,
+                                includeEndLine: includeEndLine) {
+            rules.append(["definition": text,
+                          "order": 0.1,
+                          "parent": 0,
+                          "id": id])
+        }
+        
+        // Rules
+        rules.append(contentsOf: parseRules(fromLines: lines, startId: id))
+        
+        // Glossary
+        id = rules.count + 2
+        rules.append(["term": "Glossary",
+                      "order": 10000,
+                      "id": id])
+        rules.append(contentsOf: parseGlossary(fromLines: lines, startId: id, parent: id))
+        
+        // Credits
+        id = rules.count + 2
+        rules.append(["term": "Credits",
+                      "order": 11000,
+                      "id": id])
+        
+        startLine = "Magic: The Gathering Original Game Design: Richard Garfield"
+        endLine = "Published by Wizards of the Coast LLC"
+        includeStartLine = true
+        includeEndLine = true
+        if let text = parseData(fromLines: lines,
+                                startLine: startLine!,
+                                endLine: endLine!,
+                                includeStartLine: includeStartLine,
+                                includeEndLine: includeEndLine) {
+            rules.append(["definition": text,
+                          "order": 11000.1,
+                          "parent": id,
+                          "id": id + 2])
+        }
+        
+        
+        let promises: [()->Promise<Void>] = rules.map { dict in
+            return {
+                return self.createRulePromise(dict: dict,
+                                              connection: connection)
             }
         }
+        
+        return promises
     }
-
+    
+    func createDeleteRulesPromise(connection: PostgreSQLConnection) -> Promise<Void> {
+        let query = "DELETE FROM cmrule"
+        return createPromise(with: query,
+                             parameters: nil,
+                             connection: connection)
+    }
+    
+    func createRulePromise(dict: [String: Any], connection: PostgreSQLConnection) -> Promise<Void> {
+        let term = dict["term"] ?? "null"
+        let termSection = dict["termSection"] ?? "null"
+        let definition = dict["definition"] ?? "null"
+        let order = dict["order"] ?? Double(0)
+        let parent = dict["parent"] ?? -1
+        let id = dict["id"] ?? 0
+        let query = "SELECT createOrUpdateRule($1,$2,$3,$4,$5,$6)"
+        let parameters = [term,
+                          termSection,
+                          definition,
+                          order,
+                          parent,
+                          id] as [Any]
+        
+        return createPromise(with: query,
+                             parameters: parameters,
+                             connection: connection)
+    }
+    
     private func parseData(fromLines lines: [String], startLine: String, endLine: String, includeStartLine: Bool, includeEndLine: Bool) -> String? {
         var text: String?
         var isParsing = false
@@ -158,11 +164,15 @@ extension Maintainer {
         return text
     }
     
-    private func parseRules(fromLines lines: [String]) {
+    private func parseRules(fromLines lines: [String], startId: Int) -> [[String: Any]] {
+        var rules = [[String: Any]]()
+        var id = startId + 1
+        
         let startLine = "Credits"
         let endLine = "Glossary"
         var isParsing = false
         var secondEndLine = false
+        
         
         for line in lines {
             if line.hasPrefix(startLine) {
@@ -202,56 +212,54 @@ extension Maintainer {
                         term.remove(at: term.index(before: term.endIndex))
                     }
 
-                    var object: CMRule?
-                    if let o = realm.objects(CMRule.self).filter("term = %@", term).first {
-                        object = o
-                    } else {
-                        object = CMRule()
-                    }
-                    object!.term = term
-                    object!.order = order(of: term)
-                    object!.definition = definition
-                    realm.add(object!)
-
+                    id = id + 1
+                    var rule = ["term": term,
+                                "definition": definition,
+                                "order": order(of: term),
+                                "id": id] as [String: Any]
+                    
                     if term.contains(".") {
-                        term = term.components(separatedBy: ".").first!
-                        let _ = findParent(forRule: object!, withTerm: term)
+                        if let term = term.components(separatedBy: ".").first,
+                            let parent = findParent(of: term, from: rules) {
+                            rule["parent"] = parent
+                        }
+                        
                     } else {
                         while term != "" {
                             term.remove(at: term.index(before: term.endIndex))
                             
                             if term.count > 0 {
-                                if let _ = findParent(forRule: object!, withTerm: term) {
+                                if let parent = findParent(of: term, from: rules) {
+                                    rule["parent"] = parent
                                     break
                                 }
                             }
                         }
                     }
+                    
+                    rules.append(rule)
                 }
             }
         }
+        
+        return rules
     }
     
-    private func findParent(forRule rule: CMRule, withTerm term: String) -> CMRule? {
-        guard let parent = realm.objects(CMRule.self).filter("term = %@", term).first else {
-            return nil
-        }
-        
-        if parent.definition == nil &&
-            parent.definition == nil {
-            realm.delete(parent)
-        } else {
-            if parent != rule {
-                rule.parent = parent
-                realm.add(rule)
-                return parent
+    private func findParent(of term: String, from rules: [[String: Any]]) -> Int? {
+        for rule in rules {
+            if let x = rule["term"] as? String,
+                term == x {
+                return rule["id"] as? Int
             }
         }
         
         return nil
     }
     
-    private func parseGlossary(fromLines lines: [String], parent: CMRule?) {
+    private func parseGlossary(fromLines lines: [String], startId: Int, parent: Int?) -> [[String: Any]] {
+        var rules = [[String: Any]]()
+        var id = startId + 1
+        
         let startLine = "Glossary"
         let endLine = "Credits"
         var isParsing = false
@@ -300,28 +308,23 @@ extension Maintainer {
                         if isList {
                             definition!.append(definition!.count > 0 ? "\n\(line)" : line)
                         } else {
-                            var object: CMRule?
-                            if let o = realm.objects(CMRule.self).filter("term = %@", term!).first {
-                                object = o
-                            } else {
-                                object = CMRule()
-                            }
-                            
                             let letters = CharacterSet.letters
                             var prefix = String(term!.prefix(1))
                             if prefix.rangeOfCharacter(from: letters) == nil {
                                 prefix = "#"
                             }
                             
-                            object!.term = term
-                            object!.termSection = prefix
-                            object!.definition = definition
-                            object!.parent = parent
-                            realm.add(object!)
+                            let rule = ["term": term ?? "null",
+                                        "termSection": prefix,
+                                        "definition": definition ?? "null",
+                                        "parent": parent ?? 0,
+                                        "id": id] as [String: Any]
+                            rules.append(rule)
                             
                             term = nil
                             definition = nil
                             lastDefinition = nil
+                            id = id + 1
                         }
                     }
                 } else {
@@ -357,24 +360,7 @@ extension Maintainer {
                 }
             }
         }
-    }
-    
-    // MARK: Cleanup
-    private func removeIDs()  {
-        let cards = realm.objects(CMCard.self).filter("id != nil")
-        var count = 0
-        print("Removing ID: \(count)/\(cards.count) \(Date())")
         
-        try! realm.write {
-            for card in cards {
-                card.id = nil
-                realm.add(card)
-                
-                count += 1
-                if count % printMilestone == 0 {
-                    print("Removing ID: \(count)/\(cards.count) \(Date())")
-                }
-            }
-        }
+        return rules
     }
 }
