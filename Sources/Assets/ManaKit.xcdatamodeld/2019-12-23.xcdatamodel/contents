@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15508" systemVersion="19C57" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Entity" representedClassName="Entity" syncable="YES" codeGenerationType="class"/>
     <entity name="MGArtist" representedClassName="MGArtist" syncable="YES">
         <attribute name="firstName" optional="YES" attributeType="String"/>
         <attribute name="lastName" optional="YES" attributeType="String"/>
@@ -333,6 +332,7 @@
         <element name="MGCard" positionX="-54" positionY="72" width="128" height="973"/>
         <element name="MGCardComponentPart" positionX="0" positionY="144" width="128" height="88"/>
         <element name="MGCardFormatLegality" positionX="-27" positionY="135" width="128" height="88"/>
+        <element name="MGCardPrice" positionX="-9" positionY="135" width="128" height="193"/>
         <element name="MGCardType" positionX="27" positionY="189" width="128" height="133"/>
         <element name="MGColor" positionX="18" positionY="180" width="128" height="133"/>
         <element name="MGComponent" positionX="-9" positionY="135" width="128" height="88"/>
@@ -352,7 +352,5 @@
         <element name="MGSetType" positionX="-27" positionY="135" width="128" height="88"/>
         <element name="MGStore" positionX="-9" positionY="135" width="128" height="88"/>
         <element name="MGWatermark" positionX="-27" positionY="135" width="128" height="88"/>
-        <element name="MGCardPrice" positionX="-9" positionY="135" width="128" height="193"/>
-        <element name="Entity" positionX="9" positionY="153" width="128" height="43"/>
     </elements>
 </model>
