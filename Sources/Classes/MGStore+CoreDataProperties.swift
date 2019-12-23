@@ -20,3 +20,20 @@ extension MGStore {
     @NSManaged public var nameSection: String?
 
 }
+
+// MARK: Generated accessors for prices
+extension MGStore {
+
+    @objc(addPricesObject:)
+    @NSManaged public func addToPrices(_ value: MGCardPrice)
+
+    @objc(removePricesObject:)
+    @NSManaged public func removeFromPrices(_ value: MGCardPrice)
+
+    @objc(addPrices:)
+    @NSManaged public func addToPrices(_ values: NSSet)
+
+    @objc(removePrices:)
+    @NSManaged public func removeFromPrices(_ values: NSSet)
+
+}

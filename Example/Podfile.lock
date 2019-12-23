@@ -2,7 +2,7 @@ PODS:
   - FontAwesome.swift (1.8.3)
   - Kanna (5.0.0)
   - KeychainAccess (4.1.0)
-  - ManaKit (6.0.3):
+  - ManaKit (6.1.0):
     - Kanna
     - KeychainAccess
     - PromiseKit
@@ -54,7 +54,7 @@ SPEC CHECKSUMS:
   FontAwesome.swift: 2a3235131a6caffc6b2ccba318e94d793b2fd342
   Kanna: a32875df62975f8f4b871e933b4ea1a5c3b8be0f
   KeychainAccess: 445e28864fe6d3458b41fa211bcdc39890e8bd5a
-  ManaKit: 2ce0c64d5be93b1e01de07a0909dee184cc502b1
+  ManaKit: dfc0cd759998dcea0c0ef225604058c1e4eed1b6
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   PromiseKit: c06835ba442ce5454ce3cdde470232804a6e4ff8
   SDWebImage: 5bf6aec6481ae2a062bdc59f9d6c1d1e552090e0

@@ -1,3 +1,6 @@
+**Version 6.1.1** @ 23.12.2019
+- Added MGCardPrice managed object.
+
 **Version 6.1.0** @ 22.12.2019
 - Added ManaKit_App target.
 

@@ -283,3 +283,20 @@ extension MGCard {
     @NSManaged public func removeFromVariations(_ values: NSSet)
 
 }
+
+// MARK: Generated accessors for prices
+extension MGCard {
+
+    @objc(addPricesObject:)
+    @NSManaged public func addToPrices(_ value: MGCardPrice)
+
+    @objc(removePricesObject:)
+    @NSManaged public func removeFromPrices(_ value: MGCardPrice)
+
+    @objc(addPrices:)
+    @NSManaged public func addToPrices(_ values: NSSet)
+
+    @objc(removePrices:)
+    @NSManaged public func removeFromPrices(_ values: NSSet)
+
+}

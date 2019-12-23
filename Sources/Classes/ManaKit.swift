@@ -14,17 +14,22 @@ import KeychainAccess
 import PromiseKit
 import SDWebImage
 import Sync
+#if os(iOS)
+import UIKit
+#endif
 
 public class ManaKit {
-//    public enum Fonts {
-//        public static let preEightEdition      = UIFont(name: "Magic:the Gathering", size: 17.0)
-//        public static let preEightEditionSmall = UIFont(name: "Magic:the Gathering", size: 15.0)
-//        public static let eightEdition         = UIFont(name: "Matrix-Bold", size: 17.0)
-//        public static let eightEditionSmall    = UIFont(name: "Matrix-Bold", size: 15.0)
-//        public static let magic2015            = UIFont(name: "Beleren", size: 17.0)
-//        public static let magic2015Small       = UIFont(name: "Beleren", size: 15.0)
-//    }
-    
+#if os(iOS)
+    public enum Fonts {
+        public static let preEightEdition      = UIFont(name: "Magic:the Gathering", size: 17.0)
+        public static let preEightEditionSmall = UIFont(name: "Magic:the Gathering", size: 15.0)
+        public static let eightEdition         = UIFont(name: "Matrix-Bold", size: 17.0)
+        public static let eightEditionSmall    = UIFont(name: "Matrix-Bold", size: 15.0)
+        public static let magic2015            = UIFont(name: "Beleren", size: 17.0)
+        public static let magic2015Small       = UIFont(name: "Beleren", size: 15.0)
+    }
+#endif
+
     public enum Constants {
         public static let ScryfallDate        = "2019-12-22 10:25 UTC"
         public static let EightEditionRelease = "2003-07-28"
