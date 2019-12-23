@@ -1,3 +1,6 @@
+**Version 6.1.0** @ 22.12.2019
+- Added ManaKit_App target.
+
 **Version 6.0.3** @ 14.12.2019
 - Added Swift Package Manager.
 

@@ -23,8 +23,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         ManaKit.sharedInstance.setupResources()
         ManaKit.sharedInstance.configureTcgPlayer(partnerKey: "ManaGuide",
-                                                  publicKey: "A49D81FB-5A76-4634-9152-E1FB5A657720",
-                                                  privateKey: "C018EF82-2A4D-4F7A-A785-04ADEBF2A8E5")
+                                                  publicKey: ManaKit.Constants.TcgPlayerPublicKey,
+                                                  privateKey: ManaKit.Constants.TcgPlayerPrivateKey)
         return true
     }
 

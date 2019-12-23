@@ -17,6 +17,8 @@ public class BaseViewModel: NSObject {
     public var title: String?
     public var queryString = ""
     public var searchCancelled = false
+    public var predicate: NSPredicate?
+    public var fetchRequest: NSFetchRequest<NSFetchRequestResult>?
     
     // MARK: private variables
     private let context = ManaKit.sharedInstance.dataStack!.viewContext
@@ -111,14 +113,6 @@ public class BaseViewModel: NSObject {
         }
     }
     
-    public func composePredicate() -> NSPredicate? {
-        return nil
-    }
-    
-    public func composeFetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
-        return nil
-    }
-
     public func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
         let urlString = "\(ManaKit.Constants.APIURL)/"
         
@@ -134,7 +128,7 @@ public class BaseViewModel: NSObject {
             }
             ManaKit.sharedInstance.dataStack?.sync(data,
                                                    inEntityNamed: entityName,
-                                                   predicate: composePredicate(),
+                                                   predicate: predicate,
                                                    operations: [.all],
                                                    completion: completion)
         }
@@ -142,8 +136,8 @@ public class BaseViewModel: NSObject {
     
     public func fetchLocalData() -> Promise<Void> {
         return Promise { seal in
-            if let request: NSFetchRequest<NSFetchRequestResult> = composeFetchRequest() {
-                request.predicate = composePredicate()
+            if let request: NSFetchRequest<NSFetchRequestResult> = fetchRequest {
+                request.predicate = predicate
                 request.sortDescriptors = self.sortDescriptors
             
                 self.fetchedResultsController = self.getFetchedResultsController(with: request)
@@ -192,7 +186,7 @@ public class BaseViewModel: NSObject {
         } else {
             // Create a default fetchRequest
             request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-            request!.predicate = composePredicate()
+            request!.predicate = predicate
             request!.sortDescriptors = sortDescriptors
         }
         

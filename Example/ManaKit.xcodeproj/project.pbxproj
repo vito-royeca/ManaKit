@@ -19,6 +19,11 @@
 		8B219CC62391722400593E19 /* SetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B219CC32391722400593E19 /* SetViewController.swift */; };
 		8B2F2F9223933F75005DEB46 /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2F2F9123933F75005DEB46 /* CardViewModel.swift */; };
 		8B2F2F9423934246005DEB46 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2F2F9323934246005DEB46 /* CardViewController.swift */; };
+		8B34F7E723AF08AC00A00C79 /* Maintainer+TCGPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B34F7E623AF08AC00A00C79 /* Maintainer+TCGPlayer.swift */; };
+		8B34F7E823AF08AC00A00C79 /* Maintainer+TCGPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B34F7E623AF08AC00A00C79 /* Maintainer+TCGPlayer.swift */; };
+		8B34F7E923AF08AC00A00C79 /* Maintainer+TCGPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B34F7E623AF08AC00A00C79 /* Maintainer+TCGPlayer.swift */; };
+		8B34F7EA23AF08AC00A00C79 /* Maintainer+TCGPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B34F7E623AF08AC00A00C79 /* Maintainer+TCGPlayer.swift */; };
+		8B34F7EB23AF08AC00A00C79 /* Maintainer+TCGPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B34F7E623AF08AC00A00C79 /* Maintainer+TCGPlayer.swift */; };
 		8B379A3C23A57DFE005D0171 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B379A3B23A57DFD005D0171 /* Images.xcassets */; };
 		8B379A8123A58568005D0171 /* Pods_ManaKit_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3641FE50D690CB6D714FAE9 /* Pods_ManaKit_Example.framework */; };
 		8B379A8223A58568005D0171 /* Pods_ManaKit_Example.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D3641FE50D690CB6D714FAE9 /* Pods_ManaKit_Example.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -145,6 +150,7 @@
 		8B219CC32391722400593E19 /* SetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetViewController.swift; sourceTree = "<group>"; };
 		8B2F2F9123933F75005DEB46 /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
 		8B2F2F9323934246005DEB46 /* CardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardViewController.swift; sourceTree = "<group>"; };
+		8B34F7E623AF08AC00A00C79 /* Maintainer+TCGPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+TCGPlayer.swift"; sourceTree = "<group>"; };
 		8B379A3B23A57DFD005D0171 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8B379A4C23A58175005D0171 /* ManaKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ManaKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B379A6023A581E8005D0171 /* ManaKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ManaKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -453,6 +459,7 @@
 				8B7BF80023A608550030AAC9 /* Maintainer+ServerInfo.swift */,
 				8B7BF7F823A608550030AAC9 /* Maintainer+Sets.swift */,
 				8B7BF7FD23A608550030AAC9 /* Maintainer+SetsPostgres.swift */,
+				8B34F7E623AF08AC00A00C79 /* Maintainer+TCGPlayer.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -833,6 +840,7 @@
 				8B2F2F9423934246005DEB46 /* CardViewController.swift in Sources */,
 				8B7BF82923A608550030AAC9 /* Maintainer+ServerInfo.swift in Sources */,
 				8B7BF80B23A608550030AAC9 /* Maintainer+RulingsPostgres.swift in Sources */,
+				8B34F7E723AF08AC00A00C79 /* Maintainer+TCGPlayer.swift in Sources */,
 				8B219CC62391722400593E19 /* SetViewController.swift in Sources */,
 				8B7BF81523A608550030AAC9 /* Maintainer.swift in Sources */,
 			);
@@ -849,6 +857,7 @@
 				8B7BF81B23A608550030AAC9 /* Maintainer+SetsPostgres.swift in Sources */,
 				8B7BF80C23A608550030AAC9 /* Maintainer+RulingsPostgres.swift in Sources */,
 				8B379A9C23A58643005D0171 /* main.swift in Sources */,
+				8B34F7E823AF08AC00A00C79 /* Maintainer+TCGPlayer.swift in Sources */,
 				8B7BF81123A608550030AAC9 /* Maintainer+Rulings.swift in Sources */,
 				8B7BF81623A608550030AAC9 /* Maintainer.swift in Sources */,
 			);
@@ -861,6 +870,7 @@
 				8B7BF82B23A608550030AAC9 /* Maintainer+ServerInfo.swift in Sources */,
 				8B7BF82623A608550030AAC9 /* Maintainer+CardsPostgres.swift in Sources */,
 				8B7BF81223A608550030AAC9 /* Maintainer+Rulings.swift in Sources */,
+				8B34F7E923AF08AC00A00C79 /* Maintainer+TCGPlayer.swift in Sources */,
 				8B7BF81C23A608550030AAC9 /* Maintainer+SetsPostgres.swift in Sources */,
 				8B7BF80323A608550030AAC9 /* Maintainer+Sets.swift in Sources */,
 				8B9B0E8A23ADB457005FDD23 /* Maintainer+ComprehensiveRules.swift in Sources */,
@@ -883,6 +893,7 @@
 				8B7BF81D23A608550030AAC9 /* Maintainer+SetsPostgres.swift in Sources */,
 				8B7BF80E23A608550030AAC9 /* Maintainer+RulingsPostgres.swift in Sources */,
 				8B7BF7D423A5FA420030AAC9 /* ManaKit_AppTests.swift in Sources */,
+				8B34F7EA23AF08AC00A00C79 /* Maintainer+TCGPlayer.swift in Sources */,
 				8B7BF81323A608550030AAC9 /* Maintainer+Rulings.swift in Sources */,
 				8B7BF81823A608550030AAC9 /* Maintainer.swift in Sources */,
 			);
@@ -899,6 +910,7 @@
 				8B7BF81E23A608550030AAC9 /* Maintainer+SetsPostgres.swift in Sources */,
 				8B7BF80F23A608550030AAC9 /* Maintainer+RulingsPostgres.swift in Sources */,
 				8B7BF7DF23A5FA420030AAC9 /* ManaKit_AppUITests.swift in Sources */,
+				8B34F7EB23AF08AC00A00C79 /* Maintainer+TCGPlayer.swift in Sources */,
 				8B7BF81423A608550030AAC9 /* Maintainer+Rulings.swift in Sources */,
 				8B7BF81923A608550030AAC9 /* Maintainer.swift in Sources */,
 			);

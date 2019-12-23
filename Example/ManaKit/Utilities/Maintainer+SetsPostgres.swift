@@ -15,12 +15,12 @@ import SwiftKueryPostgreSQL
 
 extension Maintainer {
     func createSetBlockPromise(blockCode: String, block: String, connection: PostgreSQLConnection) -> Promise<Void> {
-        let name_section = self.sectionFor(name: block) ?? "null"
+        let nameSection = self.sectionFor(name: block) ?? "null"
         
         let query = "SELECT createOrUpdateSetBlock($1,$2,$3)"
         let parameters = [blockCode,
                           block,
-                          name_section]
+                          nameSection]
         return createPromise(with: query,
                              parameters: parameters,
                              connection: connection)
@@ -28,26 +28,26 @@ extension Maintainer {
 
     func createSetTypePromise(setType: String, connection: PostgreSQLConnection) -> Promise<Void> {
         let capName = capitalize(string: self.displayFor(name: setType))
-        let name_section = self.sectionFor(name: setType) ?? "null"
+        let nameSection = self.sectionFor(name: setType) ?? "null"
         
         let query = "SELECT createOrUpdateSetType($1,$2)"
         let parameters = [capName,
-                          name_section]
+                          nameSection]
         return createPromise(with: query,
                              parameters: parameters,
                              connection: connection)
     }
     
     func createSetPromise(dict: [String: Any], connection: PostgreSQLConnection) -> Promise<Void> {
-        let card_count = dict["card_count"] ?? 0
+        let cardCount = dict["card_count"] ?? 0
         let code = dict["code"] ?? "null"
-        let is_foil_only = dict["foil_only"] ?? false
-        let is_online_only = dict["digital"] ?? false
-        let mtgo_code = dict["mtgo_code"] ?? "null"
-        let my_keyrune_code = "e684"
-        var my_name_section = "null"
+        let isFoilOnly = dict["foil_only"] ?? false
+        let isOnlineOnly = dict["digital"] ?? false
+        let mtgoCode = dict["mtgo_code"] ?? "null"
+        let myKeyruneCode = "e684"
+        var myNameSection = "null"
         if let name = dict["name"] as? String {
-            my_name_section = self.sectionFor(name: name) ?? "null"
+            myNameSection = self.sectionFor(name: name) ?? "null"
         }
         var myYearSection = "Undated"
         if let releaseDate = dict["released_at"] as? String {
@@ -55,29 +55,29 @@ extension Maintainer {
         }
         let name = dict["name"] ?? "null"
         let releaseDate = dict["released_at"] ?? "null"
-        let tcgplayer_id = dict["tcgplayer_id"] ?? 0
+        let tcgplayerId = dict["tcgplayer_id"] ?? 0
         let cmsetblock = dict["block_code"] ?? "null"
-        var set_type_cap = "null";
-        if let set_type = dict["set_type"] as? String {
-            set_type_cap = capitalize(string: self.displayFor(name: set_type))
+        var setTypeCap = "null";
+        if let setType = dict["set_type"] as? String {
+            setTypeCap = capitalize(string: self.displayFor(name: setType))
         }
-        let cmset_parent = dict["parent_set_code"] ?? "null"
+        let setParent = dict["parent_set_code"] ?? "null"
         
         let query = "SELECT createOrUpdateSet($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)"
-        let parameters = [card_count,
+        let parameters = [cardCount,
                           code,
-                          is_foil_only,
-                          is_online_only,
-                          mtgo_code,
-                          my_keyrune_code,
-                          my_name_section,
+                          isFoilOnly,
+                          isOnlineOnly,
+                          mtgoCode,
+                          myKeyruneCode,
+                          myNameSection,
                           myYearSection,
                           name,
                           releaseDate,
-                          tcgplayer_id,
+                          tcgplayerId,
                           cmsetblock,
-                          set_type_cap,
-                          cmset_parent]
+                          setTypeCap,
+                          setParent]
         return createPromise(with: query,
                              parameters: parameters,
                              connection: connection)

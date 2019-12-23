@@ -257,7 +257,11 @@
         <attribute name="myYearSection" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="releaseDate" optional="YES" attributeType="String"/>
-        <attribute name="tcgplayerId" optional="YES" attributeType="String"/>
+        <attribute name="tcgplayerId" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES">
+            <userInfo>
+                <entry key="sync.remoteKey" value="tcgplayer_id"/>
+            </userInfo>
+        </attribute>
         <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="set" inverseEntity="MGCard"/>
         <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGSet" inverseName="parent" inverseEntity="MGSet"/>
         <relationship name="languages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGLanguage" inverseName="sets" inverseEntity="MGLanguage"/>

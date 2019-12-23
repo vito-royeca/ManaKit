@@ -26,13 +26,14 @@ public class ManaKit {
 //    }
     
     public enum Constants {
-        public static let ScryfallDate        = "2019-12-20 10:25 UTC"
+        public static let ScryfallDate        = "2019-12-22 10:25 UTC"
         public static let EightEditionRelease = "2003-07-28"
         public static let ManaGuideDataAge    = 24 * 3 // 3 days
         public static let TcgPlayerApiVersion = "v1.19.0"
         public static let TcgPlayerApiLimit   = 300
         public static let TcgPlayerPricingAge = 24 * 3 // 3 days
-        public static let FirebaseDataAge     = 60     // 60 sec
+        public static let TcgPlayerPublicKey  = "A49D81FB-5A76-4634-9152-E1FB5A657720"
+        public static let TcgPlayerPrivateKey = "C018EF82-2A4D-4F7A-A785-04ADEBF2A8E5"
         public static let APIURL              = "http://192.168.1.182:1993"
     }
     

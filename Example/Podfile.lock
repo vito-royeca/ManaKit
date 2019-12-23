@@ -1,5 +1,5 @@
 PODS:
-  - FontAwesome.swift (1.8.2)
+  - FontAwesome.swift (1.8.3)
   - Kanna (5.0.0)
   - KeychainAccess (4.1.0)
   - ManaKit (6.0.3):
@@ -51,7 +51,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  FontAwesome.swift: 7938d6a03113ff3f39001bde7f50be8a0903d605
+  FontAwesome.swift: 2a3235131a6caffc6b2ccba318e94d793b2fd342
   Kanna: a32875df62975f8f4b871e933b4ea1a5c3b8be0f
   KeychainAccess: 445e28864fe6d3458b41fa211bcdc39890e8bd5a
   ManaKit: 2ce0c64d5be93b1e01de07a0909dee184cc502b1

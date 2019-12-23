@@ -10,6 +10,21 @@ import CoreData
 import PromiseKit
 
 public class ServerInfoViewModel: BaseViewModel {
+    // MARK: Variables
+    var _fetchRequest: NSFetchRequest<NSFetchRequestResult>?
+    override public var fetchRequest: NSFetchRequest<NSFetchRequestResult>? {
+        get {
+            if _fetchRequest == nil {
+                _fetchRequest = MGServerInfo.fetchRequest()
+            }
+            return _fetchRequest
+        }
+        set {
+            _fetchRequest = newValue
+        }
+    }
+    
+    // MARK: Initialization
     override public init() {
         super.init()
         
@@ -18,10 +33,6 @@ public class ServerInfoViewModel: BaseViewModel {
     }
 
     // MARK: Overrides
-    override public func composeFetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
-        return MGServerInfo.fetchRequest()
-    }
-    
     override public func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
         let urlString = "\(ManaKit.Constants.APIURL)/serverinfo"
         
