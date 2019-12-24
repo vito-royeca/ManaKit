@@ -8,7 +8,7 @@
 import Foundation
 import PromiseKit
 import SDWebImage
-import UIImage
+import UIKit
 
 extension ManaKit {
     public func imageFromFramework(imageName: ImageName) -> UIImage? {
