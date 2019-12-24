@@ -41,7 +41,7 @@ A database of Magic: The Gathering cards. Includes prices and images.
   s.pod_target_xcconfig = { 'HEADER_SEARCH_PATHS' => "$(SDKROOT)/usr/include/libxml2" }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  s.frameworks = 'Kanna', 'KeychainAccess', 'PromiseKit', 'SSZipArchive', 'SDWebImage', 'Sync'
+  s.frameworks = 'UIImage', 'Kanna', 'KeychainAccess', 'PromiseKit', 'SSZipArchive', 'SDWebImage', 'Sync'
   s.dependency 'Kanna'
   s.dependency 'KeychainAccess'
   s.dependency 'PromiseKit'
