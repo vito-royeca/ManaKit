@@ -1,5 +1,5 @@
 **Version 6.1.2** @ 24.12.2019
-- Fixed imaging code in ManaKit and MGCard..
+- Fixed imaging code in ManaKit and MGCard.
 
 **Version 6.1.1** @ 23.12.2019
 - Added MGCardPrice managed object.
