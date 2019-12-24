@@ -8,12 +8,9 @@
 import Foundation
 import PromiseKit
 import SDWebImage
-#if os(iOS)
 import UIImage
-#endif
 
 extension ManaKit {
-    #if os(iOS)
     public func imageFromFramework(imageName: ImageName) -> UIImage? {
         let bundle = Bundle(for: ManaKit.self)
         guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
@@ -92,5 +89,4 @@ extension ManaKit {
                                                       completed: completion)
         }
     }
-    #endif
 }
