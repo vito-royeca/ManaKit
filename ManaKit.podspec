@@ -30,7 +30,7 @@ A database of Magic: The Gathering cards. Includes prices and images.
   s.swift_version    = '5.0'
   
   s.ios.deployment_target = '10.3'
-  s.osx.deployment_target = '10.13'
+#  s.osx.deployment_target = '10.13'
 
   s.source_files = 'Sources/Classes/**/*'
   
