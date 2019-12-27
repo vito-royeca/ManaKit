@@ -45,7 +45,7 @@ class SetViewController: BaseViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showCard" {
             guard let dest = segue.destination as? CardViewController,
-                let card = sender as? CMCard,
+                let card = sender as? MGCard,
                 let id = card.id else {
                 return
             }
@@ -73,7 +73,7 @@ extension SetViewController : UITableViewDataSource {
         }
         
         cell.selectionStyle = .none
-        cell.card = viewModel.object(forRowAt: indexPath) as? CMCard
+        cell.card = viewModel.object(forRowAt: indexPath) as? MGCard
         cell.updateDataDisplay()
         
         return cell

@@ -1,15 +1,14 @@
 //
-//  ManaKit_AppTests.swift
-//  ManaKit_AppTests
+//  ManaKit_ExampleTests.swift
+//  ManaKit_ExampleTests
 //
-//  Created by Vito Royeca on 12/15/19.
+//  Created by Vito Royeca on 12/25/19.
 //  Copyright © 2019 CocoaPods. All rights reserved.
 //
 
 import XCTest
-@testable import ManaKit_App
 
-class ManaKit_AppTests: XCTestCase {
+class ManaKit_ExampleTests: XCTestCase {
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -26,7 +25,7 @@ class ManaKit_AppTests: XCTestCase {
 
     func testPerformanceExample() {
         // This is an example of a performance test case.
-        self.measure {
+        measure {
             // Put the code you want to measure the time of here.
         }
     }

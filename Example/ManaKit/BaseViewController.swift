@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import ManaKit
 import MBProgressHUD
 import PromiseKit
 
@@ -25,7 +26,6 @@ class BaseViewController: UIViewController {
         // Do any additional setup after loading the view.
         fetchData()
     }
-    
 
     // MARK: Custom methods
     func fetchData() {
@@ -51,7 +51,7 @@ class BaseViewController: UIViewController {
             }
         } else {
             firstly {
-                self.viewModel.fetchLocalData()
+                viewModel.fetchLocalData()
             }.done {
                 MBProgressHUD.hide(for: self.view, animated: true)
                 self.tableView.reloadData()

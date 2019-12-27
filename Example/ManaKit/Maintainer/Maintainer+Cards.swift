@@ -8,9 +8,8 @@
 
 import Foundation
 import ManaKit
+import PostgresClientKit
 import PromiseKit
-import SwiftKuery
-import SwiftKueryPostgreSQL
 
 extension Maintainer {
     func fetchCardsData() -> Promise<Void> {
@@ -71,7 +70,7 @@ extension Maintainer {
         return array
     }
 
-    func filterArtists(array: [[String: Any]], connection: PostgreSQLConnection) -> [()->Promise<Void>] {
+    func filterArtists(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
         var filteredData = [String]()
         
         for dict in array {
@@ -90,7 +89,7 @@ extension Maintainer {
         return promises
     }
     
-    func filterRarities(array: [[String: Any]], connection: PostgreSQLConnection) -> [()->Promise<Void>] {
+    func filterRarities(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
         var filteredData = [String]()
         
         for dict in array {
@@ -109,7 +108,7 @@ extension Maintainer {
         return promises
     }
     
-    func filterLanguages(array: [[String: Any]], connection: PostgreSQLConnection) -> [()->Promise<Void>] {
+    func filterLanguages(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
         var filteredData = [[String: String]]()
         
         for dict in array {
@@ -123,9 +122,9 @@ extension Maintainer {
                 }
                 if !isFound {
                     let code = lang
-                    var displayCode = "null"
-                    var name = "null"
-                    let nameSection = sectionFor(name: name) ?? "null"
+                    var displayCode = "NULL"
+                    var name = "NULL"
+                    let nameSection = sectionFor(name: name) ?? "NULL"
                     
                     switch code {
                     case "en":
@@ -187,9 +186,9 @@ extension Maintainer {
         }
         let promises: [()->Promise<Void>] = filteredData.map { dict in
             return {
-                return self.createLanguagePromise(code: dict["code"] ?? "null",
-                                                  displayCode: dict["display_code"] ?? "null",
-                                                  name: dict["name"] ?? "null",
+                return self.createLanguagePromise(code: dict["code"] ?? "NULL",
+                                                  displayCode: dict["display_code"] ?? "NULL",
+                                                  name: dict["name"] ?? "NULL",
                                                   connection: connection)
             }
         }
@@ -197,7 +196,7 @@ extension Maintainer {
         return promises
     }
     
-    func filterWatermarks(array: [[String: Any]], connection: PostgreSQLConnection) -> [()->Promise<Void>] {
+    func filterWatermarks(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
         var filteredData = [String]()
         
         for dict in array {
@@ -216,7 +215,7 @@ extension Maintainer {
         return promises
     }
 
-    func filterLayouts(array: [[String: Any]], connection: PostgreSQLConnection) -> [()->Promise<Void>] {
+    func filterLayouts(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
         var filteredData = [[String: String]]()
         
         for dict in array {
@@ -230,7 +229,7 @@ extension Maintainer {
                 }
                 if !isFound {
                     let name = layout
-                    var description_ = "null"
+                    var description_ = "NULL"
                     
                     switch name {
                     case "normal":
@@ -281,8 +280,8 @@ extension Maintainer {
         }
         let promises: [()->Promise<Void>] = filteredData.map { layout in
             return {
-                return self.createLayoutPromise(name: layout["name"] ?? "null",
-                                                description_: layout["description_"] ?? "null",
+                return self.createLayoutPromise(name: layout["name"] ?? "NULL",
+                                                description_: layout["description_"] ?? "NULL",
                                                 connection: connection)
             }
         }
@@ -290,7 +289,7 @@ extension Maintainer {
         return promises
     }
     
-    func filterFrames(array: [[String: Any]], connection: PostgreSQLConnection) -> [()->Promise<Void>] {
+    func filterFrames(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
         var filteredData = [[String: String]]()
         
         for dict in array {
@@ -304,7 +303,7 @@ extension Maintainer {
                 }
                 if !isFound {
                     let name = frame
-                    var description_ = "null"
+                    var description_ = "NULL"
                     
                     switch name {
                     case "1993":
@@ -329,8 +328,8 @@ extension Maintainer {
         }
         let promises: [()->Promise<Void>] = filteredData.map { layout in
             return {
-                return self.createFramePromise(name: layout["name"] ?? "null",
-                                               description_: layout["description_"] ?? "null",
+                return self.createFramePromise(name: layout["name"] ?? "NULL",
+                                               description_: layout["description_"] ?? "NULL",
                                                connection: connection)
             }
         }
@@ -338,7 +337,7 @@ extension Maintainer {
         return promises
     }
     
-    func filterFrameEffects(array: [[String: Any]], connection: PostgreSQLConnection) -> [()->Promise<Void>] {
+    func filterFrameEffects(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
         var filteredData = [[String: String]]()
         
         for dict in array {
@@ -353,8 +352,8 @@ extension Maintainer {
                     }
                     if !isFound {
                         let id = frameEffect
-                        var name = "null"
-                        var description_ = "null"
+                        var name = "NULL"
+                        var description_ = "NULL"
                         
                         switch id {
                         case "legendary":
@@ -416,9 +415,9 @@ extension Maintainer {
         }
         let promises: [()->Promise<Void>] = filteredData.map { layout in
             return {
-                return self.createFrameEffectPromise(id: layout["id"] ?? "null",
-                                                     name: layout["name"] ?? "null",
-                                                     description_: layout["description_"] ?? "null",
+                return self.createFrameEffectPromise(id: layout["id"] ?? "NULL",
+                                                     name: layout["name"] ?? "NULL",
+                                                     description_: layout["description_"] ?? "NULL",
                                                      connection: connection)
             }
         }
@@ -426,7 +425,7 @@ extension Maintainer {
         return promises
     }
     
-    func filterColors(array: [[String: Any]], connection: PostgreSQLConnection) -> [()->Promise<Void>] {
+    func filterColors(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
         var filteredData = [[String: Any]]()
         
         for dict in array {
@@ -442,7 +441,7 @@ extension Maintainer {
                     }
                     if !isFound {
                         let symbol = color
-                        var name = "null"
+                        var name = "NULL"
                         
                         switch symbol {
                         case "B":
@@ -469,8 +468,8 @@ extension Maintainer {
         }
         let promises: [()->Promise<Void>] = filteredData.map { color in
             return {
-                return self.createColorPromise(symbol: color["symbol"] as? String ?? "null",
-                                               name: color["name"] as? String ?? "null",
+                return self.createColorPromise(symbol: color["symbol"] as? String ?? "NULL",
+                                               name: color["name"] as? String ?? "NULL",
                                                isManaColor: color["is_mana_color"] as? Bool ?? false,
                                                connection: connection)
             }
@@ -479,7 +478,7 @@ extension Maintainer {
         return promises
     }
     
-    func filterFormats(array: [[String: Any]], connection: PostgreSQLConnection) -> [()->Promise<Void>] {
+    func filterFormats(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
         var filteredData = [String]()
         
         for dict in array {
@@ -501,7 +500,7 @@ extension Maintainer {
         return promises
     }
     
-    func filterLegalities(array: [[String: Any]], connection: PostgreSQLConnection) -> [()->Promise<Void>] {
+    func filterLegalities(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
         var filteredData = [String]()
         
         for dict in array {
@@ -523,7 +522,7 @@ extension Maintainer {
         return promises
     }
     
-    func filterTypes(array: [[String: Any]], connection: PostgreSQLConnection) -> [()->Promise<Void>] {
+    func filterTypes(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
         var filteredData = [[String: String]]()
         
         for dict in array {
@@ -556,8 +555,8 @@ extension Maintainer {
         
         let promises: [()->Promise<Void>] = filteredData.map { type in
             return {
-                return self.createCardTypePromise(name: type["name"] ?? "null",
-                                                  parent: type["parent"] ?? "null",
+                return self.createCardTypePromise(name: type["name"] ?? "NULL",
+                                                  parent: type["parent"] ?? "NULL",
                                                   connection: connection)
             }
         }
@@ -565,7 +564,7 @@ extension Maintainer {
         return promises
     }
     
-    func filterComponents(array: [[String: Any]], connection: PostgreSQLConnection) -> [()->Promise<Void>] {
+    func filterComponents(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
         var filteredData = [String]()
         
         for dict in array {
@@ -590,7 +589,7 @@ extension Maintainer {
         return promises
     }
     
-    func filterFaces(array: [[String: Any]], connection: PostgreSQLConnection) -> [()->Promise<Void>] {
+    func filterFaces(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
         var promises = [()->Promise<Void>]()
         var facesArray = [[String: Any]]()
         var filteredData = [[String: Any]]()
@@ -639,8 +638,8 @@ extension Maintainer {
         })
         promises.append(contentsOf: cardFaceData.map { face in
             return {
-                return self.createFacePromise(card: face["cmcard"] ?? "null",
-                                              cardFace: face["cmcard_face"] ?? "null",
+                return self.createFacePromise(card: face["cmcard"] ?? "NULL",
+                                              cardFace: face["cmcard_face"] ?? "NULL",
                                               connection: connection)
             }
         })
@@ -648,7 +647,7 @@ extension Maintainer {
         return promises
     }
     
-    func filterParts(array: [[String: Any]], connection: PostgreSQLConnection) -> [()->Promise<Void>] {
+    func filterParts(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
         var promises = [()->Promise<Void>]()
         var cardPartData = [[String: String]]()
         
@@ -671,9 +670,9 @@ extension Maintainer {
         
         promises.append(contentsOf: cardPartData.map { part in
             return {
-                return self.createPartPromise(card: part["cmcard"] ?? "null",
-                                              component: part["cmcomponent"] ?? "null",
-                                              cardPart: part["cmcard_part"] ?? "null",
+                return self.createPartPromise(card: part["cmcard"] ?? "NULL",
+                                              component: part["cmcomponent"] ?? "NULL",
+                                              cardPart: part["cmcard_part"] ?? "NULL",
                                               connection: connection)
             }
         })
@@ -737,7 +736,7 @@ extension Maintainer {
         types.reverse()
         for i in 0...types.count-1 {
             let type = types[i]
-            var parent = "null"
+            var parent = "NULL"
             var isFound = false
             
             if type.isEmpty {

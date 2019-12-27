@@ -20,11 +20,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
-
+        
         ManaKit.sharedInstance.setupResources()
         ManaKit.sharedInstance.configureTcgPlayer(partnerKey: "ManaGuide",
                                                   publicKey: ManaKit.Constants.TcgPlayerPublicKey,
                                                   privateKey: ManaKit.Constants.TcgPlayerPrivateKey)
+        
+        let maintainer = Maintainer()
+        maintainer.checkServerInfo()
+        
         return true
     }
 

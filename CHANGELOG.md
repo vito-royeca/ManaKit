@@ -1,3 +1,6 @@
+**Version 6.1.3** @ 26.12.2019
+- Removed the Mac App and CLI targets.
+
 **Version 6.1.2** @ 24.12.2019
 - Fixed imaging code in ManaKit and MGCard.
 

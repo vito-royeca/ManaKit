@@ -1,14 +1,14 @@
 //
-//  ManaKit_AppUITests.swift
-//  ManaKit_AppUITests
+//  ManaKit_ExampleUITests.swift
+//  ManaKit_ExampleUITests
 //
-//  Created by Vito Royeca on 12/15/19.
+//  Created by Vito Royeca on 12/25/19.
 //  Copyright © 2019 CocoaPods. All rights reserved.
 //
 
 import XCTest
 
-class ManaKit_AppUITests: XCTestCase {
+class ManaKit_ExampleUITests: XCTestCase {
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.

@@ -8,12 +8,11 @@
 
 import Foundation
 import ManaKit
+import PostgresClientKit
 import PromiseKit
-import SwiftKuery
-import SwiftKueryPostgreSQL
 
 extension Maintainer {
-    func createArtistPromise(artist: String, connection: PostgreSQLConnection) -> Promise<Void> {
+    func createArtistPromise(artist: String, connection: Connection) -> Promise<Void> {
         let names = artist.components(separatedBy: " ")
         var firstName = ""
         var lastName = ""
@@ -48,7 +47,7 @@ extension Maintainer {
                              connection: connection)
     }
     
-    func createRarityPromise(rarity: String, connection: PostgreSQLConnection) -> Promise<Void> {
+    func createRarityPromise(rarity: String, connection: Connection) -> Promise<Void> {
         let capName = capitalize(string: displayFor(name: rarity))
         let nameSection = sectionFor(name: rarity) ?? "NULL"
         
@@ -60,7 +59,7 @@ extension Maintainer {
                              connection: connection)
     }
     
-    func createLanguagePromise(code: String, displayCode: String, name: String, connection: PostgreSQLConnection) -> Promise<Void> {
+    func createLanguagePromise(code: String, displayCode: String, name: String, connection: Connection) -> Promise<Void> {
         let nameSection = sectionFor(name: name) ?? "NULL"
         
         let query = "SELECT createOrUpdateLanguage($1,$2,$3,$4)"
@@ -73,7 +72,7 @@ extension Maintainer {
                              connection: connection)
     }
     
-    func createLayoutPromise(name: String, description_: String, connection: PostgreSQLConnection) -> Promise<Void> {
+    func createLayoutPromise(name: String, description_: String, connection: Connection) -> Promise<Void> {
         let capName = capitalize(string: displayFor(name: name))
         let nameSection = sectionFor(name: name) ?? "NULL"
         
@@ -86,7 +85,7 @@ extension Maintainer {
                              connection: connection)
     }
     
-    func createWatermarkPromise(name: String, connection: PostgreSQLConnection) -> Promise<Void> {
+    func createWatermarkPromise(name: String, connection: Connection) -> Promise<Void> {
         let capName = capitalize(string: displayFor(name: name))
         let nameSection = sectionFor(name: name) ?? "NULL"
         
@@ -98,7 +97,7 @@ extension Maintainer {
                              connection: connection)
     }
     
-    func createFramePromise(name: String, description_: String, connection: PostgreSQLConnection) -> Promise<Void> {
+    func createFramePromise(name: String, description_: String, connection: Connection) -> Promise<Void> {
         let capName = capitalize(string: displayFor(name: name))
         let nameSection = sectionFor(name: name) ?? "NULL"
         
@@ -111,7 +110,7 @@ extension Maintainer {
                              connection: connection)
     }
     
-    func createFrameEffectPromise(id: String, name: String, description_: String, connection: PostgreSQLConnection) -> Promise<Void> {
+    func createFrameEffectPromise(id: String, name: String, description_: String, connection: Connection) -> Promise<Void> {
         let nameSection = sectionFor(name: name) ?? "NULL"
         
         let query = "SELECT createOrUpdateFrameEffect($1,$2,$3,$4)"
@@ -124,7 +123,7 @@ extension Maintainer {
                              connection: connection)
     }
     
-    func createColorPromise(symbol: String, name: String, isManaColor: Bool, connection: PostgreSQLConnection) -> Promise<Void> {
+    func createColorPromise(symbol: String, name: String, isManaColor: Bool, connection: Connection) -> Promise<Void> {
         let nameSection = sectionFor(name: name) ?? "NULL"
         
         let query = "SELECT createOrUpdateColor($1,$2,$3,$4)"
@@ -137,7 +136,7 @@ extension Maintainer {
                              connection: connection)
     }
     
-    func createFormatPromise(name: String, connection: PostgreSQLConnection) -> Promise<Void> {
+    func createFormatPromise(name: String, connection: Connection) -> Promise<Void> {
         let capName = capitalize(string: displayFor(name: name))
         let nameSection = sectionFor(name: name) ?? "NULL"
         
@@ -149,7 +148,7 @@ extension Maintainer {
                              connection: connection)
     }
     
-    func createLegalityPromise(name: String, connection: PostgreSQLConnection) -> Promise<Void> {
+    func createLegalityPromise(name: String, connection: Connection) -> Promise<Void> {
         let capName = capitalize(string: displayFor(name: name))
         let nameSection = sectionFor(name: name) ?? "NULL"
         
@@ -161,7 +160,7 @@ extension Maintainer {
                              connection: connection)
     }
     
-    func createCardTypePromise(name: String, parent: String, connection: PostgreSQLConnection) -> Promise<Void> {
+    func createCardTypePromise(name: String, parent: String, connection: Connection) -> Promise<Void> {
         let nameSection = sectionFor(name: name) ?? "NULL"
         
         let query = "SELECT createOrUpdateCardType($1,$2,$3)"
@@ -173,7 +172,7 @@ extension Maintainer {
                              connection: connection)
     }
     
-    func createComponentPromise(name: String, connection: PostgreSQLConnection) -> Promise<Void> {
+    func createComponentPromise(name: String, connection: Connection) -> Promise<Void> {
         let capName = capitalize(string: displayFor(name: name))
         let nameSection = sectionFor(name: name) ?? "NULL"
         
@@ -185,14 +184,14 @@ extension Maintainer {
                              connection: connection)
     }
     
-    func createDeleteFacesPromise(connection: PostgreSQLConnection) -> Promise<Void> {
+    func createDeleteFacesPromise(connection: Connection) -> Promise<Void> {
         let query = "DELETE FROM cmcard_face"
         return createPromise(with: query,
                              parameters: nil,
                              connection: connection)
     }
     
-    func createFacePromise(card: String, cardFace: String, connection: PostgreSQLConnection) -> Promise<Void> {
+    func createFacePromise(card: String, cardFace: String, connection: Connection) -> Promise<Void> {
         let query = "SELECT createOrUpdateCardFaces($1,$2)"
         let parameters = [card,
                           cardFace]
@@ -201,14 +200,14 @@ extension Maintainer {
                              connection: connection)
     }
     
-    func createDeletePartsPromise(connection: PostgreSQLConnection) -> Promise<Void> {
+    func createDeletePartsPromise(connection: Connection) -> Promise<Void> {
         let query = "DELETE FROM cmcard_component_part"
         return createPromise(with: query,
                              parameters: nil,
                              connection: connection)
     }
     
-    func createPartPromise(card: String, component: String, cardPart: String, connection: PostgreSQLConnection) -> Promise<Void> {
+    func createPartPromise(card: String, component: String, cardPart: String, connection: Connection) -> Promise<Void> {
         let capName = capitalize(string: displayFor(name: component))
         
         let query = "SELECT createOrUpdateCardParts($1,$2,$3)"
@@ -238,10 +237,10 @@ extension Maintainer {
                              connection: nil)
     }
     
-    func createCardPromise(dict: [String: Any], connection: PostgreSQLConnection) -> Promise<Void> {
-        let collectorNumber = dict["collector_number"] ?? "NULL"
-        let cmc = dict["cmc"] ?? Double(0)
-        let flavorText = dict["flavor_text"] ?? "NULL"
+    func createCardPromise(dict: [String: Any], connection: Connection) -> Promise<Void> {
+        let collectorNumber = dict["collector_number"] as? String ?? "NULL"
+        let cmc = dict["cmc"] as? Double ?? Double(0)
+        let flavorText = dict["flavor_text"] as? String ?? "NULL"
         var imageUris = "{}"
         if let imageUrisDict = dict["image_uris"] as? [String: String] {
             // remove the key (?APIKEY) in the url
@@ -254,15 +253,15 @@ extension Maintainer {
                 .replacingOccurrences(of: "[", with: "{")
                 .replacingOccurrences(of: "]", with: "}")
         }
-        let isFoil = dict["foil"] ?? false
-        let isFullArt = dict["full_art"] ?? false
-        let isHighresImage = dict["highres_image"] ?? false
-        let isNonfoil = dict["nonfoil"] ?? false
-        let isOversized = dict["oversized"] ?? false
-        let isReserved = dict["reserved"] ?? false
-        let isStorySpotlight = dict["story_spotlight"] ?? false
-        let loyalty = dict["loyalty"] ?? "NULL"
-        let manaCost = dict["mana_cost"] ?? "NULL"
+        let isFoil = dict["foil"] as? Bool ?? false
+        let isFullArt = dict["full_art"] as? Bool ?? false
+        let isHighresImage = dict["highres_image"] as? Bool ?? false
+        let isNonfoil = dict["nonfoil"] as? Bool ?? false
+        let isOversized = dict["oversized"] as? Bool ?? false
+        let isReserved = dict["reserved"] as? Bool ?? false
+        let isStorySpotlight = dict["story_spotlight"] as? Bool ?? false
+        let loyalty = dict["loyalty"] as? String ?? "NULL"
+        let manaCost = dict["mana_cost"] as? String ?? "NULL"
         var multiverseIds = "{}"
         if let a = dict["multiverse_ids"] as? [Int],
             !a.isEmpty {
@@ -274,32 +273,32 @@ extension Maintainer {
         if let name = dict["name"] as? String {
             myNameSection = self.sectionFor(name: name) ?? "NULL"
         }
-        let name = dict["name"] ?? "NULL"
-        let oracleText = dict["oracle_text"] ?? "NULL"
-        let power = dict["power"] ?? "NULL"
-        let printedName = dict["printed_name"] ?? "NULL"
-        let printedText = dict["printed_text"] ?? "NULL"
-        let toughness = dict["toughness"] ?? "NULL"
-        let arenaId = dict["arena_id"] ?? "NULL"
-        let mtgoId = dict["mtgo_id"] ?? "NULL"
-        let tcgplayerId = dict["tcgplayer_id"] ?? "NULL"
-        let handModifier = dict["hand_modifier"] ?? "NULL"
-        let lifeModifier = dict["life_modifier"] ?? "NULL"
-        let isBooster = dict["booster"] ?? false
-        let isDigital = dict["digital"] ?? false
-        let isPromo = dict["promo"] ?? false
-        let releasedAt = dict["released_at"] ?? "NULL"
-        let isTextless = dict["textless"] ?? false
-        let mtgoFoilId = dict["mtgo_foil_id"] ?? "NULL"
-        let isReprint = dict["reprint"] ?? false
-        let id = dict["id"] ?? "NULL"
-        let cardBackId = dict["card_back_id"] ?? "NULL"
-        let oracleId = dict["oracle_id"] ?? "NULL"
-        let illustrationId = dict["illustration_id"] ?? "NULL"
-        let artist = dict["artist"] ?? "NULL"
-        let set = dict["set"] ?? "NULL"
+        let name = dict["name"] as? String ?? "NULL"
+        let oracleText = dict["oracle_text"] as? String ?? "NULL"
+        let power = dict["power"] as? String ?? "NULL"
+        let printedName = dict["printed_name"] as? String ?? "NULL"
+        let printedText = dict["printed_text"] as? String ?? "NULL"
+        let toughness = dict["toughness"] as? String ?? "NULL"
+        let arenaId = dict["arena_id"] as? String ?? "NULL"
+        let mtgoId = dict["mtgo_id"] as? String ?? "NULL"
+        let tcgplayerId = dict["tcgplayer_id"] as? String ?? "NULL"
+        let handModifier = dict["hand_modifier"] as? String ?? "NULL"
+        let lifeModifier = dict["life_modifier"] as? String ?? "NULL"
+        let isBooster = dict["booster"] as? Bool ?? false
+        let isDigital = dict["digital"] as? Bool ?? false
+        let isPromo = dict["promo"] as? Bool ?? false
+        let releasedAt = dict["released_at"] as? String ?? "NULL"
+        let isTextless = dict["textless"] as? Bool ?? false
+        let mtgoFoilId = dict["mtgo_foil_id"] as? String ?? "NULL"
+        let isReprint = dict["reprint"] as? Bool ?? false
+        let id = dict["id"] as? String ?? "NULL"
+        let cardBackId = dict["card_back_id"] as? String ?? "NULL"
+        let oracleId = dict["oracle_id"] as? String ?? "NULL"
+        let illustrationId = dict["illustration_id"] as? String ?? "NULL"
+        let artist = dict["artist"] as? String ?? "NULL"
+        let set = dict["set"] as? String ?? "NULL"
         let rarity = capitalize(string: dict["rarity"] as? String ?? "NULL")
-        let language = dict["lang"] ?? "NULL"
+        let language = dict["lang"] as? String ?? "NULL"
         let layout = capitalize(string: displayFor(name: dict["layout"] as? String ?? "NULL"))
         let watermark = capitalize(string: dict["watermark"] as? String ?? "NULL")
         let frame = capitalize(string: dict["frame"] as? String ?? "NULL")
@@ -341,8 +340,8 @@ extension Maintainer {
                 .replacingOccurrences(of: "[", with: "{")
                 .replacingOccurrences(of: "]", with: "}")
         }
-        let typeLine = dict["type_line"] ?? "NULL"
-        let printedTypeLine = dict["printed_type_line"] ?? "NULL"
+        let typeLine = dict["type_line"] as? String ?? "NULL"
+        let printedTypeLine = dict["printed_type_line"] as? String ?? "NULL"
         var cardtypeSubtypes = "{}"
         if let tl = dict["type_line"] as? String {
             let subtypes = extractSubtypesFrom(tl)
@@ -357,7 +356,7 @@ extension Maintainer {
                 .replacingOccurrences(of: "[", with: "{")
                 .replacingOccurrences(of: "]", with: "}")
         }
-        let faceOrder = dict["face_order"] ?? 0
+        let faceOrder = dict["face_order"] as? Int ?? Int(0)
         
         // unhandled...
         // border_color
@@ -420,7 +419,7 @@ extension Maintainer {
                           printedTypeLine,
                           cardtypeSubtypes,
                           cardtypeSupertypes,
-                          faceOrder]
+                          faceOrder] as [Any]
         return createPromise(with: query,
                              parameters: parameters,
                              connection: connection)

@@ -8,9 +8,8 @@
 
 import Foundation
 import ManaKit
+import PostgresClientKit
 import PromiseKit
-import SwiftKuery
-import SwiftKueryPostgreSQL
 
 extension Maintainer {
     func getTcgPlayerToken() -> Promise<Void> {
@@ -74,8 +73,8 @@ extension Maintainer {
         }
     }
     
-    func createStorePromise(name: String, connection: PostgreSQLConnection) -> Promise<Void> {
-        let nameSection = self.sectionFor(name: name) ?? "null"
+    func createStorePromise(name: String, connection: Connection) -> Promise<Void> {
+        let nameSection = self.sectionFor(name: name) ?? "NULL"
         
         let query = "SELECT createOrUpdateStore($1,$2)"
         let parameters = [name,
@@ -85,7 +84,7 @@ extension Maintainer {
                              connection: connection)
     }
     
-    func fetchTcgPlayerCardPricing(groupIds: [Int32], connection: PostgreSQLConnection) -> Promise<[()->Promise<Void>]> {
+    func fetchTcgPlayerCardPricing(groupIds: [Int32], connection: Connection) -> Promise<[()->Promise<Void>]> {
         return Promise { seal in
             var array = [Promise<[()->Promise<Void>]>]()
             var promises = [()->Promise<Void>]()
@@ -108,7 +107,7 @@ extension Maintainer {
         }
     }
     
-    func fetchCardPricingBy(groupId: Int32, connection: PostgreSQLConnection) -> Promise<[()->Promise<Void>]> {
+    func fetchCardPricingBy(groupId: Int32, connection: Connection) -> Promise<[()->Promise<Void>]> {
         return Promise { seal in
             guard let urlString = "http://api.tcgplayer.com/\(ManaKit.Constants.TcgPlayerApiVersion)/pricing/group/\(groupId)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                 let url = URL(string: urlString) else {
@@ -147,7 +146,7 @@ extension Maintainer {
         }
     }
     
-    func createCardPricingPromise(price: [String: Any], connection: PostgreSQLConnection) -> Promise<Void> {
+    func createCardPricingPromise(price: [String: Any], connection: Connection) -> Promise<Void> {
         let low = price["lowPrice"] as? Double ?? 0.0
         let median = price["midPrice"] as? Double ?? 0.0
         let high = price["highPrice"] as? Double ?? 0.0
@@ -267,68 +266,5 @@ extension Maintainer {
 //        }
 //    }
     
-    private func getMagicSets(categoryId: Int, offset: Int) {
-        if let urlString = "http://api.tcgplayer.com/\(ManaKit.Constants.TcgPlayerApiVersion)/catalog/categories/\(categoryId)/groups?limit=\(ManaKit.Constants.TcgPlayerApiLimit)&offset=\(offset)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-                let url = URL(string: urlString) {
-                
-                var rq = URLRequest(url: url)
-                rq.httpMethod = "GET"
-                rq.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                rq.setValue("Bearer \(tcgplayerAPIToken)", forHTTPHeaderField: "Authorization")
-                
-                firstly {
-                    URLSession.shared.dataTask(.promise, with:rq)
-                }.compactMap {
-                    try JSONSerialization.jsonObject(with: $0.data) as? [String: Any]
-                }.done { json in
-                    guard let totalItems = json["totalItems"] as? Int,
-                        let results = json["results"] as? [[String: Any]] else {
-                        fatalError("results is nil")
-                    }
-                    var sets = [[String: String]]()
-                    
-                    for dict in results {
-                        if let code = dict["abbreviation"] as? String,
-                            let groupId = dict["groupId"] as? String {
-                            sets.append(["code": code,
-                                         "groupId": groupId])
-                        }
-                    }
-                    
-//                    self.processSets(array: sets)
-                    
-                    if offset <= totalItems && sets.count > 0 {
-                        self.getMagicSets(categoryId: categoryId, offset: offset + sets.count + 1)
-                    }
-                }.catch { error in
-                    print("\(error)")
-                    
-                }
-            }
-        
-    }
     
-//    private func processSets(array: [[String: String]]) {
-//        try! realm.write {
-//            for set in realm.objects(CMSet.self) {
-//                for dict in array {
-//                    if let code = dict["code"],
-//                        let groupId = dict["groupId"] {
-//                        if set.code?.lowercased() == code.lowercased() {
-//                            set.tcgPlayerID = Int32(groupId)
-//                            realm.add(set)
-//                        }
-//                    }
-//                }
-//            }
-//
-//            // manual fix
-//            for set in realm.objects(CMSet.self) {
-//                if let parent = set.parent {
-//                    set.tcgplayerName = parent.tcgplayerName
-//                    realm.add(set)
-//                }
-//            }
-//        }
-//    }
 }

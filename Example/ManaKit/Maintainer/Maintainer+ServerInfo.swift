@@ -8,8 +8,6 @@
 
 import ManaKit
 import PromiseKit
-import SwiftKuery
-import SwiftKueryPostgreSQL
 
 extension Maintainer {
     func createScryfallPromise() -> Promise<Void> {

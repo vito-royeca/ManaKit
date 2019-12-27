@@ -8,15 +8,14 @@
 
 import Foundation
 import ManaKit
+import PostgresClientKit
 import PromiseKit
-import SwiftKuery
-import SwiftKueryPostgreSQL
 
 extension Maintainer {
-    func createRulingPromise(dict: [String: Any], connection: PostgreSQLConnection) -> Promise<Void> {
-        let oracleId = dict["oracle_id"] ?? "null"
-        let text = dict["comment"] ?? "null"
-        let datePublished = dict["published_at"] ?? "null"
+    func createRulingPromise(dict: [String: Any], connection: Connection) -> Promise<Void> {
+        let oracleId = dict["oracle_id"] as? String ?? "NULL"
+        let text = dict["comment"] as? String ?? "NULL"
+        let datePublished = dict["published_at"] as? String ?? "NULL"
         
         let query = "SELECT createOrUpdateRuling($1,$2,$3)"
         let parameters = [oracleId,
@@ -27,7 +26,7 @@ extension Maintainer {
                              connection: connection)
     }
     
-    func createDeleteRulingsPromise(connection: PostgreSQLConnection) -> Promise<Void> {
+    func createDeleteRulingsPromise(connection: Connection) -> Promise<Void> {
         let query = "DELETE FROM cmruling"
         return createPromise(with: query,
                              parameters: nil,

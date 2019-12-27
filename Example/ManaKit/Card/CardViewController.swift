@@ -27,7 +27,7 @@ class CardViewController: BaseViewController {
     
     // MARK: Custom methods
     @objc func buttonAction() {
-        guard let card = viewModel.allObjects()?.first as? CMCard,
+        guard let card = viewModel.allObjects()?.first as? MGCard,
             let layout = card.layout,
             let layoutName = layout.name else {
             fatalError("Missing card layout")
@@ -38,8 +38,8 @@ class CardViewController: BaseViewController {
             
             if let faces = card.faces {
                 let orderedFaces = faces.sorted(by: {(a, b) -> Bool in
-                    if let a = a as? CMCard,
-                        let b = b as? CMCard {
+                    if let a = a as? MGCard,
+                        let b = b as? MGCard {
                         return a.faceOrder < b.faceOrder
                     } else {
                         return false
@@ -73,7 +73,7 @@ extension CardViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell:UITableViewCell?
         
-        guard let card = viewModel.allObjects()?.first as? CMCard else {
+        guard let card = viewModel.allObjects()?.first as? MGCard else {
             return UITableViewCell(frame: CGRect.zero)
         }
         

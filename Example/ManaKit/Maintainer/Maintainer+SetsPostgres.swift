@@ -9,13 +9,12 @@
 import Foundation
 import Kanna
 import ManaKit
+import PostgresClientKit
 import PromiseKit
-import SwiftKuery
-import SwiftKueryPostgreSQL
 
 extension Maintainer {
-    func createSetBlockPromise(blockCode: String, block: String, connection: PostgreSQLConnection) -> Promise<Void> {
-        let nameSection = self.sectionFor(name: block) ?? "null"
+    func createSetBlockPromise(blockCode: String, block: String, connection: Connection) -> Promise<Void> {
+        let nameSection = self.sectionFor(name: block) ?? "NULL"
         
         let query = "SELECT createOrUpdateSetBlock($1,$2,$3)"
         let parameters = [blockCode,
@@ -26,9 +25,9 @@ extension Maintainer {
                              connection: connection)
     }
 
-    func createSetTypePromise(setType: String, connection: PostgreSQLConnection) -> Promise<Void> {
+    func createSetTypePromise(setType: String, connection: Connection) -> Promise<Void> {
         let capName = capitalize(string: self.displayFor(name: setType))
-        let nameSection = self.sectionFor(name: setType) ?? "null"
+        let nameSection = self.sectionFor(name: setType) ?? "NULL"
         
         let query = "SELECT createOrUpdateSetType($1,$2)"
         let parameters = [capName,
@@ -38,30 +37,30 @@ extension Maintainer {
                              connection: connection)
     }
     
-    func createSetPromise(dict: [String: Any], connection: PostgreSQLConnection) -> Promise<Void> {
-        let cardCount = dict["card_count"] ?? 0
-        let code = dict["code"] ?? "null"
-        let isFoilOnly = dict["foil_only"] ?? false
-        let isOnlineOnly = dict["digital"] ?? false
-        let mtgoCode = dict["mtgo_code"] ?? "null"
+    func createSetPromise(dict: [String: Any], connection: Connection) -> Promise<Void> {
+        let cardCount = dict["card_count"] as? Int ?? Int(0)
+        let code = dict["code"] as? String ?? "NULL"
+        let isFoilOnly = dict["foil_only"] as? Bool ?? false
+        let isOnlineOnly = dict["digital"] as? Bool ?? false
+        let mtgoCode = dict["mtgo_code"] as? String ?? "NULL"
         let myKeyruneCode = "e684"
-        var myNameSection = "null"
+        var myNameSection = "NULL"
         if let name = dict["name"] as? String {
-            myNameSection = self.sectionFor(name: name) ?? "null"
+            myNameSection = sectionFor(name: name) ?? "NULL"
         }
         var myYearSection = "Undated"
         if let releaseDate = dict["released_at"] as? String {
             myYearSection = String(releaseDate.prefix(4))
         }
-        let name = dict["name"] ?? "null"
-        let releaseDate = dict["released_at"] ?? "null"
-        let tcgplayerId = dict["tcgplayer_id"] ?? 0
-        let cmsetblock = dict["block_code"] ?? "null"
-        var setTypeCap = "null";
+        let name = dict["name"] as? String ?? "NULL"
+        let releaseDate = dict["released_at"] as? String ?? "NULL"
+        let tcgplayerId = dict["tcgplayer_id"] as? Int ?? Int(0)
+        let cmsetblock = dict["block_code"] as? String ?? "NULL"
+        var setTypeCap = "NULL";
         if let setType = dict["set_type"] as? String {
             setTypeCap = capitalize(string: self.displayFor(name: setType))
         }
-        let setParent = dict["parent_set_code"] ?? "null"
+        let setParent = dict["parent_set_code"] as? String ?? "NULL"
         
         let query = "SELECT createOrUpdateSet($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)"
         let parameters = [cardCount,
@@ -77,13 +76,13 @@ extension Maintainer {
                           tcgplayerId,
                           cmsetblock,
                           setTypeCap,
-                          setParent]
+                          setParent] as [Any]
         return createPromise(with: query,
                              parameters: parameters,
                              connection: connection)
     }
     
-    func createKeyrunePromises(array: [[String: Any]], connection: PostgreSQLConnection) -> [()->Promise<Void>] {
+    func createKeyrunePromises(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
         let document = keyruneCodes()
         var keyrunes = [String: String]()
         
@@ -172,7 +171,8 @@ extension Maintainer {
                     code == "j19" ||
                     code == "ppp1" ||
                     code == "pf20" ||
-                    code == "sld" {
+                    code == "sld" ||
+                    code == "j20" {
                     keyruneCodes[code] = "e687"  // media insert
                  } else if code == "pal99" {
                     keyruneCodes[code] = "e622"  // urza's saga
@@ -291,7 +291,7 @@ extension Maintainer {
         return keyruneCodes
     }
     
-    private func createKeyruneCodePromise(code: String, keyruneCode: String, connection: PostgreSQLConnection) -> Promise<Void> {
+    private func createKeyruneCodePromise(code: String, keyruneCode: String, connection: Connection) -> Promise<Void> {
         let query = "SELECT updateSetKeyrune($1,$2)"
         let parameters = [code,
                           keyruneCode]

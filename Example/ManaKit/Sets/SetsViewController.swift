@@ -13,6 +13,10 @@ import PromiseKit
 
 class SetsViewController: BaseViewController {
     // MARK: Overrides
+    override public func awakeFromNib() {
+        viewModel = SetsViewModel()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -47,7 +51,7 @@ class SetsViewController: BaseViewController {
         if segue.identifier == "showSet" {
             guard let dest = segue.destination as? SetViewController,
                 let dict = sender as? [String: Any],
-                let set = dict["set"] as? CMSet,
+                let set = dict["set"] as? MGSet,
                 let languageCode = dict["languageCode"] as? String  else {
                 return
             }
@@ -76,7 +80,7 @@ extension SetsViewController : UITableViewDataSource {
         }
         
         cell.selectionStyle = .none
-        cell.set = viewModel.object(forRowAt: indexPath) as? CMSet
+        cell.set = viewModel.object(forRowAt: indexPath) as? MGSet
         cell.delegate = self
         
         return cell

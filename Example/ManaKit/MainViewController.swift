@@ -27,16 +27,6 @@ class MainViewController: UITabBarController {
 //                                                 style: .solid,
 //                                                 textColor: UIColor.blue,
 //                                                 size: CGSize(width: 30, height: 30))
-        for v in viewControllers ?? [UIViewController]() {
-            if let navVC = v as? UINavigationController {
-                for vv in navVC.viewControllers {
-                    if let setsVC = vv as? SetsViewController {
-                        setsVC.viewModel = SetsViewModel()
-                    }
-                }
-            }
-            
-        }
     }
     
 

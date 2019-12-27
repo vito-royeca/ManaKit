@@ -8,23 +8,53 @@
 
 import ManaKit
 import CoreData
+import ManaKit
 import PromiseKit
 
 class CardViewModel: BaseViewModel {
     // MARK: Variables
     private var _id: String?
     
+    var _predicate: NSPredicate?
+    override public var predicate: NSPredicate? {
+        get {
+            if _predicate == nil {
+                guard let id = _id else {
+                    return nil
+                }
+                _predicate = NSPredicate(format: "id = %@", id)
+            }
+            return _predicate
+        }
+        set {
+            _predicate = newValue
+        }
+    }
+    
+    var _fetchRequest: NSFetchRequest<NSFetchRequestResult>?
+    override public var fetchRequest: NSFetchRequest<NSFetchRequestResult>? {
+        get {
+            if _fetchRequest == nil {
+                _fetchRequest = MGCard.fetchRequest()
+            }
+            return _fetchRequest
+        }
+        set {
+            _fetchRequest = newValue
+        }
+    }
+    
     // MARK: Initialization
     init(withId id: String) {
         super.init()
         _id = id
         
-        entityName = String(describing: CMCard.self)
+        entityName = String(describing: MGCard.self)
         sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
     }
     
     // MARK: Overrides
-    override func willFetchCache() -> Bool {
+    override public func willFetchCache() -> Bool {
         guard let id = _id else {
             fatalError("id is nil")
         }
@@ -34,7 +64,7 @@ class CardViewModel: BaseViewModel {
                                                      objectFinder: objectFinder)
     }
     
-    override func deleteCache() {
+    override public func deleteCache() {
         guard let id = _id else {
             fatalError("id is nil")
         }
@@ -42,18 +72,6 @@ class CardViewModel: BaseViewModel {
         
         return ManaKit.sharedInstance.deleteCache(entityName,
                                                   objectFinder: objectFinder)
-    }
-    
-    override func composePredicate() -> NSPredicate? {
-        guard let id = _id else {
-            return nil
-        }
-        
-        return NSPredicate(format: "id = %@", id)
-    }
-    
-    override func composeFetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
-        return CMCard.fetchRequest()
     }
     
     override func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {

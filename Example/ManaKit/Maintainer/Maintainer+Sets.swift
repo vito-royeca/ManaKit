@@ -8,9 +8,8 @@
 
 import Foundation
 import ManaKit
+import PostgresClientKit
 import PromiseKit
-import SwiftKuery
-import SwiftKueryPostgreSQL
 
 extension Maintainer {
     func fetchSetsData() -> Promise<Void> {
@@ -106,7 +105,7 @@ extension Maintainer {
         return array
     }
 
-    func filterSetBlocks(array: [[String: Any]], connection: PostgreSQLConnection) -> [()->Promise<Void>] {
+    func filterSetBlocks(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
         var filteredData = [String: String]()
         
         for dict in array {
@@ -125,7 +124,7 @@ extension Maintainer {
         return promises
     }
     
-    func filterSetTypes(array: [[String: Any]], connection: PostgreSQLConnection) -> [()->Promise<Void>] {
+    func filterSetTypes(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
         var filteredData = [String]()
         
         for dict in array {
@@ -143,7 +142,7 @@ extension Maintainer {
         return promises
     }
     
-    func filterSets(array: [[String: Any]], connection: PostgreSQLConnection) -> [()->Promise<Void>] {
+    func filterSets(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
         let filteredData = array.sorted(by: {
             $0["parent_set_code"] as? String ?? "" < $1["parent_set_code"] as? String ?? ""
         })

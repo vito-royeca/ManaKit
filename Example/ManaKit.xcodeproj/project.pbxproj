@@ -3,102 +3,74 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0B4E036BE145D9650D226CE2 /* Pods_ManaKit_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C51EFE570A26CCBB9742879C /* Pods_ManaKit_App.framework */; };
 		115151A91F1E221C0061C270 /* SetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115151A81F1E221C0061C270 /* SetsViewController.swift */; };
 		115151B91F1E24130061C270 /* data in Resources */ = {isa = PBXBuildFile; fileRef = 115151B81F1E24130061C270 /* data */; };
 		11E74D96217437FE0077B252 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E74D95217437FE0077B252 /* MainViewController.swift */; };
-		5671EDFE1A8815ED6286D9ED /* Pods_ManaKit_CLI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5610A4219D029BE25F937A3D /* Pods_ManaKit_CLI.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		71FA7D14ED24E24A28FB2910 /* Pods_ManaKit_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B379A7D23A58530005D0171 /* Pods_ManaKit_Example.framework */; };
+		77E72A38680840059D0A3727 /* Pods_ManaKit_ExampleUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 696234DD185E888F3E4F52E8 /* Pods_ManaKit_ExampleUITests.framework */; };
 		8B219CC62391722400593E19 /* SetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B219CC32391722400593E19 /* SetViewController.swift */; };
 		8B2F2F9223933F75005DEB46 /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2F2F9123933F75005DEB46 /* CardViewModel.swift */; };
 		8B2F2F9423934246005DEB46 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2F2F9323934246005DEB46 /* CardViewController.swift */; };
 		8B34F7E723AF08AC00A00C79 /* Maintainer+TCGPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B34F7E623AF08AC00A00C79 /* Maintainer+TCGPlayer.swift */; };
-		8B34F7E823AF08AC00A00C79 /* Maintainer+TCGPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B34F7E623AF08AC00A00C79 /* Maintainer+TCGPlayer.swift */; };
-		8B34F7E923AF08AC00A00C79 /* Maintainer+TCGPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B34F7E623AF08AC00A00C79 /* Maintainer+TCGPlayer.swift */; };
-		8B34F7EA23AF08AC00A00C79 /* Maintainer+TCGPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B34F7E623AF08AC00A00C79 /* Maintainer+TCGPlayer.swift */; };
-		8B34F7EB23AF08AC00A00C79 /* Maintainer+TCGPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B34F7E623AF08AC00A00C79 /* Maintainer+TCGPlayer.swift */; };
 		8B379A3C23A57DFE005D0171 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B379A3B23A57DFD005D0171 /* Images.xcassets */; };
 		8B379A8123A58568005D0171 /* Pods_ManaKit_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3641FE50D690CB6D714FAE9 /* Pods_ManaKit_Example.framework */; };
 		8B379A8223A58568005D0171 /* Pods_ManaKit_Example.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D3641FE50D690CB6D714FAE9 /* Pods_ManaKit_Example.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		8B379A9C23A58643005D0171 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B379A9B23A58643005D0171 /* main.swift */; };
-		8B379AA223A58691005D0171 /* SwiftKuery in Frameworks */ = {isa = PBXBuildFile; productRef = 8B379AA123A58691005D0171 /* SwiftKuery */; };
-		8B379AA423A58691005D0171 /* SwiftKueryPostgreSQL in Frameworks */ = {isa = PBXBuildFile; productRef = 8B379AA323A58691005D0171 /* SwiftKueryPostgreSQL */; };
 		8B379AC223A587DF005D0171 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B379AC123A587DF005D0171 /* BaseViewController.swift */; };
-		8B7BF7BE23A5FA400030AAC9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7BD23A5FA400030AAC9 /* AppDelegate.swift */; };
-		8B7BF7C023A5FA400030AAC9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7BF23A5FA400030AAC9 /* ContentView.swift */; };
-		8B7BF7C223A5FA420030AAC9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B7BF7C123A5FA420030AAC9 /* Assets.xcassets */; };
-		8B7BF7C523A5FA420030AAC9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B7BF7C423A5FA420030AAC9 /* Preview Assets.xcassets */; };
-		8B7BF7C823A5FA420030AAC9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8B7BF7C623A5FA420030AAC9 /* Main.storyboard */; };
-		8B7BF7D423A5FA420030AAC9 /* ManaKit_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7D323A5FA420030AAC9 /* ManaKit_AppTests.swift */; };
-		8B7BF7DF23A5FA420030AAC9 /* ManaKit_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7DE23A5FA420030AAC9 /* ManaKit_AppUITests.swift */; };
-		8B7BF7F323A5FB700030AAC9 /* SwiftKuery in Frameworks */ = {isa = PBXBuildFile; productRef = 8B7BF7F223A5FB700030AAC9 /* SwiftKuery */; };
-		8B7BF7F523A5FB700030AAC9 /* SwiftKueryPostgreSQL in Frameworks */ = {isa = PBXBuildFile; productRef = 8B7BF7F423A5FB700030AAC9 /* SwiftKueryPostgreSQL */; };
+		8B70144723B425200097298B /* ManaKit_ExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B70144623B425200097298B /* ManaKit_ExampleUITests.swift */; };
+		8B70145523B4252D0097298B /* ManaKit_ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B70145423B4252D0097298B /* ManaKit_ExampleTests.swift */; };
+		8B70145C23B425600097298B /* Maintainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FC23A608550030AAC9 /* Maintainer.swift */; };
+		8B70145D23B425600097298B /* Maintainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FC23A608550030AAC9 /* Maintainer.swift */; };
+		8B70145E23B425630097298B /* Maintainer+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7F923A608550030AAC9 /* Maintainer+Cards.swift */; };
+		8B70145F23B425640097298B /* Maintainer+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7F923A608550030AAC9 /* Maintainer+Cards.swift */; };
+		8B70146023B425660097298B /* Maintainer+CardsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FF23A608550030AAC9 /* Maintainer+CardsPostgres.swift */; };
+		8B70146123B425670097298B /* Maintainer+CardsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FF23A608550030AAC9 /* Maintainer+CardsPostgres.swift */; };
+		8B70146223B4256A0097298B /* Maintainer+ComprehensiveRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9B0E8823ADB457005FDD23 /* Maintainer+ComprehensiveRules.swift */; };
+		8B70146323B4256B0097298B /* Maintainer+ComprehensiveRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9B0E8823ADB457005FDD23 /* Maintainer+ComprehensiveRules.swift */; };
+		8B70146423B4256E0097298B /* Maintainer+Rulings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FB23A608550030AAC9 /* Maintainer+Rulings.swift */; };
+		8B70146523B4256F0097298B /* Maintainer+Rulings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FB23A608550030AAC9 /* Maintainer+Rulings.swift */; };
+		8B70146623B425730097298B /* Maintainer+RulingsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FA23A608550030AAC9 /* Maintainer+RulingsPostgres.swift */; };
+		8B70146723B425730097298B /* Maintainer+RulingsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FA23A608550030AAC9 /* Maintainer+RulingsPostgres.swift */; };
+		8B70146823B425790097298B /* Maintainer+ServerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF80023A608550030AAC9 /* Maintainer+ServerInfo.swift */; };
+		8B70146923B4257A0097298B /* Maintainer+ServerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF80023A608550030AAC9 /* Maintainer+ServerInfo.swift */; };
+		8B70146A23B4257C0097298B /* Maintainer+Sets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7F823A608550030AAC9 /* Maintainer+Sets.swift */; };
+		8B70146B23B4257D0097298B /* Maintainer+Sets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7F823A608550030AAC9 /* Maintainer+Sets.swift */; };
+		8B70146C23B425800097298B /* Maintainer+SetsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FD23A608550030AAC9 /* Maintainer+SetsPostgres.swift */; };
+		8B70146D23B425810097298B /* Maintainer+SetsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FD23A608550030AAC9 /* Maintainer+SetsPostgres.swift */; };
+		8B70146E23B425830097298B /* Maintainer+TCGPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B34F7E623AF08AC00A00C79 /* Maintainer+TCGPlayer.swift */; };
+		8B70146F23B425840097298B /* Maintainer+TCGPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B34F7E623AF08AC00A00C79 /* Maintainer+TCGPlayer.swift */; };
 		8B7BF80123A608550030AAC9 /* Maintainer+Sets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7F823A608550030AAC9 /* Maintainer+Sets.swift */; };
-		8B7BF80223A608550030AAC9 /* Maintainer+Sets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7F823A608550030AAC9 /* Maintainer+Sets.swift */; };
-		8B7BF80323A608550030AAC9 /* Maintainer+Sets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7F823A608550030AAC9 /* Maintainer+Sets.swift */; };
-		8B7BF80423A608550030AAC9 /* Maintainer+Sets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7F823A608550030AAC9 /* Maintainer+Sets.swift */; };
-		8B7BF80523A608550030AAC9 /* Maintainer+Sets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7F823A608550030AAC9 /* Maintainer+Sets.swift */; };
 		8B7BF80623A608550030AAC9 /* Maintainer+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7F923A608550030AAC9 /* Maintainer+Cards.swift */; };
-		8B7BF80723A608550030AAC9 /* Maintainer+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7F923A608550030AAC9 /* Maintainer+Cards.swift */; };
-		8B7BF80823A608550030AAC9 /* Maintainer+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7F923A608550030AAC9 /* Maintainer+Cards.swift */; };
-		8B7BF80923A608550030AAC9 /* Maintainer+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7F923A608550030AAC9 /* Maintainer+Cards.swift */; };
-		8B7BF80A23A608550030AAC9 /* Maintainer+Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7F923A608550030AAC9 /* Maintainer+Cards.swift */; };
 		8B7BF80B23A608550030AAC9 /* Maintainer+RulingsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FA23A608550030AAC9 /* Maintainer+RulingsPostgres.swift */; };
-		8B7BF80C23A608550030AAC9 /* Maintainer+RulingsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FA23A608550030AAC9 /* Maintainer+RulingsPostgres.swift */; };
-		8B7BF80D23A608550030AAC9 /* Maintainer+RulingsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FA23A608550030AAC9 /* Maintainer+RulingsPostgres.swift */; };
-		8B7BF80E23A608550030AAC9 /* Maintainer+RulingsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FA23A608550030AAC9 /* Maintainer+RulingsPostgres.swift */; };
-		8B7BF80F23A608550030AAC9 /* Maintainer+RulingsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FA23A608550030AAC9 /* Maintainer+RulingsPostgres.swift */; };
 		8B7BF81023A608550030AAC9 /* Maintainer+Rulings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FB23A608550030AAC9 /* Maintainer+Rulings.swift */; };
-		8B7BF81123A608550030AAC9 /* Maintainer+Rulings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FB23A608550030AAC9 /* Maintainer+Rulings.swift */; };
-		8B7BF81223A608550030AAC9 /* Maintainer+Rulings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FB23A608550030AAC9 /* Maintainer+Rulings.swift */; };
-		8B7BF81323A608550030AAC9 /* Maintainer+Rulings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FB23A608550030AAC9 /* Maintainer+Rulings.swift */; };
-		8B7BF81423A608550030AAC9 /* Maintainer+Rulings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FB23A608550030AAC9 /* Maintainer+Rulings.swift */; };
 		8B7BF81523A608550030AAC9 /* Maintainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FC23A608550030AAC9 /* Maintainer.swift */; };
-		8B7BF81623A608550030AAC9 /* Maintainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FC23A608550030AAC9 /* Maintainer.swift */; };
-		8B7BF81723A608550030AAC9 /* Maintainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FC23A608550030AAC9 /* Maintainer.swift */; };
-		8B7BF81823A608550030AAC9 /* Maintainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FC23A608550030AAC9 /* Maintainer.swift */; };
-		8B7BF81923A608550030AAC9 /* Maintainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FC23A608550030AAC9 /* Maintainer.swift */; };
 		8B7BF81A23A608550030AAC9 /* Maintainer+SetsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FD23A608550030AAC9 /* Maintainer+SetsPostgres.swift */; };
-		8B7BF81B23A608550030AAC9 /* Maintainer+SetsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FD23A608550030AAC9 /* Maintainer+SetsPostgres.swift */; };
-		8B7BF81C23A608550030AAC9 /* Maintainer+SetsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FD23A608550030AAC9 /* Maintainer+SetsPostgres.swift */; };
-		8B7BF81D23A608550030AAC9 /* Maintainer+SetsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FD23A608550030AAC9 /* Maintainer+SetsPostgres.swift */; };
-		8B7BF81E23A608550030AAC9 /* Maintainer+SetsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FD23A608550030AAC9 /* Maintainer+SetsPostgres.swift */; };
 		8B7BF82423A608550030AAC9 /* Maintainer+CardsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FF23A608550030AAC9 /* Maintainer+CardsPostgres.swift */; };
-		8B7BF82523A608550030AAC9 /* Maintainer+CardsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FF23A608550030AAC9 /* Maintainer+CardsPostgres.swift */; };
-		8B7BF82623A608550030AAC9 /* Maintainer+CardsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FF23A608550030AAC9 /* Maintainer+CardsPostgres.swift */; };
-		8B7BF82723A608550030AAC9 /* Maintainer+CardsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FF23A608550030AAC9 /* Maintainer+CardsPostgres.swift */; };
-		8B7BF82823A608550030AAC9 /* Maintainer+CardsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FF23A608550030AAC9 /* Maintainer+CardsPostgres.swift */; };
 		8B7BF82923A608550030AAC9 /* Maintainer+ServerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF80023A608550030AAC9 /* Maintainer+ServerInfo.swift */; };
-		8B7BF82A23A608550030AAC9 /* Maintainer+ServerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF80023A608550030AAC9 /* Maintainer+ServerInfo.swift */; };
-		8B7BF82B23A608550030AAC9 /* Maintainer+ServerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF80023A608550030AAC9 /* Maintainer+ServerInfo.swift */; };
-		8B7BF82C23A608550030AAC9 /* Maintainer+ServerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF80023A608550030AAC9 /* Maintainer+ServerInfo.swift */; };
-		8B7BF82D23A608550030AAC9 /* Maintainer+ServerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF80023A608550030AAC9 /* Maintainer+ServerInfo.swift */; };
 		8B9B0E8923ADB457005FDD23 /* Maintainer+ComprehensiveRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9B0E8823ADB457005FDD23 /* Maintainer+ComprehensiveRules.swift */; };
-		8B9B0E8A23ADB457005FDD23 /* Maintainer+ComprehensiveRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9B0E8823ADB457005FDD23 /* Maintainer+ComprehensiveRules.swift */; };
-		8B9B0E8B23ADEE69005FDD23 /* data in Resources */ = {isa = PBXBuildFile; fileRef = 115151B81F1E24130061C270 /* data */; };
+		D04091B86FCFF73BABF68902 /* Pods_ManaKit_ExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20CFA8CE4ECF85F02F1619DA /* Pods_ManaKit_ExampleTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		8B7BF7D023A5FA420030AAC9 /* PBXContainerItemProxy */ = {
+		8B70144923B425200097298B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 607FACC81AFB9204008FA782 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 8B7BF7BA23A5FA400030AAC9;
-			remoteInfo = ManaKit_App;
+			remoteGlobalIDString = 607FACCF1AFB9204008FA782;
+			remoteInfo = ManaKit_Example;
 		};
-		8B7BF7DB23A5FA420030AAC9 /* PBXContainerItemProxy */ = {
+		8B70145723B4252D0097298B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 607FACC81AFB9204008FA782 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 8B7BF7BA23A5FA400030AAC9;
-			remoteInfo = ManaKit_App;
+			remoteGlobalIDString = 607FACCF1AFB9204008FA782;
+			remoteInfo = ManaKit_Example;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -114,37 +86,31 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8B379A9723A58643005D0171 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		02278C726D0CDE3A87D1C63F /* Pods-ManaKit_App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit_App.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit_App/Pods-ManaKit_App.debug.xcconfig"; sourceTree = "<group>"; };
+		076839DE6080D7B8797015FF /* Pods-ManaKit_ExampleUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit_ExampleUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit_ExampleUITests/Pods-ManaKit_ExampleUITests.release.xcconfig"; sourceTree = "<group>"; };
 		115151A81F1E221C0061C270 /* SetsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetsViewController.swift; sourceTree = "<group>"; };
 		115151B81F1E24130061C270 /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = data; sourceTree = "<group>"; };
 		11E74D95217437FE0077B252 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		1A0DD5772B067C7275D35E64 /* Pods-ManaKit_App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit_App.release.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit_App/Pods-ManaKit_App.release.xcconfig"; sourceTree = "<group>"; };
 		1F8A6A3006839651BED01AC8 /* Pods-ManaKit_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit_Tests/Pods-ManaKit_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		20CFA8CE4ECF85F02F1619DA /* Pods_ManaKit_ExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ManaKit_ExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		214271945F84D9EB3A6B8CF1 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		29970762088CCB248F273C8A /* Pods-ManaKit CLI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit CLI.release.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit CLI/Pods-ManaKit CLI.release.xcconfig"; sourceTree = "<group>"; };
 		2D89F6B01AAE12E2ACA0565E /* Pods-ManaKit_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit_Example/Pods-ManaKit_Example.release.xcconfig"; sourceTree = "<group>"; };
 		2ECAF050827D429CD009A9EC /* Pods-ManaKit CLI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit CLI.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit CLI/Pods-ManaKit CLI.debug.xcconfig"; sourceTree = "<group>"; };
 		312A945215A5EFF14E33E17E /* Pods-ManaKit_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit_Example/Pods-ManaKit_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		41DE90FEC14950F0A6008B90 /* Pods-ManaKit_ExampleUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit_ExampleUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit_ExampleUITests/Pods-ManaKit_ExampleUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		5610A4219D029BE25F937A3D /* Pods_ManaKit_CLI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ManaKit_CLI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5D8BE09AA18CABC46014EEA4 /* Pods-ManaKit_ExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit_ExampleTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit_ExampleTests/Pods-ManaKit_ExampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* ManaKit_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ManaKit_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		607FACDA1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
+		696234DD185E888F3E4F52E8 /* Pods_ManaKit_ExampleUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ManaKit_ExampleUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		790E2C95DAEEFCC5990EEE22 /* ManaKit.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = ManaKit.podspec; path = ../ManaKit.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		88F0F057FC286A584E82D4CE /* Pods-ManaKit_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit_Tests/Pods-ManaKit_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		8B219CC32391722400593E19 /* SetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetViewController.swift; sourceTree = "<group>"; };
@@ -161,8 +127,6 @@
 		8B379A8723A585D5005D0171 /* PromiseKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PromiseKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B379A8823A585D5005D0171 /* SSZipArchive.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SSZipArchive.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B379A8923A585D5005D0171 /* Sync.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Sync.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8B379A9923A58643005D0171 /* ManaKit CLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "ManaKit CLI"; sourceTree = BUILT_PRODUCTS_DIR; };
-		8B379A9B23A58643005D0171 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		8B379AA523A58691005D0171 /* ManaKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ManaKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B379AA623A58691005D0171 /* PromiseKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PromiseKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B379AA723A58691005D0171 /* SDWebImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SDWebImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -172,20 +136,12 @@
 		8B379AC123A587DF005D0171 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		8B379AD523A58822005D0171 /* Kanna.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Kanna.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B379AE223A58DAE005D0171 /* ManaKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ManaKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8B7BF7BB23A5FA400030AAC9 /* ManaKit_App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ManaKit_App.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		8B7BF7BD23A5FA400030AAC9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		8B7BF7BF23A5FA400030AAC9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		8B7BF7C123A5FA420030AAC9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		8B7BF7C423A5FA420030AAC9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		8B7BF7C723A5FA420030AAC9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		8B7BF7C923A5FA420030AAC9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8B7BF7CA23A5FA420030AAC9 /* ManaKit_App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ManaKit_App.entitlements; sourceTree = "<group>"; };
-		8B7BF7CF23A5FA420030AAC9 /* ManaKit_AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ManaKit_AppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		8B7BF7D323A5FA420030AAC9 /* ManaKit_AppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManaKit_AppTests.swift; sourceTree = "<group>"; };
-		8B7BF7D523A5FA420030AAC9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8B7BF7DA23A5FA420030AAC9 /* ManaKit_AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ManaKit_AppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		8B7BF7DE23A5FA420030AAC9 /* ManaKit_AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManaKit_AppUITests.swift; sourceTree = "<group>"; };
-		8B7BF7E023A5FA420030AAC9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8B70144423B425200097298B /* ManaKit_ExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ManaKit_ExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B70144623B425200097298B /* ManaKit_ExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManaKit_ExampleUITests.swift; sourceTree = "<group>"; };
+		8B70144823B425200097298B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8B70145223B4252D0097298B /* ManaKit_ExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ManaKit_ExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B70145423B4252D0097298B /* ManaKit_ExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManaKit_ExampleTests.swift; sourceTree = "<group>"; };
+		8B70145623B4252D0097298B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8B7BF7F823A608550030AAC9 /* Maintainer+Sets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+Sets.swift"; sourceTree = "<group>"; };
 		8B7BF7F923A608550030AAC9 /* Maintainer+Cards.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+Cards.swift"; sourceTree = "<group>"; };
 		8B7BF7FA23A608550030AAC9 /* Maintainer+RulingsPostgres.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+RulingsPostgres.swift"; sourceTree = "<group>"; };
@@ -195,6 +151,7 @@
 		8B7BF7FF23A608550030AAC9 /* Maintainer+CardsPostgres.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+CardsPostgres.swift"; sourceTree = "<group>"; };
 		8B7BF80023A608550030AAC9 /* Maintainer+ServerInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+ServerInfo.swift"; sourceTree = "<group>"; };
 		8B9B0E8823ADB457005FDD23 /* Maintainer+ComprehensiveRules.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+ComprehensiveRules.swift"; sourceTree = "<group>"; };
+		91B7A9FA4B4AAA078ADB4898 /* Pods-ManaKit_ExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit_ExampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit_ExampleTests/Pods-ManaKit_ExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		933905FD05F69001F1434BA3 /* Pods_ManaKit_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ManaKit_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C51EFE570A26CCBB9742879C /* Pods_ManaKit_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ManaKit_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3641FE50D690CB6D714FAE9 /* Pods_ManaKit_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ManaKit_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -211,37 +168,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8B379A9623A58643005D0171 /* Frameworks */ = {
+		8B70144123B425200097298B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B379AA223A58691005D0171 /* SwiftKuery in Frameworks */,
-				8B379AA423A58691005D0171 /* SwiftKueryPostgreSQL in Frameworks */,
-				5671EDFE1A8815ED6286D9ED /* Pods_ManaKit_CLI.framework in Frameworks */,
+				77E72A38680840059D0A3727 /* Pods_ManaKit_ExampleUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8B7BF7B823A5FA400030AAC9 /* Frameworks */ = {
+		8B70144F23B4252D0097298B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B7BF7F523A5FB700030AAC9 /* SwiftKueryPostgreSQL in Frameworks */,
-				0B4E036BE145D9650D226CE2 /* Pods_ManaKit_App.framework in Frameworks */,
-				8B7BF7F323A5FB700030AAC9 /* SwiftKuery in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8B7BF7CC23A5FA420030AAC9 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8B7BF7D723A5FA420030AAC9 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				D04091B86FCFF73BABF68902 /* Pods_ManaKit_ExampleTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +223,10 @@
 				1A0DD5772B067C7275D35E64 /* Pods-ManaKit_App.release.xcconfig */,
 				2ECAF050827D429CD009A9EC /* Pods-ManaKit CLI.debug.xcconfig */,
 				29970762088CCB248F273C8A /* Pods-ManaKit CLI.release.xcconfig */,
+				91B7A9FA4B4AAA078ADB4898 /* Pods-ManaKit_ExampleTests.debug.xcconfig */,
+				5D8BE09AA18CABC46014EEA4 /* Pods-ManaKit_ExampleTests.release.xcconfig */,
+				41DE90FEC14950F0A6008B90 /* Pods-ManaKit_ExampleUITests.debug.xcconfig */,
+				076839DE6080D7B8797015FF /* Pods-ManaKit_ExampleUITests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -293,11 +236,8 @@
 			children = (
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD21AFB9204008FA782 /* Example for ManaKit */,
-				607FACE81AFB9204008FA782 /* Tests */,
-				8B379A9A23A58643005D0171 /* ManaKit CLI */,
-				8B7BF7BC23A5FA400030AAC9 /* ManaKit_App */,
-				8B7BF7D223A5FA420030AAC9 /* ManaKit_AppTests */,
-				8B7BF7DD23A5FA420030AAC9 /* ManaKit_AppUITests */,
+				8B70144523B425200097298B /* ManaKit_ExampleUITests */,
+				8B70145323B4252D0097298B /* ManaKit_ExampleTests */,
 				607FACD11AFB9204008FA782 /* Products */,
 				43E51D98D72B700A2CF6827C /* Pods */,
 				852FC860576265D199206F9C /* Frameworks */,
@@ -308,10 +248,8 @@
 			isa = PBXGroup;
 			children = (
 				607FACD01AFB9204008FA782 /* ManaKit_Example.app */,
-				8B379A9923A58643005D0171 /* ManaKit CLI */,
-				8B7BF7BB23A5FA400030AAC9 /* ManaKit_App.app */,
-				8B7BF7CF23A5FA420030AAC9 /* ManaKit_AppTests.xctest */,
-				8B7BF7DA23A5FA420030AAC9 /* ManaKit_AppUITests.xctest */,
+				8B70144423B425200097298B /* ManaKit_ExampleUITests.xctest */,
+				8B70145223B4252D0097298B /* ManaKit_ExampleTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -319,7 +257,6 @@
 		607FACD21AFB9204008FA782 /* Example for ManaKit */ = {
 			isa = PBXGroup;
 			children = (
-				8B7BF7F723A607E00030AAC9 /* Utilities */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				8B379AC123A587DF005D0171 /* BaseViewController.swift */,
 				119588DD2125E24F00B5D7C4 /* Card */,
@@ -331,6 +268,7 @@
 				114A53B0213F954C0046CC82 /* Set */,
 				119588DA2125DC9600B5D7C4 /* Sets */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
+				8B7BF7F723A607E00030AAC9 /* Maintainer */,
 			);
 			name = "Example for ManaKit";
 			path = ManaKit;
@@ -340,23 +278,6 @@
 			isa = PBXGroup;
 			children = (
 				607FACD41AFB9204008FA782 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		607FACE81AFB9204008FA782 /* Tests */ = {
-			isa = PBXGroup;
-			children = (
-				607FACEB1AFB9204008FA782 /* Tests.swift */,
-				607FACE91AFB9204008FA782 /* Supporting Files */,
-			);
-			path = Tests;
-			sourceTree = "<group>";
-		};
-		607FACE91AFB9204008FA782 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				607FACEA1AFB9204008FA782 /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -395,59 +316,31 @@
 				933905FD05F69001F1434BA3 /* Pods_ManaKit_Tests.framework */,
 				C51EFE570A26CCBB9742879C /* Pods_ManaKit_App.framework */,
 				5610A4219D029BE25F937A3D /* Pods_ManaKit_CLI.framework */,
+				20CFA8CE4ECF85F02F1619DA /* Pods_ManaKit_ExampleTests.framework */,
+				696234DD185E888F3E4F52E8 /* Pods_ManaKit_ExampleUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		8B379A9A23A58643005D0171 /* ManaKit CLI */ = {
+		8B70144523B425200097298B /* ManaKit_ExampleUITests */ = {
 			isa = PBXGroup;
 			children = (
-				8B379A9B23A58643005D0171 /* main.swift */,
+				8B70144623B425200097298B /* ManaKit_ExampleUITests.swift */,
+				8B70144823B425200097298B /* Info.plist */,
 			);
-			path = "ManaKit CLI";
+			path = ManaKit_ExampleUITests;
 			sourceTree = "<group>";
 		};
-		8B7BF7BC23A5FA400030AAC9 /* ManaKit_App */ = {
+		8B70145323B4252D0097298B /* ManaKit_ExampleTests */ = {
 			isa = PBXGroup;
 			children = (
-				8B7BF7BD23A5FA400030AAC9 /* AppDelegate.swift */,
-				8B7BF7C123A5FA420030AAC9 /* Assets.xcassets */,
-				8B7BF7BF23A5FA400030AAC9 /* ContentView.swift */,
-				8B7BF7C923A5FA420030AAC9 /* Info.plist */,
-				8B7BF7C623A5FA420030AAC9 /* Main.storyboard */,
-				8B7BF7CA23A5FA420030AAC9 /* ManaKit_App.entitlements */,
-				8B7BF7C323A5FA420030AAC9 /* Preview Content */,
+				8B70145423B4252D0097298B /* ManaKit_ExampleTests.swift */,
+				8B70145623B4252D0097298B /* Info.plist */,
 			);
-			path = ManaKit_App;
+			path = ManaKit_ExampleTests;
 			sourceTree = "<group>";
 		};
-		8B7BF7C323A5FA420030AAC9 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				8B7BF7C423A5FA420030AAC9 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		8B7BF7D223A5FA420030AAC9 /* ManaKit_AppTests */ = {
-			isa = PBXGroup;
-			children = (
-				8B7BF7D323A5FA420030AAC9 /* ManaKit_AppTests.swift */,
-				8B7BF7D523A5FA420030AAC9 /* Info.plist */,
-			);
-			path = ManaKit_AppTests;
-			sourceTree = "<group>";
-		};
-		8B7BF7DD23A5FA420030AAC9 /* ManaKit_AppUITests */ = {
-			isa = PBXGroup;
-			children = (
-				8B7BF7DE23A5FA420030AAC9 /* ManaKit_AppUITests.swift */,
-				8B7BF7E023A5FA420030AAC9 /* Info.plist */,
-			);
-			path = ManaKit_AppUITests;
-			sourceTree = "<group>";
-		};
-		8B7BF7F723A607E00030AAC9 /* Utilities */ = {
+		8B7BF7F723A607E00030AAC9 /* Maintainer */ = {
 			isa = PBXGroup;
 			children = (
 				8B7BF7FC23A608550030AAC9 /* Maintainer.swift */,
@@ -461,7 +354,7 @@
 				8B7BF7FD23A608550030AAC9 /* Maintainer+SetsPostgres.swift */,
 				8B34F7E623AF08AC00A00C79 /* Maintainer+TCGPlayer.swift */,
 			);
-			path = Utilities;
+			path = Maintainer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -484,92 +377,51 @@
 			dependencies = (
 			);
 			name = ManaKit_Example;
+			packageProductDependencies = (
+			);
 			productName = ManaKit;
 			productReference = 607FACD01AFB9204008FA782 /* ManaKit_Example.app */;
 			productType = "com.apple.product-type.application";
 		};
-		8B379A9823A58643005D0171 /* ManaKit CLI */ = {
+		8B70144323B425200097298B /* ManaKit_ExampleUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8B379A9D23A58643005D0171 /* Build configuration list for PBXNativeTarget "ManaKit CLI" */;
+			buildConfigurationList = 8B70144B23B425200097298B /* Build configuration list for PBXNativeTarget "ManaKit_ExampleUITests" */;
 			buildPhases = (
-				7AF4117B9200A4AE0113B6F8 /* [CP] Check Pods Manifest.lock */,
-				A23497189465E5B937BC1298 /* [Amimono] Create filelist per architecture */,
-				8B379A9523A58643005D0171 /* Sources */,
-				8B379A9623A58643005D0171 /* Frameworks */,
-				8B379A9723A58643005D0171 /* CopyFiles */,
+				E8AC993872041238D204ACEB /* [CP] Check Pods Manifest.lock */,
+				8B70144023B425200097298B /* Sources */,
+				8B70144123B425200097298B /* Frameworks */,
+				8B70144223B425200097298B /* Resources */,
+				0E0AB8F51B45335C3C1CDE8C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				8B70144A23B425200097298B /* PBXTargetDependency */,
 			);
-			name = "ManaKit CLI";
-			packageProductDependencies = (
-				8B379AA123A58691005D0171 /* SwiftKuery */,
-				8B379AA323A58691005D0171 /* SwiftKueryPostgreSQL */,
-			);
-			productName = "ManaKit CLI";
-			productReference = 8B379A9923A58643005D0171 /* ManaKit CLI */;
-			productType = "com.apple.product-type.tool";
-		};
-		8B7BF7BA23A5FA400030AAC9 /* ManaKit_App */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 8B7BF7E123A5FA420030AAC9 /* Build configuration list for PBXNativeTarget "ManaKit_App" */;
-			buildPhases = (
-				98D235F38FFE9B2A727FF3E5 /* [CP] Check Pods Manifest.lock */,
-				85D7BA138C96F6DEC2B0A1E0 /* [Amimono] Create filelist per architecture */,
-				8B7BF7B723A5FA400030AAC9 /* Sources */,
-				8B7BF7B823A5FA400030AAC9 /* Frameworks */,
-				8B7BF7B923A5FA400030AAC9 /* Resources */,
-				8BD1D02A826F52AEFF43CD0F /* [CP] Embed Pods Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = ManaKit_App;
-			packageProductDependencies = (
-				8B7BF7F223A5FB700030AAC9 /* SwiftKuery */,
-				8B7BF7F423A5FB700030AAC9 /* SwiftKueryPostgreSQL */,
-			);
-			productName = ManaKit_App;
-			productReference = 8B7BF7BB23A5FA400030AAC9 /* ManaKit_App.app */;
-			productType = "com.apple.product-type.application";
-		};
-		8B7BF7CE23A5FA420030AAC9 /* ManaKit_AppTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 8B7BF7E423A5FA420030AAC9 /* Build configuration list for PBXNativeTarget "ManaKit_AppTests" */;
-			buildPhases = (
-				8B7BF7CB23A5FA420030AAC9 /* Sources */,
-				8B7BF7CC23A5FA420030AAC9 /* Frameworks */,
-				8B7BF7CD23A5FA420030AAC9 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				8B7BF7D123A5FA420030AAC9 /* PBXTargetDependency */,
-			);
-			name = ManaKit_AppTests;
-			productName = ManaKit_AppTests;
-			productReference = 8B7BF7CF23A5FA420030AAC9 /* ManaKit_AppTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		8B7BF7D923A5FA420030AAC9 /* ManaKit_AppUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 8B7BF7E723A5FA420030AAC9 /* Build configuration list for PBXNativeTarget "ManaKit_AppUITests" */;
-			buildPhases = (
-				8B7BF7D623A5FA420030AAC9 /* Sources */,
-				8B7BF7D723A5FA420030AAC9 /* Frameworks */,
-				8B7BF7D823A5FA420030AAC9 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				8B7BF7DC23A5FA420030AAC9 /* PBXTargetDependency */,
-			);
-			name = ManaKit_AppUITests;
-			productName = ManaKit_AppUITests;
-			productReference = 8B7BF7DA23A5FA420030AAC9 /* ManaKit_AppUITests.xctest */;
+			name = ManaKit_ExampleUITests;
+			productName = ManaKit_ExampleUITests;
+			productReference = 8B70144423B425200097298B /* ManaKit_ExampleUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		8B70145123B4252D0097298B /* ManaKit_ExampleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8B70145923B4252D0097298B /* Build configuration list for PBXNativeTarget "ManaKit_ExampleTests" */;
+			buildPhases = (
+				87965511EB5F67593F250160 /* [CP] Check Pods Manifest.lock */,
+				8B70144E23B4252D0097298B /* Sources */,
+				8B70144F23B4252D0097298B /* Frameworks */,
+				8B70145023B4252D0097298B /* Resources */,
+				09BA9A1D0166217CF584688D /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8B70145823B4252D0097298B /* PBXTargetDependency */,
+			);
+			name = ManaKit_ExampleTests;
+			productName = ManaKit_ExampleTests;
+			productReference = 8B70145223B4252D0097298B /* ManaKit_ExampleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -586,19 +438,13 @@
 						LastSwiftMigration = 1000;
 						ProvisioningStyle = Manual;
 					};
-					8B379A9823A58643005D0171 = {
+					8B70144323B425200097298B = {
 						CreatedOnToolsVersion = 11.2.1;
+						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
-					8B7BF7BA23A5FA400030AAC9 = {
+					8B70145123B4252D0097298B = {
 						CreatedOnToolsVersion = 11.2.1;
-					};
-					8B7BF7CE23A5FA420030AAC9 = {
-						CreatedOnToolsVersion = 11.2.1;
-						TestTargetID = 8B7BF7BA23A5FA400030AAC9;
-					};
-					8B7BF7D923A5FA420030AAC9 = {
-						CreatedOnToolsVersion = 11.2.1;
-						TestTargetID = 8B7BF7BA23A5FA400030AAC9;
+						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
 				};
 			};
@@ -612,19 +458,14 @@
 			);
 			mainGroup = 607FACC71AFB9204008FA782;
 			packageReferences = (
-				8B3799F123A570F8005D0171 /* XCRemoteSwiftPackageReference "Swift-Kuery" */,
-				8B3799F423A57108005D0171 /* XCRemoteSwiftPackageReference "Swift-Kuery-PostgreSQL" */,
-				8B6E649B23A5E3C600819CCE /* XCRemoteSwiftPackageReference "Kanna" */,
 			);
 			productRefGroup = 607FACD11AFB9204008FA782 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				607FACCF1AFB9204008FA782 /* ManaKit_Example */,
-				8B379A9823A58643005D0171 /* ManaKit CLI */,
-				8B7BF7BA23A5FA400030AAC9 /* ManaKit_App */,
-				8B7BF7CE23A5FA420030AAC9 /* ManaKit_AppTests */,
-				8B7BF7D923A5FA420030AAC9 /* ManaKit_AppUITests */,
+				8B70144323B425200097298B /* ManaKit_ExampleUITests */,
+				8B70145123B4252D0097298B /* ManaKit_ExampleTests */,
 			);
 		};
 /* End PBXProject section */
@@ -641,25 +482,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8B7BF7B923A5FA400030AAC9 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8B9B0E8B23ADEE69005FDD23 /* data in Resources */,
-				8B7BF7C823A5FA420030AAC9 /* Main.storyboard in Resources */,
-				8B7BF7C523A5FA420030AAC9 /* Preview Assets.xcassets in Resources */,
-				8B7BF7C223A5FA420030AAC9 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8B7BF7CD23A5FA420030AAC9 /* Resources */ = {
+		8B70144223B425200097298B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8B7BF7D823A5FA420030AAC9 /* Resources */ = {
+		8B70145023B4252D0097298B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -686,6 +516,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ManaKit_Example/Pods-ManaKit_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		09BA9A1D0166217CF584688D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_ExampleTests/Pods-ManaKit_ExampleTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_ExampleTests/Pods-ManaKit_ExampleTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ManaKit_ExampleTests/Pods-ManaKit_ExampleTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		0D59FA973E82FB979C987B45 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -704,64 +551,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7AF4117B9200A4AE0113B6F8 /* [CP] Check Pods Manifest.lock */ = {
+		0E0AB8F51B45335C3C1CDE8C /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ManaKit CLI-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		85D7BA138C96F6DEC2B0A1E0 /* [Amimono] Create filelist per architecture */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "[Amimono] Create filelist per architecture";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/bash;
-			shellScript = "declare -a DEPENDENCIES=('Kanna-macOS' 'KeychainAccess-macOS' 'ManaKit-macOS' 'PromiseKit.root-CorePromise-Foundation' 'SDWebImage-macOS' 'SSZipArchive-macOS' 'Sync-macOS');\nIFS=\" \" read -r -a SPLIT <<< \"$ARCHS\"\nfor ARCH in \"${SPLIT[@]}\"; do\n  cd \"$OBJROOT/Pods.build\"\n  filelist=\"\"\n  for dependency in \"${DEPENDENCIES[@]}\"; do\n    path=\"${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/${dependency}.build/Objects-normal/${ARCH}\"\n    if [ -d \"$path\" ]; then\n      search_path=\"$path/*.o\"\n      for obj_file in $search_path; do\n        filelist+=\"${OBJROOT}/Pods.build/${obj_file}\"\n        filelist+=$'\\n'\n      done\n    fi\n  done\n  filelist=${filelist%$'\\n'}\n  echo \"$filelist\" > \"${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${TARGET_NAME}-${ARCH}.objects.filelist\"\ndone\n";
-		};
-		8BD1D02A826F52AEFF43CD0F /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_App/Pods-ManaKit_App-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_ExampleUITests/Pods-ManaKit_ExampleUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_App/Pods-ManaKit_App-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_ExampleUITests/Pods-ManaKit_ExampleUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ManaKit_App/Pods-ManaKit_App-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ManaKit_ExampleUITests/Pods-ManaKit_ExampleUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		98D235F38FFE9B2A727FF3E5 /* [CP] Check Pods Manifest.lock */ = {
+		87965511EB5F67593F250160 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -776,30 +583,12 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ManaKit_App-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-ManaKit_ExampleTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
-		};
-		A23497189465E5B937BC1298 /* [Amimono] Create filelist per architecture */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "[Amimono] Create filelist per architecture";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/bash;
-			shellScript = "declare -a DEPENDENCIES=('Kanna-macOS' 'KeychainAccess-macOS' 'ManaKit-macOS' 'PromiseKit.root-CorePromise-Foundation' 'SDWebImage-macOS' 'SSZipArchive-macOS' 'Sync-macOS');\nIFS=\" \" read -r -a SPLIT <<< \"$ARCHS\"\nfor ARCH in \"${SPLIT[@]}\"; do\n  cd \"$OBJROOT/Pods.build\"\n  filelist=\"\"\n  for dependency in \"${DEPENDENCIES[@]}\"; do\n    path=\"${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/${dependency}.build/Objects-normal/${ARCH}\"\n    if [ -d \"$path\" ]; then\n      search_path=\"$path/*.o\"\n      for obj_file in $search_path; do\n        filelist+=\"${OBJROOT}/Pods.build/${obj_file}\"\n        filelist+=$'\\n'\n      done\n    fi\n  done\n  filelist=${filelist%$'\\n'}\n  echo \"$filelist\" > \"${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${TARGET_NAME}-${ARCH}.objects.filelist\"\ndone\n";
 		};
 		B3EBF6D20CD9784219F30988 /* [Amimono] Create filelist per architecture */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -818,6 +607,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
 			shellScript = "declare -a DEPENDENCIES=('FontAwesome.swift' 'Kanna-iOS' 'KeychainAccess-iOS' 'MBProgressHUD' 'ManaKit-iOS' 'PromiseKit' 'SDWebImage-iOS' 'SSZipArchive-iOS' 'Sync-iOS');\nIFS=\" \" read -r -a SPLIT <<< \"$ARCHS\"\nfor ARCH in \"${SPLIT[@]}\"; do\n  cd \"$OBJROOT/Pods.build\"\n  filelist=\"\"\n  for dependency in \"${DEPENDENCIES[@]}\"; do\n    path=\"${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/${dependency}.build/Objects-normal/${ARCH}\"\n    if [ -d \"$path\" ]; then\n      search_path=\"$path/*.o\"\n      for obj_file in $search_path; do\n        filelist+=\"${OBJROOT}/Pods.build/${obj_file}\"\n        filelist+=$'\\n'\n      done\n    fi\n  done\n  filelist=${filelist%$'\\n'}\n  echo \"$filelist\" > \"${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}-${TARGET_NAME}-${ARCH}.objects.filelist\"\ndone\n";
+		};
+		E8AC993872041238D204ACEB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ManaKit_ExampleUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -846,88 +657,54 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8B379A9523A58643005D0171 /* Sources */ = {
+		8B70144023B425200097298B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B7BF82A23A608550030AAC9 /* Maintainer+ServerInfo.swift in Sources */,
-				8B7BF82523A608550030AAC9 /* Maintainer+CardsPostgres.swift in Sources */,
-				8B7BF80723A608550030AAC9 /* Maintainer+Cards.swift in Sources */,
-				8B7BF80223A608550030AAC9 /* Maintainer+Sets.swift in Sources */,
-				8B7BF81B23A608550030AAC9 /* Maintainer+SetsPostgres.swift in Sources */,
-				8B7BF80C23A608550030AAC9 /* Maintainer+RulingsPostgres.swift in Sources */,
-				8B379A9C23A58643005D0171 /* main.swift in Sources */,
-				8B34F7E823AF08AC00A00C79 /* Maintainer+TCGPlayer.swift in Sources */,
-				8B7BF81123A608550030AAC9 /* Maintainer+Rulings.swift in Sources */,
-				8B7BF81623A608550030AAC9 /* Maintainer.swift in Sources */,
+				8B70146A23B4257C0097298B /* Maintainer+Sets.swift in Sources */,
+				8B70146423B4256E0097298B /* Maintainer+Rulings.swift in Sources */,
+				8B70146023B425660097298B /* Maintainer+CardsPostgres.swift in Sources */,
+				8B70146E23B425830097298B /* Maintainer+TCGPlayer.swift in Sources */,
+				8B70145E23B425630097298B /* Maintainer+Cards.swift in Sources */,
+				8B70144723B425200097298B /* ManaKit_ExampleUITests.swift in Sources */,
+				8B70146823B425790097298B /* Maintainer+ServerInfo.swift in Sources */,
+				8B70146623B425730097298B /* Maintainer+RulingsPostgres.swift in Sources */,
+				8B70146C23B425800097298B /* Maintainer+SetsPostgres.swift in Sources */,
+				8B70146223B4256A0097298B /* Maintainer+ComprehensiveRules.swift in Sources */,
+				8B70145C23B425600097298B /* Maintainer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8B7BF7B723A5FA400030AAC9 /* Sources */ = {
+		8B70144E23B4252D0097298B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B7BF82B23A608550030AAC9 /* Maintainer+ServerInfo.swift in Sources */,
-				8B7BF82623A608550030AAC9 /* Maintainer+CardsPostgres.swift in Sources */,
-				8B7BF81223A608550030AAC9 /* Maintainer+Rulings.swift in Sources */,
-				8B34F7E923AF08AC00A00C79 /* Maintainer+TCGPlayer.swift in Sources */,
-				8B7BF81C23A608550030AAC9 /* Maintainer+SetsPostgres.swift in Sources */,
-				8B7BF80323A608550030AAC9 /* Maintainer+Sets.swift in Sources */,
-				8B9B0E8A23ADB457005FDD23 /* Maintainer+ComprehensiveRules.swift in Sources */,
-				8B7BF81723A608550030AAC9 /* Maintainer.swift in Sources */,
-				8B7BF80823A608550030AAC9 /* Maintainer+Cards.swift in Sources */,
-				8B7BF7C023A5FA400030AAC9 /* ContentView.swift in Sources */,
-				8B7BF80D23A608550030AAC9 /* Maintainer+RulingsPostgres.swift in Sources */,
-				8B7BF7BE23A5FA400030AAC9 /* AppDelegate.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8B7BF7CB23A5FA420030AAC9 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8B7BF82C23A608550030AAC9 /* Maintainer+ServerInfo.swift in Sources */,
-				8B7BF82723A608550030AAC9 /* Maintainer+CardsPostgres.swift in Sources */,
-				8B7BF80923A608550030AAC9 /* Maintainer+Cards.swift in Sources */,
-				8B7BF80423A608550030AAC9 /* Maintainer+Sets.swift in Sources */,
-				8B7BF81D23A608550030AAC9 /* Maintainer+SetsPostgres.swift in Sources */,
-				8B7BF80E23A608550030AAC9 /* Maintainer+RulingsPostgres.swift in Sources */,
-				8B7BF7D423A5FA420030AAC9 /* ManaKit_AppTests.swift in Sources */,
-				8B34F7EA23AF08AC00A00C79 /* Maintainer+TCGPlayer.swift in Sources */,
-				8B7BF81323A608550030AAC9 /* Maintainer+Rulings.swift in Sources */,
-				8B7BF81823A608550030AAC9 /* Maintainer.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8B7BF7D623A5FA420030AAC9 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8B7BF82D23A608550030AAC9 /* Maintainer+ServerInfo.swift in Sources */,
-				8B7BF82823A608550030AAC9 /* Maintainer+CardsPostgres.swift in Sources */,
-				8B7BF80A23A608550030AAC9 /* Maintainer+Cards.swift in Sources */,
-				8B7BF80523A608550030AAC9 /* Maintainer+Sets.swift in Sources */,
-				8B7BF81E23A608550030AAC9 /* Maintainer+SetsPostgres.swift in Sources */,
-				8B7BF80F23A608550030AAC9 /* Maintainer+RulingsPostgres.swift in Sources */,
-				8B7BF7DF23A5FA420030AAC9 /* ManaKit_AppUITests.swift in Sources */,
-				8B34F7EB23AF08AC00A00C79 /* Maintainer+TCGPlayer.swift in Sources */,
-				8B7BF81423A608550030AAC9 /* Maintainer+Rulings.swift in Sources */,
-				8B7BF81923A608550030AAC9 /* Maintainer.swift in Sources */,
+				8B70146B23B4257D0097298B /* Maintainer+Sets.swift in Sources */,
+				8B70146523B4256F0097298B /* Maintainer+Rulings.swift in Sources */,
+				8B70146123B425670097298B /* Maintainer+CardsPostgres.swift in Sources */,
+				8B70146F23B425840097298B /* Maintainer+TCGPlayer.swift in Sources */,
+				8B70145F23B425640097298B /* Maintainer+Cards.swift in Sources */,
+				8B70145523B4252D0097298B /* ManaKit_ExampleTests.swift in Sources */,
+				8B70146923B4257A0097298B /* Maintainer+ServerInfo.swift in Sources */,
+				8B70146723B425730097298B /* Maintainer+RulingsPostgres.swift in Sources */,
+				8B70146D23B425810097298B /* Maintainer+SetsPostgres.swift in Sources */,
+				8B70146323B4256B0097298B /* Maintainer+ComprehensiveRules.swift in Sources */,
+				8B70145D23B425600097298B /* Maintainer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		8B7BF7D123A5FA420030AAC9 /* PBXTargetDependency */ = {
+		8B70144A23B425200097298B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8B7BF7BA23A5FA400030AAC9 /* ManaKit_App */;
-			targetProxy = 8B7BF7D023A5FA420030AAC9 /* PBXContainerItemProxy */;
+			target = 607FACCF1AFB9204008FA782 /* ManaKit_Example */;
+			targetProxy = 8B70144923B425200097298B /* PBXContainerItemProxy */;
 		};
-		8B7BF7DC23A5FA420030AAC9 /* PBXTargetDependency */ = {
+		8B70145823B4252D0097298B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8B7BF7BA23A5FA400030AAC9 /* ManaKit_App */;
-			targetProxy = 8B7BF7DB23A5FA420030AAC9 /* PBXContainerItemProxy */;
+			target = 607FACCF1AFB9204008FA782 /* ManaKit_Example */;
+			targetProxy = 8B70145723B4252D0097298B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -946,14 +723,6 @@
 				607FACDF1AFB9204008FA782 /* Base */,
 			);
 			name = LaunchScreen.xib;
-			sourceTree = "<group>";
-		};
-		8B7BF7C623A5FA420030AAC9 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				8B7BF7C723A5FA420030AAC9 /* Base */,
-			);
-			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1124,9 +893,9 @@
 			};
 			name = Release;
 		};
-		8B379A9E23A58643005D0171 /* Debug */ = {
+		8B70144C23B425200097298B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2ECAF050827D429CD009A9EC /* Pods-ManaKit CLI.debug.xcconfig */;
+			baseConfigurationReference = 41DE90FEC14950F0A6008B90 /* Pods-ManaKit_ExampleUITests.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -1134,25 +903,30 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = "$(SRCROOT)/ManaKit/Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				INFOPLIST_FILE = ManaKit_ExampleUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.ManaKit-CLI";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.managuide.ManaKit.ManaKit-ExampleUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ManaKit_Example;
 			};
 			name = Debug;
 		};
-		8B379A9F23A58643005D0171 /* Release */ = {
+		8B70144D23B425200097298B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 29970762088CCB248F273C8A /* Pods-ManaKit CLI.release.xcconfig */;
+			baseConfigurationReference = 076839DE6080D7B8797015FF /* Pods-ManaKit_ExampleUITests.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -1160,82 +934,28 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = "$(SRCROOT)/ManaKit/Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				INFOPLIST_FILE = ManaKit_ExampleUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.ManaKit-CLI";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.managuide.ManaKit.ManaKit-ExampleUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ManaKit_Example;
 			};
 			name = Release;
 		};
-		8B7BF7E223A5FA420030AAC9 /* Debug */ = {
+		8B70145A23B4252D0097298B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 02278C726D0CDE3A87D1C63F /* Pods-ManaKit_App.debug.xcconfig */;
+			baseConfigurationReference = 91B7A9FA4B4AAA078ADB4898 /* Pods-ManaKit_ExampleTests.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = ManaKit_App/ManaKit_App.entitlements;
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_ASSET_PATHS = "\"ManaKit_App/Preview Content\"";
-				ENABLE_PREVIEWS = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = ManaKit_App/Info.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.managuide.ManaKit.ManaKit-App";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		8B7BF7E323A5FA420030AAC9 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1A0DD5772B067C7275D35E64 /* Pods-ManaKit_App.release.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = ManaKit_App/ManaKit_App.entitlements;
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"ManaKit_App/Preview Content\"";
-				ENABLE_PREVIEWS = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = ManaKit_App/Info.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.managuide.ManaKit.ManaKit-App";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
-		8B7BF7E523A5FA420030AAC9 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -1244,31 +964,30 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = ManaKit_AppTests/Info.plist;
+				INFOPLIST_FILE = ManaKit_ExampleTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.managuide.ManaKit.ManaKit-AppTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.managuide.ManaKit.ManaKit-ExampleTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ManaKit_App.app/Contents/MacOS/ManaKit_App";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ManaKit_Example.app/ManaKit_Example";
 			};
 			name = Debug;
 		};
-		8B7BF7E623A5FA420030AAC9 /* Release */ = {
+		8B70145B23B4252D0097298B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5D8BE09AA18CABC46014EEA4 /* Pods-ManaKit_ExampleTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -1277,80 +996,20 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = ManaKit_AppTests/Info.plist;
+				INFOPLIST_FILE = ManaKit_ExampleTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.managuide.ManaKit.ManaKit-AppTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ManaKit_App.app/Contents/MacOS/ManaKit_App";
-			};
-			name = Release;
-		};
-		8B7BF7E823A5FA420030AAC9 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = ManaKit_AppUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.managuide.ManaKit.ManaKit-AppUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = ManaKit_App;
-			};
-			name = Debug;
-		};
-		8B7BF7E923A5FA420030AAC9 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = ManaKit_AppUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
 				);
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.managuide.ManaKit.ManaKit-AppUITests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.managuide.ManaKit.ManaKit-ExampleTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = ManaKit_App;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ManaKit_Example.app/ManaKit_Example";
 			};
 			name = Release;
 		};
@@ -1375,93 +1034,25 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8B379A9D23A58643005D0171 /* Build configuration list for PBXNativeTarget "ManaKit CLI" */ = {
+		8B70144B23B425200097298B /* Build configuration list for PBXNativeTarget "ManaKit_ExampleUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				8B379A9E23A58643005D0171 /* Debug */,
-				8B379A9F23A58643005D0171 /* Release */,
+				8B70144C23B425200097298B /* Debug */,
+				8B70144D23B425200097298B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8B7BF7E123A5FA420030AAC9 /* Build configuration list for PBXNativeTarget "ManaKit_App" */ = {
+		8B70145923B4252D0097298B /* Build configuration list for PBXNativeTarget "ManaKit_ExampleTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				8B7BF7E223A5FA420030AAC9 /* Debug */,
-				8B7BF7E323A5FA420030AAC9 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		8B7BF7E423A5FA420030AAC9 /* Build configuration list for PBXNativeTarget "ManaKit_AppTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				8B7BF7E523A5FA420030AAC9 /* Debug */,
-				8B7BF7E623A5FA420030AAC9 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		8B7BF7E723A5FA420030AAC9 /* Build configuration list for PBXNativeTarget "ManaKit_AppUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				8B7BF7E823A5FA420030AAC9 /* Debug */,
-				8B7BF7E923A5FA420030AAC9 /* Release */,
+				8B70145A23B4252D0097298B /* Debug */,
+				8B70145B23B4252D0097298B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		8B3799F123A570F8005D0171 /* XCRemoteSwiftPackageReference "Swift-Kuery" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/IBM-Swift/Swift-Kuery.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.0.1;
-			};
-		};
-		8B3799F423A57108005D0171 /* XCRemoteSwiftPackageReference "Swift-Kuery-PostgreSQL" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/IBM-Swift/Swift-Kuery-PostgreSQL.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.1.1;
-			};
-		};
-		8B6E649B23A5E3C600819CCE /* XCRemoteSwiftPackageReference "Kanna" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/tid-kijyun/Kanna.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		8B379AA123A58691005D0171 /* SwiftKuery */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 8B3799F123A570F8005D0171 /* XCRemoteSwiftPackageReference "Swift-Kuery" */;
-			productName = SwiftKuery;
-		};
-		8B379AA323A58691005D0171 /* SwiftKueryPostgreSQL */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 8B3799F423A57108005D0171 /* XCRemoteSwiftPackageReference "Swift-Kuery-PostgreSQL" */;
-			productName = SwiftKueryPostgreSQL;
-		};
-		8B7BF7F223A5FB700030AAC9 /* SwiftKuery */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 8B3799F123A570F8005D0171 /* XCRemoteSwiftPackageReference "Swift-Kuery" */;
-			productName = SwiftKuery;
-		};
-		8B7BF7F423A5FB700030AAC9 /* SwiftKueryPostgreSQL */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 8B3799F423A57108005D0171 /* XCRemoteSwiftPackageReference "Swift-Kuery-PostgreSQL" */;
-			productName = SwiftKueryPostgreSQL;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 607FACC81AFB9204008FA782 /* Project object */;
 }

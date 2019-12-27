@@ -62,7 +62,7 @@ extension Maintainer {
         
         let data = try! Data(contentsOf: URL(fileURLWithPath: setsPath))
         guard let array = try! JSONSerialization.jsonObject(with: data,
-                                                           options: .mutableContainers) as? [[String: Any]] else {
+                                                            options: .mutableContainers) as? [[String: Any]] else {
             fatalError("Malformed data")
         }
         

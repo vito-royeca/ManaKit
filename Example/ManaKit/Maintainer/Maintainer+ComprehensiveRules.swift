@@ -8,9 +8,8 @@
 
 import Foundation
 import ManaKit
+import PostgresClientKit
 import PromiseKit
-import SwiftKuery
-import SwiftKueryPostgreSQL
 
 extension Maintainer {
     func rulesData() -> [String] {
@@ -26,7 +25,7 @@ extension Maintainer {
         return lines
     }
     
-    func filterRules(lines: [String], connection: PostgreSQLConnection) -> [()->Promise<Void>] {
+    func filterRules(lines: [String], connection: Connection) -> [()->Promise<Void>] {
         var rules = [[String: Any]]()
         var id = 0
         
@@ -99,20 +98,20 @@ extension Maintainer {
         return promises
     }
     
-    func createDeleteRulesPromise(connection: PostgreSQLConnection) -> Promise<Void> {
+    func createDeleteRulesPromise(connection: Connection) -> Promise<Void> {
         let query = "DELETE FROM cmrule"
         return createPromise(with: query,
                              parameters: nil,
                              connection: connection)
     }
     
-    func createRulePromise(dict: [String: Any], connection: PostgreSQLConnection) -> Promise<Void> {
-        let term = dict["term"] ?? "null"
-        let termSection = dict["termSection"] ?? "null"
-        let definition = dict["definition"] ?? "null"
-        let order = dict["order"] ?? Double(0)
-        let parent = dict["parent"] ?? -1
-        let id = dict["id"] ?? 0
+    func createRulePromise(dict: [String: Any], connection: Connection) -> Promise<Void> {
+        let term = dict["term"] as? String ?? "NULL"
+        let termSection = dict["termSection"] as? String ?? "NULL"
+        let definition = dict["definition"] as? String ?? "NULL"
+        let order = dict["order"] as? Double ?? Double(0)
+        let parent = dict["parent"] as? Int ?? Int(-1)
+        let id = dict["id"] as? Int ?? Int(0)
         let query = "SELECT createOrUpdateRule($1,$2,$3,$4,$5,$6)"
         let parameters = [term,
                           termSection,
@@ -314,9 +313,9 @@ extension Maintainer {
                                 prefix = "#"
                             }
                             
-                            let rule = ["term": term ?? "null",
+                            let rule = ["term": term ?? "NULL",
                                         "termSection": prefix,
-                                        "definition": definition ?? "null",
+                                        "definition": definition ?? "NULL",
                                         "parent": parent ?? 0,
                                         "id": id] as [String: Any]
                             rules.append(rule)

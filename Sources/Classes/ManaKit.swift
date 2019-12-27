@@ -14,12 +14,8 @@ import KeychainAccess
 import PromiseKit
 import SDWebImage
 import Sync
-#if os(iOS)
-import UIKit
-#endif
 
 public class ManaKit {
-#if os(iOS)
     public enum Fonts {
         public static let preEightEdition      = UIFont(name: "Magic:the Gathering", size: 17.0)
         public static let preEightEditionSmall = UIFont(name: "Magic:the Gathering", size: 15.0)
@@ -28,10 +24,9 @@ public class ManaKit {
         public static let magic2015            = UIFont(name: "Beleren", size: 17.0)
         public static let magic2015Small       = UIFont(name: "Beleren", size: 15.0)
     }
-#endif
 
     public enum Constants {
-        public static let ScryfallDate        = "2019-12-22 10:25 UTC"
+        public static let ScryfallDate        = "2019-12-25 10:25 UTC"
         public static let EightEditionRelease = "2003-07-28"
         public static let ManaGuideDataAge    = 24 * 3 // 3 days
         public static let TcgPlayerApiVersion = "v1.19.0"
@@ -72,7 +67,7 @@ public class ManaKit {
     var keychain: Keychain {
         get {
             if _keyChain == nil {
-                _keyChain = Keychain(service: "com.jovitoroyeca.ManaKit")
+                _keyChain = Keychain(service: "com.managuide.ManaKit")
             }
             return _keyChain!
         }
@@ -86,7 +81,7 @@ public class ManaKit {
                 guard let bundleURL = Bundle(for: ManaKit.self).url(forResource: "ManaKit", withExtension: "bundle"),
                     let bundle = Bundle(url: bundleURL),
                     let momURL = bundle.url(forResource: "ManaKit", withExtension: "momd"),
-                    let objectModel = NSManagedObjectModel(contentsOf: momURL) else {
+                    let objectModel = NSManagedObjectModel(contentsOf: momURL.appendingPathComponent("2019-12-23.mom")) else {
                     return nil
                 }
                 _dataStack = DataStack(model: objectModel, storeType: .sqLite)
@@ -99,15 +94,15 @@ public class ManaKit {
     }
     
     // MARK: Resource methods
-//    public func nibFromBundle(_ name: String) -> UINib? {
-//        let bundle = Bundle(for: ManaKit.self)
-//        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
-//            let resourceBundle = Bundle(url: bundleURL) else {
-//            return nil
-//        }
-//        
-//        return UINib(nibName: name, bundle: resourceBundle)
-//    }
+    public func nibFromBundle(_ name: String) -> UINib? {
+        let bundle = Bundle(for: ManaKit.self)
+        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
+            let resourceBundle = Bundle(url: bundleURL) else {
+            return nil
+        }
+        
+        return UINib(nibName: name, bundle: resourceBundle)
+    }
     
     public func setupResources() {
         copyDatabaseFile()

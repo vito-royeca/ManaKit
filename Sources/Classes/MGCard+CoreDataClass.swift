@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import UIKit
 
 public enum CardImageType: Int, CaseIterable {
     case png
@@ -83,31 +84,31 @@ public class MGCard: NSManagedObject {
             }
         }
 
-        public func keyruneColor() -> String? {
+        public func keyruneColor() -> UIColor? {
             guard let set = set,
                 let rarity = rarity else {
                 return nil
             }
             
-            var color: String?
+            var color: UIColor?
             
             if set.code == "tsb" {
-                color = "652978" // purple
+                color = UIColor(hex: "652978") // purple
             } else {
                 if rarity.name == "Common" {
-                    color = "1A1718"
+                    color = UIColor(hex: "1A1718")
                 } else if rarity.name == "Uncommon" {
-                    color = "707883"
+                    color = UIColor(hex: "707883")
                 } else if rarity.name == "Rare" {
-                    color = "A58E4A"
+                    color = UIColor(hex: "A58E4A")
                 } else if rarity.name == "Mythic" {
-                    color = "BF4427"
+                    color = UIColor(hex: "BF4427")
                 } else if rarity.name == "Special" {
-                    color = "BF4427"
+                    color = UIColor(hex: "BF4427")
                 } else if rarity.name == "Timeshifted" {
-                    color = "652978"
+                    color = UIColor(hex: "652978")
                 } else if rarity.name == "Basic Land" {
-                    color = "000000"
+                    color = UIColor(hex: "000000")
                 }
             }
             

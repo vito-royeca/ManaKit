@@ -9,7 +9,7 @@
 import CoreData
 import PromiseKit
 
-public class BaseViewModel: NSObject {
+open class BaseViewModel: NSObject {
     // MARK: public variables
     public var entityName = ""
     public var sortDescriptors: [NSSortDescriptor]?
@@ -17,8 +17,8 @@ public class BaseViewModel: NSObject {
     public var title: String?
     public var queryString = ""
     public var searchCancelled = false
-    public var predicate: NSPredicate?
-    public var fetchRequest: NSFetchRequest<NSFetchRequestResult>?
+    open var predicate: NSPredicate?
+    open var fetchRequest: NSFetchRequest<NSFetchRequestResult>?
     
     // MARK: private variables
     private let context = ManaKit.sharedInstance.dataStack!.viewContext
@@ -93,17 +93,17 @@ public class BaseViewModel: NSObject {
         return fetchedResultsController.fetchedObjects as? [NSManagedObject]
     }
     
-    public func willFetchCache() -> Bool {
+    open func willFetchCache() -> Bool {
         return ManaKit.sharedInstance.willFetchCache(entityName,
                                                      objectFinder: nil)
     }
     
-    public func deleteCache() {
+    open func deleteCache() {
         ManaKit.sharedInstance.deleteCache(entityName,
                                            objectFinder: nil)
     }
     
-    public func deleteAllCache() {
+    open func deleteAllCache() {
         let entities = [String(describing: MGSet.self),
                         String(describing: MGCard.self)]
         
@@ -113,7 +113,7 @@ public class BaseViewModel: NSObject {
         }
     }
     
-    public func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
+    open func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
         let urlString = "\(ManaKit.Constants.APIURL)/"
         
         return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
@@ -121,7 +121,7 @@ public class BaseViewModel: NSObject {
                                                         httpBody: nil)
     }
     
-    public func saveLocalData(data: [[String: Any]]) -> Promise<Void> {
+    open func saveLocalData(data: [[String: Any]]) -> Promise<Void> {
         return Promise { seal in
             let completion = { (error: NSError?) in
                 seal.fulfill(())
@@ -134,7 +134,7 @@ public class BaseViewModel: NSObject {
         }
     }
     
-    public func fetchLocalData() -> Promise<Void> {
+    open func fetchLocalData() -> Promise<Void> {
         return Promise { seal in
             if let request: NSFetchRequest<NSFetchRequestResult> = fetchRequest {
                 request.predicate = predicate
@@ -147,7 +147,7 @@ public class BaseViewModel: NSObject {
         }
     }
     
-    public func updateSections() {
+    open func updateSections() {
         guard let fetchedResultsController = fetchedResultsController,
             let sections = fetchedResultsController.sections else {
             return
@@ -178,7 +178,7 @@ public class BaseViewModel: NSObject {
         _sectionTitles.sort()
     }
     
-    public func getFetchedResultsController(with fetchRequest: NSFetchRequest<NSFetchRequestResult>?) -> NSFetchedResultsController<NSFetchRequestResult> {
+    open func getFetchedResultsController(with fetchRequest: NSFetchRequest<NSFetchRequestResult>?) -> NSFetchedResultsController<NSFetchRequestResult> {
         var request: NSFetchRequest<NSFetchRequestResult>?
         
         if let fetchRequest = fetchRequest {

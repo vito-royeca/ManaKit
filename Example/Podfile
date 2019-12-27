@@ -16,28 +16,23 @@ target 'ManaKit_Example' do
     pod 'FontAwesome.swift'
     pod 'KeychainAccess'
     pod 'MBProgressHUD'
+    pod 'PostgresClientKit', '~> 1.0'
 end
 
-target 'ManaKit CLI' do
+target 'ManaKit_ExampleTests' do
     default_pods
-    platform :osx, "10.13"
+    platform :ios, "10.3"
+
+    pod 'FontAwesome.swift'
+    pod 'KeychainAccess'
+    pod 'MBProgressHUD'
 end
 
-target 'ManaKit_App' do
+target 'ManaKit_ExampleUITests' do
     default_pods
-    platform :osx, "10.13"
-end
+    platform :ios, "10.3"
 
-post_install do |installer_representation|
-  installer_representation.project.targets.each do |target|
-  if target.name == "Pods-ManaKit CLI" || target.name == "Pods-ManaKit_App"
-    target.build_configurations.each do |config|
-        if config.name == 'QA'
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] || = ['$(inherited)', 'FB_TWEAK_ENABLED=1']
-        end
-      end
-    end
-  end
+    pod 'FontAwesome.swift'
+    pod 'KeychainAccess'
+    pod 'MBProgressHUD'
 end
-  
-

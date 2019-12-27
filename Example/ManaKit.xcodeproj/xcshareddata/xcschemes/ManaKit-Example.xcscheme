@@ -61,6 +61,26 @@
                ReferencedContainer = "container:ManaKit.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8B70144323B425200097298B"
+               BuildableName = "ManaKit_ExampleUITests.xctest"
+               BlueprintName = "ManaKit_ExampleUITests"
+               ReferencedContainer = "container:ManaKit.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8B70145123B4252D0097298B"
+               BuildableName = "ManaKit_ExampleTests.xctest"
+               BlueprintName = "ManaKit_ExampleTests"
+               ReferencedContainer = "container:ManaKit.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

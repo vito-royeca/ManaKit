@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 extension MGCard {
     public func typeImage() -> UIImage? {
