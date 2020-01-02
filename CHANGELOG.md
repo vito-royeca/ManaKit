@@ -1,3 +1,6 @@
+**Version 6.1.4** @ 02.01.2019
+- Added more card relationship data.
+
 **Version 6.1.3** @ 26.12.2019
 - Removed the Mac App and CLI targets.
 

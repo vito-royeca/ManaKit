@@ -154,7 +154,7 @@ extension Maintainer {
         let directLow = price["directLowPrice"] as? Double ?? 0.0
         let tcgPlayerId = price["productId"]  as? Int ?? 0
         let cmstore = self.storeName
-        let isFoil = price["subTypeName"] as? String == "Foil" ? true : false
+        let isFoil = price["subTypeName"] as? String ?? "Foil" == "Foil" ? true : false
         
         let query = "SELECT createOrUpdateCardPrice($1,$2,$3,$4,$5,$6,$7,$8)"
         let parameters = [

@@ -6,12 +6,10 @@
 //  Copyright © 2019 CocoaPods. All rights reserved.
 //
 
-import ManaKit
 import CoreData
-import ManaKit
 import PromiseKit
 
-class CardViewModel: BaseViewModel {
+public class CardViewModel: BaseViewModel {
     // MARK: Variables
     private var _id: String?
     
@@ -45,7 +43,7 @@ class CardViewModel: BaseViewModel {
     }
     
     // MARK: Initialization
-    init(withId id: String) {
+    public init(withId id: String) {
         super.init()
         _id = id
         
@@ -74,13 +72,13 @@ class CardViewModel: BaseViewModel {
                                                   objectFinder: objectFinder)
     }
     
-    override func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
+    override public func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
         guard let id = _id else {
             fatalError("id is nil")
         }
-        let urlString = "\(ManaKit.Constants.APIURL)/cards/\(id)"
+        let path = "/cards/\(id)"
         
-        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+        return ManaKit.sharedInstance.createNodePromise(apiPath: path,
                                                         httpMethod: "GET",
                                                         httpBody: nil)
     }

@@ -56,9 +56,9 @@ public class SetsViewModel: BaseViewModel {
     
     // MARK: Overrides
     override public func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
-        let urlString = "\(ManaKit.Constants.APIURL)/sets"
+        let path = "/sets"
         
-        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+        return ManaKit.sharedInstance.createNodePromise(apiPath: path,
                                                         httpMethod: "GET",
                                                         httpBody: nil)
     }

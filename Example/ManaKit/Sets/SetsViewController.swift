@@ -37,6 +37,7 @@ class SetsViewController: BaseViewController {
         
         tableView.register(ManaKit.sharedInstance.nibFromBundle("SetTableViewCell"),
                            forCellReuseIdentifier: SetTableViewCell.reuseIdentifier)
+        fetchData()
     }
 
     override func viewDidAppear(_ animated: Bool) {

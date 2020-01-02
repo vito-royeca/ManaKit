@@ -16,6 +16,7 @@ extension MGCardFormatLegality {
         return NSFetchRequest<MGCardFormatLegality>(entityName: "MGCardFormatLegality")
     }
 
+    @NSManaged public var id: Int32
     @NSManaged public var card: MGCard?
     @NSManaged public var format: MGFormat?
     @NSManaged public var legality: MGLegality?

@@ -851,39 +851,9 @@ extension Maintainer {
 //                cachedCardTypes.append(object)
 //            }
 //
-//            cachedLanguages.removeAll()
-//            for object in realm.objects(CMLanguage.self) {
-//                cachedLanguages.append(object)
-//            }
-//            let enLanguage = findLanguage(with: "en")
-//
 //            // update the cards
 //            try! realm.write {
 //                for card in cards {
-//                    // displayName
-//                    var displayName: String?
-//                    if let language = card.language,
-//                        let code = language.code {
-//                        displayName = code == "en" ? card.name : card.printedName
-//
-//                        if displayName == nil {
-//                            displayName = card.name
-//                        }
-//                    }
-//                    card.displayName = displayName
-//
-//                    // myNameSection
-//                    if let _ = card.id,
-//                        let name = card.name {
-//                        card.myNameSection = sectionFor(name: name)
-//                    }
-//
-//                    // myNumberOrder
-//                    if let _ = card.id,
-//                        let collectorNumber = card.collectorNumber {
-//                        card.myNumberOrder = order(of: collectorNumber)
-//                    }
-//
 //                    // myType
 //                    if let typeLine = card.typeLine,
 //                        let name = typeLine.name {

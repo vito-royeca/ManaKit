@@ -16,7 +16,6 @@
 		71FA7D14ED24E24A28FB2910 /* Pods_ManaKit_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B379A7D23A58530005D0171 /* Pods_ManaKit_Example.framework */; };
 		77E72A38680840059D0A3727 /* Pods_ManaKit_ExampleUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 696234DD185E888F3E4F52E8 /* Pods_ManaKit_ExampleUITests.framework */; };
 		8B219CC62391722400593E19 /* SetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B219CC32391722400593E19 /* SetViewController.swift */; };
-		8B2F2F9223933F75005DEB46 /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2F2F9123933F75005DEB46 /* CardViewModel.swift */; };
 		8B2F2F9423934246005DEB46 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2F2F9323934246005DEB46 /* CardViewController.swift */; };
 		8B34F7E723AF08AC00A00C79 /* Maintainer+TCGPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B34F7E623AF08AC00A00C79 /* Maintainer+TCGPlayer.swift */; };
 		8B379A3C23A57DFE005D0171 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B379A3B23A57DFD005D0171 /* Images.xcassets */; };
@@ -114,7 +113,6 @@
 		790E2C95DAEEFCC5990EEE22 /* ManaKit.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = ManaKit.podspec; path = ../ManaKit.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		88F0F057FC286A584E82D4CE /* Pods-ManaKit_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit_Tests/Pods-ManaKit_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		8B219CC32391722400593E19 /* SetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetViewController.swift; sourceTree = "<group>"; };
-		8B2F2F9123933F75005DEB46 /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
 		8B2F2F9323934246005DEB46 /* CardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardViewController.swift; sourceTree = "<group>"; };
 		8B34F7E623AF08AC00A00C79 /* Maintainer+TCGPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+TCGPlayer.swift"; sourceTree = "<group>"; };
 		8B379A3B23A57DFD005D0171 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -207,7 +205,6 @@
 			isa = PBXGroup;
 			children = (
 				8B2F2F9323934246005DEB46 /* CardViewController.swift */,
-				8B2F2F9123933F75005DEB46 /* CardViewModel.swift */,
 			);
 			path = Card;
 			sourceTree = "<group>";
@@ -638,7 +635,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B7BF82423A608550030AAC9 /* Maintainer+CardsPostgres.swift in Sources */,
-				8B2F2F9223933F75005DEB46 /* CardViewModel.swift in Sources */,
 				8B379AC223A587DF005D0171 /* BaseViewController.swift in Sources */,
 				8B7BF80123A608550030AAC9 /* Maintainer+Sets.swift in Sources */,
 				8B9B0E8923ADB457005FDD23 /* Maintainer+ComprehensiveRules.swift in Sources */,

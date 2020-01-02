@@ -9,12 +9,6 @@ import Foundation
 import PromiseKit
 
 extension ManaKit {
-    public func configureTcgPlayer(partnerKey: String, publicKey: String?, privateKey: String?) {
-        tcgPlayerPartnerKey = partnerKey
-        tcgPlayerPublicKey = publicKey
-        tcgPlayerPrivateKey = privateKey
-    }
-    
     public func authenticateTcgPlayer() -> Promise<Void> {
         return Promise { seal  in
             guard let _ = tcgPlayerPartnerKey,

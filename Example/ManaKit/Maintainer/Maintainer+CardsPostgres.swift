@@ -269,9 +269,13 @@ extension Maintainer {
                 .replacingOccurrences(of: "[", with: "{")
                 .replacingOccurrences(of: "]", with: "}")
         }
-        var myNameSection = "NULL";
+        var myNameSection = "NULL"
         if let name = dict["name"] as? String {
-            myNameSection = self.sectionFor(name: name) ?? "NULL"
+            myNameSection = sectionFor(name: name) ?? "NULL"
+        }
+        var myNumberOrder = Double(0)
+        if collectorNumber != "NULL" {
+            myNumberOrder = order(of: collectorNumber)
         }
         let name = dict["name"] as? String ?? "NULL"
         let oracleText = dict["oracle_text"] as? String ?? "NULL"
@@ -281,7 +285,7 @@ extension Maintainer {
         let toughness = dict["toughness"] as? String ?? "NULL"
         let arenaId = dict["arena_id"] as? String ?? "NULL"
         let mtgoId = dict["mtgo_id"] as? String ?? "NULL"
-        let tcgplayerId = dict["tcgplayer_id"] as? String ?? "NULL"
+        let tcgplayerId = dict["tcgplayer_id"] as? Int ?? Int(0)
         let handModifier = dict["hand_modifier"] as? String ?? "NULL"
         let lifeModifier = dict["life_modifier"] as? String ?? "NULL"
         let isBooster = dict["booster"] as? Bool ?? false
@@ -365,7 +369,7 @@ extension Maintainer {
         // preview.previewed_at
         // preview.source_uri
         // preview.source
-        let query = "SELECT createOrUpdateCard($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32,$33,$34,$35,$36,$37,$38,$39,$40,$41,$42,$43,$44,$45,$46,$47,$48,$49,$50,$51,$52,$53,$54)"
+        let query = "SELECT createOrUpdateCard($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32,$33,$34,$35,$36,$37,$38,$39,$40,$41,$42,$43,$44,$45,$46,$47,$48,$49,$50,$51,$52,$53,$54,$55)"
         let parameters = [collectorNumber,
                           cmc,
                           flavorText,
@@ -381,6 +385,7 @@ extension Maintainer {
                           manaCost,
                           multiverseIds,
                           myNameSection,
+                          myNumberOrder,
                           name,
                           oracleText,
                           power,

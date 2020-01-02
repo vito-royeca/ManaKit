@@ -115,9 +115,9 @@ public class SetViewModel: BaseViewModel {
             let languageCode = _languageCode else {
             fatalError("set and languageCode are nil")
         }
-        let urlString = "\(ManaKit.Constants.APIURL)/cards/\(setCode)/\(languageCode)"
+        let path = "/cards/\(setCode)/\(languageCode)"
         
-        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+        return ManaKit.sharedInstance.createNodePromise(apiPath: path,
                                                         httpMethod: "GET",
                                                         httpBody: nil)
     }

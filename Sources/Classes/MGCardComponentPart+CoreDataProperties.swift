@@ -16,6 +16,7 @@ extension MGCardComponentPart {
         return NSFetchRequest<MGCardComponentPart>(entityName: "MGCardComponentPart")
     }
 
+    @NSManaged public var id: Int32
     @NSManaged public var card: MGCard?
     @NSManaged public var component: MGComponent?
     @NSManaged public var part: MGCard?

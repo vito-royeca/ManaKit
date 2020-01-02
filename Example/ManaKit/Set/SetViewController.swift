@@ -32,6 +32,8 @@ class SetViewController: BaseViewController {
         tableView.keyboardDismissMode = .onDrag
         tableView.register(ManaKit.sharedInstance.nibFromBundle("CardTableViewCell"),
                            forCellReuseIdentifier: CardTableViewCell.reuseIdentifier)
+        
+        fetchData()
     }
     
     override func viewDidAppear(_ animated: Bool) {

@@ -24,44 +24,23 @@ class BaseViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        fetchData()
     }
 
     // MARK: Custom methods
     func fetchData() {
-        if viewModel.willFetchCache() {
-            MBProgressHUD.showAdded(to: view, animated: true)
+        let endOp = { (error: Error?) in
+            if let error = error {
+                print(error)
+            }
             
-            firstly {
-                viewModel.fetchRemoteData()
-            }.compactMap { (data, result) in
-                try JSONSerialization.jsonObject(with: data) as? [[String: Any]]
-            }.then { data in
-                self.viewModel.saveLocalData(data: data)
-            }.then {
-                self.viewModel.fetchLocalData()
-            }.done {
-                MBProgressHUD.hide(for: self.view, animated: true)
-                self.title = self.viewModel.title
-                self.tableView.reloadData()
-            }.catch { error in
-                self.viewModel.deleteCache()
-                MBProgressHUD.hide(for: self.view, animated: true)
-                self.tableView.reloadData()
-            }
-        } else {
-            firstly {
-                viewModel.fetchLocalData()
-            }.done {
-                MBProgressHUD.hide(for: self.view, animated: true)
-                self.tableView.reloadData()
-            }.catch { error in
-                self.viewModel.deleteCache()
-                MBProgressHUD.hide(for: self.view, animated: true)
-                self.title = self.viewModel.title
-                self.tableView.reloadData()
-            }
+            MBProgressHUD.hide(for: self.view,
+                               animated: true)
+            self.title = self.viewModel.title
+            self.tableView.reloadData()
         }
+        
+        MBProgressHUD.showAdded(to: self.view,
+                                animated: true)
+        viewModel.fetchData(callback: endOp)
     }
-
 }

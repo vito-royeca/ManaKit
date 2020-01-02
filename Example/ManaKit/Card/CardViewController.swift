@@ -22,7 +22,9 @@ class CardViewController: BaseViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        tableView.register(ManaKit.sharedInstance.nibFromBundle("CardTableViewCell"), forCellReuseIdentifier: "CardCell")
+        tableView.register(ManaKit.sharedInstance.nibFromBundle("CardTableViewCell"),
+                           forCellReuseIdentifier: CardTableViewCell.reuseIdentifier)
+        fetchData()
     }
     
     // MARK: Custom methods
@@ -79,7 +81,7 @@ extension CardViewController : UITableViewDataSource {
         
         switch indexPath.row {
         case 0:
-            guard let c = tableView.dequeueReusableCell(withIdentifier: "CardCell") as? CardTableViewCell else {
+            guard let c = tableView.dequeueReusableCell(withIdentifier: CardTableViewCell.reuseIdentifier) as? CardTableViewCell else {
                 fatalError("Unexpected indexPath: \(indexPath)")
             }
             

@@ -71,6 +71,7 @@ extension MGCard {
     @NSManaged public var otherLanguages: NSSet?
     @NSManaged public var otherPrintings: NSSet?
     @NSManaged public var partComponentParts: NSSet?
+    @NSManaged public var prices: NSSet?
     @NSManaged public var rarity: MGRarity?
     @NSManaged public var set: MGSet?
     @NSManaged public var subtypes: NSSet?

@@ -15,6 +15,7 @@ extension MGCardPrice {
         return NSFetchRequest<MGCardPrice>(entityName: "MGCardPrice")
     }
 
+    @NSManaged public var id: Int32
     @NSManaged public var low: Double
     @NSManaged public var median: Double
     @NSManaged public var high: Double

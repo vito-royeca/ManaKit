@@ -113,10 +113,48 @@ open class BaseViewModel: NSObject {
         }
     }
     
-    open func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
-        let urlString = "\(ManaKit.Constants.APIURL)/"
+    open func fetchData(callback: ((_ error: Error?) -> Void)?) {
+        if willFetchCache() {
+            firstly {
+                fetchRemoteData()
+            }.compactMap { (data, result) in
+                try JSONSerialization.jsonObject(with: data) as? [[String: Any]]
+            }.then { data in
+                self.saveLocalData(data: data)
+            }.then {
+                self.fetchLocalData()
+            }.done {
+                if let callback = callback {
+                    callback(nil)
+                }
+            }.catch { error in
+                self.deleteCache()
+                
+                if let callback = callback {
+                    callback(error)
+                }
+            }
+        } else {
+            firstly {
+                fetchLocalData()
+            }.done {
+                if let callback = callback {
+                    callback(nil)
+                }
+            }.catch { error in
+                self.deleteCache()
+                
+                if let callback = callback {
+                    callback(error)
+                }
+            }
+        }
+    }
         
-        return ManaKit.sharedInstance.createNodePromise(urlString: urlString,
+    open func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
+        let path = "/"
+        
+        return ManaKit.sharedInstance.createNodePromise(apiPath: path,
                                                         httpMethod: "GET",
                                                         httpBody: nil)
     }

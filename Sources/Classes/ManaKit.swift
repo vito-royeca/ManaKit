@@ -26,7 +26,7 @@ public class ManaKit {
     }
 
     public enum Constants {
-        public static let ScryfallDate        = "2019-12-25 10:25 UTC"
+        public static let ScryfallDate        = "2020-01-02 10:24 UTC"
         public static let EightEditionRelease = "2003-07-28"
         public static let ManaGuideDataAge    = 24 * 3 // 3 days
         public static let TcgPlayerApiVersion = "v1.19.0"
@@ -34,7 +34,7 @@ public class ManaKit {
         public static let TcgPlayerPricingAge = 24 * 3 // 3 days
         public static let TcgPlayerPublicKey  = "A49D81FB-5A76-4634-9152-E1FB5A657720"
         public static let TcgPlayerPrivateKey = "C018EF82-2A4D-4F7A-A785-04ADEBF2A8E5"
-        public static let APIURL              = "http://192.168.1.182:1993"
+        public static let MomModel            = "2019-12-23.mom"
     }
     
     public enum ImageName: String {
@@ -62,6 +62,7 @@ public class ManaKit {
     var tcgPlayerPartnerKey: String?
     var tcgPlayerPublicKey: String?
     var tcgPlayerPrivateKey: String?
+    var apiURL: String?
     
     var _keyChain: Keychain?
     var keychain: Keychain {
@@ -81,7 +82,7 @@ public class ManaKit {
                 guard let bundleURL = Bundle(for: ManaKit.self).url(forResource: "ManaKit", withExtension: "bundle"),
                     let bundle = Bundle(url: bundleURL),
                     let momURL = bundle.url(forResource: "ManaKit", withExtension: "momd"),
-                    let objectModel = NSManagedObjectModel(contentsOf: momURL.appendingPathComponent("2019-12-23.mom")) else {
+                    let objectModel = NSManagedObjectModel(contentsOf: momURL.appendingPathComponent("\(Constants.MomModel)")) else {
                     return nil
                 }
                 _dataStack = DataStack(model: objectModel, storeType: .sqLite)
@@ -94,6 +95,13 @@ public class ManaKit {
     }
     
     // MARK: Resource methods
+    public func configure(apiURL: String, partnerKey: String, publicKey: String?, privateKey: String?) {
+        self.apiURL = apiURL
+        tcgPlayerPartnerKey = partnerKey
+        tcgPlayerPublicKey = publicKey
+        tcgPlayerPrivateKey = privateKey
+    }
+    
     public func nibFromBundle(_ name: String) -> UINib? {
         let bundle = Bundle(for: ManaKit.self)
         guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),

@@ -19,6 +19,7 @@ public class CardTableViewCell: UITableViewCell {
     
     var nameAttributedString: NSAttributedString?
 //    var manaCostDisplayed = false
+    var typeViewTopAnchor: NSLayoutConstraint?
     
     // MARK: Outlets
     @IBOutlet public weak var thumbnailImage: UIImageView!
@@ -26,7 +27,6 @@ public class CardTableViewCell: UITableViewCell {
     @IBOutlet public weak var castingCostLabel: UILabel!
     @IBOutlet public weak var castingCostLabel2: UILabel!
     @IBOutlet public weak var annotationLabel: UILabel!
-    @IBOutlet public weak var typeImage: UIImageView!
     @IBOutlet public weak var typeLabel: UILabel!
     @IBOutlet public weak var setImage: UILabel!
     @IBOutlet public weak var normalPriceLabel: UILabel!
@@ -55,7 +55,6 @@ public class CardTableViewCell: UITableViewCell {
     // MARK: Custom methods
     public func clearDataDisplay() {
         thumbnailImage.image = ManaKit.sharedInstance.imageFromFramework(imageName: .cardBackCropped)
-        typeImage.image = nil
         removeAnnotation()
         nameLabel.text = nil
         castingCostLabel.text = nil
@@ -155,7 +154,6 @@ public class CardTableViewCell: UITableViewCell {
         }
 
         // type
-        typeImage.image = card.typeImage()
         typeLabel.text = card.typeText(includePower: true)
         
         // pricing
@@ -178,16 +176,22 @@ public class CardTableViewCell: UITableViewCell {
         if let nameAttributedString = nameAttributedString,
             let castingCostAttributedString = castingCostAttributedString {
             let nameSize = sizeOf(attributedString: nameAttributedString, withFrameSize: nameLabel.frame.size)
-            let ccSize = castingCostAttributedString.widthOf(symbol: card.manaCost!)
+            let ccSize = sizeOf(attributedString: castingCostAttributedString, withFrameSize: nameLabel.frame.size)//castingCostAttributedString.widthOf(symbol: card.manaCost!)
             
-            if  (nameSize.width + ccSize) > nameLabel.frame.size.width {
+            if let typeViewTopAnchor = typeViewTopAnchor {
+                typeViewTopAnchor.isActive = false
+            }
+            
+            if  (nameSize.width + ccSize.width + 20) > nameLabel.frame.size.width {
                 castingCostLabel.text = nil
                 castingCostLabel2.attributedText = castingCostAttributedString
+                typeViewTopAnchor = typeView.topAnchor.constraint(equalTo: castingCostLabel2.bottomAnchor, constant: 0)
             } else {
                 castingCostLabel.attributedText = castingCostAttributedString
                 castingCostLabel2.text = nil
-                typeView.topAnchor.constraint(equalTo: nameView.bottomAnchor, constant: 8).isActive = true
+                typeViewTopAnchor = typeView.topAnchor.constraint(equalTo: nameView.bottomAnchor, constant: 0)
             }
+            typeViewTopAnchor!.isActive = true
         }
     }
     
@@ -205,22 +209,25 @@ public class CardTableViewCell: UITableViewCell {
         foilPriceLabel.text = "NA"
         normalPriceLabel.text = "NA"
 
-        guard let card = card else {
+        guard let card = card,
+            let prices = card.prices else {
             return
         }
         
-//        for pricing in card.pricings {
-//            if pricing.isFoil {
-//                foilPriceLabel.text = pricing.marketPrice > 0 ? String(format: "$%.2f", pricing.marketPrice) : "NA"
-//            } else {
-//                normalPriceLabel.text = pricing.marketPrice > 0 ? String(format: "$%.2f", pricing.marketPrice) : "NA"
-//            }
-//        }
+        for p in prices {
+            if let price = p as? MGCardPrice {
+                if price.isFoil {
+                    foilPriceLabel.text = price.market > 0 ? String(format: "$%.2f", price.market) : "NA"
+                } else {
+                    normalPriceLabel.text = price.market > 0 ? String(format: "$%.2f", price.market) : "NA"
+                }
+            }
+        }
     }
     
     private func sizeOf(attributedString: NSAttributedString, withFrameSize frameSize: CGSize) -> CGSize {
         return attributedString.boundingRect(with: frameSize,
-                                             options: NSStringDrawingOptions.usesLineFragmentOrigin,
+                                             options: [NSStringDrawingOptions.usesLineFragmentOrigin, NSStringDrawingOptions.usesFontLeading],
                                              context: nil).size
     }
 }

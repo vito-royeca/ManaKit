@@ -73,47 +73,47 @@ public enum CardType: Int, CaseIterable {
 @objc(MGCard)
 public class MGCard: NSManagedObject {
     public var displayName: String? {
-            get {
-                var dName: String?
-                
-                if let language = language,
-                    let code = language.code {
-                    dName = (code == "en" ? name : printedName) ?? name
-                }
-                return dName
+        get {
+            var dName: String?
+            
+            if let language = language,
+                let code = language.code {
+                dName = (code == "en" ? name : printedName) ?? name
             }
+            return dName
         }
+    }
 
-        public func keyruneColor() -> UIColor? {
-            guard let set = set,
-                let rarity = rarity else {
-                return nil
-            }
-            
-            var color: UIColor?
-            
-            if set.code == "tsb" {
-                color = UIColor(hex: "652978") // purple
-            } else {
-                if rarity.name == "Common" {
-                    color = UIColor(hex: "1A1718")
-                } else if rarity.name == "Uncommon" {
-                    color = UIColor(hex: "707883")
-                } else if rarity.name == "Rare" {
-                    color = UIColor(hex: "A58E4A")
-                } else if rarity.name == "Mythic" {
-                    color = UIColor(hex: "BF4427")
-                } else if rarity.name == "Special" {
-                    color = UIColor(hex: "BF4427")
-                } else if rarity.name == "Timeshifted" {
-                    color = UIColor(hex: "652978")
-                } else if rarity.name == "Basic Land" {
-                    color = UIColor(hex: "000000")
-                }
-            }
-            
-            return color
+    public func keyruneColor() -> UIColor? {
+        guard let set = set,
+            let rarity = rarity else {
+            return nil
         }
+        
+        var color: UIColor?
+        
+        if set.code == "tsb" {
+            color = UIColor(hex: "652978") // purple
+        } else {
+            if rarity.name == "Common" {
+                color = UIColor(hex: "1A1718")
+            } else if rarity.name == "Uncommon" {
+                color = UIColor(hex: "707883")
+            } else if rarity.name == "Rare" {
+                color = UIColor(hex: "A58E4A")
+            } else if rarity.name == "Mythic" {
+                color = UIColor(hex: "BF4427")
+            } else if rarity.name == "Special" {
+                color = UIColor(hex: "BF4427")
+            } else if rarity.name == "Timeshifted" {
+                color = UIColor(hex: "652978")
+            } else if rarity.name == "Basic Land" {
+                color = UIColor(hex: "000000")
+            }
+        }
+        
+        return color
+    }
         
     public func isModern() -> Bool {
         guard let set = set,

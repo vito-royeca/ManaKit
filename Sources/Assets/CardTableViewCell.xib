@@ -110,16 +110,8 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5jo-XN-ep7">
                         <rect key="frame" x="124" y="44" width="183" height="20"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Creature" translatesAutoresizingMaskIntoConstraints="NO" id="Glp-iO-s75">
-                                <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="20" id="74a-cG-eqN"/>
-                                    <constraint firstAttribute="width" constant="20" id="tbp-0n-ge8"/>
-                                </constraints>
-                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hu5-Rh-KhR">
-                                <rect key="frame" x="28" y="0.0" width="155" height="20"/>
+                                <rect key="frame" x="0.0" y="0.0" width="183" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="l35-vo-X4U"/>
                                 </constraints>
@@ -134,9 +126,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Hu5-Rh-KhR" firstAttribute="top" secondItem="5jo-XN-ep7" secondAttribute="top" id="9de-kw-20K"/>
-                            <constraint firstItem="Glp-iO-s75" firstAttribute="centerY" secondItem="5jo-XN-ep7" secondAttribute="centerY" id="BaZ-4S-QTJ"/>
-                            <constraint firstItem="Hu5-Rh-KhR" firstAttribute="leading" secondItem="Glp-iO-s75" secondAttribute="trailing" constant="8" id="Rq0-SP-PRW"/>
-                            <constraint firstItem="Glp-iO-s75" firstAttribute="leading" secondItem="5jo-XN-ep7" secondAttribute="leading" id="TIC-bm-40b"/>
+                            <constraint firstItem="Hu5-Rh-KhR" firstAttribute="leading" secondItem="5jo-XN-ep7" secondAttribute="leading" id="PcL-RM-QGo"/>
                             <constraint firstAttribute="trailing" secondItem="Hu5-Rh-KhR" secondAttribute="trailing" id="Xt4-CK-l4m"/>
                             <constraint firstAttribute="height" constant="20" id="ugx-Lu-ecF"/>
                         </constraints>
@@ -226,14 +216,10 @@
                 <outlet property="normalPriceLabel" destination="8f9-Sg-BlM" id="JBy-sx-4Eh"/>
                 <outlet property="setImage" destination="Kbw-1w-5Bx" id="Q72-UF-dkv"/>
                 <outlet property="thumbnailImage" destination="rgs-66-M0A" id="6Zq-N0-5Io"/>
-                <outlet property="typeImage" destination="Glp-iO-s75" id="U2z-9M-Sew"/>
                 <outlet property="typeLabel" destination="Hu5-Rh-KhR" id="uke-5a-DWm"/>
                 <outlet property="typeView" destination="5jo-XN-ep7" id="onB-bZ-eEp"/>
             </connections>
             <point key="canvasLocation" x="34" y="96"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="Creature" width="600" height="533"/>
-    </resources>
 </document>

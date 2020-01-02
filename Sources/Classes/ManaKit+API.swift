@@ -9,7 +9,12 @@ import Foundation
 import PromiseKit
 
 extension ManaKit {
-    public func createNodePromise(urlString: String, httpMethod: String, httpBody: String?) -> Promise<(data: Data, response: URLResponse)> {
+    public func createNodePromise(apiPath: String, httpMethod: String, httpBody: String?) -> Promise<(data: Data, response: URLResponse)> {
+        guard let apiURL = apiURL else {
+            fatalError("apiURL is nil")
+        }
+        let urlString = "\(apiURL)\(apiPath)"
+        
         guard let cleanURL = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
             let url = URL(string: cleanURL) else {
             fatalError("Malformed url")
