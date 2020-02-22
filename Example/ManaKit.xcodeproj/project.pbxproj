@@ -52,6 +52,9 @@
 		8B7BF81A23A608550030AAC9 /* Maintainer+SetsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FD23A608550030AAC9 /* Maintainer+SetsPostgres.swift */; };
 		8B7BF82423A608550030AAC9 /* Maintainer+CardsPostgres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FF23A608550030AAC9 /* Maintainer+CardsPostgres.swift */; };
 		8B7BF82923A608550030AAC9 /* Maintainer+ServerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF80023A608550030AAC9 /* Maintainer+ServerInfo.swift */; };
+		8B813E6A23CC05C200F78EB3 /* Maintainer+Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B813E6923CC05C200F78EB3 /* Maintainer+Images.swift */; };
+		8B813E6B23CC05C200F78EB3 /* Maintainer+Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B813E6923CC05C200F78EB3 /* Maintainer+Images.swift */; };
+		8B813E6C23CC05C200F78EB3 /* Maintainer+Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B813E6923CC05C200F78EB3 /* Maintainer+Images.swift */; };
 		8B9B0E8923ADB457005FDD23 /* Maintainer+ComprehensiveRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9B0E8823ADB457005FDD23 /* Maintainer+ComprehensiveRules.swift */; };
 		D04091B86FCFF73BABF68902 /* Pods_ManaKit_ExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20CFA8CE4ECF85F02F1619DA /* Pods_ManaKit_ExampleTests.framework */; };
 /* End PBXBuildFile section */
@@ -148,6 +151,7 @@
 		8B7BF7FD23A608550030AAC9 /* Maintainer+SetsPostgres.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+SetsPostgres.swift"; sourceTree = "<group>"; };
 		8B7BF7FF23A608550030AAC9 /* Maintainer+CardsPostgres.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+CardsPostgres.swift"; sourceTree = "<group>"; };
 		8B7BF80023A608550030AAC9 /* Maintainer+ServerInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+ServerInfo.swift"; sourceTree = "<group>"; };
+		8B813E6923CC05C200F78EB3 /* Maintainer+Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Maintainer+Images.swift"; sourceTree = "<group>"; };
 		8B9B0E8823ADB457005FDD23 /* Maintainer+ComprehensiveRules.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+ComprehensiveRules.swift"; sourceTree = "<group>"; };
 		91B7A9FA4B4AAA078ADB4898 /* Pods-ManaKit_ExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit_ExampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit_ExampleTests/Pods-ManaKit_ExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		933905FD05F69001F1434BA3 /* Pods_ManaKit_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ManaKit_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -344,6 +348,7 @@
 				8B7BF7F923A608550030AAC9 /* Maintainer+Cards.swift */,
 				8B7BF7FF23A608550030AAC9 /* Maintainer+CardsPostgres.swift */,
 				8B9B0E8823ADB457005FDD23 /* Maintainer+ComprehensiveRules.swift */,
+				8B813E6923CC05C200F78EB3 /* Maintainer+Images.swift */,
 				8B7BF7FB23A608550030AAC9 /* Maintainer+Rulings.swift */,
 				8B7BF7FA23A608550030AAC9 /* Maintainer+RulingsPostgres.swift */,
 				8B7BF80023A608550030AAC9 /* Maintainer+ServerInfo.swift */,
@@ -646,6 +651,7 @@
 				8B7BF81A23A608550030AAC9 /* Maintainer+SetsPostgres.swift in Sources */,
 				8B2F2F9423934246005DEB46 /* CardViewController.swift in Sources */,
 				8B7BF82923A608550030AAC9 /* Maintainer+ServerInfo.swift in Sources */,
+				8B813E6A23CC05C200F78EB3 /* Maintainer+Images.swift in Sources */,
 				8B7BF80B23A608550030AAC9 /* Maintainer+RulingsPostgres.swift in Sources */,
 				8B34F7E723AF08AC00A00C79 /* Maintainer+TCGPlayer.swift in Sources */,
 				8B219CC62391722400593E19 /* SetViewController.swift in Sources */,
@@ -668,6 +674,7 @@
 				8B70146C23B425800097298B /* Maintainer+SetsPostgres.swift in Sources */,
 				8B70146223B4256A0097298B /* Maintainer+ComprehensiveRules.swift in Sources */,
 				8B70145C23B425600097298B /* Maintainer.swift in Sources */,
+				8B813E6B23CC05C200F78EB3 /* Maintainer+Images.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -686,6 +693,7 @@
 				8B70146D23B425810097298B /* Maintainer+SetsPostgres.swift in Sources */,
 				8B70146323B4256B0097298B /* Maintainer+ComprehensiveRules.swift in Sources */,
 				8B70145D23B425600097298B /* Maintainer.swift in Sources */,
+				8B813E6C23CC05C200F78EB3 /* Maintainer+Images.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

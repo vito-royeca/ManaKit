@@ -11,11 +11,11 @@ import CoreData
 
 @objc(MGSet)
 public class MGSet: NSManagedObject {
-    public func keyruneUnicode() -> String? {
+    public func keyruneUnicode2String() -> String? {
         var unicode:String?
         
-        if let keyruneCode = myKeyruneCode {
-            let charAsInt = Int(keyruneCode, radix: 16)!
+        if let keyruneUnicode = keyruneUnicode {
+            let charAsInt = Int(keyruneUnicode, radix: 16)!
             let uScalar = UnicodeScalar(charAsInt)!
             unicode = "\(uScalar)"
         } else {

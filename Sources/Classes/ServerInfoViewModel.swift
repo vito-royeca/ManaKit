@@ -34,7 +34,7 @@ public class ServerInfoViewModel: BaseViewModel {
 
     // MARK: Overrides
     override public func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
-        let path = "/serverinfo"
+        let path = "/serverinfo?json=true"
         
         return ManaKit.sharedInstance.createNodePromise(apiPath: path,
                                                         httpMethod: "GET",

@@ -241,18 +241,6 @@ extension Maintainer {
         let collectorNumber = dict["collector_number"] as? String ?? "NULL"
         let cmc = dict["cmc"] as? Double ?? Double(0)
         let flavorText = dict["flavor_text"] as? String ?? "NULL"
-        var imageUris = "{}"
-        if let imageUrisDict = dict["image_uris"] as? [String: String] {
-            // remove the key (?APIKEY) in the url
-            var newImageUris = [String: String]()
-            for (k,v) in imageUrisDict {
-                newImageUris[k] = v.components(separatedBy: "?").first
-            }
-
-            imageUris = "\(newImageUris)"
-                .replacingOccurrences(of: "[", with: "{")
-                .replacingOccurrences(of: "]", with: "}")
-        }
         let isFoil = dict["foil"] as? Bool ?? false
         let isFullArt = dict["full_art"] as? Bool ?? false
         let isHighresImage = dict["highres_image"] as? Bool ?? false
@@ -369,11 +357,10 @@ extension Maintainer {
         // preview.previewed_at
         // preview.source_uri
         // preview.source
-        let query = "SELECT createOrUpdateCard($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32,$33,$34,$35,$36,$37,$38,$39,$40,$41,$42,$43,$44,$45,$46,$47,$48,$49,$50,$51,$52,$53,$54,$55)"
+        let query = "SELECT createOrUpdateCard($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32,$33,$34,$35,$36,$37,$38,$39,$40,$41,$42,$43,$44,$45,$46,$47,$48,$49,$50,$51,$52,$53,$54)"
         let parameters = [collectorNumber,
                           cmc,
                           flavorText,
-                          imageUris,
                           isFoil,
                           isFullArt,
                           isHighresImage,
@@ -428,5 +415,24 @@ extension Maintainer {
         return createPromise(with: query,
                              parameters: parameters,
                              connection: connection)
+    }
+    
+    func extractImageUrls(set: String, language: String, id: String, imageUrisDict: [String: String]) -> [String: String] {
+        var dict = [String: String]()
+        
+        if let artCrop = imageUrisDict["art_crop"],
+            let u = artCrop.components(separatedBy: "?").first,
+            let ext = u.components(separatedBy: ".").last {
+            
+            dict["art_crop"] = "\(set)/\(language)/\(id)/art_crop.\(ext)"
+        }
+        if let normal = imageUrisDict["normal"],
+            let u = normal.components(separatedBy: "?").first,
+            let ext = u.components(separatedBy: ".").last {
+            
+            dict["normal"] = "\(set)/\(language)/\(id)/normal.\(ext)"
+        }
+        
+        return dict
     }
 }

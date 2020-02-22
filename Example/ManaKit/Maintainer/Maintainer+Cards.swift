@@ -601,10 +601,13 @@ extension Maintainer {
              
                 for i in 0...faces.count-1 {
                     let face = faces[i]
-                    let faceId = "\(id)-\(face["name"] ?? "")"
+                    let faceId = "\(id)_\(i)"
                     var newFace = [String: Any]()
                     
                     for (k,v) in face {
+                        if k == "image_uris" {
+                            continue
+                        }
                         newFace[k] = v
                     }
                     newFace["id"] = faceId

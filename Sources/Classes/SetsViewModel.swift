@@ -15,13 +15,16 @@ public class SetsViewModel: BaseViewModel {
     override public var predicate: NSPredicate? {
         get {
             if _predicate == nil {
-                let count = self.queryString.count
+                guard let queryString = queryString else {
+                    return nil
+                }
+                let count = queryString.count
                 
                 if count > 0 {
                     if count == 1 {
-                        _predicate = NSPredicate(format: "name BEGINSWITH[cd] %@ OR code BEGINSWITH[cd] %@", self.queryString, self.queryString)
+                        _predicate = NSPredicate(format: "name BEGINSWITH[cd] %@ OR code BEGINSWITH[cd] %@", queryString, queryString)
                     } else {
-                        _predicate = NSPredicate(format: "name CONTAINS[cd] %@ OR code CONTAINS[cd] %@", self.queryString, self.queryString)
+                        _predicate = NSPredicate(format: "name CONTAINS[cd] %@ OR code CONTAINS[cd] %@", queryString, queryString)
                     }
                 }
             }
@@ -56,7 +59,7 @@ public class SetsViewModel: BaseViewModel {
     
     // MARK: Overrides
     override public func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
-        let path = "/sets"
+        let path = "/sets?json=true"
         
         return ManaKit.sharedInstance.createNodePromise(apiPath: path,
                                                         httpMethod: "GET",

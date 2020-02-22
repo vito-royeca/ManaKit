@@ -149,7 +149,7 @@ public class CardTableViewCell: UITableViewCell {
         
         // set symbol
         if let set = card.set {
-            setImage.text = set.keyruneUnicode()
+            setImage.text = set.keyruneUnicode2String()
             setImage.textColor = card.keyruneColor()
         }
 

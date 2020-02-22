@@ -28,7 +28,7 @@ class BaseViewController: UIViewController {
 
     // MARK: Custom methods
     func fetchData() {
-        let endOp = { (error: Error?) in
+        let callback = { (error: Error?) in
             if let error = error {
                 print(error)
             }
@@ -41,6 +41,6 @@ class BaseViewController: UIViewController {
         
         MBProgressHUD.showAdded(to: self.view,
                                 animated: true)
-        viewModel.fetchData(callback: endOp)
+        viewModel.fetchData(callback: callback)
     }
 }

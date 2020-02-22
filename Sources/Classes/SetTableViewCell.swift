@@ -69,7 +69,7 @@ public class SetTableViewCell: UITableViewCell {
     // MARK: Variables
     public var set: MGSet! {
         didSet {
-            logoLabel.text = set.keyruneUnicode()
+            logoLabel.text = set.keyruneUnicode2String()
             nameLabel.text = set.name
             codeLabel.text = set.code
             releaseDateLabel.text = set.releaseDate ?? " "

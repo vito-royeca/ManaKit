@@ -18,7 +18,7 @@ class Maintainer: NSObject {
     let rulingsFileName = "scryfall-rulings.json"
     let setsFileName    = "scryfall-sets.json"
     let keyruneFileName = "keyrune.html"
-    let comprehensiveRulesFileName = "MagicCompRules 20190823"
+    let comprehensiveRulesFileName = "MagicCompRules 20200122"
     let setCodesForProcessing:[String]? = nil
     let storeName = "TCGPlayer"
     
@@ -26,6 +26,46 @@ class Maintainer: NSObject {
     var tcgplayerAPIToken = ""
     var dateStart = Date()
     let setsModel = SetsViewModel()
+    
+    var _setsArray: [[String: Any]]?
+    var setsArray: [[String: Any]] {
+        get {
+            if _setsArray == nil {
+                _setsArray = self.setsData()
+            }
+            return _setsArray!
+        }
+    }
+    
+    var _cardsArray: [[String: Any]]?
+    var cardsArray: [[String: Any]] {
+        get {
+            if _cardsArray == nil {
+                _cardsArray = self.cardsData()
+            }
+            return _cardsArray!
+        }
+    }
+    
+    var _rulingsArray: [[String: Any]]?
+    var rulingsArray: [[String: Any]] {
+        get {
+            if _rulingsArray == nil {
+                _rulingsArray = self.rulingsData()
+            }
+            return _rulingsArray!
+        }
+    }
+    
+    var _rulesArray: [String]?
+    var rulesArray: [String] {
+        get {
+            if _rulesArray == nil {
+                _rulesArray = self.rulesData()
+            }
+            return _rulesArray!
+        }
+    }
     
     // MARK: Database methods
     func checkServerInfo() {
@@ -73,19 +113,27 @@ class Maintainer: NSObject {
         startActivity()
         
         firstly {
-            self.fetchSetsData()
-        }.then {
+            fetchSetsData()
+        }/*.then {
             self.fetchSetSymbols()
         }.then {
             self.fetchCardsData()
         }.then {
             self.fetchRulings()
         }.then {
-            self.createPGData()
+            self.createSetsData()
         }.then {
-            self.createOtherPGData()
+            self.createCardsData()
+        }.then {
+            self.createRulingsData()
+        }.then {
+            self.createRulesData()
+        }.then {
+            self.createOtherCardsData()
         }.then {
             self.createPricingData()
+        }*/.then {
+            self.fetchCardImages()
         }.then {
             self.createScryfallPromise()
         }.done {
@@ -95,23 +143,31 @@ class Maintainer: NSObject {
         }
     }
 
-    private func createPGData() -> Promise<Void> {
+    private func createSetsData() -> Promise<Void> {
         return Promise { seal in
             let connection = createConnection()
-            
-            
-            let setsArray = self.setsData()
-            let cardsArray = self.cardsData()
-            let rulingsArray = self.rulingsData()
-            let rulesArray = self.rulesData()
             var promises = [()->Promise<Void>]()
             
-            // sets
             promises.append(contentsOf: self.filterSetBlocks(array: setsArray, connection: connection))
             promises.append(contentsOf: self.filterSetTypes(array: setsArray, connection: connection))
             promises.append(contentsOf: self.filterSets(array: setsArray, connection: connection))
             promises.append(contentsOf: self.createKeyrunePromises(array: setsArray, connection: connection))
 
+            let completion = {
+                connection.close()
+                seal.fulfill(())
+            }
+            self.execInSequence(label: "createSetsData",
+                                promises: promises,
+                                completion: completion)
+        }
+    }
+    
+    private func createCardsData() -> Promise<Void> {
+        return Promise { seal in
+            let connection = createConnection()
+            var promises = [()->Promise<Void>]()
+            
             // cards
             promises.append(contentsOf: self.filterArtists(array: cardsArray, connection: connection))
             promises.append(contentsOf: self.filterRarities(array: cardsArray, connection: connection))
@@ -145,7 +201,21 @@ class Maintainer: NSObject {
             })
             promises.append(contentsOf: self.filterFaces(array: cardsArray, connection: connection))
 
-            // rulings
+            let completion = {
+                connection.close()
+                seal.fulfill(())
+            }
+            self.execInSequence(label: "createCardsData",
+                                promises: promises,
+                                completion: completion)
+        }
+    }
+    
+    private func createRulingsData() -> Promise<Void> {
+        return Promise { seal in
+            let connection = createConnection()
+            var promises = [()->Promise<Void>]()
+            
             promises.append({
                 return self.createDeleteRulingsPromise(connection: connection)
 
@@ -155,8 +225,22 @@ class Maintainer: NSObject {
                     return self.createRulingPromise(dict: dict, connection: connection)
                 }
             })
+
+            let completion = {
+                connection.close()
+                seal.fulfill(())
+            }
+            self.execInSequence(label: "createRulingsData",
+                                promises: promises,
+                                completion: completion)
+        }
+    }
+    
+    private func createRulesData() -> Promise<Void> {
+        return Promise { seal in
+            let connection = createConnection()
+            var promises = [()->Promise<Void>]()
             
-            // rules
             promises.append({
                 return self.createDeleteRulesPromise(connection: connection)
 
@@ -167,21 +251,24 @@ class Maintainer: NSObject {
                 connection.close()
                 seal.fulfill(())
             }
-            self.execInSequence(promises: promises,
+            self.execInSequence(label: "createRulesData",
+                                promises: promises,
                                 completion: completion)
         }
     }
     
-    private func createOtherPGData() -> Promise<Void> {
+    private func createOtherCardsData() -> Promise<Void> {
         return Promise { seal in
             
             let promises = [createOtherLanguagesPromise(),
                             createOtherPrintingsPromise(),
                             createVariationsPromise()]
             
+            print("Start createOtherCardsData:")
             firstly {
                 when(fulfilled: promises)
             }.done {
+                print("End createOtherCardsData!")
                 seal.fulfill(())
             }.catch { error in
                 seal.reject(error)
@@ -208,7 +295,8 @@ class Maintainer: NSObject {
                     connection.close()
                     seal.fulfill(())
                 }
-                self.execInSequence(promises: promises,
+                self.execInSequence(label: "createPricingData",
+                                    promises: promises,
                                     completion: completion)
             }.catch { error in
                 seal.reject(error)
@@ -260,13 +348,14 @@ class Maintainer: NSObject {
         }
     }
     
-    func execInSequence(promises: [()->Promise<Void>], completion: @escaping () -> Void) {
+    func execInSequence(label: String, promises: [()->Promise<Void>], completion: @escaping () -> Void) {
         var promise = promises.first!()
 
         let countTotal = promises.count
         var countIndex = 0
 
-        print("Start execInSequence: \(countIndex)/\(countTotal) \(Date())")
+        print("Start \(label):")
+        print("Exec... \(countIndex)/\(countTotal) \(Date())")
         for next in promises {
             promise = promise.then { n -> Promise<Void> in
                 countIndex += 1
@@ -278,7 +367,8 @@ class Maintainer: NSObject {
             }
         }
         promise.done {_ in
-            print("Done execInSequence: \(countIndex)/\(countTotal) \(Date())")
+            print("Exec... \(countIndex)/\(countTotal) \(Date())")
+            print("Done \(label)!")
             completion()
         }.catch { error in
             print(error)

@@ -20,7 +20,8 @@ public class SetViewModel: BaseViewModel {
             if _predicate == nil {
                 guard let set = _set,
                     let setCode = set.code,
-                    let languageCode = _languageCode else {
+                    let languageCode = _languageCode,
+                    let queryString = queryString else {
                     return nil
                 }
                 
@@ -48,7 +49,7 @@ public class SetViewModel: BaseViewModel {
     override public var fetchRequest: NSFetchRequest<NSFetchRequestResult>? {
         get {
             if _fetchRequest == nil {
-                _fetchRequest = MGCard.fetchRequest()
+                _fetchRequest = MGSet.fetchRequest()
             }
             return _fetchRequest
         }
@@ -63,11 +64,10 @@ public class SetViewModel: BaseViewModel {
         _set = set
         _languageCode = languageCode
         
-        entityName = String(describing: MGCard.self)
-        sortDescriptors = [NSSortDescriptor(key: "name", ascending: true),
-                           NSSortDescriptor(key: "collectorNumber", ascending: true)]
+        let _ = predicate // init the predicate
+        entityName = String(describing: MGSet.self)
+        sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         sectionName = "myNameSection"
-        
         
         if let set = _set {
             title = set.name
@@ -86,8 +86,9 @@ public class SetViewModel: BaseViewModel {
     override public func willFetchCache() -> Bool {
         guard let set = _set,
             let setCode = set.code,
-            let languageCode = _languageCode else {
-            fatalError("set and languageCode are nil")
+            let languageCode = _languageCode,
+            let entityName = entityName else {
+            fatalError("set, languageCode, entityName are nil")
         }
         let objectFinder = ["setCode": setCode,
                             "languageCode": languageCode] as [String : AnyObject]
@@ -99,8 +100,9 @@ public class SetViewModel: BaseViewModel {
     override public func deleteCache() {
         guard let set = _set,
             let setCode = set.code,
-            let languageCode = _languageCode else {
-            fatalError("set and languageCode are nil")
+            let languageCode = _languageCode,
+            let entityName = entityName else {
+            fatalError("set, languageCode, and entityName are nil")
         }
         let objectFinder = ["setCode": setCode,
                             "languageCode": languageCode] as [String : AnyObject]
@@ -115,7 +117,7 @@ public class SetViewModel: BaseViewModel {
             let languageCode = _languageCode else {
             fatalError("set and languageCode are nil")
         }
-        let path = "/cards/\(setCode)/\(languageCode)"
+        let path = "/set/\(setCode)/\(languageCode)?json=true"
         
         return ManaKit.sharedInstance.createNodePromise(apiPath: path,
                                                         httpMethod: "GET",

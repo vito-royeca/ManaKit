@@ -43,7 +43,8 @@ extension Maintainer {
         let isFoilOnly = dict["foil_only"] as? Bool ?? false
         let isOnlineOnly = dict["digital"] as? Bool ?? false
         let mtgoCode = dict["mtgo_code"] as? String ?? "NULL"
-        let myKeyruneCode = "e684"
+        let keyruneUnicode = "e684"
+        let keyruneClass = "pmtg1"
         var myNameSection = "NULL"
         if let name = dict["name"] as? String {
             myNameSection = sectionFor(name: name) ?? "NULL"
@@ -62,13 +63,14 @@ extension Maintainer {
         }
         let setParent = dict["parent_set_code"] as? String ?? "NULL"
         
-        let query = "SELECT createOrUpdateSet($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)"
+        let query = "SELECT createOrUpdateSet($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)"
         let parameters = [cardCount,
                           code,
                           isFoilOnly,
                           isOnlineOnly,
                           mtgoCode,
-                          myKeyruneCode,
+                          keyruneUnicode,
+                          keyruneClass,
                           myNameSection,
                           myYearSection,
                           name,
@@ -84,7 +86,7 @@ extension Maintainer {
     
     func createKeyrunePromises(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
         let document = keyruneCodes()
-        var keyrunes = [String: String]()
+        var keyrunes = [String: [String]]()
         
         for div in document.xpath("//div[@class='vectors']") {
             for span in div.xpath("//span") {
@@ -93,26 +95,28 @@ extension Maintainer {
                     
                     if components.count == 3 {
                         let setCode = components[1].replacingOccurrences(of: "ss-", with: "")
-                        let keyruneCode = components[2].replacingOccurrences(of: "&#x", with: "").replacingOccurrences(of: ";", with: "")
-                        keyrunes[setCode] = keyruneCode
+                        let keyruneUnicode = components[2].replacingOccurrences(of: "&#x", with: "").replacingOccurrences(of: ";", with: "")
+                        keyrunes[setCode] = [keyruneUnicode, setCode]
                     }
                 }
             }
         }
         
-        var promises: [()->Promise<Void>] = keyrunes.map { (setCode, keyruneCode) in
+        var promises: [()->Promise<Void>] = keyrunes.map { (setCode, array) in
             return {
                 return self.createKeyruneCodePromise(code: setCode,
-                                                     keyruneCode: keyruneCode,
+                                                     keyruneUnicode: array.first ?? "NULL" ,
+                                                     keyruneClass: array.last ?? "NULL",
                                                      connection: connection)
             }
         }
         
         keyrunes = updatableKeyruneCodes(array: array)
-        promises.append(contentsOf: keyrunes.map { (setCode, keyruneCode) in
+        promises.append(contentsOf: keyrunes.map { (setCode, array) in
             return {
                 return self.createKeyruneCodePromise(code: setCode,
-                                                     keyruneCode: keyruneCode,
+                                                     keyruneUnicode: array.first ?? "NULL" ,
+                                                     keyruneClass: array.last ?? "NULL",
                                                      connection: connection)
             }
         })
@@ -130,8 +134,8 @@ extension Maintainer {
         return try! HTML(url: url, encoding: .utf8)
     }
     
-    func updatableKeyruneCodes(array: [[String: Any]]) -> [String: String] {
-        var keyruneCodes = [String: String]()
+    func updatableKeyruneCodes(array: [[String: Any]]) -> [String: [String]] {
+        var keyruneCodes = [String: [String]]()
         
         // manual fix
         for dict in array {
@@ -139,9 +143,8 @@ extension Maintainer {
                 if code == "c14" ||
                     code == "oc14" ||
                     code == "tc14" {
-                    keyruneCodes[code] = "e65d" // typo in website
-                 } else if code == "htr" ||
-                    code == "plny" ||
+                    keyruneCodes[code] = ["e65d", "c14"] // typo in website
+                 } else if code == "plny" ||
                     code == "f11" ||
                     code == "f12" ||
                     code == "f13" ||
@@ -172,12 +175,14 @@ extension Maintainer {
                     code == "ppp1" ||
                     code == "pf20" ||
                     code == "sld" ||
-                    code == "j20" {
-                    keyruneCodes[code] = "e687"  // media insert
+                    code == "psld" ||
+                    code == "j20" ||
+                    code == "htr18" {
+                    keyruneCodes[code] = ["e687", "pmei"]  // media insert
                  } else if code == "pal99" {
-                    keyruneCodes[code] = "e622"  // urza's saga
+                    keyruneCodes[code] = ["e622", "usg"]  // urza's saga
                  } else if code == "pal01" {
-                    keyruneCodes[code] = "e68c"  // arena
+                    keyruneCodes[code] = ["e68c", "parl2"]  // arena
                  } else if code == "pal02" ||
                     code == "pal03" ||
                     code == "pal04" ||
@@ -222,68 +227,70 @@ extension Maintainer {
                     code == "pwp09" ||
                     code == "pwp10" ||
                     code == "pal05" {
-                    keyruneCodes[code] = "e688"  // dci
+                    keyruneCodes[code] = ["e688", "parl"]  // dci
                 } else if code == "ana"  ||
                     code == "ha1" {
-                    keyruneCodes[code] = "e943"  // arena league
+                    keyruneCodes[code] = ["e943", "parl3"]  // arena league
                 } else if code == "ced" {
-                    keyruneCodes[code] = "e926"  // CE
+                    keyruneCodes[code] = ["e926", "xcle"]  // CE
                 } else if code == "dvd" ||
                     code == "tdvd"{
-                    keyruneCodes[code] = "e66b" // divine vs demonic
+                    keyruneCodes[code] = ["e66b", "ddc"] // divine vs demonic
                 } else if code == "gvl" ||
                     code == "tgvl"{
-                    keyruneCodes[code] = "e66c"  // garruk vs liliana
+                    keyruneCodes[code] = ["e66c", "ddd"]  // garruk vs liliana
                 } else if code == "jvc" ||
                     code == "tjvc"{
-                    keyruneCodes[code] = "e66a"  // jace vs chandra
+                    keyruneCodes[code] = ["e66a", "dd2"]  // jace vs chandra
                 } else if code == "dd1" {
-                    keyruneCodes[code] = "e669"  // elves vs goblins
+                    keyruneCodes[code] = ["e669", "evg"]  // elves vs goblins
                 } else if code == "pdtp" {
-                    keyruneCodes[code] = "e915"  // xbox media promo
+                    keyruneCodes[code] = ["e915", "pxbox"]  // xbox media promo
                 } else if code == "pdp12" {
-                    keyruneCodes[code] = "e60f"  // m13
+                    keyruneCodes[code] = ["e60f", "m13"]  // m13
                 } else if code == "pdp13" {
-                    keyruneCodes[code] = "e610"  // m14
+                    keyruneCodes[code] = ["e610", "m14"]  // m14
                 } else if code == "pdp14" {
-                    keyruneCodes[code] = "e611"  // m15
+                    keyruneCodes[code] = ["e611", "m15"]  // m15
                 } else if code == "fbb" {
-                    keyruneCodes[code] = "e603"  // revised / 3ed
+                    keyruneCodes[code] = ["e603", "3ed"]  // revised / 3ed
                 } else if code == "phuk" ||
                     code == "psal" {
-                    keyruneCodes[code] = "e909"  // Salvat 2005
+                    keyruneCodes[code] = ["e909", "psalvat05"]  // Salvat 2005
                 } else if code == "phpr" ||
                     code == "pbok" {
-                    keyruneCodes[code] = "e68a"  // book inserts
+                    keyruneCodes[code] = ["e68a", "pbook"]  // book inserts
                 } else if code == "pi13" ||
                     code == "pi14" {
-                    keyruneCodes[code] = "e92c"  // IDW promo
+                    keyruneCodes[code] = ["e92c", "pidw"]  // IDW promo
                 } else if code == "cei" {
-                    keyruneCodes[code] = "e927"  // cei
+                    keyruneCodes[code] = ["e927", "xice"]  // cei
                 } else if code == "pmoa" ||
                     code == "prm" {
-                    keyruneCodes[code] = "e91b"  // magic online
+                    keyruneCodes[code] = ["e91b", "pmodo"]  // magic online
                 } else if code == "td0" {
-                    keyruneCodes[code] = "e91e"  // magic online deck series
+                    keyruneCodes[code] = ["e91e", "xmods"]  // magic online deck series
                 } else if code == "ren" ||
                     code == "rin" {
-                    keyruneCodes[code] = "e917"  // rennaisance
+                    keyruneCodes[code] = ["e917", "xren"]  // rennaisance
                 } else if code == "pmps07" ||
                     code == "pmps08" ||
                     code == "pmps09" ||
                     code == "pmps10" ||
                     code == "pmps11" {
-                    keyruneCodes[code] = "e919"  // magic premiere shop
+                    keyruneCodes[code] = ["e919", "pmps"]  // magic premiere shop
                 } else if code == "ps11" {
-                    keyruneCodes[code] = "e90a"  // Salvat 2011
+                    keyruneCodes[code] = ["e90a", "psalvat11"]  // Salvat 2011
                 } else if code == "sum" {
-                    keyruneCodes[code] = "e605"  // Summer Magic / Edgar
+                    keyruneCodes[code] = ["e605", "psum"]  // Summer Magic / Edgar
                 } else if code == "peld" ||      // Throne of Eldraine
                     code == "teld" {
-                    keyruneCodes[code] = "e95e"
+                    keyruneCodes[code] = ["e95e", "eld"]
                 } else if code == "peld" ||      // Throne of Eldraine
                     code == "teld" {
-                    keyruneCodes[code] = "e95e"
+                    keyruneCodes[code] = ["e95e", "eld"]
+                } else if code == "4bb" {      // IV Ed
+                    keyruneCodes[code] = ["e604", "4ed"]
                 }
             }
         }
@@ -291,10 +298,11 @@ extension Maintainer {
         return keyruneCodes
     }
     
-    private func createKeyruneCodePromise(code: String, keyruneCode: String, connection: Connection) -> Promise<Void> {
-        let query = "SELECT updateSetKeyrune($1,$2)"
+    private func createKeyruneCodePromise(code: String, keyruneUnicode: String, keyruneClass: String, connection: Connection) -> Promise<Void> {
+        let query = "SELECT updateSetKeyrune($1,$2,$3)"
         let parameters = [code,
-                          keyruneCode]
+                          keyruneUnicode,
+                          keyruneClass]
         return createPromise(with: query,
                              parameters: parameters,
                              connection: connection)

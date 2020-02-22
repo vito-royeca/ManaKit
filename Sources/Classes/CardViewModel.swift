@@ -53,8 +53,9 @@ public class CardViewModel: BaseViewModel {
     
     // MARK: Overrides
     override public func willFetchCache() -> Bool {
-        guard let id = _id else {
-            fatalError("id is nil")
+        guard let id = _id,
+            let entityName = entityName else {
+            fatalError("id is or entityName nil")
         }
         let objectFinder = ["id": id] as [String : AnyObject]
         
@@ -63,8 +64,9 @@ public class CardViewModel: BaseViewModel {
     }
     
     override public func deleteCache() {
-        guard let id = _id else {
-            fatalError("id is nil")
+        guard let id = _id,
+            let entityName = entityName else {
+            fatalError("id or entityName is nil")
         }
         let objectFinder = ["id": id] as [String : AnyObject]
         
@@ -76,7 +78,7 @@ public class CardViewModel: BaseViewModel {
         guard let id = _id else {
             fatalError("id is nil")
         }
-        let path = "/cards/\(id)"
+        let path = "/cards/\(id)?json=true"
         
         return ManaKit.sharedInstance.createNodePromise(apiPath: path,
                                                         httpMethod: "GET",

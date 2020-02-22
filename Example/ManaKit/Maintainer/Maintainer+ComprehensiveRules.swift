@@ -29,8 +29,8 @@ extension Maintainer {
         var rules = [[String: Any]]()
         var id = 0
         
-        var startLine:String? = nil
-        var endLine:String? = nil
+        var startLine: String? = nil
+        var endLine: String? = nil
         var includeStartLine = false
         var includeEndLine = false
         
@@ -62,14 +62,14 @@ extension Maintainer {
         // Glossary
         id = rules.count + 2
         rules.append(["term": "Glossary",
-                      "order": 10000,
+                      "order": 10000.0,
                       "id": id])
         rules.append(contentsOf: parseGlossary(fromLines: lines, startId: id, parent: id))
         
         // Credits
         id = rules.count + 2
         rules.append(["term": "Credits",
-                      "order": 11000,
+                      "order": 11000.0,
                       "id": id])
         
         startLine = "Magic: The Gathering Original Game Design: Richard Garfield"
@@ -160,7 +160,7 @@ extension Maintainer {
             }
         }
         
-        return text
+        return text?.replacingOccurrences(of: "“", with: "\"")
     }
     
     private func parseRules(fromLines lines: [String], startId: Int) -> [[String: Any]] {
@@ -213,7 +213,7 @@ extension Maintainer {
 
                     id = id + 1
                     var rule = ["term": term,
-                                "definition": definition,
+                                "definition": definition.replacingOccurrences(of: "“", with: "\""),
                                 "order": order(of: term),
                                 "id": id] as [String: Any]
                     
@@ -315,7 +315,7 @@ extension Maintainer {
                             
                             let rule = ["term": term ?? "NULL",
                                         "termSection": prefix,
-                                        "definition": definition ?? "NULL",
+                                        "definition": (definition ?? "NULL").replacingOccurrences(of: "“", with: "\""),
                                         "parent": parent ?? 0,
                                         "id": id] as [String: Any]
                             rules.append(rule)

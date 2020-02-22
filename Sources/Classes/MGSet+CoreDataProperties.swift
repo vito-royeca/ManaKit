@@ -23,7 +23,8 @@ extension MGSet {
     @NSManaged public var isFoilOnly: Bool
     @NSManaged public var isOnlineOnly: Bool
     @NSManaged public var mtgoCode: String?
-    @NSManaged public var myKeyruneCode: String?
+    @NSManaged public var keyruneUnicode: String?
+    @NSManaged public var keyruneClass: String?
     @NSManaged public var myNameSection: String?
     @NSManaged public var myYearSection: String?
     @NSManaged public var name: String?

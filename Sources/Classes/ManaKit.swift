@@ -26,7 +26,7 @@ public class ManaKit {
     }
 
     public enum Constants {
-        public static let ScryfallDate        = "2020-01-02 10:24 UTC"
+        public static let ScryfallDate        = "2020-02-19 10:25 UTC"
         public static let EightEditionRelease = "2003-07-28"
         public static let ManaGuideDataAge    = 24 * 3 // 3 days
         public static let TcgPlayerApiVersion = "v1.19.0"
@@ -34,7 +34,7 @@ public class ManaKit {
         public static let TcgPlayerPricingAge = 24 * 3 // 3 days
         public static let TcgPlayerPublicKey  = "A49D81FB-5A76-4634-9152-E1FB5A657720"
         public static let TcgPlayerPrivateKey = "C018EF82-2A4D-4F7A-A785-04ADEBF2A8E5"
-        public static let MomModel            = "2019-12-23.mom"
+        public static let MomModel            = "2020-01-30.mom"
     }
     
     public enum ImageName: String {
