@@ -13,7 +13,7 @@ public class CardTableViewCell: UITableViewCell {
     public static let reuseIdentifier = "CardCell"
     public static let cellHeight = CGFloat(88)
     
-    // Variables
+    // MARK: - Variables
     public var card: MGCard?
     public var faceOrder = 0
     
@@ -21,7 +21,7 @@ public class CardTableViewCell: UITableViewCell {
 //    var manaCostDisplayed = false
     var typeViewTopAnchor: NSLayoutConstraint?
     
-    // MARK: Outlets
+    // MARK: - Outlets
     @IBOutlet public weak var thumbnailImage: UIImageView!
     @IBOutlet public weak var nameLabel: UILabel!
     @IBOutlet public weak var castingCostLabel: UILabel!
@@ -34,7 +34,7 @@ public class CardTableViewCell: UITableViewCell {
     @IBOutlet public weak var nameView: UIView!
     @IBOutlet public weak var typeView: UIView!
     
-    // MARK: Overrides
+    // MARK: - Overrides
     override public func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -52,7 +52,7 @@ public class CardTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    // MARK: Custom methods
+    // MARK: - Custom methods
     public func clearDataDisplay() {
         thumbnailImage.image = ManaKit.sharedInstance.imageFromFramework(imageName: .cardBackCropped)
         removeAnnotation()

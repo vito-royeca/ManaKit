@@ -52,7 +52,7 @@ public enum ViewModelMode: Int {
 }
 
 open class BaseViewModel: NSObject {
-    // MARK: public variables
+    // MARK: - public variables
     public var entityName: String?
     public var sortDescriptors: [NSSortDescriptor]?
     public var sectionName: String?
@@ -64,13 +64,13 @@ open class BaseViewModel: NSObject {
     open var predicate: NSPredicate?
     open var fetchRequest: NSFetchRequest<NSFetchRequestResult>?
     
-    // MARK: private variables
+    // MARK: - private variables
     private let context = ManaKit.sharedInstance.dataStack!.viewContext
     private var _sectionIndexTitles = [String]()
     private var _sectionTitles = [String]()
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     
-    // MARK: Initializer
+    // MARK: - Initializer
 //    public init(withEntityName entityName: String,
 //                andPredicate predicate: NSPredicate?,
 //                andSortDescriptors sortDescriptors: [NSSortDescriptor]?,
@@ -85,7 +85,7 @@ open class BaseViewModel: NSObject {
 //        self.mode = mode
 //    }
     
-    // MARK: UITableView methods
+    // MARK: - UITableView methods
     public func numberOfRows(inSection section: Int) -> Int {
         guard let fetchedResultsController = fetchedResultsController,
             let sections = fetchedResultsController.sections else {
@@ -138,7 +138,7 @@ open class BaseViewModel: NSObject {
         }
     }
     
-    // MARK: Custom methods
+    // MARK: - Custom methods
     public func isEmpty() -> Bool {
         guard let objects = allObjects() else {
             return true

@@ -25,7 +25,7 @@ extension MGCardType {
 
 }
 
-// MARK: Generated accessors for parent
+// MARK: - Generated accessors for parent
 extension MGCardType {
 
     @objc(addParentObject:)
@@ -42,7 +42,7 @@ extension MGCardType {
 
 }
 
-// MARK: Generated accessors for subtypes
+// MARK: - Generated accessors for subtypes
 extension MGCardType {
 
     @objc(addSubtypesObject:)

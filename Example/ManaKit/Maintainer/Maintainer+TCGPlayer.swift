@@ -109,7 +109,7 @@ extension Maintainer {
     
     func fetchCardPricingBy(groupId: Int32, connection: Connection) -> Promise<[()->Promise<Void>]> {
         return Promise { seal in
-            guard let urlString = "http://api.tcgplayer.com/\(ManaKit.Constants.TcgPlayerApiVersion)/pricing/group/\(groupId)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+            guard let urlString = "https://api.tcgplayer.com/\(ManaKit.Constants.TcgPlayerApiVersion)/pricing/group/\(groupId)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                 let url = URL(string: urlString) else {
                 fatalError("Malformed url")
             }
@@ -172,99 +172,4 @@ extension Maintainer {
                              parameters: parameters,
                              connection: connection)
     }
-    
-//    private func getMagicCategoryId() -> Promise<Int> {
-//        return Promise { seal  in
-//            guard let urlString = "http://api.tcgplayer.com/\(ManaKit.Constants.TcgPlayerApiVersion)/catalog/categories?limit=\(ManaKit.Constants.TcgPlayerApiLimit)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-//                let url = URL(string: urlString) else {
-//                fatalError("Malformed url")
-//            }
-//
-//            var rq = URLRequest(url: url)
-//            rq.httpMethod = "GET"
-//            rq.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//            rq.setValue("Bearer \(tcgplayerAPIToken)", forHTTPHeaderField: "Authorization")
-//
-//            firstly {
-//                URLSession.shared.dataTask(.promise, with:rq)
-//            }.compactMap {
-//                try JSONSerialization.jsonObject(with: $0.data) as? [String: Any]
-//            }.done { json in
-//                guard let results = json["results"] as? [[String: Any]] else {
-//                    fatalError("results is nil")
-//                }
-//
-//                for dict in results {
-//                    if let categoryId = dict["categoryId"] as? Int,
-//                        let name = dict["name"] as? String {
-//                        if name == "Magic" {
-//                            seal.fulfill(categoryId)
-//                        }
-//                    }
-//                }
-//
-//            }.catch { error in
-//                print("\(error)")
-//                seal.reject(error)
-//            }
-//        }
-//    }
-    
-//    private func getCardPurchaseUris() {
-//        startActivity(name: "getCardPurchaseUris")
-//
-//        let request: NSFetchRequest<CMSet> = CMSet.fetchRequest()
-//        request.predicate = NSPredicate(format: "tcgplayerName = nil")
-//        request.sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: true)]
-//
-//        var promises = [Promise<URL?>]()
-//        for set in try! context.fetch(request) {
-//            if let code = set.code,
-//                let urlString = "https://api.scryfall.com/cards/search?q=e:\(code)&unique=prints".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-//
-//            }
-//        }
-//
-//        endActivity()
-//    }
-
-//    private func readScryfall(url: URL) -> Promise<URL?> {
-//        return Promise { seal  in
-//            var rq = URLRequest(url: url)
-//            rq.httpMethod = "GET"
-//
-//            firstly {
-//                URLSession.shared.dataTask(.promise, with:rq)
-//            }.compactMap {
-//                    try JSONSerialization.jsonObject(with: $0.data) as? [String: Any]
-//            }.done { json in
-//                if let data = json["data"] as? [[String: Any]] {
-//                    for e in data {
-//                        if let id = e["id"] as? String,
-//                            let purchaseUris = [""] as? [String: Any] {
-//
-//                        }
-//                    }
-//                }
-//
-//                print("Scraping \(url)...")
-//
-//                if let hasMore = json["has_more"] as? Bool,
-//                    let nextPage = json["next_page"] as? String {
-//
-//                    if hasMore {
-//                        seal.fulfill(URL(string: nextPage)!)
-//                    } else {
-//                        seal.fulfill(nil)
-//                    }
-//                } else {
-//                    seal.fulfill(nil)
-//                }
-//            }.catch { error in
-//                seal.fulfill(nil)
-//            }
-//        }
-//    }
-    
-    
 }

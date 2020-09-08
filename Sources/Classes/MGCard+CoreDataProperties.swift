@@ -81,7 +81,7 @@ extension MGCard {
 
 }
 
-// MARK: Generated accessors for cardComponentParts
+// MARK: - Generated accessors for cardComponentParts
 extension MGCard {
 
     @objc(addCardComponentPartsObject:)
@@ -98,7 +98,7 @@ extension MGCard {
 
 }
 
-// MARK: Generated accessors for colorIdentities
+// MARK: - Generated accessors for colorIdentities
 extension MGCard {
 
     @objc(addColorIdentitiesObject:)
@@ -115,7 +115,7 @@ extension MGCard {
 
 }
 
-// MARK: Generated accessors for colorIndicators
+// MARK: - Generated accessors for colorIndicators
 extension MGCard {
 
     @objc(addColorIndicatorsObject:)
@@ -132,7 +132,7 @@ extension MGCard {
 
 }
 
-// MARK: Generated accessors for colors
+// MARK: - Generated accessors for colors
 extension MGCard {
 
     @objc(addColorsObject:)
@@ -149,7 +149,7 @@ extension MGCard {
 
 }
 
-// MARK: Generated accessors for faces
+// MARK: - Generated accessors for faces
 extension MGCard {
 
     @objc(addFacesObject:)
@@ -166,7 +166,7 @@ extension MGCard {
 
 }
 
-// MARK: Generated accessors for formatLegalities
+// MARK: - Generated accessors for formatLegalities
 extension MGCard {
 
     @objc(addFormatLegalitiesObject:)
@@ -183,7 +183,7 @@ extension MGCard {
 
 }
 
-// MARK: Generated accessors for otherLanguages
+// MARK: - Generated accessors for otherLanguages
 extension MGCard {
 
     @objc(addOtherLanguagesObject:)
@@ -200,7 +200,7 @@ extension MGCard {
 
 }
 
-// MARK: Generated accessors for otherPrintings
+// MARK: - Generated accessors for otherPrintings
 extension MGCard {
 
     @objc(addOtherPrintingsObject:)
@@ -217,7 +217,7 @@ extension MGCard {
 
 }
 
-// MARK: Generated accessors for partComponentParts
+// MARK: - Generated accessors for partComponentParts
 extension MGCard {
 
     @objc(addPartComponentPartsObject:)
@@ -234,7 +234,7 @@ extension MGCard {
 
 }
 
-// MARK: Generated accessors for subtypes
+// MARK: - Generated accessors for subtypes
 extension MGCard {
 
     @objc(addSubtypesObject:)
@@ -251,7 +251,7 @@ extension MGCard {
 
 }
 
-// MARK: Generated accessors for supertypes
+// MARK: - Generated accessors for supertypes
 extension MGCard {
 
     @objc(addSupertypesObject:)
@@ -268,7 +268,7 @@ extension MGCard {
 
 }
 
-// MARK: Generated accessors for variations
+// MARK: - Generated accessors for variations
 extension MGCard {
 
     @objc(addVariationsObject:)
@@ -285,7 +285,7 @@ extension MGCard {
 
 }
 
-// MARK: Generated accessors for prices
+// MARK: - Generated accessors for prices
 extension MGCard {
 
     @objc(addPricesObject:)

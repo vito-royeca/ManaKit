@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina5_5" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,7 +19,7 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="114"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="414" height="113.66666666666667"/>
+                <rect key="frame" x="0.0" y="0.0" width="414" height="114"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UvK-DO-NWz">
@@ -70,11 +68,11 @@
                             </label>
                         </subviews>
                     </stackView>
-                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="Ggh-ov-whD">
+                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Ggh-ov-whD">
                         <rect key="frame" x="66" y="49" width="328" height="27"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mgw-3T-wDA">
-                                <rect key="frame" x="0.0" y="0.0" width="29.666666666666668" height="27"/>
+                                <rect key="frame" x="0.0" y="0.0" width="46.333333333333336" height="27"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <state key="normal" title="EN"/>
                                 <connections>
@@ -82,7 +80,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gTh-i2-t5L">
-                                <rect key="frame" x="59.666666666666664" y="0.0" width="29.666666666666664" height="27"/>
+                                <rect key="frame" x="56.333333333333329" y="0.0" width="46.333333333333329" height="27"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <state key="normal" title="ES"/>
                                 <connections>
@@ -90,7 +88,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PGC-l2-0Ru">
-                                <rect key="frame" x="119.33333333333336" y="0.0" width="29.666666666666671" height="27"/>
+                                <rect key="frame" x="112.66666666666664" y="0.0" width="46.333333333333329" height="27"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <state key="normal" title="FR"/>
                                 <connections>
@@ -98,7 +96,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pVG-Mr-4Df">
-                                <rect key="frame" x="179" y="0.0" width="29.666666666666657" height="27"/>
+                                <rect key="frame" x="169" y="0.0" width="46.333333333333343" height="27"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <state key="normal" title="DE"/>
                                 <connections>
@@ -106,7 +104,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wPF-lZ-jAs">
-                                <rect key="frame" x="238.66666666666669" y="0.0" width="29.666666666666686" height="27"/>
+                                <rect key="frame" x="225.33333333333331" y="0.0" width="46.333333333333314" height="27"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <state key="normal" title="IT"/>
                                 <connections>
@@ -114,7 +112,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r7M-U8-JfM">
-                                <rect key="frame" x="298.33333333333331" y="0.0" width="29.666666666666686" height="27"/>
+                                <rect key="frame" x="281.66666666666669" y="0.0" width="46.333333333333314" height="27"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <state key="normal" title="PT"/>
                                 <connections>
@@ -127,11 +125,11 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="7IV-Oy-wF2"/>
                     </stackView>
-                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="TiD-DM-71Y">
+                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="TiD-DM-71Y">
                         <rect key="frame" x="66" y="79" width="328" height="27"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Rk-er-OxJ">
-                                <rect key="frame" x="0.0" y="0.0" width="29.666666666666668" height="27"/>
+                                <rect key="frame" x="0.0" y="0.0" width="46.333333333333336" height="27"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <state key="normal" title="JA"/>
                                 <connections>
@@ -139,7 +137,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zgo-Ji-GtM">
-                                <rect key="frame" x="59.666666666666664" y="0.0" width="29.666666666666664" height="27"/>
+                                <rect key="frame" x="56.333333333333329" y="0.0" width="46.333333333333329" height="27"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <state key="normal" title="KO"/>
                                 <connections>
@@ -147,7 +145,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zsf-B7-1u7">
-                                <rect key="frame" x="119.33333333333336" y="0.0" width="29.666666666666671" height="27"/>
+                                <rect key="frame" x="112.66666666666664" y="0.0" width="46.333333333333329" height="27"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <state key="normal" title="RU"/>
                                 <connections>
@@ -155,7 +153,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jLt-W4-4OH">
-                                <rect key="frame" x="179" y="0.0" width="29.666666666666657" height="27"/>
+                                <rect key="frame" x="169" y="0.0" width="46.333333333333343" height="27"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <state key="normal" title="汉语"/>
                                 <connections>
@@ -163,12 +161,12 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sTI-JT-WuH">
-                                <rect key="frame" x="238.66666666666669" y="0.0" width="29.666666666666686" height="27"/>
+                                <rect key="frame" x="225.33333333333331" y="0.0" width="46.333333333333314" height="27"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <state key="normal" title="漢語"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ey0-rP-Aea">
-                                <rect key="frame" x="298.33333333333331" y="0.0" width="29.666666666666686" height="27"/>
+                                <rect key="frame" x="281.66666666666669" y="0.0" width="46.333333333333314" height="27"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <state key="normal" title=" "/>
                             </button>

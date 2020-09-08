@@ -26,7 +26,7 @@ extension MGRule {
 
 }
 
-// MARK: Generated accessors for children
+// MARK: - Generated accessors for children
 extension MGRule {
 
     @objc(addChildrenObject:)

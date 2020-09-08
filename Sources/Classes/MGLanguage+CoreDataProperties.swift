@@ -25,7 +25,7 @@ extension MGLanguage {
 
 }
 
-// MARK: Generated accessors for cards
+// MARK: - Generated accessors for cards
 extension MGLanguage {
 
     @objc(addCardsObject:)
@@ -42,7 +42,7 @@ extension MGLanguage {
 
 }
 
-// MARK: Generated accessors for sets
+// MARK: - Generated accessors for sets
 extension MGLanguage {
 
     @objc(addSetsObject:)

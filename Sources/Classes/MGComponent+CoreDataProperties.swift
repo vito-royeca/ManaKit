@@ -22,7 +22,7 @@ extension MGComponent {
 
 }
 
-// MARK: Generated accessors for componentParts
+// MARK: - Generated accessors for componentParts
 extension MGComponent {
 
     @objc(addComponentPartsObject:)

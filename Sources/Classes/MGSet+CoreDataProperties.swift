@@ -39,7 +39,7 @@ extension MGSet {
 
 }
 
-// MARK: Generated accessors for cards
+// MARK: - Generated accessors for cards
 extension MGSet {
 
     @objc(addCardsObject:)
@@ -56,7 +56,7 @@ extension MGSet {
 
 }
 
-// MARK: Generated accessors for children
+// MARK: - Generated accessors for children
 extension MGSet {
 
     @objc(addChildrenObject:)
@@ -73,7 +73,7 @@ extension MGSet {
 
 }
 
-// MARK: Generated accessors for languages
+// MARK: - Generated accessors for languages
 extension MGSet {
 
     @objc(addLanguagesObject:)

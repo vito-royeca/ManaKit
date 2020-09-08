@@ -10,7 +10,7 @@ import CoreData
 import PromiseKit
 
 public class CardViewModel: BaseViewModel {
-    // MARK: Variables
+    // MARK: - Variables
     private var _id: String?
     
     var _predicate: NSPredicate?
@@ -42,7 +42,7 @@ public class CardViewModel: BaseViewModel {
         }
     }
     
-    // MARK: Initialization
+    // MARK: - Initialization
     public init(withId id: String) {
         super.init()
         _id = id
@@ -51,7 +51,7 @@ public class CardViewModel: BaseViewModel {
         sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
     }
     
-    // MARK: Overrides
+    // MARK: - Overrides
     override public func willFetchCache() -> Bool {
         guard let id = _id,
             let entityName = entityName else {

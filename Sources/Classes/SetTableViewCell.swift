@@ -16,7 +16,7 @@ public class SetTableViewCell: UITableViewCell {
     public static let reuseIdentifier = "SetCell"
     public static let cellHeight = CGFloat(114)
     
-    // MARK: Outlets
+    // MARK: - Outlets
     @IBOutlet public weak var logoLabel: UILabel!
     @IBOutlet public weak var nameLabel: UILabel!
     @IBOutlet public weak var codeLabel: UILabel!
@@ -35,7 +35,7 @@ public class SetTableViewCell: UITableViewCell {
     @IBOutlet public weak var zhtButton: UIButton!
     @IBOutlet public weak var blankButton: UIButton!
 
-    // MARK: Actions
+    // MARK: - Actions
     @IBAction public func languageAction(_ sender: UIButton) {
         var code = ""
         
@@ -66,7 +66,7 @@ public class SetTableViewCell: UITableViewCell {
         delegate?.languageAction(cell: self, code: code)
     }
     
-    // MARK: Variables
+    // MARK: - Variables
     public var set: MGSet! {
         didSet {
             logoLabel.text = set.keyruneUnicode2String()
@@ -118,7 +118,7 @@ public class SetTableViewCell: UITableViewCell {
     }
     public var delegate: SetTableViewCellDelegate?
     
-    // MARK: Overrides
+    // MARK: - Overrides
     override public func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

@@ -68,7 +68,7 @@ pod "ManaKit"
 ## Author
 
 Jovito Royeca
-jovit.royeca@gmail.com
+vito.royeca@gmail.com
 
 ## License
 

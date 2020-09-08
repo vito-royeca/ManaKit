@@ -10,7 +10,7 @@ import CoreData
 import PromiseKit
 
 public class SetViewModel: BaseViewModel {
-    // MARK: Variables
+    // MARK: - Variables
     private var _set: MGSet?
     private var _languageCode: String?
     
@@ -58,7 +58,7 @@ public class SetViewModel: BaseViewModel {
         }
     }
     
-    // MARK: Initialization
+    // MARK: - Initialization
     public init(withSet set: MGSet, languageCode: String) {
         super.init()
         _set = set
@@ -74,7 +74,7 @@ public class SetViewModel: BaseViewModel {
         }
     }
     
-    // MARK: Overrides
+    // MARK: - Overrides
     public func modelTitle() -> String? {
         if let set = _set {
             return set.name

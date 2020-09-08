@@ -73,7 +73,7 @@ extension ManaKit {
     
 //    public func getTcgPlayerPrices(forSet set: CMSet) -> Promise<Void> {
 //        return Promise { seal  in
-//            guard let urlString = "http://api.tcgplayer.com/\(Constants.TcgPlayerApiVersion)/pricing/group/\(set.tcgPlayerID)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+//            guard let urlString = "https://api.tcgplayer.com/\(Constants.TcgPlayerApiVersion)/pricing/group/\(set.tcgPlayerID)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
 //                let url = URL(string: urlString) else {
 //                    fatalError("Malformed url")
 //            }
@@ -153,7 +153,7 @@ extension ManaKit {
 //    public func getTcgPlayerPrices(forCards cards: [CMCard]) -> Promise<Void> {
 //        return Promise { seal  in
 //            let productIds = cards.map({ $0.tcgPlayerID }).map(String.init).joined(separator: ",")
-//            guard let urlString = "http://api.tcgplayer.com/\(Constants.TcgPlayerApiVersion)/pricing/product/\(productIds)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+//            guard let urlString = "https://api.tcgplayer.com/\(Constants.TcgPlayerApiVersion)/pricing/product/\(productIds)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
 //                let url = URL(string: urlString) else {
 //                fatalError("Malformed url")
 //            }

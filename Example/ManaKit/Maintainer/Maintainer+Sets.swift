@@ -12,81 +12,6 @@ import PostgresClientKit
 import PromiseKit
 
 extension Maintainer {
-    func fetchSetsData() -> Promise<Void> {
-        return Promise { seal in
-            guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
-                fatalError("Malformed cachePath")
-            }
-            let setsPath = "\(cachePath)/\(ManaKit.Constants.ScryfallDate)_\(setsFileName)"
-            let willFetch = !FileManager.default.fileExists(atPath: setsPath)
-            
-            if willFetch {
-                guard let urlString = "https://api.scryfall.com/sets".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-                    let url = URL(string: urlString) else {
-                        fatalError("Malformed url")
-                }
-                var rq = URLRequest(url: url)
-                rq.httpMethod = "GET"
-                
-                print("Fetching Scryfall sets... \(urlString)")
-                firstly {
-                    URLSession.shared.dataTask(.promise, with:rq)
-                }.compactMap {
-                    try JSONSerialization.jsonObject(with: $0.data) as? [String: Any]
-                }.done { json in
-                    if let outputStream = OutputStream(toFileAtPath: setsPath, append: false) {
-                        print("Writing Scryfall sets... \(setsPath)")
-                        var error: NSError?
-                        outputStream.open()
-                        JSONSerialization.writeJSONObject(json,
-                                                          to: outputStream,
-                                                          options: JSONSerialization.WritingOptions(),
-                                                          error: &error)
-                        outputStream.close()
-                        print("Done!")
-                        seal.fulfill(())
-                    }
-                }.catch { error in
-                    seal.reject(error)
-                }
-            } else {
-                seal.fulfill(())
-            }
-        }
-    }
-    
-    func fetchSetSymbols() -> Promise<Void> {
-        return Promise { seal in
-            guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
-                fatalError("Malformed cachePath")
-            }
-            let keyrunePath = "\(cachePath)/\(ManaKit.Constants.ScryfallDate)_\(keyruneFileName)"
-            let willFetch = !FileManager.default.fileExists(atPath: keyrunePath)
-            
-            if willFetch {
-                guard let urlString = "http://andrewgioia.github.io/Keyrune/cheatsheet.html".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-                    let url = URL(string: urlString) else {
-                    fatalError("Malformed url")
-                }
-
-                var rq = URLRequest(url: url)
-                rq.httpMethod = "GET"
-                
-                firstly {
-                    URLSession.shared.downloadTask(.promise,
-                                                   with: rq,
-                                                   to: URL(fileURLWithPath: keyrunePath))
-                }.done { _ in
-                    seal.fulfill(())
-                }.catch { error in
-                    seal.reject(error)
-                }
-            } else {
-                seal.fulfill(())
-            }
-        }
-    }
-    
     func setsData() -> [[String: Any]] {
         guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
             fatalError("Malformed cachePath")
@@ -125,12 +50,11 @@ extension Maintainer {
     }
     
     func filterSetTypes(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
-        var filteredData = [String]()
+        var filteredData = Set<String>()
         
         for dict in array {
-            if let setType = dict["set_type"] as? String,
-                !filteredData.contains(setType) {
-                filteredData.append(setType)
+            if let setType = dict["set_type"] as? String {
+                filteredData.insert(setType)
             }
         }
         let promises: [()->Promise<Void>] = filteredData.map { setType in

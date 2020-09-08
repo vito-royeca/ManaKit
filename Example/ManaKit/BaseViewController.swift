@@ -13,10 +13,10 @@ import MBProgressHUD
 import PromiseKit
 
 class BaseViewController: UIViewController {
-    // MARK: Outlets
+    // MARK: - Outlets
     @IBOutlet weak var tableView: UITableView!
     
-    // MARK: Variables
+    // MARK: - Variables
     let searchController = UISearchController(searchResultsController: nil)
     var viewModel: BaseViewModel!
     
@@ -26,7 +26,7 @@ class BaseViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
-    // MARK: Custom methods
+    // MARK: - Custom methods
     func fetchData() {
         let callback = { (error: Error?) in
             if let error = error {

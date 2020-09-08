@@ -12,7 +12,7 @@ import MBProgressHUD
 import PromiseKit
 
 class SetViewController: BaseViewController {
-    // MARK: Overrides
+    // MARK: - Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -58,7 +58,7 @@ class SetViewController: BaseViewController {
     }
 }
 
-// MARK: UITableViewDataSource
+// MARK: - UITableViewDataSource
 extension SetViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.numberOfRows(inSection: section)
@@ -94,7 +94,7 @@ extension SetViewController : UITableViewDataSource {
     }
 }
 
-// MARK: UITableViewDelegate
+// MARK: - UITableViewDelegate
 extension SetViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let card = viewModel.object(forRowAt: indexPath)
@@ -106,7 +106,7 @@ extension SetViewController : UITableViewDelegate {
     }
 }
 
-// MARK: UISearchResultsUpdating
+// MARK: - UISearchResultsUpdating
 extension SetViewController : UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text else {
@@ -118,7 +118,7 @@ extension SetViewController : UISearchResultsUpdating {
     }
 }
 
-// MARK: UISearchBarDelegate
+// MARK: - UISearchBarDelegate
 extension SetViewController : UISearchBarDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         viewModel.searchCancelled = false

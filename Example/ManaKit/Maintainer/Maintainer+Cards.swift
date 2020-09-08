@@ -12,54 +12,11 @@ import PostgresClientKit
 import PromiseKit
 
 extension Maintainer {
-    func fetchCardsData() -> Promise<Void> {
-        return Promise { seal in
-            guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
-                fatalError("Malformed cachePath")
-            }
-            let cardsPath = "\(cachePath)/\(ManaKit.Constants.ScryfallDate)_\(cardsFileName)"
-            let willFetch = !FileManager.default.fileExists(atPath: cardsPath)
-            
-            if willFetch {
-                guard let urlString = "https://archive.scryfall.com/json/\(cardsFileName)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-                    let url = URL(string: urlString) else {
-                    fatalError("Malformed url")
-                }
-                var rq = URLRequest(url: url)
-                rq.httpMethod = "GET"
-                
-                print("Fetching Scryfall cards... \(urlString)")
-                firstly {
-                    URLSession.shared.dataTask(.promise, with:rq)
-                }.compactMap {
-                    try JSONSerialization.jsonObject(with: $0.data) as? [[String: Any]]
-                }.done { json in
-                    if let outputStream = OutputStream(toFileAtPath: cardsPath, append: false) {
-                        print("Writing Scryfall cards... \(cardsPath)")
-                        var error: NSError?
-                        outputStream.open()
-                        JSONSerialization.writeJSONObject(json,
-                                                          to: outputStream,
-                                                          options: JSONSerialization.WritingOptions(),
-                                                          error: &error)
-                        outputStream.close()
-                        print("Done!")
-                    }
-                    seal.fulfill(())
-                }.catch { error in
-                    seal.reject(error)
-                }
-            } else {
-                seal.fulfill(())
-            }
-        }
-    }
-    
     func cardsData() -> [[String: Any]] {
         guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
             fatalError("Malformed cachePath")
         }
-        let cardsPath = "\(cachePath)/\(ManaKit.Constants.ScryfallDate)_\(cardsFileName)"
+        let cardsPath = "\(cachePath)/\(cardsRemotePath.components(separatedBy: "/").last ?? "")"
         
         let data = try! Data(contentsOf: URL(fileURLWithPath: cardsPath))
         guard let array = try! JSONSerialization.jsonObject(with: data,
@@ -71,12 +28,11 @@ extension Maintainer {
     }
 
     func filterArtists(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
-        var filteredData = [String]()
+        var filteredData = Set<String>()
         
         for dict in array {
-            if let artist = dict["artist"] as? String,
-                !filteredData.contains(artist) {
-                filteredData.append(artist)
+            if let artist = dict["artist"] as? String {
+                filteredData.insert(artist)
             }
         }
         let promises: [()->Promise<Void>] = filteredData.map { artist in
@@ -90,12 +46,11 @@ extension Maintainer {
     }
     
     func filterRarities(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
-        var filteredData = [String]()
+        var filteredData = Set<String>()
         
         for dict in array {
-            if let rarity = dict["rarity"] as? String,
-                !filteredData.contains(rarity) {
-                filteredData.append(rarity)
+            if let rarity = dict["rarity"] as? String {
+                filteredData.insert(rarity)
             }
         }
         let promises: [()->Promise<Void>] = filteredData.map { rarity in
@@ -170,7 +125,7 @@ extension Maintainer {
                         name = "Arabic"
                     case "sa":
                         name = "Sanskrit"
-                    case "px":
+                    case "ph":
                         name = "Phyrexian"
                     default:
                         ()
@@ -197,12 +152,11 @@ extension Maintainer {
     }
     
     func filterWatermarks(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
-        var filteredData = [String]()
+        var filteredData = Set<String>()
         
         for dict in array {
-            if let watermark = dict["watermark"] as? String,
-                !filteredData.contains(watermark) {
-                filteredData.append(watermark)
+            if let watermark = dict["watermark"] as? String {
+                filteredData.insert(watermark)
             }
         }
         let promises: [()->Promise<Void>] = filteredData.map { watermark in
@@ -479,14 +433,12 @@ extension Maintainer {
     }
     
     func filterFormats(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
-        var filteredData = [String]()
+        var filteredData = Set<String>()
         
         for dict in array {
             if let legalities = dict["legalities"] as? [String: String] {
                 for key in legalities.keys {
-                    if !filteredData.contains(key) {
-                        filteredData.append(key)
-                    }
+                    filteredData.insert(key)
                 }
             }
         }
@@ -501,14 +453,12 @@ extension Maintainer {
     }
     
     func filterLegalities(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
-        var filteredData = [String]()
+        var filteredData = Set<String>()
         
         for dict in array {
             if let legalities = dict["legalities"] as? [String: String] {
                 for value in legalities.values {
-                    if !filteredData.contains(value) {
-                        filteredData.append(value)
-                    }
+                    filteredData.insert(value)
                 }
             }
         }
@@ -565,15 +515,13 @@ extension Maintainer {
     }
     
     func filterComponents(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
-        var filteredData = [String]()
+        var filteredData = Set<String>()
         
         for dict in array {
             if let parts = dict["all_parts"] as? [[String: Any]] {
                 for part in parts {
                     if let component = part["component"] as? String {
-                        if !filteredData.contains(component) {
-                            filteredData.append(component)
-                        }
+                        filteredData.insert(component)
                     }
                 }
             }
@@ -686,7 +634,7 @@ extension Maintainer {
     private func extractTypesFrom(_ typeLine: String) -> [[String: String]]  {
         var filteredTypes = [[String: String]]()
         let emdash = "\u{2014}"
-        var types = [String]()
+        var types = Set<String>()
         
         if typeLine.contains("//") {
             for type in typeLine.components(separatedBy: "//") {
@@ -698,16 +646,12 @@ extension Maintainer {
                     for f in first.components(separatedBy: " ") {
                         if !f.isEmpty && f != emdash {
                             let trimmed = f.trimmingCharacters(in: .whitespacesAndNewlines)
-                            if !types.contains(trimmed) {
-                                types.append(trimmed)
-                            }
+                            types.insert(trimmed)
                         }
                     }
                     
                     let trimmed = last.trimmingCharacters(in: .whitespacesAndNewlines)
-                    if !types.contains(trimmed) {
-                        types.append(trimmed)
-                    }
+                    types.insert(trimmed)
                 }
             }
         } else if typeLine.contains(emdash) {
@@ -719,26 +663,20 @@ extension Maintainer {
                 for f in first.components(separatedBy: " ") {
                     if !f.isEmpty && f != emdash {
                         let trimmed = f.trimmingCharacters(in: .whitespacesAndNewlines)
-                        if !types.contains(trimmed) {
-                            types.append(trimmed)
-                        }
+                        types.insert(trimmed)
                     }
                 }
                 
                 let trimmed = last.trimmingCharacters(in: .whitespacesAndNewlines)
-                if !types.contains(trimmed) {
-                    types.append(trimmed)
-                }
+                types.insert(trimmed)
             }
         } else {
-            if !types.contains(typeLine) {
-                types.append(typeLine)
-            }
+            types.insert(typeLine)
         }
         
-        types.reverse()
-        for i in 0...types.count-1 {
-            let type = types[i]
+        let arrayTypes = types.reversed()
+        for i in 0...arrayTypes.count-1 {
+            let type = arrayTypes[i]
             var parent = "NULL"
             var isFound = false
             
@@ -752,7 +690,7 @@ extension Maintainer {
             }
             if !isFound {
                 if i+1 <= types.count-1 {
-                    parent = types[i+1]
+                    parent = arrayTypes[i+1]
                 }
                 
                 filteredTypes.append([
@@ -765,9 +703,9 @@ extension Maintainer {
         return filteredTypes
     }
     
-    func extractSupertypesFrom(_ typeLine: String) -> [String]  {
+    func extractSupertypesFrom(_ typeLine: String) -> Set<String>  {
         let emdash = "\u{2014}"
-        var types = [String]()
+        var types = Set<String>()
         
         if typeLine.contains("//") {
             for type in typeLine.components(separatedBy: "//") {
@@ -777,9 +715,7 @@ extension Maintainer {
                     for f in first.components(separatedBy: " ") {
                         if !f.isEmpty && f != emdash {
                             let trimmed = f.trimmingCharacters(in: .whitespacesAndNewlines)
-                            if !types.contains(trimmed) {
-                                types.append(trimmed)
-                            }
+                            types.insert(trimmed)
                         }
                     }
                 }
@@ -791,24 +727,20 @@ extension Maintainer {
                 for f in first.components(separatedBy: " ") {
                     if !f.isEmpty && f != emdash {
                         let trimmed = f.trimmingCharacters(in: .whitespacesAndNewlines)
-                        if !types.contains(trimmed) {
-                            types.append(trimmed)
-                        }
+                        types.insert(trimmed)
                     }
                 }
             }
         } else {
-            if !types.contains(typeLine) {
-                types.append(typeLine)
-            }
+            types.insert(typeLine)
         }
         
         return types
     }
     
-    func extractSubtypesFrom(_ typeLine: String) -> [String]  {
+    func extractSubtypesFrom(_ typeLine: String) -> Set<String>  {
         let emdash = "\u{2014}"
-        var types = [String]()
+        var types = Set<String>()
         
         if typeLine.contains("//") {
             for type in typeLine.components(separatedBy: "//") {
@@ -816,9 +748,7 @@ extension Maintainer {
                 
                 if let last = s.last {
                     let trimmed = last.trimmingCharacters(in: .whitespacesAndNewlines)
-                    if !types.contains(trimmed) {
-                        types.append(trimmed)
-                    }
+                    types.insert(trimmed)
                 }
             }
         } else if typeLine.contains(emdash) {
@@ -826,14 +756,10 @@ extension Maintainer {
             
             if let last = s.last {
                 let trimmed = last.trimmingCharacters(in: .whitespacesAndNewlines)
-                if !types.contains(trimmed) {
-                    types.append(trimmed)
-                }
+                types.insert(trimmed)
             }
         } else {
-            if !types.contains(typeLine) {
-                types.append(typeLine)
-            }
+            types.insert(typeLine)
         }
         
         return types

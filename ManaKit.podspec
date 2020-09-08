@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ManaKit'
-  s.version          = '6.1.4'
+  s.version          = '7.0.0'
   s.summary          = 'MTG API database.'
 
 # This description is used to generate tags and improve search results.

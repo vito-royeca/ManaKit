@@ -1,3 +1,7 @@
+**Version 6.1.4** @ 08.09.2020
+- Now using JSON API.
+- Updated the Scryfall database to: 2020-09-07 21:17 UTC.
+
 **Version 6.1.4** @ 02.01.2019
 - Added more card relationship data.
 

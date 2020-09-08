@@ -10,7 +10,7 @@ import CoreData
 import PromiseKit
 
 public class SetsViewModel: BaseViewModel {
-    // MARK: Variables
+    // MARK: - Variables
     var _predicate: NSPredicate?
     override public var predicate: NSPredicate? {
         get {
@@ -48,7 +48,7 @@ public class SetsViewModel: BaseViewModel {
         }
     }
     
-    // MARK: initialization
+    // MARK: - Initialization
     override public init() {
         super.init()
         
@@ -57,7 +57,7 @@ public class SetsViewModel: BaseViewModel {
         sectionName = "myYearSection"
     }
     
-    // MARK: Overrides
+    // MARK: - Overrides
     override public func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
         let path = "/sets?json=true"
         

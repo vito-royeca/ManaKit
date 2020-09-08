@@ -26,10 +26,10 @@ public class ManaKit {
     }
 
     public enum Constants {
-        public static let ScryfallDate        = "2020-02-19 10:25 UTC"
+        public static let ScryfallDate        = "2020-09-07 21:17 UTC"
         public static let EightEditionRelease = "2003-07-28"
         public static let ManaGuideDataAge    = 24 * 3 // 3 days
-        public static let TcgPlayerApiVersion = "v1.19.0"
+        public static let TcgPlayerApiVersion = "v1.36.0"
         public static let TcgPlayerApiLimit   = 300
         public static let TcgPlayerPricingAge = 24 * 3 // 3 days
         public static let TcgPlayerPublicKey  = "A49D81FB-5A76-4634-9152-E1FB5A657720"
@@ -58,7 +58,7 @@ public class ManaKit {
     // MARK: - Shared Instance
     public static let sharedInstance = ManaKit()
     
-    // MARK: Variables
+    // MARK: - Variables
     var tcgPlayerPartnerKey: String?
     var tcgPlayerPublicKey: String?
     var tcgPlayerPrivateKey: String?
@@ -74,7 +74,7 @@ public class ManaKit {
         }
     }
     
-    // MARK: Public variables
+    // MARK: - Public variables
     private var _dataStack: DataStack?
     public var dataStack: DataStack? {
         get {
@@ -94,7 +94,7 @@ public class ManaKit {
         }
     }
     
-    // MARK: Resource methods
+    // MARK: - Resource methods
     public func configure(apiURL: String, partnerKey: String, publicKey: String?, privateKey: String?) {
         self.apiURL = apiURL
         tcgPlayerPartnerKey = partnerKey
@@ -143,7 +143,7 @@ public class ManaKit {
         }
     }
     
-    // MARK: Firebase
+    // MARK: - Firebase
 //    public func newFirebaseKey(from oldFirebaseKey: String) -> String {
 //        var parts = oldFirebaseKey.components(separatedBy: "_")
 //        var numComponent = ""

@@ -19,14 +19,19 @@ extension Maintainer {
             let array = self.cardsData()
             var promises = [()->Promise<Void>]()
             var filteredData = [[String: Any]]()
-            
+
+            // -- Start Option 1 -- //
             for dict in array {
+            // -- End Option 1 -- //
+            
+            // -- Start Option 2 -- //
 //            for i in 0 ... array.count-1 {
-//                if i < 158000 {
+//                if i < 10 {
 //                    continue
 //                }
 //                let dict = array[i]
-                
+            // -- End Option 2 -- //
+
                 if let id = dict["id"] as? String,
                     let language = dict["lang"] as? String,
                     let set = dict["set"] as? String,
@@ -103,6 +108,7 @@ extension Maintainer {
             let imagesPath   = "\(cachePath)/card_images/\(set)/\(language)/\(id)"
             let downloadPath = "\(cachePath)/card_downloads/\(set)/\(language)/\(id)"
             var promises = [Promise<Void>]()
+            var remoteImageData: Data?
             
             for (k,v) in imageUris {
                 var imageFile = "\(imagesPath)/\(k)"
@@ -118,7 +124,15 @@ extension Maintainer {
                 }
                 
                 if FileManager.default.fileExists(atPath: imageFile) {
-                    // TODO: check age of file
+                    // Compare local and remote files
+//                    let localImageData = try! Data(contentsOf: URL(fileURLWithPath: imageFile))
+//                    remoteImageData = try! Data(contentsOf: URL(string: v)!)
+//                    willDownload = localImageData != remoteImageData
+                } else if FileManager.default.fileExists(atPath: downloadFile) {
+                    // Compare local and remote files
+                    let localImageData = try! Data(contentsOf: URL(fileURLWithPath: downloadFile))
+                    remoteImageData = try! Data(contentsOf: URL(string: v)!)
+                    willDownload = localImageData != remoteImageData
                 } else {
                     willDownload = true
                 }
@@ -130,16 +144,46 @@ extension Maintainer {
                                                                      withIntermediateDirectories: true,
                                                                      attributes: nil)
                         }
-                        promises.append(downloadImagePromise(url: v, destinationFile: downloadFile))
+                        if FileManager.default.fileExists(atPath: downloadFile) {
+                            try FileManager.default.removeItem(atPath: downloadFile)
+                        }
+                        
+                        if let remoteImageData = remoteImageData {
+                            promises.append(saveImagePromise(imageData: remoteImageData,
+                                                             destinationFile: downloadFile))
+                        } else {
+                            promises.append(downloadImagePromise(url: v,
+                                                                 destinationFile: downloadFile))
+                        }
                     }
                 }
             }
 
-            firstly {
-                when(fulfilled: promises)
-            }.done {
+            if promises.isEmpty {
                 seal.fulfill(())
-            }.catch { error in
+            } else {
+                firstly {
+                    when(fulfilled: promises)
+                }.done {
+                    seal.fulfill(())
+                }.catch { error in
+//                    seal.reject(error)
+                    print(error)
+                    seal.fulfill(())
+                }
+            }
+        }
+    }
+    
+    func saveImagePromise(imageData: Data, destinationFile: String) -> Promise<Void> {
+        return Promise { seal in
+            do {
+                try imageData.write(to: URL(fileURLWithPath: destinationFile))
+                seal.fulfill(())
+            } catch {
+                let error = NSError(domain: NSURLErrorDomain,
+                                    code: 404,
+                                    userInfo: [NSLocalizedDescriptionKey: "Unable to write to: \(destinationFile)"])
                 seal.reject(error)
             }
         }

@@ -22,7 +22,7 @@ extension MGRarity {
 
 }
 
-// MARK: Generated accessors for cards
+// MARK: - Generated accessors for cards
 extension MGRarity {
 
     @objc(addCardsObject:)

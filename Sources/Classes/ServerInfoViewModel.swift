@@ -10,7 +10,7 @@ import CoreData
 import PromiseKit
 
 public class ServerInfoViewModel: BaseViewModel {
-    // MARK: Variables
+    // MARK: - Variables
     var _fetchRequest: NSFetchRequest<NSFetchRequestResult>?
     override public var fetchRequest: NSFetchRequest<NSFetchRequestResult>? {
         get {
@@ -24,7 +24,7 @@ public class ServerInfoViewModel: BaseViewModel {
         }
     }
     
-    // MARK: Initialization
+    // MARK: - Initialization
     override public init() {
         super.init()
         
@@ -32,7 +32,7 @@ public class ServerInfoViewModel: BaseViewModel {
         sortDescriptors = [NSSortDescriptor(key: "scryfallVersion", ascending: true)]
     }
 
-    // MARK: Overrides
+    // MARK: - Overrides
     override public func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
         let path = "/serverinfo?json=true"
         

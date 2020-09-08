@@ -22,6 +22,7 @@
 		8B379A8123A58568005D0171 /* Pods_ManaKit_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3641FE50D690CB6D714FAE9 /* Pods_ManaKit_Example.framework */; };
 		8B379A8223A58568005D0171 /* Pods_ManaKit_Example.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D3641FE50D690CB6D714FAE9 /* Pods_ManaKit_Example.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8B379AC223A587DF005D0171 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B379AC123A587DF005D0171 /* BaseViewController.swift */; };
+		8B626D912403094C00972EED /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = 8B626D902403094C00972EED /* CHANGELOG.md */; };
 		8B70144723B425200097298B /* ManaKit_ExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B70144623B425200097298B /* ManaKit_ExampleUITests.swift */; };
 		8B70145523B4252D0097298B /* ManaKit_ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B70145423B4252D0097298B /* ManaKit_ExampleTests.swift */; };
 		8B70145C23B425600097298B /* Maintainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7BF7FC23A608550030AAC9 /* Maintainer.swift */; };
@@ -137,6 +138,7 @@
 		8B379AC123A587DF005D0171 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		8B379AD523A58822005D0171 /* Kanna.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Kanna.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B379AE223A58DAE005D0171 /* ManaKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ManaKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B626D902403094C00972EED /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
 		8B70144423B425200097298B /* ManaKit_ExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ManaKit_ExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B70144623B425200097298B /* ManaKit_ExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManaKit_ExampleUITests.swift; sourceTree = "<group>"; };
 		8B70144823B425200097298B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
+				8B626D902403094C00972EED /* CHANGELOG.md */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD21AFB9204008FA782 /* Example for ManaKit */,
 				8B70144523B425200097298B /* ManaKit_ExampleUITests */,
@@ -478,6 +481,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
+				8B626D912403094C00972EED /* CHANGELOG.md in Resources */,
 				8B379A3C23A57DFE005D0171 /* Images.xcassets in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				115151B91F1E24130061C270 /* data in Resources */,

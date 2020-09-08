@@ -23,7 +23,7 @@ extension MGLayout {
 
 }
 
-// MARK: Generated accessors for cards
+// MARK: - Generated accessors for cards
 extension MGLayout {
 
     @objc(addCardsObject:)

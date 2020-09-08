@@ -25,7 +25,7 @@ extension MGColor {
 
 }
 
-// MARK: Generated accessors for cards
+// MARK: - Generated accessors for cards
 extension MGColor {
 
     @objc(addCardsObject:)
@@ -42,7 +42,7 @@ extension MGColor {
 
 }
 
-// MARK: Generated accessors for identities
+// MARK: - Generated accessors for identities
 extension MGColor {
 
     @objc(addIdentitiesObject:)
@@ -59,7 +59,7 @@ extension MGColor {
 
 }
 
-// MARK: Generated accessors for indicators
+// MARK: - Generated accessors for indicators
 extension MGColor {
 
     @objc(addIndicatorsObject:)

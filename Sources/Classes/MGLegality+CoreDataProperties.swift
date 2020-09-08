@@ -22,7 +22,7 @@ extension MGLegality {
 
 }
 
-// MARK: Generated accessors for cardFormatLegalities
+// MARK: - Generated accessors for cardFormatLegalities
 extension MGLegality {
 
     @objc(addCardFormatLegalitiesObject:)

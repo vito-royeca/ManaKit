@@ -140,7 +140,28 @@ extension Maintainer {
         // manual fix
         for dict in array {
             if let code = dict["code"] as? String {
-                if code == "c14" ||
+                if code == "plist" {
+                   keyruneCodes[code] = ["e971", "mb1"] // plist
+                } else if code == "tznr" {
+                   keyruneCodes[code] = ["e963", "znr"] // Zendikar Rising Tokens
+                } else if code == "zne" {
+                  keyruneCodes[code] = ["e97a", "zne"]  // Zendikar Rising Expeditions
+                } else if code == "2xm" ||
+                   code == "t2xm" {
+                   keyruneCodes[code] = ["e96e", "2xm"] // double masters
+                } else if code == "jmp" ||
+                   code == "ajmp" ||
+                   code == "fjmp" {
+                   keyruneCodes[code] = ["e96f", "jmp"] // jump start
+                } else if code == "m21" ||
+                   code == "tm21" ||
+                   code == "pm21" {
+                   keyruneCodes[code] = ["e960", "m21"] // m21
+                } else if code == "ha1" ||
+                    code == "ha2" ||
+                    code == "ha3" {
+                   keyruneCodes[code] = ["e96b", "ha1"] // historic antology
+                } else if code == "c14" ||
                     code == "oc14" ||
                     code == "tc14" {
                     keyruneCodes[code] = ["e65d", "c14"] // typo in website
@@ -177,12 +198,16 @@ extension Maintainer {
                     code == "sld" ||
                     code == "psld" ||
                     code == "j20" ||
-                    code == "htr18" {
+                    code == "htr18" ||
+                    code == "slu" ||
+                    code == "plgs" ||
+                    code == "g17" {
                     keyruneCodes[code] = ["e687", "pmei"]  // media insert
                  } else if code == "pal99" {
                     keyruneCodes[code] = ["e622", "usg"]  // urza's saga
-                 } else if code == "pal01" {
-                    keyruneCodes[code] = ["e68c", "parl2"]  // arena
+                 } else if code == "pal01"  ||
+                    code == "pal00" {
+                    keyruneCodes[code] = ["e68c", "parl2"]  // arena league
                  } else if code == "pal02" ||
                     code == "pal03" ||
                     code == "pal04" ||
@@ -228,8 +253,8 @@ extension Maintainer {
                     code == "pwp10" ||
                     code == "pal05" {
                     keyruneCodes[code] = ["e688", "parl"]  // dci
-                } else if code == "ana"  ||
-                    code == "ha1" {
+                } else if code == "ana" ||
+                    code == "anb"{
                     keyruneCodes[code] = ["e943", "parl3"]  // arena league
                 } else if code == "ced" {
                     keyruneCodes[code] = ["e926", "xcle"]  // CE
@@ -291,6 +316,18 @@ extension Maintainer {
                     keyruneCodes[code] = ["e95e", "eld"]
                 } else if code == "4bb" {      // IV Ed
                     keyruneCodes[code] = ["e604", "4ed"]
+                } else if code == "pelp" {     // Euro Land Program
+                    keyruneCodes[code] = ["e92b", "peuro"]
+                } else if code == "fnm" {      // FNM
+                    keyruneCodes[code] = ["e937", "pfnm"]
+                } else if code == "palp" {     // APAC
+                    keyruneCodes[code] = ["e92a", "papac"]
+                } else if code == "pvan" {     // Vanguard Series
+                    keyruneCodes[code] = ["e655", "van"]
+                } else if code == "itp" {      // Introductory Two-Player Set
+                    keyruneCodes[code] = ["e928", "x2ps"]
+                } else if code == "mgb" {      // Multiverse Gift Box
+                    keyruneCodes[code] = ["e61d", "vis"]
                 }
             }
         }

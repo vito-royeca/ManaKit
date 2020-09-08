@@ -12,7 +12,7 @@ import MBProgressHUD
 import PromiseKit
 
 class SetsViewController: BaseViewController {
-    // MARK: Overrides
+    // MARK: - Overrides
     override public func awakeFromNib() {
         viewModel = SetsViewModel()
     }
@@ -64,7 +64,7 @@ class SetsViewController: BaseViewController {
     }
 }
 
-// MARK: UITableViewDataSource
+// MARK: - UITableViewDataSource
 extension SetsViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.numberOfRows(inSection: section)
@@ -100,7 +100,7 @@ extension SetsViewController : UITableViewDataSource {
     }
 }
 
-// MARK: UITableViewDelegate
+// MARK: - UITableViewDelegate
 extension SetsViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         return nil
@@ -111,7 +111,7 @@ extension SetsViewController : UITableViewDelegate {
     }
 }
 
-// MARK: UISearchResultsUpdating
+// MARK: - UISearchResultsUpdating
 extension SetsViewController : UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text else {
@@ -123,7 +123,7 @@ extension SetsViewController : UISearchResultsUpdating {
     }
 }
 
-// MARK: UISearchBarDelegate
+// MARK: - UISearchBarDelegate
 extension SetsViewController : UISearchBarDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         viewModel.searchCancelled = false
@@ -142,7 +142,7 @@ extension SetsViewController : UISearchBarDelegate {
     }
 }
 
-// MARK: SetsTableViewCellDelegate
+// MARK: - SetsTableViewCellDelegate
 extension SetsViewController: SetTableViewCellDelegate {
     func languageAction(cell: UITableViewCell, code: String) {
         guard let indexPath = tableView.indexPath(for: cell) else {

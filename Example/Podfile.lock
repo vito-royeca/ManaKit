@@ -25,9 +25,9 @@ PODS:
     - PromiseKit/CorePromise
   - PromiseKit/UIKit (6.13.1):
     - PromiseKit/CorePromise
-  - SDWebImage (5.5.2):
-    - SDWebImage/Core (= 5.5.2)
-  - SDWebImage/Core (5.5.2)
+  - SDWebImage (5.6.0):
+    - SDWebImage/Core (= 5.6.0)
+  - SDWebImage/Core (5.6.0)
   - SSZipArchive (2.2.2)
   - Sync (6.0.0)
 
@@ -70,10 +70,10 @@ SPEC CHECKSUMS:
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   PostgresClientKit: 2137fe1d0f553aca00283474b28816ec88462071
   PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
-  SDWebImage: 4d5c027c935438f341ed33dbac53ff9f479922ca
+  SDWebImage: 21b19f56b4226cdfe3aefe4e6848dc43ed129a86
   SSZipArchive: fa16b8cc4cdeceb698e5e5d9f67e9558532fbf23
   Sync: a6288926bee65a1ac3c72055446c558776af43f3
 
-PODFILE CHECKSUM: e4f3d2fca1177f336831af17a1a5e6b27d920cec
+PODFILE CHECKSUM: 4f9c303f6ba5898a450729ea547198e0c98bd5c6
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.3

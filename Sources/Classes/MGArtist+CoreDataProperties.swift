@@ -24,7 +24,7 @@ extension MGArtist {
 
 }
 
-// MARK: Generated accessors for cards
+// MARK: - Generated accessors for cards
 extension MGArtist {
 
     @objc(addCardsObject:)

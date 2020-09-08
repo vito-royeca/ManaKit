@@ -21,7 +21,7 @@ extension MGStore {
 
 }
 
-// MARK: Generated accessors for prices
+// MARK: - Generated accessors for prices
 extension MGStore {
 
     @objc(addPricesObject:)

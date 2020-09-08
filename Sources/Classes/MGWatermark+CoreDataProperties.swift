@@ -22,7 +22,7 @@ extension MGWatermark {
 
 }
 
-// MARK: Generated accessors for cards
+// MARK: - Generated accessors for cards
 extension MGWatermark {
 
     @objc(addCardsObject:)

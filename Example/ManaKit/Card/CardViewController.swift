@@ -13,11 +13,11 @@ import ManaKit
 import PromiseKit
 
 class CardViewController: BaseViewController {
-    // MARK: Variables
+    // MARK: - Variables
     var faceOrder = 0
     var flipAngle = CGFloat(0)
 
-    // MARK: overrides
+    // MARK: - Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -27,7 +27,7 @@ class CardViewController: BaseViewController {
         fetchData()
     }
     
-    // MARK: Custom methods
+    // MARK: - Custom methods
     @objc func buttonAction() {
         guard let card = viewModel.allObjects()?.first as? MGCard,
             let layout = card.layout,
@@ -66,7 +66,7 @@ class CardViewController: BaseViewController {
     }
 }
 
-// MARK: UITableViewDataSource
+// MARK: - UITableViewDataSource
 extension CardViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 2
@@ -172,7 +172,7 @@ extension CardViewController : UITableViewDataSource {
     }
 }
 
-// MARK: UITableViewDelegate
+// MARK: - UITableViewDelegate
 extension CardViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         var height = CGFloat(0)

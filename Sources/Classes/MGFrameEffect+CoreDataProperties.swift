@@ -24,7 +24,7 @@ extension MGFrameEffect {
 
 }
 
-// MARK: Generated accessors for cards
+// MARK: - Generated accessors for cards
 extension MGFrameEffect {
 
     @objc(addCardsObject:)

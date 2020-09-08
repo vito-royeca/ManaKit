@@ -23,7 +23,7 @@ extension MGSetBlock {
 
 }
 
-// MARK: Generated accessors for sets
+// MARK: - Generated accessors for sets
 extension MGSetBlock {
 
     @objc(addSetsObject:)

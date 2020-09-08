@@ -12,20 +12,31 @@ import PromiseKit
 import SSZipArchive
 
 class Maintainer: NSObject {
-    // MARK: Constants
-    let printMilestone = 1000
-    let cardsFileName   = "scryfall-all-cards.json"
-    let rulingsFileName = "scryfall-rulings.json"
-    let setsFileName    = "scryfall-sets.json"
-    let keyruneFileName = "keyrune.html"
-    let comprehensiveRulesFileName = "MagicCompRules 20200122"
-    let setCodesForProcessing:[String]? = nil
+    // MARK: - Constants
+    let printMilestone    = 1000
+    let bulkDataFileName  = "scryfall-bulkData.json"
+    let setsFileName      = "scryfall-sets.json"
+    let keyruneFileName   = "keyrune.html"
+    let comprehensiveRulesFileName = "MagicCompRules 20200807"
+//    let setCodesForProcessing:[String]? = nil
     let storeName = "TCGPlayer"
     
-    // MARK: Variables
+    // MARK: - Variables
     var tcgplayerAPIToken = ""
     var dateStart = Date()
+    var cardsRemotePath   = ""
+    var rulingsRemotePath = ""
     let setsModel = SetsViewModel()
+    
+    var _bulkArray: [[String: Any]]?
+    var bulkArray: [[String: Any]] {
+        get {
+            if _bulkArray == nil {
+                _bulkArray = self.bulkData()
+            }
+            return _bulkArray!
+        }
+    }
     
     var _setsArray: [[String: Any]]?
     var setsArray: [[String: Any]] {
@@ -67,7 +78,7 @@ class Maintainer: NSObject {
         }
     }
     
-    // MARK: Database methods
+    // MARK: - Database methods
     func checkServerInfo() {
         let viewModel = ServerInfoViewModel()
         
@@ -95,7 +106,7 @@ class Maintainer: NSObject {
         var configuration = PostgresClientKit.ConnectionConfiguration()
         configuration.host = "192.168.1.182"
         configuration.port = 5432
-        configuration.database = "managuide_dev"
+        configuration.database = "managuide_prod"
         configuration.user = "managuide"
         configuration.credential = .cleartextPassword(password: "DarkC0nfidant")
         configuration.ssl = false
@@ -110,16 +121,30 @@ class Maintainer: NSObject {
     }
     
     private func updateDatabase() {
+        guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
+            fatalError("Malformed cachePath")
+        }
+        let bulkDataLocalPath  = "\(cachePath)/\(ManaKit.Constants.ScryfallDate)_\(bulkDataFileName)"
+        let bulkDataRemotePath = "https://api.scryfall.com/bulk-data"
+        let setsLocalPath      = "\(cachePath)/\(ManaKit.Constants.ScryfallDate)_\(setsFileName)"
+        let setsRemotePath     = "https://api.scryfall.com/sets"
+        let keyruneLocalPath   = "\(cachePath)/\(ManaKit.Constants.ScryfallDate)_\(keyruneFileName)"
+        let keyruneRemotePath  = "https://keyrune.andrewgioia.com/cheatsheet.html"
+        
         startActivity()
         
         firstly {
-            fetchSetsData()
-        }/*.then {
-            self.fetchSetSymbols()
+            fetchData(localPath: bulkDataLocalPath, remotePath: bulkDataRemotePath)
         }.then {
-            self.fetchCardsData()
+            self.createBulkData()
         }.then {
-            self.fetchRulings()
+            self.fetchData(localPath: setsLocalPath, remotePath: setsRemotePath)
+        }.then {
+            self.fetchData(localPath: keyruneLocalPath, remotePath: keyruneRemotePath)
+        }.then {
+            self.fetchData(localPath: "\(cachePath)/\(self.cardsRemotePath.components(separatedBy: "/").last ?? "")", remotePath: self.cardsRemotePath)
+        }.then {
+            self.fetchData(localPath: "\(cachePath)/\(self.rulingsRemotePath.components(separatedBy: "/").last ?? "")", remotePath: self.rulingsRemotePath)
         }.then {
             self.createSetsData()
         }.then {
@@ -132,7 +157,7 @@ class Maintainer: NSObject {
             self.createOtherCardsData()
         }.then {
             self.createPricingData()
-        }*/.then {
+        }.then {
             self.fetchCardImages()
         }.then {
             self.createScryfallPromise()
@@ -143,6 +168,13 @@ class Maintainer: NSObject {
         }
     }
 
+    private func createBulkData() -> Promise<Void> {
+        return Promise { seal in
+            let _ = bulkArray
+            seal.fulfill(())
+        }
+    }
+    
     private func createSetsData() -> Promise<Void> {
         return Promise { seal in
             let connection = createConnection()
@@ -304,7 +336,68 @@ class Maintainer: NSObject {
         }
     }
     
-    // MARK: Promise methods
+    func bulkData() -> [[String: Any]] {
+        guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
+            fatalError("Malformed cachePath")
+        }
+        let bulkDataPath  = "\(cachePath)/\(ManaKit.Constants.ScryfallDate)_\(bulkDataFileName)"
+        let data = try! Data(contentsOf: URL(fileURLWithPath: bulkDataPath))
+        guard let dict = try! JSONSerialization.jsonObject(with: data,
+                                                           options: .mutableContainers) as? [String: Any] else {
+            fatalError("Malformed data")
+        }
+        guard let array = dict["data"] as? [[String: Any]] else {
+            fatalError("Malformed data")
+        }
+        
+        for dict in array {
+            for (k,v) in dict {
+                if k == "name" {
+                    if let value = v as? String {
+                        switch value {
+                        case "All Cards":
+                            self.cardsRemotePath = dict["download_uri"] as! String
+                        case "Rulings":
+                            self.rulingsRemotePath = dict["download_uri"] as! String
+                        default:
+                            ()
+                        }
+                    }
+                }
+            }
+        }
+        return array
+    }
+    
+    // MARK: - Promise methods
+    func fetchData(localPath: String, remotePath: String) -> Promise<Void> {
+        return Promise { seal in
+            let willFetch = !FileManager.default.fileExists(atPath: localPath)
+            
+            if willFetch {
+                guard let urlString = remotePath.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+                    let url = URL(string: urlString) else {
+                    fatalError("Malformed url")
+                }
+
+                var rq = URLRequest(url: url)
+                rq.httpMethod = "GET"
+                
+                firstly {
+                    URLSession.shared.downloadTask(.promise,
+                                                   with: rq,
+                                                   to: URL(fileURLWithPath: localPath))
+                }.done { _ in
+                    seal.fulfill(())
+                }.catch { error in
+                    seal.reject(error)
+                }
+            } else {
+                seal.fulfill(())
+            }
+        }
+    }
+    
     func createPromise(with query: String, parameters: [Any]?, connection: Connection?) -> Promise<Void> {
         return Promise { seal in
             if let connection = connection {
@@ -376,7 +469,7 @@ class Maintainer: NSObject {
         }
     }
     
-    // MARK: Utility methods
+    // MARK: - Utility methods
     func sectionFor(name: String) -> String? {
         if name.count == 0 {
             return nil

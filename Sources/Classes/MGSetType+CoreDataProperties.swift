@@ -22,7 +22,7 @@ extension MGSetType {
 
 }
 
-// MARK: Generated accessors for sets
+// MARK: - Generated accessors for sets
 extension MGSetType {
 
     @objc(addSetsObject:)
