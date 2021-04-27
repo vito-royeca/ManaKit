@@ -30,7 +30,7 @@ extension ManaKit {
                                              objectFinder: newObjectFinder as [String : AnyObject],
                                              createIfNotFound: true) as? MGLocalCache {
             
-            if let dateUpdated = dataCache.dateUpdated {
+            if let dateUpdated = dataCache.lastUpdated {
                 if let diff = Calendar.current.dateComponents([.hour],
                                                               from: dateUpdated as Date,
                                                               to: Date()).hour {
@@ -39,12 +39,12 @@ extension ManaKit {
             }
             
             if willFetch {
-                dataCache.name = entityName
+                dataCache.tableName = entityName
                 dataCache.query = query
-                if let objectFinder = objectFinder {
-                    dataCache.objectFinder = NSKeyedArchiver.archivedData(withRootObject: objectFinder)
-                }
-                dataCache.dateUpdated = Date()
+//                if let objectFinder = objectFinder {
+//                    dataCache.objectFinder = NSKeyedArchiver.archivedData(withRootObject: objectFinder)
+//                }
+                dataCache.lastUpdated = Date()
                 saveContext()
             }
         }
@@ -214,4 +214,117 @@ extension ManaKit {
         }
     }
     
+    public func keyruneUnicode2String(set: MGSet) -> String? {
+        var unicode:String?
+        
+        if let keyruneUnicode = set.keyruneUnicode {
+            let charAsInt = Int(keyruneUnicode, radix: 16)!
+            let uScalar = UnicodeScalar(charAsInt)!
+            unicode = "\(uScalar)"
+        } else {
+            let charAsInt = Int("e684", radix: 16)!
+            let uScalar = UnicodeScalar(charAsInt)!
+            unicode = "\(uScalar)"
+        }
+        
+        return unicode
+    }
+    
 }
+
+// MARK: - Identifiables
+//extension MGArtist : Identifiable {
+//
+//}
+//
+//extension MGCard : Identifiable {
+//
+//}
+//
+//extension MGCardComponentPart : Identifiable {
+//
+//}
+//
+//extension MGCardFormatLegality : Identifiable {
+//
+//}
+//
+//extension MGCardPrice : Identifiable {
+//
+//}
+//
+//extension MGCardType : Identifiable {
+//
+//}
+//
+//extension MGColor : Identifiable {
+//
+//}
+//
+//extension MGComponent : Identifiable {
+//
+//}
+//
+//extension MGFormat : Identifiable {
+//
+//}
+//
+//extension MGFrame : Identifiable {
+//
+//}
+//
+//extension MGFrameEffect : Identifiable {
+//
+//}
+//
+//extension MGLanguage : Identifiable {
+//
+//}
+//
+//extension MGLayout : Identifiable {
+//
+//}
+//
+//extension MGLegality : Identifiable {
+//
+//}
+//
+//extension MGLocalCache : Identifiable {
+//
+//}
+//
+//extension MGRarity : Identifiable {
+//
+//}
+//
+//extension MGRule : Identifiable {
+//
+//}
+//
+//extension MGRuling : Identifiable {
+//
+//}
+//
+//extension MGServerInfo : Identifiable {
+//
+//}
+//
+//extension MGSet : Identifiable {
+//
+//}
+//
+//extension MGSetBlock : Identifiable {
+//
+//}
+//
+//extension MGSetType : Identifiable {
+//
+//}
+//
+//extension MGStore : Identifiable {
+//
+//}
+//
+//extension MGWatermark : Identifiable {
+//
+//}

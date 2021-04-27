@@ -142,7 +142,11 @@ extension Maintainer {
             if let code = dict["code"] as? String {
                 if code == "plist" {
                    keyruneCodes[code] = ["e971", "mb1"] // plist
-                } else if code == "tznr" {
+                } else if code == "tznr" ||
+                   code == "aznr" ||
+                   code == "pznr" ||
+                   code == "sznr" ||
+                   code == "mznr" {
                    keyruneCodes[code] = ["e963", "znr"] // Zendikar Rising Tokens
                 } else if code == "zne" {
                   keyruneCodes[code] = ["e97a", "zne"]  // Zendikar Rising Expeditions

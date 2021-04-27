@@ -17,7 +17,7 @@ class Maintainer: NSObject {
     let bulkDataFileName  = "scryfall-bulkData.json"
     let setsFileName      = "scryfall-sets.json"
     let keyruneFileName   = "keyrune.html"
-    let comprehensiveRulesFileName = "MagicCompRules 20200807"
+    let comprehensiveRulesFileName = "MagicCompRules 20200925"
 //    let setCodesForProcessing:[String]? = nil
     let storeName = "TCGPlayer"
     
@@ -96,6 +96,9 @@ class Maintainer: NSObject {
                     viewModel.deleteAllCache()
                     self.updateDatabase()
                 }
+            } else {
+                viewModel.deleteAllCache()
+                self.updateDatabase()
             }
         }.catch { error in
             print(error)
@@ -134,18 +137,20 @@ class Maintainer: NSObject {
         startActivity()
         
         firstly {
-            fetchData(localPath: bulkDataLocalPath, remotePath: bulkDataRemotePath)
+            fetchData(from: bulkDataRemotePath, saveTo: bulkDataLocalPath)
         }.then {
             self.createBulkData()
         }.then {
-            self.fetchData(localPath: setsLocalPath, remotePath: setsRemotePath)
+            self.fetchData(from: setsRemotePath, saveTo: setsLocalPath)
         }.then {
-            self.fetchData(localPath: keyruneLocalPath, remotePath: keyruneRemotePath)
+            self.fetchData(from: keyruneRemotePath, saveTo: keyruneLocalPath)
         }.then {
-            self.fetchData(localPath: "\(cachePath)/\(self.cardsRemotePath.components(separatedBy: "/").last ?? "")", remotePath: self.cardsRemotePath)
+            self.fetchData(from: self.cardsRemotePath, saveTo: "\(cachePath)/\(self.cardsRemotePath.components(separatedBy: "/").last ?? "")")
         }.then {
-            self.fetchData(localPath: "\(cachePath)/\(self.rulingsRemotePath.components(separatedBy: "/").last ?? "")", remotePath: self.rulingsRemotePath)
+            self.fetchData(from: self.rulingsRemotePath, saveTo: "\(cachePath)/\(self.rulingsRemotePath.components(separatedBy: "/").last ?? "")")
         }.then {
+            self.fetchCardImages()
+        }/*.then {
             self.createSetsData()
         }.then {
             self.createCardsData()
@@ -158,10 +163,8 @@ class Maintainer: NSObject {
         }.then {
             self.createPricingData()
         }.then {
-            self.fetchCardImages()
-        }.then {
             self.createScryfallPromise()
-        }.done {
+        }*/.done {
             self.endActivity()
         }.catch { error in
             print(error)
@@ -370,7 +373,7 @@ class Maintainer: NSObject {
     }
     
     // MARK: - Promise methods
-    func fetchData(localPath: String, remotePath: String) -> Promise<Void> {
+    func fetchData(from remotePath: String, saveTo localPath: String) -> Promise<Void> {
         return Promise { seal in
             let willFetch = !FileManager.default.fileExists(atPath: localPath)
             

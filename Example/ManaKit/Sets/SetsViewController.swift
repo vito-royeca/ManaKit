@@ -14,7 +14,7 @@ import PromiseKit
 class SetsViewController: BaseViewController {
     // MARK: - Overrides
     override public func awakeFromNib() {
-        viewModel = SetsViewModel()
+//        viewModel = SetsViewModel()
     }
     
     override func viewDidLoad() {
@@ -24,7 +24,6 @@ class SetsViewController: BaseViewController {
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = "Filter"
-        searchController.dimsBackgroundDuringPresentation = false
         definesPresentationContext = true
         
         if #available(iOS 11.0, *) {

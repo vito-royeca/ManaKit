@@ -181,7 +181,7 @@ open class BaseViewModel: NSObject {
     open func deleteAllCache() {
         let entities = [String(describing: MGSet.self),
                         String(describing: MGCard.self)]
-        
+
         for entity in entities {
             ManaKit.sharedInstance.deleteCache(entity,
                                                objectFinder: nil)

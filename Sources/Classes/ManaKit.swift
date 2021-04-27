@@ -26,7 +26,7 @@ public class ManaKit {
     }
 
     public enum Constants {
-        public static let ScryfallDate        = "2020-09-07 21:17 UTC"
+        public static let ScryfallDate        = "2020-12-18 22:19 UTC"
         public static let EightEditionRelease = "2003-07-28"
         public static let ManaGuideDataAge    = 24 * 3 // 3 days
         public static let TcgPlayerApiVersion = "v1.36.0"
@@ -62,7 +62,7 @@ public class ManaKit {
     var tcgPlayerPartnerKey: String?
     var tcgPlayerPublicKey: String?
     var tcgPlayerPrivateKey: String?
-    var apiURL: String?
+    var apiURL = ""
     
     var _keyChain: Keychain?
     var keychain: Keychain {
@@ -91,6 +91,22 @@ public class ManaKit {
         }
         set {
             _dataStack = newValue
+        }
+    }
+    
+    private var _container: NSPersistentContainer?
+    public var container: NSPersistentContainer? {
+        get {
+            if _container == nil {
+                guard let bundleURL = Bundle(for: ManaKit.self).url(forResource: "ManaKit", withExtension: "bundle"),
+                    let bundle = Bundle(url: bundleURL),
+                    let momURL = bundle.url(forResource: "ManaKit", withExtension: "momd"),
+                    let objectModel = NSManagedObjectModel(contentsOf: momURL.appendingPathComponent("\(Constants.MomModel)")) else {
+                    return nil
+                }
+                _container = NSPersistentContainer(name: "ManaKit", managedObjectModel: objectModel)
+            }
+            return _container
         }
     }
     

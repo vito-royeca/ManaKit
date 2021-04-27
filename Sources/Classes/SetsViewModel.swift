@@ -8,8 +8,41 @@
 
 import CoreData
 import PromiseKit
+import Combine
 
-public class SetsViewModel: BaseViewModel {
+public class ViewModel: ObservableObject {
+    
+    @Published public var page = 0
+    @Published public var pageLimit = 0
+    @Published public var pageCount = 0
+    @Published public var rowCount = 0
+    @Published public var data: [AnyObject] = []
+    
+    public init() {
+        
+    }
+
+    public func fetchRemoteData() {
+        
+    }
+}
+
+public class SetsViewModel: ViewModel {
+    private let url = "\(ManaKit.sharedInstance.apiURL)/sets?json=true&page=1&limit=100"
+//    private var task: AnyCancellable?
+    
+    override public func fetchRemoteData() {
+//        task = URLSession.shared.dataTaskPublisher(for: URL(string: url)!)
+//            .map { $0.data }
+//            .decode(type: [AnyObject].self, decoder: JSONDecoder())
+//            .replaceError(with: [])
+//            .eraseToAnyPublisher()
+//            .receive(on: RunLoop.main)
+//            .assign(to: \SetsViewModel.data, on: self)
+    }
+}
+
+/*public class SetsViewModel: BaseViewModel {
     // MARK: - Variables
     var _predicate: NSPredicate?
     override public var predicate: NSPredicate? {
@@ -66,4 +99,4 @@ public class SetsViewModel: BaseViewModel {
                                                         httpBody: nil)
     }
 }
-
+*/

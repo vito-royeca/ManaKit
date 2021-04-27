@@ -22,6 +22,10 @@
 		8B379A8123A58568005D0171 /* Pods_ManaKit_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3641FE50D690CB6D714FAE9 /* Pods_ManaKit_Example.framework */; };
 		8B379A8223A58568005D0171 /* Pods_ManaKit_Example.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D3641FE50D690CB6D714FAE9 /* Pods_ManaKit_Example.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8B379AC223A587DF005D0171 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B379AC123A587DF005D0171 /* BaseViewController.swift */; };
+		8B4219F6255A597C00F7B8AE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4219F5255A597C00F7B8AE /* SceneDelegate.swift */; };
+		8B4219FE255A5A0800F7B8AE /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4219FD255A5A0800F7B8AE /* MainView.swift */; };
+		8B421A04255A5BD800F7B8AE /* SetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B421A03255A5BD800F7B8AE /* SetsView.swift */; };
+		8B421A09255A5BFC00F7B8AE /* RulesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B421A08255A5BFC00F7B8AE /* RulesView.swift */; };
 		8B626D912403094C00972EED /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = 8B626D902403094C00972EED /* CHANGELOG.md */; };
 		8B70144723B425200097298B /* ManaKit_ExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B70144623B425200097298B /* ManaKit_ExampleUITests.swift */; };
 		8B70145523B4252D0097298B /* ManaKit_ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B70145423B4252D0097298B /* ManaKit_ExampleTests.swift */; };
@@ -57,6 +61,9 @@
 		8B813E6B23CC05C200F78EB3 /* Maintainer+Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B813E6923CC05C200F78EB3 /* Maintainer+Images.swift */; };
 		8B813E6C23CC05C200F78EB3 /* Maintainer+Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B813E6923CC05C200F78EB3 /* Maintainer+Images.swift */; };
 		8B9B0E8923ADB457005FDD23 /* Maintainer+ComprehensiveRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9B0E8823ADB457005FDD23 /* Maintainer+ComprehensiveRules.swift */; };
+		8BC3EF7F259010AA002AC428 /* SetsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC3EF7E259010AA002AC428 /* SetsRowView.swift */; };
+		8BC3EF80259010AA002AC428 /* SetsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC3EF7E259010AA002AC428 /* SetsRowView.swift */; };
+		8BC3EF81259010AA002AC428 /* SetsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC3EF7E259010AA002AC428 /* SetsRowView.swift */; };
 		D04091B86FCFF73BABF68902 /* Pods_ManaKit_ExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20CFA8CE4ECF85F02F1619DA /* Pods_ManaKit_ExampleTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -138,6 +145,10 @@
 		8B379AC123A587DF005D0171 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		8B379AD523A58822005D0171 /* Kanna.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Kanna.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B379AE223A58DAE005D0171 /* ManaKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ManaKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B4219F5255A597C00F7B8AE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		8B4219FD255A5A0800F7B8AE /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		8B421A03255A5BD800F7B8AE /* SetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetsView.swift; sourceTree = "<group>"; };
+		8B421A08255A5BFC00F7B8AE /* RulesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesView.swift; sourceTree = "<group>"; };
 		8B626D902403094C00972EED /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
 		8B70144423B425200097298B /* ManaKit_ExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ManaKit_ExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B70144623B425200097298B /* ManaKit_ExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManaKit_ExampleUITests.swift; sourceTree = "<group>"; };
@@ -155,6 +166,7 @@
 		8B7BF80023A608550030AAC9 /* Maintainer+ServerInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+ServerInfo.swift"; sourceTree = "<group>"; };
 		8B813E6923CC05C200F78EB3 /* Maintainer+Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Maintainer+Images.swift"; sourceTree = "<group>"; };
 		8B9B0E8823ADB457005FDD23 /* Maintainer+ComprehensiveRules.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Maintainer+ComprehensiveRules.swift"; sourceTree = "<group>"; };
+		8BC3EF7E259010AA002AC428 /* SetsRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetsRowView.swift; sourceTree = "<group>"; };
 		91B7A9FA4B4AAA078ADB4898 /* Pods-ManaKit_ExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit_ExampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit_ExampleTests/Pods-ManaKit_ExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		933905FD05F69001F1434BA3 /* Pods_ManaKit_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ManaKit_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C51EFE570A26CCBB9742879C /* Pods_ManaKit_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ManaKit_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -203,6 +215,8 @@
 			isa = PBXGroup;
 			children = (
 				115151A81F1E221C0061C270 /* SetsViewController.swift */,
+				8B421A03255A5BD800F7B8AE /* SetsView.swift */,
+				8BC3EF7E259010AA002AC428 /* SetsRowView.swift */,
 			);
 			path = Sets;
 			sourceTree = "<group>";
@@ -263,6 +277,8 @@
 			children = (
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				8B379AC123A587DF005D0171 /* BaseViewController.swift */,
+				8B4219F5255A597C00F7B8AE /* SceneDelegate.swift */,
+				8B4219FD255A5A0800F7B8AE /* MainView.swift */,
 				119588DD2125E24F00B5D7C4 /* Card */,
 				115151B81F1E24130061C270 /* data */,
 				8B379A3B23A57DFD005D0171 /* Images.xcassets */,
@@ -271,6 +287,7 @@
 				11E74D95217437FE0077B252 /* MainViewController.swift */,
 				114A53B0213F954C0046CC82 /* Set */,
 				119588DA2125DC9600B5D7C4 /* Sets */,
+				8B421A07255A5BE100F7B8AE /* Rules */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
 				8B7BF7F723A607E00030AAC9 /* Maintainer */,
 			);
@@ -324,6 +341,14 @@
 				696234DD185E888F3E4F52E8 /* Pods_ManaKit_ExampleUITests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8B421A07255A5BE100F7B8AE /* Rules */ = {
+			isa = PBXGroup;
+			children = (
+				8B421A08255A5BFC00F7B8AE /* RulesView.swift */,
+			);
+			path = Rules;
 			sourceTree = "<group>";
 		};
 		8B70144523B425200097298B /* ManaKit_ExampleUITests */ = {
@@ -382,8 +407,6 @@
 			dependencies = (
 			);
 			name = ManaKit_Example;
-			packageProductDependencies = (
-			);
 			productName = ManaKit;
 			productReference = 607FACD01AFB9204008FA782 /* ManaKit_Example.app */;
 			productType = "com.apple.product-type.application";
@@ -435,7 +458,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1120;
-				LastUpgradeCheck = 1120;
+				LastUpgradeCheck = 1220;
 				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
@@ -462,8 +485,6 @@
 				Base,
 			);
 			mainGroup = 607FACC71AFB9204008FA782;
-			packageReferences = (
-			);
 			productRefGroup = 607FACD11AFB9204008FA782 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -510,12 +531,35 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_Example/Pods-ManaKit_Example-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_Example/Pods-ManaKit_Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BlueSSLService/SSLService.framework",
+				"${BUILT_PRODUCTS_DIR}/BlueSocket/Socket.framework",
+				"${BUILT_PRODUCTS_DIR}/FontAwesome.swift/FontAwesome_swift.framework",
+				"${BUILT_PRODUCTS_DIR}/Kanna/Kanna.framework",
+				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/ManaKit/ManaKit.framework",
+				"${BUILT_PRODUCTS_DIR}/PostgresClientKit/PostgresClientKit.framework",
+				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
+				"${BUILT_PRODUCTS_DIR}/Sync/Sync.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_Example/Pods-ManaKit_Example-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSLService.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Socket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FontAwesome_swift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kanna.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ManaKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PostgresClientKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sync.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -527,12 +571,35 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_ExampleTests/Pods-ManaKit_ExampleTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_ExampleTests/Pods-ManaKit_ExampleTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BlueSSLService/SSLService.framework",
+				"${BUILT_PRODUCTS_DIR}/BlueSocket/Socket.framework",
+				"${BUILT_PRODUCTS_DIR}/FontAwesome.swift/FontAwesome_swift.framework",
+				"${BUILT_PRODUCTS_DIR}/Kanna/Kanna.framework",
+				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/ManaKit/ManaKit.framework",
+				"${BUILT_PRODUCTS_DIR}/PostgresClientKit/PostgresClientKit.framework",
+				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
+				"${BUILT_PRODUCTS_DIR}/Sync/Sync.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_ExampleTests/Pods-ManaKit_ExampleTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSLService.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Socket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FontAwesome_swift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kanna.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ManaKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PostgresClientKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sync.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -562,12 +629,35 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_ExampleUITests/Pods-ManaKit_ExampleUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_ExampleUITests/Pods-ManaKit_ExampleUITests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BlueSSLService/SSLService.framework",
+				"${BUILT_PRODUCTS_DIR}/BlueSocket/Socket.framework",
+				"${BUILT_PRODUCTS_DIR}/FontAwesome.swift/FontAwesome_swift.framework",
+				"${BUILT_PRODUCTS_DIR}/Kanna/Kanna.framework",
+				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/ManaKit/ManaKit.framework",
+				"${BUILT_PRODUCTS_DIR}/PostgresClientKit/PostgresClientKit.framework",
+				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
+				"${BUILT_PRODUCTS_DIR}/Sync/Sync.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_ExampleUITests/Pods-ManaKit_ExampleUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSLService.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Socket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FontAwesome_swift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kanna.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ManaKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PostgresClientKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sync.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -647,13 +737,18 @@
 				8B379AC223A587DF005D0171 /* BaseViewController.swift in Sources */,
 				8B7BF80123A608550030AAC9 /* Maintainer+Sets.swift in Sources */,
 				8B9B0E8923ADB457005FDD23 /* Maintainer+ComprehensiveRules.swift in Sources */,
+				8BC3EF7F259010AA002AC428 /* SetsRowView.swift in Sources */,
 				8B7BF81023A608550030AAC9 /* Maintainer+Rulings.swift in Sources */,
+				8B4219FE255A5A0800F7B8AE /* MainView.swift in Sources */,
 				11E74D96217437FE0077B252 /* MainViewController.swift in Sources */,
 				115151A91F1E221C0061C270 /* SetsViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				8B7BF80623A608550030AAC9 /* Maintainer+Cards.swift in Sources */,
 				8B7BF81A23A608550030AAC9 /* Maintainer+SetsPostgres.swift in Sources */,
+				8B421A04255A5BD800F7B8AE /* SetsView.swift in Sources */,
 				8B2F2F9423934246005DEB46 /* CardViewController.swift in Sources */,
+				8B4219F6255A597C00F7B8AE /* SceneDelegate.swift in Sources */,
+				8B421A09255A5BFC00F7B8AE /* RulesView.swift in Sources */,
 				8B7BF82923A608550030AAC9 /* Maintainer+ServerInfo.swift in Sources */,
 				8B813E6A23CC05C200F78EB3 /* Maintainer+Images.swift in Sources */,
 				8B7BF80B23A608550030AAC9 /* Maintainer+RulingsPostgres.swift in Sources */,
@@ -675,6 +770,7 @@
 				8B70144723B425200097298B /* ManaKit_ExampleUITests.swift in Sources */,
 				8B70146823B425790097298B /* Maintainer+ServerInfo.swift in Sources */,
 				8B70146623B425730097298B /* Maintainer+RulingsPostgres.swift in Sources */,
+				8BC3EF80259010AA002AC428 /* SetsRowView.swift in Sources */,
 				8B70146C23B425800097298B /* Maintainer+SetsPostgres.swift in Sources */,
 				8B70146223B4256A0097298B /* Maintainer+ComprehensiveRules.swift in Sources */,
 				8B70145C23B425600097298B /* Maintainer.swift in Sources */,
@@ -694,6 +790,7 @@
 				8B70145523B4252D0097298B /* ManaKit_ExampleTests.swift in Sources */,
 				8B70146923B4257A0097298B /* Maintainer+ServerInfo.swift in Sources */,
 				8B70146723B425730097298B /* Maintainer+RulingsPostgres.swift in Sources */,
+				8BC3EF81259010AA002AC428 /* SetsRowView.swift in Sources */,
 				8B70146D23B425810097298B /* Maintainer+SetsPostgres.swift in Sources */,
 				8B70146323B4256B0097298B /* Maintainer+ComprehensiveRules.swift in Sources */,
 				8B70145D23B425600097298B /* Maintainer.swift in Sources */,
@@ -759,6 +856,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -784,7 +882,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Pods";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -818,6 +916,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -836,7 +935,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Pods";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = NO;

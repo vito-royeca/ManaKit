@@ -45,31 +45,32 @@ extension Maintainer {
     
     func fetchSets() -> Promise<[Int32]> {
         return Promise { seal in
-            setsModel.predicate = NSPredicate(format: "tcgplayerId > 0")
-            
-            firstly {
-                setsModel.fetchRemoteData()
-            }.compactMap { (data, result) in
-                try JSONSerialization.jsonObject(with: data) as? [[String: Any]]
-            }.then { data in
-                self.setsModel.saveLocalData(data: data)
-            }.then {
-                self.setsModel.fetchLocalData()
-            }.done {
-                var tcgplayerIds = [Int32]()
-                
-                try! self.setsModel.getFetchedResultsController(with: self.setsModel.fetchRequest).performFetch()
-                if let sets = self.setsModel.allObjects() as? [MGSet] {
-                    tcgplayerIds = sets.map( { set in
-                        set.tcgplayerId
-                    })
-                }
-                
-                seal.fulfill(tcgplayerIds)
-            }.catch { error in
-                self.setsModel.deleteCache()
-                seal.reject(error)
-            }
+            seal.fulfill([Int32]())
+//            setsModel.predicate = NSPredicate(format: "tcgplayerId > 0")
+//
+//            firstly {
+//                setsModel.fetchRemoteData()
+//            }.compactMap { (data, result) in
+//                try JSONSerialization.jsonObject(with: data) as? [[String: Any]]
+//            }.then { data in
+//                self.setsModel.saveLocalData(data: data)
+//            }.then {
+//                self.setsModel.fetchLocalData()
+//            }.done {
+//                var tcgplayerIds = [Int32]()
+//
+//                try! self.setsModel.getFetchedResultsController(with: self.setsModel.fetchRequest).performFetch()
+//                if let sets = self.setsModel.allObjects() as? [MGSet] {
+//                    tcgplayerIds = sets.map( { set in
+//                        set.tcgplayerId
+//                    })
+//                }
+//
+//                seal.fulfill(tcgplayerIds)
+//            }.catch { error in
+//                self.setsModel.deleteCache()
+//                seal.reject(error)
+//            }
         }
     }
     

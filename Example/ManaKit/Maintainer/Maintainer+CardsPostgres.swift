@@ -417,22 +417,22 @@ extension Maintainer {
                              connection: connection)
     }
     
-    func extractImageUrls(set: String, language: String, id: String, imageUrisDict: [String: String]) -> [String: String] {
-        var dict = [String: String]()
-        
-        if let artCrop = imageUrisDict["art_crop"],
-            let u = artCrop.components(separatedBy: "?").first,
-            let ext = u.components(separatedBy: ".").last {
-            
-            dict["art_crop"] = "\(set)/\(language)/\(id)/art_crop.\(ext)"
-        }
-        if let normal = imageUrisDict["normal"],
-            let u = normal.components(separatedBy: "?").first,
-            let ext = u.components(separatedBy: ".").last {
-            
-            dict["normal"] = "\(set)/\(language)/\(id)/normal.\(ext)"
-        }
-        
-        return dict
-    }
+//    func extractImageUrls(set: String, language: String, id: String, imageUrisDict: [String: String]) -> [String: String] {
+//        var dict = [String: String]()
+//
+//        if let artCrop = imageUrisDict["art_crop"],
+//            let u = artCrop.components(separatedBy: "?").first,
+//            let ext = u.components(separatedBy: ".").last {
+//
+//            dict["art_crop"] = "\(set)/\(language)/\(id)/art_crop.\(ext)"
+//        }
+//        if let normal = imageUrisDict["normal"],
+//            let u = normal.components(separatedBy: "?").first,
+//            let ext = u.components(separatedBy: ".").last {
+//
+//            dict["normal"] = "\(set)/\(language)/\(id)/normal.\(ext)"
+//        }
+//
+//        return dict
+//    }
 }

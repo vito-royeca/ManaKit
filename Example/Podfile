@@ -11,7 +11,7 @@ end
 
 target 'ManaKit_Example' do
     default_pods
-    platform :ios, "10.3"
+    platform :ios, "13.0"
 
     pod 'FontAwesome.swift'
     pod 'KeychainAccess'
@@ -21,7 +21,7 @@ end
 
 target 'ManaKit_ExampleTests' do
     default_pods
-    platform :ios, "10.3"
+    platform :ios, "13.0"
 
     pod 'FontAwesome.swift'
     pod 'KeychainAccess'
@@ -31,7 +31,7 @@ end
 
 target 'ManaKit_ExampleUITests' do
     default_pods
-    platform :ios, "10.3"
+    platform :ios, "13.0"
 
     pod 'FontAwesome.swift'
     pod 'KeychainAccess'

@@ -8,6 +8,7 @@
 
 import CoreData
 import PromiseKit
+import CoreData
 
 public class CardViewModel: BaseViewModel {
     // MARK: - Variables

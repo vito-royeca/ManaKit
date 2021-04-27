@@ -5,7 +5,7 @@ PODS:
   - FontAwesome.swift (1.8.3)
   - Kanna (5.0.0)
   - KeychainAccess (4.1.0)
-  - ManaKit (6.1.4):
+  - ManaKit (7.0.0):
     - Kanna
     - KeychainAccess
     - PromiseKit
@@ -66,7 +66,7 @@ SPEC CHECKSUMS:
   FontAwesome.swift: 2a3235131a6caffc6b2ccba318e94d793b2fd342
   Kanna: a32875df62975f8f4b871e933b4ea1a5c3b8be0f
   KeychainAccess: 445e28864fe6d3458b41fa211bcdc39890e8bd5a
-  ManaKit: affb082c25f61e18b7fe93347c80deb915e194f3
+  ManaKit: 86e3e2c06d62d3e6bf8d8f59c19a3b4970df9620
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   PostgresClientKit: 2137fe1d0f553aca00283474b28816ec88462071
   PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
@@ -74,6 +74,6 @@ SPEC CHECKSUMS:
   SSZipArchive: fa16b8cc4cdeceb698e5e5d9f67e9558532fbf23
   Sync: a6288926bee65a1ac3c72055446c558776af43f3
 
-PODFILE CHECKSUM: 4f9c303f6ba5898a450729ea547198e0c98bd5c6
+PODFILE CHECKSUM: 178474330fcec064e0811a54549fd3cac913dfdb
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.1
