@@ -20,7 +20,19 @@ extension Maintainer {
             var promises = [()->Promise<Void>]()
             var filteredData = [[String: Any]]()
 
-            for dict in array {
+            // -- Start Option 1 -- //
+//            for dict in array {
+            // -- End Option 1 -- //
+            
+            // -- Start Option 2 -- //
+            for i in 0 ... array.count-1 {
+                if i < 50000 {
+                    continue
+                }
+                let dict = array[i]
+            // -- End Option 2 -- //
+
+                
                 guard let number = dict["collector_number"] as? String,
                       let id = dict["id"] as? String,
                       let language = dict["lang"] as? String,
@@ -30,7 +42,7 @@ extension Maintainer {
                 
                 if let imageUrisDict = dict["image_uris"] as? [String: String] {
                     let imageUrisDict = createImageUris(id: id,
-                                                        number: number,
+                                                        number: number.replacingOccurrences(of: "★", with: "star"),
                                                         set: set,
                                                         language: language,
                                                         imageUrisDict: imageUrisDict)
@@ -43,7 +55,7 @@ extension Maintainer {
                         
                         if let imageUrisDict = face["image_uris"] as? [String: String] {
                             let faceImageUrisDict = createImageUris(id: id,
-                                                                    number: "\(number)_\(i)",
+                                                                    number: "\(number.replacingOccurrences(of: "★", with: "star"))_\(i)",
                                                                     set: set,
                                                                     language: language,
                                                                     imageUrisDict: imageUrisDict)
@@ -99,54 +111,51 @@ extension Maintainer {
                 fatalError("Wrong download keys")
             }
             
-            let imagesPath   = "\(cachePath)/card_images/\(set)/\(language)/\(id)"
-            let downloadPath = "\(cachePath)/card_downloads/\(set)/\(language)/\(number)"
+            let imagesPath    = "\(cachePath)/card_images/\(set)/\(language)/\(id)"
+            let imagesPath2   = "\(cachePath)/card_images/\(set)/\(language)/\(number)"
+            let downloadPath  = "\(cachePath)/card_downloads/\(set)/\(language)/\(number)"
             var promises = [Promise<Void>]()
             var remoteImageData: Data?
             
             for (k,v) in imageUris {
                 var imageFile = "\(imagesPath)/\(k)"
+                var imageFile2 = "\(imagesPath2)/\(k)"
                 var downloadFile = "\(downloadPath)/\(k)"
                 var willDownload = false
                 
                 if v.lowercased().hasSuffix("png") {
                     imageFile = "\(imageFile).png"
+                    imageFile2 = "\(imageFile2).png"
                     downloadFile = "\(downloadFile).png"
                 } else if v.lowercased().hasSuffix("jpg") {
                     imageFile = "\(imageFile).jpg"
+                    imageFile2 = "\(imageFile2).jpg"
                     downloadFile = "\(downloadFile).jpg"
                 }
                 
-                // create parent dirs
-                if !FileManager.default.fileExists(atPath: downloadPath) {
-                    try! FileManager.default.createDirectory(atPath: downloadPath,
-                                                             withIntermediateDirectories: true,
-                                                             attributes: nil)
-                }
-                
-                if FileManager.default.fileExists(atPath: imageFile) {
-                    if !FileManager.default.fileExists(atPath: downloadFile) {
-                        promises.append(copyImagePromise(sourceFile: imageFile,
-                                                         destinationFile: downloadFile))
-                    }
-                } else if FileManager.default.fileExists(atPath: downloadFile) {
-                    willDownload = false
+                if FileManager.default.fileExists(atPath: imageFile2) {
+                    continue
                 } else {
-                    willDownload = true
-                }
-                
-                if willDownload {
-                    if k == "art_crop" || k == "normal" || k == "png" {
-                        if FileManager.default.fileExists(atPath: downloadFile) {
-                            try FileManager.default.removeItem(atPath: downloadFile)
-                        }
-                        
-                        if let remoteImageData = remoteImageData {
-                            promises.append(saveImagePromise(imageData: remoteImageData,
+                    if FileManager.default.fileExists(atPath: imageFile) {
+                        if !FileManager.default.fileExists(atPath: downloadFile) {
+                            promises.append(copyImagePromise(sourceFile: imageFile,
                                                              destinationFile: downloadFile))
-                        } else {
-                            promises.append(downloadImagePromise(url: v,
+                        }
+                    } else if FileManager.default.fileExists(atPath: downloadFile) {
+                        willDownload = false
+                    } else {
+                        willDownload = true
+                    }
+                    
+                    if willDownload {
+                        if k == "art_crop" || k == "normal" || k == "png" {
+                            if let remoteImageData = remoteImageData {
+                                promises.append(saveImagePromise(imageData: remoteImageData,
                                                                  destinationFile: downloadFile))
+                            } else {
+                                promises.append(downloadImagePromise(url: v,
+                                                                     destinationFile: downloadFile))
+                            }
                         }
                     }
                 }
@@ -154,41 +163,32 @@ extension Maintainer {
                 /*
                 if FileManager.default.fileExists(atPath: imageFile) {
                     print("Exists at: card_images/\(set)/\(language)/\(id)")
-//                    do {
-//                      // Compare local and remote files
-//                      let localImageData = try Data(contentsOf: URL(fileURLWithPath: imageFile))
-//                      remoteImageData = try Data(contentsOf: URL(string: v)!)
-//                      willDownload = localImageData != remoteImageData
-//                    } catch {
-//                      print(error)
-//                      willDownload = true
-//                    }
+                    do {
+                      // Compare local and remote files
+                      let localImageData = try Data(contentsOf: URL(fileURLWithPath: imageFile))
+                      remoteImageData = try Data(contentsOf: URL(string: v)!)
+                      willDownload = localImageData != remoteImageData
+                    } catch {
+                      print(error)
+                      willDownload = true
+                    }
                 } else if FileManager.default.fileExists(atPath: downloadFile) {
                     print("Exists at: card_downloads/\(set)/\(language)/\(id)")
-//                    do {
-//                      // Compare local and remote files
-//                      let localImageData = try Data(contentsOf: URL(fileURLWithPath: downloadFile))
-//                      remoteImageData = try Data(contentsOf: URL(string: v)!)
-//                      willDownload = localImageData != remoteImageData
-//                    } catch {
-//                      print(error)
-//                      willDownload = true
-//                    }
+                    do {
+                      // Compare local and remote files
+                      let localImageData = try Data(contentsOf: URL(fileURLWithPath: downloadFile))
+                      remoteImageData = try Data(contentsOf: URL(string: v)!)
+                      willDownload = localImageData != remoteImageData
+                    } catch {
+                      print(error)
+                      willDownload = true
+                    }
                 } else {
                     willDownload = true
                 }
                 
                 if willDownload {
                     if k == "art_crop" || k == "normal" || k == "png" {
-                        if !FileManager.default.fileExists(atPath: downloadPath) {
-                            try! FileManager.default.createDirectory(atPath: downloadPath,
-                                                                     withIntermediateDirectories: true,
-                                                                     attributes: nil)
-                        }
-                        if FileManager.default.fileExists(atPath: downloadFile) {
-                            try FileManager.default.removeItem(atPath: downloadFile)
-                        }
-                        print("\t\(v)")
                         if let remoteImageData = remoteImageData {
                             promises.append(saveImagePromise(imageData: remoteImageData,
                                                              destinationFile: downloadFile))
@@ -219,8 +219,8 @@ extension Maintainer {
     func saveImagePromise(imageData: Data, destinationFile: String) -> Promise<Void> {
         return Promise { seal in
             do {
+                prepare(destinationFile: destinationFile)
                 try imageData.write(to: URL(fileURLWithPath: destinationFile))
-//                print("Saved \(destinationFile)")
                 seal.fulfill(())
             } catch {
                 let error = NSError(domain: NSURLErrorDomain,
@@ -239,6 +239,7 @@ extension Maintainer {
                 } else {
                     if let data = data {
                         do {
+                            self.prepare(destinationFile: destinationFile)
                             try data.write(to: URL(fileURLWithPath: destinationFile))
                             print("Downloaded \(url)")
                             seal.fulfill(())
@@ -266,10 +267,9 @@ extension Maintainer {
     func copyImagePromise(sourceFile: String, destinationFile: String) -> Promise<Void> {
         return Promise { seal in
             do {
-                
+                prepare(destinationFile: destinationFile)
                 try FileManager.default.copyItem(at: URL(fileURLWithPath: sourceFile),
                                                  to: URL(fileURLWithPath: destinationFile))
-//                print("Copied \(sourceFile)")
                 seal.fulfill(())
             } catch {
                 let error = NSError(domain: NSURLErrorDomain,
@@ -277,6 +277,27 @@ extension Maintainer {
                                     userInfo: [NSLocalizedDescriptionKey: "Unable to write to: \(destinationFile)"])
                 seal.reject(error)
             }
+        }
+    }
+    
+    private func prepare(destinationFile: String) {
+        do {
+            let destinationURL = URL(fileURLWithPath: destinationFile)
+            let parentDir = destinationURL.deletingLastPathComponent().path
+            
+            // create parent dirs
+            if !FileManager.default.fileExists(atPath: parentDir) {
+                try! FileManager.default.createDirectory(atPath: parentDir,
+                                                         withIntermediateDirectories: true,
+                                                         attributes: nil)
+            }
+            
+            // delete if existing
+            if FileManager.default.fileExists(atPath: destinationFile) {
+                try FileManager.default.removeItem(atPath: destinationFile)
+            }
+        } catch {
+            print(error)
         }
     }
 }
