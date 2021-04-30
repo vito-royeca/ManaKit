@@ -74,25 +74,23 @@ extension Maintainer {
         }
     }
     
-    func createStorePromise(name: String, connection: Connection) -> Promise<Void> {
+    func createStorePromise(name: String) -> Promise<Void> {
         let nameSection = self.sectionFor(name: name) ?? "NULL"
         
         let query = "SELECT createOrUpdateStore($1,$2)"
         let parameters = [name,
                           nameSection]
         return createPromise(with: query,
-                             parameters: parameters,
-                             connection: connection)
+                             parameters: parameters)
     }
     
-    func fetchTcgPlayerCardPricing(groupIds: [Int32], connection: Connection) -> Promise<[()->Promise<Void>]> {
+    func fetchTcgPlayerCardPricing(groupIds: [Int32]) -> Promise<[()->Promise<Void>]> {
         return Promise { seal in
             var array = [Promise<[()->Promise<Void>]>]()
             var promises = [()->Promise<Void>]()
             
             for groupId in groupIds {
-                array.append(fetchCardPricingBy(groupId: groupId,
-                                                connection: connection))
+                array.append(fetchCardPricingBy(groupId: groupId))
             }
             
             firstly {
@@ -108,7 +106,7 @@ extension Maintainer {
         }
     }
     
-    func fetchCardPricingBy(groupId: Int32, connection: Connection) -> Promise<[()->Promise<Void>]> {
+    func fetchCardPricingBy(groupId: Int32) -> Promise<[()->Promise<Void>]> {
         return Promise { seal in
             guard let urlString = "https://api.tcgplayer.com/\(ManaKit.Constants.TcgPlayerApiVersion)/pricing/group/\(groupId)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                 let url = URL(string: urlString) else {
@@ -133,8 +131,7 @@ extension Maintainer {
                 for result in results {
                     
                     promises.append({
-                        return self.createCardPricingPromise(price: result,
-                                                             connection: connection)
+                        return self.createCardPricingPromise(price: result)
                         
                     })
                 }
@@ -147,7 +144,7 @@ extension Maintainer {
         }
     }
     
-    func createCardPricingPromise(price: [String: Any], connection: Connection) -> Promise<Void> {
+    func createCardPricingPromise(price: [String: Any]) -> Promise<Void> {
         let low = price["lowPrice"] as? Double ?? 0.0
         let median = price["midPrice"] as? Double ?? 0.0
         let high = price["highPrice"] as? Double ?? 0.0
@@ -170,7 +167,6 @@ extension Maintainer {
             ] as [Any]
         
         return createPromise(with: query,
-                             parameters: parameters,
-                             connection: connection)
+                             parameters: parameters)
     }
 }

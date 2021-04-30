@@ -13,7 +13,7 @@ import PostgresClientKit
 import PromiseKit
 
 extension Maintainer {
-    func createSetBlockPromise(blockCode: String, block: String, connection: Connection) -> Promise<Void> {
+    func createSetBlockPromise(blockCode: String, block: String) -> Promise<Void> {
         let nameSection = self.sectionFor(name: block) ?? "NULL"
         
         let query = "SELECT createOrUpdateSetBlock($1,$2,$3)"
@@ -21,11 +21,10 @@ extension Maintainer {
                           block,
                           nameSection]
         return createPromise(with: query,
-                             parameters: parameters,
-                             connection: connection)
+                             parameters: parameters)
     }
 
-    func createSetTypePromise(setType: String, connection: Connection) -> Promise<Void> {
+    func createSetTypePromise(setType: String) -> Promise<Void> {
         let capName = capitalize(string: self.displayFor(name: setType))
         let nameSection = self.sectionFor(name: setType) ?? "NULL"
         
@@ -33,11 +32,10 @@ extension Maintainer {
         let parameters = [capName,
                           nameSection]
         return createPromise(with: query,
-                             parameters: parameters,
-                             connection: connection)
+                             parameters: parameters)
     }
     
-    func createSetPromise(dict: [String: Any], connection: Connection) -> Promise<Void> {
+    func createSetPromise(dict: [String: Any]) -> Promise<Void> {
         let cardCount = dict["card_count"] as? Int ?? Int(0)
         let code = dict["code"] as? String ?? "NULL"
         let isFoilOnly = dict["foil_only"] as? Bool ?? false
@@ -80,11 +78,10 @@ extension Maintainer {
                           setTypeCap,
                           setParent] as [Any]
         return createPromise(with: query,
-                             parameters: parameters,
-                             connection: connection)
+                             parameters: parameters)
     }
     
-    func createKeyrunePromises(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
+    func createKeyrunePromises(array: [[String: Any]]) -> [()->Promise<Void>] {
         let document = keyruneCodes()
         var keyrunes = [String: [String]]()
         
@@ -106,8 +103,7 @@ extension Maintainer {
             return {
                 return self.createKeyruneCodePromise(code: setCode,
                                                      keyruneUnicode: array.first ?? "NULL" ,
-                                                     keyruneClass: array.last ?? "NULL",
-                                                     connection: connection)
+                                                     keyruneClass: array.last ?? "NULL")
             }
         }
         
@@ -116,8 +112,7 @@ extension Maintainer {
             return {
                 return self.createKeyruneCodePromise(code: setCode,
                                                      keyruneUnicode: array.first ?? "NULL" ,
-                                                     keyruneClass: array.last ?? "NULL",
-                                                     connection: connection)
+                                                     keyruneClass: array.last ?? "NULL")
             }
         })
         
@@ -339,13 +334,12 @@ extension Maintainer {
         return keyruneCodes
     }
     
-    private func createKeyruneCodePromise(code: String, keyruneUnicode: String, keyruneClass: String, connection: Connection) -> Promise<Void> {
+    private func createKeyruneCodePromise(code: String, keyruneUnicode: String, keyruneClass: String) -> Promise<Void> {
         let query = "SELECT updateSetKeyrune($1,$2,$3)"
         let parameters = [code,
                           keyruneUnicode,
                           keyruneClass]
         return createPromise(with: query,
-                             parameters: parameters,
-                             connection: connection)
+                             parameters: parameters)
     }
 }

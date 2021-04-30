@@ -12,7 +12,7 @@ import PostgresClientKit
 import PromiseKit
 
 extension Maintainer {
-    func createRulingPromise(dict: [String: Any], connection: Connection) -> Promise<Void> {
+    func createRulingPromise(dict: [String: Any]) -> Promise<Void> {
         let oracleId = dict["oracle_id"] as? String ?? "NULL"
         let text = dict["comment"] as? String ?? "NULL"
         let datePublished = dict["published_at"] as? String ?? "NULL"
@@ -22,14 +22,12 @@ extension Maintainer {
                           text,
                           datePublished]
         return createPromise(with: query,
-                             parameters: parameters,
-                             connection: connection)
+                             parameters: parameters)
     }
     
-    func createDeleteRulingsPromise(connection: Connection) -> Promise<Void> {
+    func createDeleteRulingsPromise() -> Promise<Void> {
         let query = "DELETE FROM cmruling"
         return createPromise(with: query,
-                             parameters: nil,
-                             connection: connection)
+                             parameters: nil)
     }
 }

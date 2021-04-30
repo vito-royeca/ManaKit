@@ -12,7 +12,7 @@ import PostgresClientKit
 import PromiseKit
 
 extension Maintainer {
-    func createArtistPromise(artist: String, connection: Connection) -> Promise<Void> {
+    func createArtistPromise(artist: String) -> Promise<Void> {
         let names = artist.components(separatedBy: " ")
         var firstName = ""
         var lastName = ""
@@ -43,11 +43,10 @@ extension Maintainer {
                           lastName,
                           nameSection]
         return createPromise(with: query,
-                             parameters: parameters,
-                             connection: connection)
+                             parameters: parameters)
     }
     
-    func createRarityPromise(rarity: String, connection: Connection) -> Promise<Void> {
+    func createRarityPromise(rarity: String) -> Promise<Void> {
         let capName = capitalize(string: displayFor(name: rarity))
         let nameSection = sectionFor(name: rarity) ?? "NULL"
         
@@ -55,11 +54,10 @@ extension Maintainer {
         let parameters = [capName,
                           nameSection]
         return createPromise(with: query,
-                             parameters: parameters,
-                             connection: connection)
+                             parameters: parameters)
     }
     
-    func createLanguagePromise(code: String, displayCode: String, name: String, connection: Connection) -> Promise<Void> {
+    func createLanguagePromise(code: String, displayCode: String, name: String) -> Promise<Void> {
         let nameSection = sectionFor(name: name) ?? "NULL"
         
         let query = "SELECT createOrUpdateLanguage($1,$2,$3,$4)"
@@ -68,11 +66,10 @@ extension Maintainer {
                           name,
                           nameSection]
         return createPromise(with: query,
-                             parameters: parameters,
-                             connection: connection)
+                             parameters: parameters)
     }
     
-    func createLayoutPromise(name: String, description_: String, connection: Connection) -> Promise<Void> {
+    func createLayoutPromise(name: String, description_: String) -> Promise<Void> {
         let capName = capitalize(string: displayFor(name: name))
         let nameSection = sectionFor(name: name) ?? "NULL"
         
@@ -81,11 +78,10 @@ extension Maintainer {
                           nameSection,
                           description_]
         return createPromise(with: query,
-                             parameters: parameters,
-                             connection: connection)
+                             parameters: parameters)
     }
     
-    func createWatermarkPromise(name: String, connection: Connection) -> Promise<Void> {
+    func createWatermarkPromise(name: String) -> Promise<Void> {
         let capName = capitalize(string: displayFor(name: name))
         let nameSection = sectionFor(name: name) ?? "NULL"
         
@@ -93,11 +89,10 @@ extension Maintainer {
         let parameters = [capName,
                           nameSection]
         return createPromise(with: query,
-                             parameters: parameters,
-                             connection: connection)
+                             parameters: parameters)
     }
     
-    func createFramePromise(name: String, description_: String, connection: Connection) -> Promise<Void> {
+    func createFramePromise(name: String, description_: String) -> Promise<Void> {
         let capName = capitalize(string: displayFor(name: name))
         let nameSection = sectionFor(name: name) ?? "NULL"
         
@@ -106,11 +101,10 @@ extension Maintainer {
                           nameSection,
                           description_]
         return createPromise(with: query,
-                             parameters: parameters,
-                             connection: connection)
+                             parameters: parameters)
     }
     
-    func createFrameEffectPromise(id: String, name: String, description_: String, connection: Connection) -> Promise<Void> {
+    func createFrameEffectPromise(id: String, name: String, description_: String) -> Promise<Void> {
         let nameSection = sectionFor(name: name) ?? "NULL"
         
         let query = "SELECT createOrUpdateFrameEffect($1,$2,$3,$4)"
@@ -119,11 +113,10 @@ extension Maintainer {
                           nameSection,
                           description_]
         return createPromise(with: query,
-                             parameters: parameters,
-                             connection: connection)
+                             parameters: parameters)
     }
     
-    func createColorPromise(symbol: String, name: String, isManaColor: Bool, connection: Connection) -> Promise<Void> {
+    func createColorPromise(symbol: String, name: String, isManaColor: Bool) -> Promise<Void> {
         let nameSection = sectionFor(name: name) ?? "NULL"
         
         let query = "SELECT createOrUpdateColor($1,$2,$3,$4)"
@@ -132,11 +125,10 @@ extension Maintainer {
                           nameSection,
                           isManaColor] as [Any]
         return createPromise(with: query,
-                             parameters: parameters,
-                             connection: connection)
+                             parameters: parameters)
     }
     
-    func createFormatPromise(name: String, connection: Connection) -> Promise<Void> {
+    func createFormatPromise(name: String) -> Promise<Void> {
         let capName = capitalize(string: displayFor(name: name))
         let nameSection = sectionFor(name: name) ?? "NULL"
         
@@ -144,11 +136,10 @@ extension Maintainer {
         let parameters = [capName,
                           nameSection]
         return createPromise(with: query,
-                             parameters: parameters,
-                             connection: connection)
+                             parameters: parameters)
     }
     
-    func createLegalityPromise(name: String, connection: Connection) -> Promise<Void> {
+    func createLegalityPromise(name: String) -> Promise<Void> {
         let capName = capitalize(string: displayFor(name: name))
         let nameSection = sectionFor(name: name) ?? "NULL"
         
@@ -156,11 +147,10 @@ extension Maintainer {
         let parameters = [capName,
                           nameSection]
         return createPromise(with: query,
-                             parameters: parameters,
-                             connection: connection)
+                             parameters: parameters)
     }
     
-    func createCardTypePromise(name: String, parent: String, connection: Connection) -> Promise<Void> {
+    func createCardTypePromise(name: String, parent: String) -> Promise<Void> {
         let nameSection = sectionFor(name: name) ?? "NULL"
         
         let query = "SELECT createOrUpdateCardType($1,$2,$3)"
@@ -168,11 +158,10 @@ extension Maintainer {
                           nameSection,
                           parent]
         return createPromise(with: query,
-                             parameters: parameters,
-                             connection: connection)
+                             parameters: parameters)
     }
     
-    func createComponentPromise(name: String, connection: Connection) -> Promise<Void> {
+    func createComponentPromise(name: String) -> Promise<Void> {
         let capName = capitalize(string: displayFor(name: name))
         let nameSection = sectionFor(name: name) ?? "NULL"
         
@@ -180,34 +169,30 @@ extension Maintainer {
         let parameters = [capName,
                           nameSection]
         return createPromise(with: query,
-                             parameters: parameters,
-                             connection: connection)
+                             parameters: parameters)
     }
     
-    func createDeleteFacesPromise(connection: Connection) -> Promise<Void> {
+    func createDeleteFacesPromise() -> Promise<Void> {
         let query = "DELETE FROM cmcard_face"
         return createPromise(with: query,
-                             parameters: nil,
-                             connection: connection)
+                             parameters: nil)
     }
     
-    func createFacePromise(card: String, cardFace: String, connection: Connection) -> Promise<Void> {
+    func createFacePromise(card: String, cardFace: String) -> Promise<Void> {
         let query = "SELECT createOrUpdateCardFaces($1,$2)"
         let parameters = [card,
                           cardFace]
         return createPromise(with: query,
-                             parameters: parameters,
-                             connection: connection)
+                             parameters: parameters)
     }
     
-    func createDeletePartsPromise(connection: Connection) -> Promise<Void> {
+    func createDeletePartsPromise() -> Promise<Void> {
         let query = "DELETE FROM cmcard_component_part"
         return createPromise(with: query,
-                             parameters: nil,
-                             connection: connection)
+                             parameters: nil)
     }
     
-    func createPartPromise(card: String, component: String, cardPart: String, connection: Connection) -> Promise<Void> {
+    func createPartPromise(card: String, component: String, cardPart: String) -> Promise<Void> {
         let capName = capitalize(string: displayFor(name: component))
         
         let query = "SELECT createOrUpdateCardParts($1,$2,$3)"
@@ -215,29 +200,25 @@ extension Maintainer {
                           capName,
                           cardPart]
         return createPromise(with: query,
-                             parameters: parameters,
-                             connection: connection)
+                             parameters: parameters)
     }
 
     func createOtherLanguagesPromise() -> Promise<Void> {
         return createPromise(with: "select createOrUpdateCardOtherLanguages()",
-                         parameters: nil,
-                         connection: nil)
+                         parameters: nil)
     }
 
     func createOtherPrintingsPromise() -> Promise<Void> {
         return createPromise(with: "select createOrUpdateCardOtherPrintings()",
-                             parameters: nil,
-                             connection: nil)
+                             parameters: nil)
     }
     
     func createVariationsPromise() -> Promise<Void> {
         return createPromise(with: "select createOrUpdateCardVariations()",
-                             parameters: nil,
-                             connection: nil)
+                             parameters: nil)
     }
     
-    func createCardPromise(dict: [String: Any], connection: Connection) -> Promise<Void> {
+    func createCardPromise(dict: [String: Any]) -> Promise<Void> {
         let collectorNumber = dict["collector_number"] as? String ?? "NULL"
         let cmc = dict["cmc"] as? Double ?? Double(0)
         let flavorText = dict["flavor_text"] as? String ?? "NULL"
@@ -413,8 +394,7 @@ extension Maintainer {
                           cardtypeSupertypes,
                           faceOrder] as [Any]
         return createPromise(with: query,
-                             parameters: parameters,
-                             connection: connection)
+                             parameters: parameters)
     }
     
 //    func extractImageUrls(set: String, language: String, id: String, imageUrisDict: [String: String]) -> [String: String] {

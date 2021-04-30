@@ -27,7 +27,7 @@ extension Maintainer {
         return array
     }
 
-    func filterArtists(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
+    func filterArtists(array: [[String: Any]]) -> [()->Promise<Void>] {
         var filteredData = Set<String>()
         
         for dict in array {
@@ -37,15 +37,14 @@ extension Maintainer {
         }
         let promises: [()->Promise<Void>] = filteredData.map { artist in
             return {
-                return self.createArtistPromise(artist: artist,
-                                                connection: connection)
+                return self.createArtistPromise(artist: artist)
             }
         }
         
         return promises
     }
     
-    func filterRarities(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
+    func filterRarities(array: [[String: Any]]) -> [()->Promise<Void>] {
         var filteredData = Set<String>()
         
         for dict in array {
@@ -55,15 +54,14 @@ extension Maintainer {
         }
         let promises: [()->Promise<Void>] = filteredData.map { rarity in
             return {
-                return self.createRarityPromise(rarity: rarity,
-                                                connection: connection)
+                return self.createRarityPromise(rarity: rarity)
             }
         }
         
         return promises
     }
     
-    func filterLanguages(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
+    func filterLanguages(array: [[String: Any]]) -> [()->Promise<Void>] {
         var filteredData = [[String: String]]()
         
         for dict in array {
@@ -143,15 +141,14 @@ extension Maintainer {
             return {
                 return self.createLanguagePromise(code: dict["code"] ?? "NULL",
                                                   displayCode: dict["display_code"] ?? "NULL",
-                                                  name: dict["name"] ?? "NULL",
-                                                  connection: connection)
+                                                  name: dict["name"] ?? "NULL")
             }
         }
         
         return promises
     }
     
-    func filterWatermarks(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
+    func filterWatermarks(array: [[String: Any]]) -> [()->Promise<Void>] {
         var filteredData = Set<String>()
         
         for dict in array {
@@ -161,15 +158,14 @@ extension Maintainer {
         }
         let promises: [()->Promise<Void>] = filteredData.map { watermark in
             return {
-                return self.createWatermarkPromise(name: watermark,
-                                                   connection: connection)
+                return self.createWatermarkPromise(name: watermark)
             }
         }
         
         return promises
     }
 
-    func filterLayouts(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
+    func filterLayouts(array: [[String: Any]]) -> [()->Promise<Void>] {
         var filteredData = [[String: String]]()
         
         for dict in array {
@@ -235,15 +231,14 @@ extension Maintainer {
         let promises: [()->Promise<Void>] = filteredData.map { layout in
             return {
                 return self.createLayoutPromise(name: layout["name"] ?? "NULL",
-                                                description_: layout["description_"] ?? "NULL",
-                                                connection: connection)
+                                                description_: layout["description_"] ?? "NULL")
             }
         }
         
         return promises
     }
     
-    func filterFrames(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
+    func filterFrames(array: [[String: Any]]) -> [()->Promise<Void>] {
         var filteredData = [[String: String]]()
         
         for dict in array {
@@ -283,15 +278,14 @@ extension Maintainer {
         let promises: [()->Promise<Void>] = filteredData.map { layout in
             return {
                 return self.createFramePromise(name: layout["name"] ?? "NULL",
-                                               description_: layout["description_"] ?? "NULL",
-                                               connection: connection)
+                                               description_: layout["description_"] ?? "NULL")
             }
         }
         
         return promises
     }
     
-    func filterFrameEffects(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
+    func filterFrameEffects(array: [[String: Any]]) -> [()->Promise<Void>] {
         var filteredData = [[String: String]]()
         
         for dict in array {
@@ -371,15 +365,14 @@ extension Maintainer {
             return {
                 return self.createFrameEffectPromise(id: layout["id"] ?? "NULL",
                                                      name: layout["name"] ?? "NULL",
-                                                     description_: layout["description_"] ?? "NULL",
-                                                     connection: connection)
+                                                     description_: layout["description_"] ?? "NULL")
             }
         }
         
         return promises
     }
     
-    func filterColors(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
+    func filterColors(array: [[String: Any]]) -> [()->Promise<Void>] {
         var filteredData = [[String: Any]]()
         
         for dict in array {
@@ -424,15 +417,14 @@ extension Maintainer {
             return {
                 return self.createColorPromise(symbol: color["symbol"] as? String ?? "NULL",
                                                name: color["name"] as? String ?? "NULL",
-                                               isManaColor: color["is_mana_color"] as? Bool ?? false,
-                                               connection: connection)
+                                               isManaColor: color["is_mana_color"] as? Bool ?? false)
             }
         }
         
         return promises
     }
     
-    func filterFormats(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
+    func filterFormats(array: [[String: Any]]) -> [()->Promise<Void>] {
         var filteredData = Set<String>()
         
         for dict in array {
@@ -444,15 +436,14 @@ extension Maintainer {
         }
         let promises: [()->Promise<Void>] = filteredData.map { format in
             return {
-                return self.createFormatPromise(name: format,
-                                                connection: connection)
+                return self.createFormatPromise(name: format)
             }
         }
         
         return promises
     }
     
-    func filterLegalities(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
+    func filterLegalities(array: [[String: Any]]) -> [()->Promise<Void>] {
         var filteredData = Set<String>()
         
         for dict in array {
@@ -464,15 +455,14 @@ extension Maintainer {
         }
         let promises: [()->Promise<Void>] = filteredData.map { legality in
             return {
-                return self.createLegalityPromise(name: legality,
-                                                  connection: connection)
+                return self.createLegalityPromise(name: legality)
             }
         }
         
         return promises
     }
     
-    func filterTypes(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
+    func filterTypes(array: [[String: Any]]) -> [()->Promise<Void>] {
         var filteredData = [[String: String]]()
         
         for dict in array {
@@ -506,15 +496,14 @@ extension Maintainer {
         let promises: [()->Promise<Void>] = filteredData.map { type in
             return {
                 return self.createCardTypePromise(name: type["name"] ?? "NULL",
-                                                  parent: type["parent"] ?? "NULL",
-                                                  connection: connection)
+                                                  parent: type["parent"] ?? "NULL")
             }
         }
         
         return promises
     }
     
-    func filterComponents(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
+    func filterComponents(array: [[String: Any]]) -> [()->Promise<Void>] {
         var filteredData = Set<String>()
         
         for dict in array {
@@ -529,15 +518,14 @@ extension Maintainer {
         
         let promises: [()->Promise<Void>] = filteredData.map { component in
             return {
-                return self.createComponentPromise(name: component,
-                                                   connection: connection)
+                return self.createComponentPromise(name: component)
             }
         }
         
         return promises
     }
     
-    func filterFaces(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
+    func filterFaces(array: [[String: Any]]) -> [()->Promise<Void>] {
         var promises = [()->Promise<Void>]()
         var facesArray = [[String: Any]]()
         var filteredData = [[String: Any]]()
@@ -569,36 +557,34 @@ extension Maintainer {
             }
         }
         
-        promises.append(contentsOf: filterArtists(array: facesArray, connection: connection))
-        promises.append(contentsOf: filterRarities(array: facesArray, connection: connection))
-        promises.append(contentsOf: filterLanguages(array: facesArray, connection: connection))
-        promises.append(contentsOf: filterWatermarks(array: facesArray, connection: connection))
-        promises.append(contentsOf: filterLayouts(array: facesArray, connection: connection))
-        promises.append(contentsOf: filterFrames(array: facesArray, connection: connection))
-        promises.append(contentsOf: filterFrameEffects(array: facesArray, connection: connection))
-        promises.append(contentsOf: filterColors(array: facesArray, connection: connection))
-        promises.append(contentsOf: filterFormats(array: facesArray, connection: connection))
-        promises.append(contentsOf: filterLegalities(array: facesArray, connection: connection))
-        promises.append(contentsOf: filterTypes(array: facesArray, connection: connection))
-        promises.append(contentsOf: filterComponents(array: facesArray, connection: connection))
+        promises.append(contentsOf: filterArtists(array: facesArray))
+        promises.append(contentsOf: filterRarities(array: facesArray))
+        promises.append(contentsOf: filterLanguages(array: facesArray))
+        promises.append(contentsOf: filterWatermarks(array: facesArray))
+        promises.append(contentsOf: filterLayouts(array: facesArray))
+        promises.append(contentsOf: filterFrames(array: facesArray))
+        promises.append(contentsOf: filterFrameEffects(array: facesArray))
+        promises.append(contentsOf: filterColors(array: facesArray))
+        promises.append(contentsOf: filterFormats(array: facesArray))
+        promises.append(contentsOf: filterLegalities(array: facesArray))
+        promises.append(contentsOf: filterTypes(array: facesArray))
+        promises.append(contentsOf: filterComponents(array: facesArray))
         promises.append(contentsOf: filteredData.map { dict in
             return {
-                return self.createCardPromise(dict: dict,
-                                              connection: connection)
+                return self.createCardPromise(dict: dict)
             }
         })
         promises.append(contentsOf: cardFaceData.map { face in
             return {
                 return self.createFacePromise(card: face["cmcard"] ?? "NULL",
-                                              cardFace: face["cmcard_face"] ?? "NULL",
-                                              connection: connection)
+                                              cardFace: face["cmcard_face"] ?? "NULL")
             }
         })
         
         return promises
     }
     
-    func filterParts(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
+    func filterParts(array: [[String: Any]]) -> [()->Promise<Void>] {
         var promises = [()->Promise<Void>]()
         var cardPartData = [[String: String]]()
         
@@ -623,8 +609,7 @@ extension Maintainer {
             return {
                 return self.createPartPromise(card: part["cmcard"] ?? "NULL",
                                               component: part["cmcomponent"] ?? "NULL",
-                                              cardPart: part["cmcard_part"] ?? "NULL",
-                                              connection: connection)
+                                              cardPart: part["cmcard_part"] ?? "NULL")
             }
         })
         

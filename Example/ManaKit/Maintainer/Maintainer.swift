@@ -78,6 +78,16 @@ class Maintainer: NSObject {
         }
     }
     
+    var _connection: Connection?
+    var connection: Connection {
+        get {
+            if _connection == nil {
+                _connection = self.createConnection()
+            }
+            return _connection!
+        }
+    }
+    
     // MARK: - Database methods
     func checkServerInfo() {
         let viewModel = ServerInfoViewModel()
@@ -148,9 +158,9 @@ class Maintainer: NSObject {
             self.fetchData(from: self.cardsRemotePath, saveTo: "\(cachePath)/\(self.cardsRemotePath.components(separatedBy: "/").last ?? "")")
         }.then {
             self.fetchData(from: self.rulingsRemotePath, saveTo: "\(cachePath)/\(self.rulingsRemotePath.components(separatedBy: "/").last ?? "")")
-        }.then {
-            self.fetchCardImages()
         }/*.then {
+            self.fetchCardImages()
+        }*/.then {
             self.createSetsData()
         }.then {
             self.createCardsData()
@@ -164,7 +174,7 @@ class Maintainer: NSObject {
             self.createPricingData()
         }.then {
             self.createScryfallPromise()
-        }*/.done {
+        }.done {
             self.endActivity()
         }.catch { error in
             print(error)
@@ -180,16 +190,14 @@ class Maintainer: NSObject {
     
     private func createSetsData() -> Promise<Void> {
         return Promise { seal in
-            let connection = createConnection()
             var promises = [()->Promise<Void>]()
             
-            promises.append(contentsOf: self.filterSetBlocks(array: setsArray, connection: connection))
-            promises.append(contentsOf: self.filterSetTypes(array: setsArray, connection: connection))
-            promises.append(contentsOf: self.filterSets(array: setsArray, connection: connection))
-            promises.append(contentsOf: self.createKeyrunePromises(array: setsArray, connection: connection))
+            promises.append(contentsOf: self.filterSetBlocks(array: setsArray))
+            promises.append(contentsOf: self.filterSetTypes(array: setsArray))
+            promises.append(contentsOf: self.filterSets(array: setsArray))
+            promises.append(contentsOf: self.createKeyrunePromises(array: setsArray))
 
             let completion = {
-                connection.close()
                 seal.fulfill(())
             }
             self.execInSequence(label: "createSetsData",
@@ -200,44 +208,42 @@ class Maintainer: NSObject {
     
     private func createCardsData() -> Promise<Void> {
         return Promise { seal in
-            let connection = createConnection()
             var promises = [()->Promise<Void>]()
             
             // cards
-            promises.append(contentsOf: self.filterArtists(array: cardsArray, connection: connection))
-            promises.append(contentsOf: self.filterRarities(array: cardsArray, connection: connection))
-            promises.append(contentsOf: self.filterLanguages(array: cardsArray, connection: connection))
-            promises.append(contentsOf: self.filterWatermarks(array: cardsArray, connection: connection))
-            promises.append(contentsOf: self.filterLayouts(array: cardsArray, connection: connection))
-            promises.append(contentsOf: self.filterFrames(array: cardsArray, connection: connection))
-            promises.append(contentsOf: self.filterFrameEffects(array: cardsArray, connection: connection))
-            promises.append(contentsOf: self.filterColors(array: cardsArray, connection: connection))
-            promises.append(contentsOf: self.filterFormats(array: cardsArray, connection: connection))
-            promises.append(contentsOf: self.filterLegalities(array: cardsArray, connection: connection))
-            promises.append(contentsOf: self.filterTypes(array: cardsArray, connection: connection))
-            promises.append(contentsOf: self.filterComponents(array: cardsArray, connection: connection))
+            promises.append(contentsOf: self.filterArtists(array: cardsArray))
+            promises.append(contentsOf: self.filterRarities(array: cardsArray))
+            promises.append(contentsOf: self.filterLanguages(array: cardsArray))
+            promises.append(contentsOf: self.filterWatermarks(array: cardsArray))
+            promises.append(contentsOf: self.filterLayouts(array: cardsArray))
+            promises.append(contentsOf: self.filterFrames(array: cardsArray))
+            promises.append(contentsOf: self.filterFrameEffects(array: cardsArray))
+            promises.append(contentsOf: self.filterColors(array: cardsArray))
+            promises.append(contentsOf: self.filterFormats(array: cardsArray))
+            promises.append(contentsOf: self.filterLegalities(array: cardsArray))
+            promises.append(contentsOf: self.filterTypes(array: cardsArray))
+            promises.append(contentsOf: self.filterComponents(array: cardsArray))
             promises.append(contentsOf: cardsArray.map { dict in
                 return {
-                    return self.createCardPromise(dict: dict, connection: connection)
+                    return self.createCardPromise(dict: dict)
                 }
             })
 
             // parts
             promises.append({
-                return self.createDeletePartsPromise(connection: connection)
+                return self.createDeletePartsPromise()
 
             })
-            promises.append(contentsOf: self.filterParts(array: cardsArray, connection: connection))
+            promises.append(contentsOf: self.filterParts(array: cardsArray))
 
             // faces
             promises.append({
-                return self.createDeleteFacesPromise(connection: connection)
+                return self.createDeleteFacesPromise()
 
             })
-            promises.append(contentsOf: self.filterFaces(array: cardsArray, connection: connection))
+            promises.append(contentsOf: self.filterFaces(array: cardsArray))
 
             let completion = {
-                connection.close()
                 seal.fulfill(())
             }
             self.execInSequence(label: "createCardsData",
@@ -248,21 +254,19 @@ class Maintainer: NSObject {
     
     private func createRulingsData() -> Promise<Void> {
         return Promise { seal in
-            let connection = createConnection()
             var promises = [()->Promise<Void>]()
             
             promises.append({
-                return self.createDeleteRulingsPromise(connection: connection)
+                return self.createDeleteRulingsPromise()
 
             })
             promises.append(contentsOf: rulingsArray.map { dict in
                 return {
-                    return self.createRulingPromise(dict: dict, connection: connection)
+                    return self.createRulingPromise(dict: dict)
                 }
             })
 
             let completion = {
-                connection.close()
                 seal.fulfill(())
             }
             self.execInSequence(label: "createRulingsData",
@@ -273,17 +277,15 @@ class Maintainer: NSObject {
     
     private func createRulesData() -> Promise<Void> {
         return Promise { seal in
-            let connection = createConnection()
             var promises = [()->Promise<Void>]()
             
             promises.append({
-                return self.createDeleteRulesPromise(connection: connection)
+                return self.createDeleteRulesPromise()
 
             })
-            promises.append(contentsOf: self.filterRules(lines: rulesArray, connection: connection))
+            promises.append(contentsOf: self.filterRules(lines: rulesArray))
 
             let completion = {
-                connection.close()
                 seal.fulfill(())
             }
             self.execInSequence(label: "createRulesData",
@@ -313,21 +315,16 @@ class Maintainer: NSObject {
     
     private func createPricingData() -> Promise<Void> {
         return Promise { seal in
-            let connection = createConnection()
-            
             firstly {
-                self.createStorePromise(name: self.storeName,
-                                        connection: connection)
-                
+                self.createStorePromise(name: self.storeName)
             }.then {
                 self.getTcgPlayerToken()
             }.then {
                 self.fetchSets()
             }.then { groupIds in
-                self.fetchTcgPlayerCardPricing(groupIds: groupIds, connection: connection)
+                self.fetchTcgPlayerCardPricing(groupIds: groupIds)
             }.done { promises in
                 let completion = {
-                    connection.close()
                     seal.fulfill(())
                 }
                 self.execInSequence(label: "createPricingData",
@@ -401,27 +398,15 @@ class Maintainer: NSObject {
         }
     }
     
-    func createPromise(with query: String, parameters: [Any]?, connection: Connection?) -> Promise<Void> {
+    func createPromise(with query: String, parameters: [Any]?) -> Promise<Void> {
         return Promise { seal in
-            if let connection = connection {
-                execPG(query: query,
-                       parameters: parameters,
-                       connection: connection)
-                seal.fulfill(())
-                
-            } else {
-                let conn = createConnection()
-                
-                execPG(query: query,
-                       parameters: parameters,
-                       connection: conn)
-                conn.close()
-                seal.fulfill(())
-            }
+            execPG(query: query,
+                   parameters: parameters)
+            seal.fulfill(())
         }
     }
     
-    private func execPG(query: String, parameters: [Any]?, connection: Connection) {
+    private func execPG(query: String, parameters: [Any]?) {
         do {
             let statement = try connection.prepareStatement(text: query)
             

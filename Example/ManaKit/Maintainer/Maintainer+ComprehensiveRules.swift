@@ -25,7 +25,7 @@ extension Maintainer {
         return lines
     }
     
-    func filterRules(lines: [String], connection: Connection) -> [()->Promise<Void>] {
+    func filterRules(lines: [String]) -> [()->Promise<Void>] {
         var rules = [[String: Any]]()
         var id = 0
         
@@ -90,22 +90,20 @@ extension Maintainer {
         
         let promises: [()->Promise<Void>] = rules.map { dict in
             return {
-                return self.createRulePromise(dict: dict,
-                                              connection: connection)
+                return self.createRulePromise(dict: dict)
             }
         }
         
         return promises
     }
     
-    func createDeleteRulesPromise(connection: Connection) -> Promise<Void> {
+    func createDeleteRulesPromise() -> Promise<Void> {
         let query = "DELETE FROM cmrule"
         return createPromise(with: query,
-                             parameters: nil,
-                             connection: connection)
+                             parameters: nil)
     }
     
-    func createRulePromise(dict: [String: Any], connection: Connection) -> Promise<Void> {
+    func createRulePromise(dict: [String: Any]) -> Promise<Void> {
         let term = dict["term"] as? String ?? "NULL"
         let termSection = dict["termSection"] as? String ?? "NULL"
         let definition = dict["definition"] as? String ?? "NULL"
@@ -121,8 +119,7 @@ extension Maintainer {
                           id] as [Any]
         
         return createPromise(with: query,
-                             parameters: parameters,
-                             connection: connection)
+                             parameters: parameters)
     }
     
     private func parseData(fromLines lines: [String], startLine: String, endLine: String, includeStartLine: Bool, includeEndLine: Bool) -> String? {

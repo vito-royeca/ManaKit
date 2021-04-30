@@ -15,7 +15,6 @@ extension Maintainer {
         let parameters = [ManaKit.Constants.ScryfallDate]
         
         return createPromise(with: query,
-                             parameters: parameters,
-                             connection: nil)
+                             parameters: parameters)
     }
 }

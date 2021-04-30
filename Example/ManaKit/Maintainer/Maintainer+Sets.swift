@@ -30,7 +30,7 @@ extension Maintainer {
         return array
     }
 
-    func filterSetBlocks(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
+    func filterSetBlocks(array: [[String: Any]]) -> [()->Promise<Void>] {
         var filteredData = [String: String]()
         
         for dict in array {
@@ -42,14 +42,13 @@ extension Maintainer {
         let promises: [()->Promise<Void>] = filteredData.map { (blockCode, block) in
             return {
                 return self.createSetBlockPromise(blockCode: blockCode,
-                                                  block: block,
-                                                  connection: connection)
+                                                  block: block)
             }
         }
         return promises
     }
     
-    func filterSetTypes(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
+    func filterSetTypes(array: [[String: Any]]) -> [()->Promise<Void>] {
         var filteredData = Set<String>()
         
         for dict in array {
@@ -59,22 +58,20 @@ extension Maintainer {
         }
         let promises: [()->Promise<Void>] = filteredData.map { setType in
             return {
-                return self.createSetTypePromise(setType: setType,
-                                                 connection: connection)
+                return self.createSetTypePromise(setType: setType)
             }
         }
         return promises
     }
     
-    func filterSets(array: [[String: Any]], connection: Connection) -> [()->Promise<Void>] {
+    func filterSets(array: [[String: Any]]) -> [()->Promise<Void>] {
         let filteredData = array.sorted(by: {
             $0["parent_set_code"] as? String ?? "" < $1["parent_set_code"] as? String ?? ""
         })
         
         let promises: [()->Promise<Void>] = filteredData.map { dict in
             return {
-                return self.createSetPromise(dict: dict,
-                                             connection: connection)
+                return self.createSetPromise(dict: dict)
             }
         }
         
