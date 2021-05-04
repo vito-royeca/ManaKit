@@ -10,7 +10,7 @@ import SwiftUI
 import ManaKit
 
 struct SetsView: View {
-    @ObservedObject var viewModel = SetsViewModel()
+//    @ObservedObject var viewModel = SetsViewModel()
     
     var body: some View {
         NavigationView {
@@ -20,7 +20,7 @@ struct SetsView: View {
             Text("Sets")
             .navigationBarTitle("Sets")
             .onAppear {
-                self.viewModel.fetchRemoteData()
+//                self.viewModel.fetchRemoteData()
             }
         }
     }

@@ -21,28 +21,26 @@ extension Maintainer {
             var filteredData = [[String: Any]]()
 
             // -- Start Option 1 -- //
-//            for dict in array {
+            for dict in array {
             // -- End Option 1 -- //
             
             // -- Start Option 2 -- //
-            for i in 0 ... array.count-1 {
-                if i < 50000 {
-                    continue
-                }
-                let dict = array[i]
+//            for i in 0 ... array.count-1 {
+//                if i < 50000 {
+//                    continue
+//                }
+//                let dict = array[i]
             // -- End Option 2 -- //
 
                 
                 guard let number = dict["collector_number"] as? String,
-                      let id = dict["id"] as? String,
                       let language = dict["lang"] as? String,
                       let set = dict["set"] as? String else {
                     continue
                 }
                 
                 if let imageUrisDict = dict["image_uris"] as? [String: String] {
-                    let imageUrisDict = createImageUris(id: id,
-                                                        number: number.replacingOccurrences(of: "★", with: "star"),
+                    let imageUrisDict = createImageUris(number: number.replacingOccurrences(of: "★", with: "star"),
                                                         set: set,
                                                         language: language,
                                                         imageUrisDict: imageUrisDict)
@@ -54,8 +52,7 @@ extension Maintainer {
                         let face = faces[i]
                         
                         if let imageUrisDict = face["image_uris"] as? [String: String] {
-                            let faceImageUrisDict = createImageUris(id: id,
-                                                                    number: "\(number.replacingOccurrences(of: "★", with: "star"))_\(i)",
+                            let faceImageUrisDict = createImageUris(number: "\(number.replacingOccurrences(of: "★", with: "star"))_\(i)",
                                                                     set: set,
                                                                     language: language,
                                                                     imageUrisDict: imageUrisDict)
@@ -80,7 +77,7 @@ extension Maintainer {
         }
     }
     
-    func createImageUris(id: String, number: String, set: String, language: String, imageUrisDict: [String: String]) -> [String: Any] {
+    func createImageUris(number: String, set: String, language: String, imageUrisDict: [String: String]) -> [String: Any] {
         var newDict = [String: Any]()
         
         // remove the key (?APIKEY) in the url
@@ -89,7 +86,6 @@ extension Maintainer {
             newImageUris[k] = v.components(separatedBy: "?").first
         }
     
-        newDict["id"] =  id
         newDict["number"] =  number
         newDict["language"] =  language
         newDict["set"] =  set
@@ -103,86 +99,51 @@ extension Maintainer {
             guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
                 fatalError("Malformed cachePath")
             }
-            guard let id = dict["id"] as? String,
-                let number = dict["number"] as? String,
+            guard let number = dict["number"] as? String,
                 let language = dict["language"] as? String,
                 let set = dict["set"] as? String,
                 let imageUris = dict["imageUris"] as? [String: String] else {
                 fatalError("Wrong download keys")
             }
             
-            let imagesPath    = "\(cachePath)/card_images/\(set)/\(language)/\(id)"
-            let imagesPath2   = "\(cachePath)/card_images/\(set)/\(language)/\(number)"
+            let imagesPath   = "\(cachePath)/card_images/\(set)/\(language)/\(number)"
             let downloadPath  = "\(cachePath)/card_downloads/\(set)/\(language)/\(number)"
             var promises = [Promise<Void>]()
             var remoteImageData: Data?
             
             for (k,v) in imageUris {
                 var imageFile = "\(imagesPath)/\(k)"
-                var imageFile2 = "\(imagesPath2)/\(k)"
                 var downloadFile = "\(downloadPath)/\(k)"
                 var willDownload = false
                 
                 if v.lowercased().hasSuffix("png") {
                     imageFile = "\(imageFile).png"
-                    imageFile2 = "\(imageFile2).png"
                     downloadFile = "\(downloadFile).png"
                 } else if v.lowercased().hasSuffix("jpg") {
                     imageFile = "\(imageFile).jpg"
-                    imageFile2 = "\(imageFile2).jpg"
                     downloadFile = "\(downloadFile).jpg"
                 }
                 
-                if FileManager.default.fileExists(atPath: imageFile2) {
-                    continue
-                } else {
-                    if FileManager.default.fileExists(atPath: imageFile) {
-                        if !FileManager.default.fileExists(atPath: downloadFile) {
-                            promises.append(copyImagePromise(sourceFile: imageFile,
-                                                             destinationFile: downloadFile))
-                        }
-                    } else if FileManager.default.fileExists(atPath: downloadFile) {
-                        willDownload = false
-                    } else {
-                        willDownload = true
-                    }
-                    
-                    if willDownload {
-                        if k == "art_crop" || k == "normal" || k == "png" {
-                            if let remoteImageData = remoteImageData {
-                                promises.append(saveImagePromise(imageData: remoteImageData,
-                                                                 destinationFile: downloadFile))
-                            } else {
-                                promises.append(downloadImagePromise(url: v,
-                                                                     destinationFile: downloadFile))
-                            }
-                        }
-                    }
-                }
-                
-                /*
                 if FileManager.default.fileExists(atPath: imageFile) {
-                    print("Exists at: card_images/\(set)/\(language)/\(id)")
-                    do {
-                      // Compare local and remote files
-                      let localImageData = try Data(contentsOf: URL(fileURLWithPath: imageFile))
-                      remoteImageData = try Data(contentsOf: URL(string: v)!)
-                      willDownload = localImageData != remoteImageData
-                    } catch {
-                      print(error)
-                      willDownload = true
-                    }
+//                    do {
+//                      // Compare local and remote files
+//                      let localImageData = try Data(contentsOf: URL(fileURLWithPath: imageFile))
+//                      remoteImageData = try Data(contentsOf: URL(string: v)!)
+//                      willDownload = localImageData != remoteImageData
+//                    } catch {
+//                      print(error)
+//                      willDownload = true
+//                    }
                 } else if FileManager.default.fileExists(atPath: downloadFile) {
-                    print("Exists at: card_downloads/\(set)/\(language)/\(id)")
-                    do {
-                      // Compare local and remote files
-                      let localImageData = try Data(contentsOf: URL(fileURLWithPath: downloadFile))
-                      remoteImageData = try Data(contentsOf: URL(string: v)!)
-                      willDownload = localImageData != remoteImageData
-                    } catch {
-                      print(error)
-                      willDownload = true
-                    }
+//                    do {
+//                      // Compare local and remote files
+//                      let localImageData = try Data(contentsOf: URL(fileURLWithPath: downloadFile))
+//                      remoteImageData = try Data(contentsOf: URL(string: v)!)
+//                      willDownload = localImageData != remoteImageData
+//                    } catch {
+//                      print(error)
+//                      willDownload = true
+//                    }
                 } else {
                     willDownload = true
                 }
@@ -198,7 +159,6 @@ extension Maintainer {
                         }
                     }
                 }
-                */
             }
 
             if promises.isEmpty {

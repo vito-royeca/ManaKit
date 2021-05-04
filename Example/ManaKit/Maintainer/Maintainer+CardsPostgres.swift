@@ -231,6 +231,7 @@ extension Maintainer {
         let isStorySpotlight = dict["story_spotlight"] as? Bool ?? false
         let loyalty = dict["loyalty"] as? String ?? "NULL"
         let manaCost = dict["mana_cost"] as? String ?? "NULL"
+        
         var multiverseIds = "{}"
         if let a = dict["multiverse_ids"] as? [Int],
             !a.isEmpty {
@@ -238,14 +239,17 @@ extension Maintainer {
                 .replacingOccurrences(of: "[", with: "{")
                 .replacingOccurrences(of: "]", with: "}")
         }
+        
         var myNameSection = "NULL"
         if let name = dict["name"] as? String {
             myNameSection = sectionFor(name: name) ?? "NULL"
         }
+        
         var myNumberOrder = Double(0)
         if collectorNumber != "NULL" {
             myNumberOrder = order(of: collectorNumber)
         }
+        
         let name = dict["name"] as? String ?? "NULL"
         let oracleText = dict["oracle_text"] as? String ?? "NULL"
         let power = dict["power"] as? String ?? "NULL"
@@ -275,6 +279,7 @@ extension Maintainer {
         let layout = capitalize(string: displayFor(name: dict["layout"] as? String ?? "NULL"))
         let watermark = capitalize(string: dict["watermark"] as? String ?? "NULL")
         let frame = capitalize(string: dict["frame"] as? String ?? "NULL")
+        
         var frameEffects = "{}"
         if let a = dict["frame_effects"] as? [String],
             !a.isEmpty {
@@ -282,6 +287,7 @@ extension Maintainer {
                 .replacingOccurrences(of: "[", with: "{")
                 .replacingOccurrences(of: "]", with: "}")
         }
+        
         var colors = "{}"
         if let a = dict["colors"] as? [String],
             !a.isEmpty {
@@ -289,6 +295,7 @@ extension Maintainer {
                 .replacingOccurrences(of: "[", with: "{")
                 .replacingOccurrences(of: "]", with: "}")
         }
+        
         var colorIdentities = "{}"
         if let a = dict["color_identity"] as? [String],
             !a.isEmpty {
@@ -296,6 +303,7 @@ extension Maintainer {
                 .replacingOccurrences(of: "[", with: "{")
                 .replacingOccurrences(of: "]", with: "}")
         }
+        
         var colorIndicators = "{}"
         if let a = dict["color_indicator"] as? [String],
             !a.isEmpty {
@@ -303,6 +311,7 @@ extension Maintainer {
                 .replacingOccurrences(of: "[", with: "{")
                 .replacingOccurrences(of: "]", with: "}")
         }
+        
         var legalities = "{}"
         if let legalitiesDict = dict["legalities"] as? [String: String] {
             var newLegalities = [String: String]()
@@ -313,8 +322,10 @@ extension Maintainer {
                 .replacingOccurrences(of: "[", with: "{")
                 .replacingOccurrences(of: "]", with: "}")
         }
+        
         let typeLine = dict["type_line"] as? String ?? "NULL"
         let printedTypeLine = dict["printed_type_line"] as? String ?? "NULL"
+        
         var cardtypeSubtypes = "{}"
         if let tl = dict["type_line"] as? String {
             let subtypes = extractSubtypesFrom(tl)
@@ -322,6 +333,7 @@ extension Maintainer {
                 .replacingOccurrences(of: "[", with: "{")
                 .replacingOccurrences(of: "]", with: "}")
         }
+        
         var cardtypeSupertypes = "{}"
         if let tl = dict["type_line"] as? String {
             let supertypes = extractSupertypesFrom(tl)
@@ -329,7 +341,10 @@ extension Maintainer {
                 .replacingOccurrences(of: "[", with: "{")
                 .replacingOccurrences(of: "]", with: "}")
         }
+        
         let faceOrder = dict["face_order"] as? Int ?? Int(0)
+        let newId = dict["new_id"] as? String ?? "NULL"
+        
         
         // unhandled...
         // border_color
@@ -338,7 +353,7 @@ extension Maintainer {
         // preview.previewed_at
         // preview.source_uri
         // preview.source
-        let query = "SELECT createOrUpdateCard($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32,$33,$34,$35,$36,$37,$38,$39,$40,$41,$42,$43,$44,$45,$46,$47,$48,$49,$50,$51,$52,$53,$54)"
+        let query = "SELECT createOrUpdateCard($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32,$33,$34,$35,$36,$37,$38,$39,$40,$41,$42,$43,$44,$45,$46,$47,$48,$49,$50,$51,$52,$53,$54,$55)"
         let parameters = [collectorNumber,
                           cmc,
                           flavorText,
@@ -392,7 +407,8 @@ extension Maintainer {
                           printedTypeLine,
                           cardtypeSubtypes,
                           cardtypeSupertypes,
-                          faceOrder] as [Any]
+                          faceOrder,
+                          newId] as [Any]
         return createPromise(with: query,
                              parameters: parameters)
     }

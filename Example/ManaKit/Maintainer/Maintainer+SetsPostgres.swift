@@ -135,7 +135,10 @@ extension Maintainer {
         // manual fix
         for dict in array {
             if let code = dict["code"] as? String {
-                if code == "plist" {
+                if code == "j20" ||
+                   code == "j21" {
+                   keyruneCodes[code] = ["e96a", "j20"] // judge academy
+                } else if code == "plist" {
                    keyruneCodes[code] = ["e971", "mb1"] // plist
                 } else if code == "tznr" ||
                    code == "aznr" ||
@@ -158,7 +161,8 @@ extension Maintainer {
                    keyruneCodes[code] = ["e960", "m21"] // m21
                 } else if code == "ha1" ||
                     code == "ha2" ||
-                    code == "ha3" {
+                    code == "ha3" ||
+                    code == "ha4" {
                    keyruneCodes[code] = ["e96b", "ha1"] // historic antology
                 } else if code == "c14" ||
                     code == "oc14" ||
@@ -200,7 +204,8 @@ extension Maintainer {
                     code == "htr18" ||
                     code == "slu" ||
                     code == "plgs" ||
-                    code == "g17" {
+                    code == "g17" ||
+                    code == "pl21" {
                     keyruneCodes[code] = ["e687", "pmei"]  // media insert
                  } else if code == "pal99" {
                     keyruneCodes[code] = ["e622", "usg"]  // urza's saga

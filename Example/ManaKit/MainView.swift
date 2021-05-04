@@ -11,12 +11,12 @@ import SwiftUI
 struct MainView: View {
     var body: some View {
         TabView{
-            NavigationView {
-                SetsView()
-            }.tabItem {
-                Image(systemName: "list.number")
-                Text("Sets")
-            }
+//            NavigationView {
+//                SetsView()
+//            }.tabItem {
+//                Image(systemName: "list.number")
+//                Text("Sets")
+//            }
             
             NavigationView {
                 RulesView()

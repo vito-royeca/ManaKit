@@ -52,7 +52,24 @@ class Maintainer: NSObject {
     var cardsArray: [[String: Any]] {
         get {
             if _cardsArray == nil {
-                _cardsArray = self.cardsData()
+                _cardsArray = [[String: Any]]()
+                
+                for dict in self.cardsData() {
+                    var newDict = [String: Any]()
+                    
+                    for (k,v) in dict {
+                        newDict[k] = v
+                    }
+
+                    if let set = dict["set"] as? String,
+                       let language = dict["lang"] as? String,
+                       let collectorNumber = dict["collector_number"] as? String {
+                        let newId = "\(set)_\(language)_\(collectorNumber.replacingOccurrences(of: "★", with: "star"))"
+                        newDict["new_id"] = newId
+                    }
+                    _cardsArray!.append(newDict)
+                }
+                
             }
             return _cardsArray!
         }
@@ -101,15 +118,15 @@ class Maintainer: NSObject {
         }.then {
             viewModel.fetchLocalData()
         }.done {
-            if let serverInfo = viewModel.allObjects()?.first as? MGServerInfo {
-                if serverInfo.scryfallVersion != ManaKit.Constants.ScryfallDate {
-                    viewModel.deleteAllCache()
-                    self.updateDatabase()
-                }
-            } else {
+//            if let serverInfo = viewModel.allObjects()?.first as? MGServerInfo {
+//                if serverInfo.scryfallVersion != ManaKit.Constants.ScryfallDate {
+//                    viewModel.deleteAllCache()
+//                    self.updateDatabase()
+//                }
+//            } else {
                 viewModel.deleteAllCache()
                 self.updateDatabase()
-            }
+//            }
         }.catch { error in
             print(error)
         }
@@ -160,7 +177,7 @@ class Maintainer: NSObject {
             self.fetchData(from: self.rulingsRemotePath, saveTo: "\(cachePath)/\(self.rulingsRemotePath.components(separatedBy: "/").last ?? "")")
         }/*.then {
             self.fetchCardImages()
-        }*/.then {
+        }.then {
             self.createSetsData()
         }.then {
             self.createCardsData()
@@ -170,7 +187,7 @@ class Maintainer: NSObject {
             self.createRulesData()
         }.then {
             self.createOtherCardsData()
-        }.then {
+        }*/.then {
             self.createPricingData()
         }.then {
             self.createScryfallPromise()
@@ -223,23 +240,17 @@ class Maintainer: NSObject {
             promises.append(contentsOf: self.filterLegalities(array: cardsArray))
             promises.append(contentsOf: self.filterTypes(array: cardsArray))
             promises.append(contentsOf: self.filterComponents(array: cardsArray))
-            promises.append(contentsOf: cardsArray.map { dict in
-                return {
-                    return self.createCardPromise(dict: dict)
-                }
-            })
+            promises.append(contentsOf: self.filterCards(array: cardsArray))
 
             // parts
             promises.append({
                 return self.createDeletePartsPromise()
-
             })
             promises.append(contentsOf: self.filterParts(array: cardsArray))
 
             // faces
             promises.append({
                 return self.createDeleteFacesPromise()
-
             })
             promises.append(contentsOf: self.filterFaces(array: cardsArray))
 
@@ -430,8 +441,11 @@ class Maintainer: NSObject {
     }
     
     func execInSequence(label: String, promises: [()->Promise<Void>], completion: @escaping () -> Void) {
+//        guard let _ = promises.first else {
+//            return
+//        }
+        
         var promise = promises.first!()
-
         let countTotal = promises.count
         var countIndex = 0
 

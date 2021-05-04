@@ -525,6 +525,16 @@ extension Maintainer {
         return promises
     }
     
+    func filterCards(array: [[String: Any]]) -> [()->Promise<Void>] {
+        let promises: [()->Promise<Void>] = array.map { dict in
+            return {
+                return self.createCardPromise(dict: dict)
+            }
+        }
+        
+        return promises
+    }
+    
     func filterFaces(array: [[String: Any]]) -> [()->Promise<Void>] {
         var promises = [()->Promise<Void>]()
         var facesArray = [[String: Any]]()
@@ -533,11 +543,12 @@ extension Maintainer {
         
         for dict in array {
             if let id = dict["id"] as? String,
+                let new_id = dict["new_id"] as? String,
                 let faces = dict["card_faces"] as? [[String: Any]] {
              
                 for i in 0...faces.count-1 {
                     let face = faces[i]
-                    let faceId = "\(id)_\(i)"
+                    let faceId = "\(new_id)_\(i)"
                     var newFace = [String: Any]()
                     
                     for (k,v) in face {
@@ -546,12 +557,13 @@ extension Maintainer {
                         }
                         newFace[k] = v
                     }
-                    newFace["id"] = faceId
+                    newFace["id"] = id
                     newFace["face_order"] = i
+                    newFace["new_id"] = faceId
                     
                     facesArray.append(face)
                     filteredData.append(newFace)
-                    cardFaceData.append(["cmcard": id,
+                    cardFaceData.append(["cmcard": new_id,
                                          "cmcard_face": faceId])
                 }
             }
@@ -589,7 +601,7 @@ extension Maintainer {
         var cardPartData = [[String: String]]()
         
         for dict in array {
-            if let id = dict["id"] as? String,
+            if let new_id = dict["new_id"] as? String,
                 let parts = dict["all_parts"] as? [[String: Any]] {
              
                 for i in 0...parts.count-1 {
@@ -597,7 +609,7 @@ extension Maintainer {
                     
                     if let partId = part["id"] as? String,
                         let component = part["component"] as? String {
-                        cardPartData.append(["cmcard": id,
+                        cardPartData.append(["cmcard": new_id,
                                              "cmcomponent": component,
                                              "cmcard_part": partId])
                     }
