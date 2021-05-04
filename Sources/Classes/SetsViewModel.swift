@@ -27,7 +27,7 @@ public class ViewModel: ObservableObject {
     }
 }
 
-public class SetsViewModel: ViewModel {
+/*public class SetsViewModel: ViewModel {
     private let url = "\(ManaKit.sharedInstance.apiURL)/sets?json=true&page=1&limit=100"
 //    private var task: AnyCancellable?
     
@@ -40,9 +40,9 @@ public class SetsViewModel: ViewModel {
 //            .receive(on: RunLoop.main)
 //            .assign(to: \SetsViewModel.data, on: self)
     }
-}
+}*/
 
-/*public class SetsViewModel: BaseViewModel {
+public class SetsViewModel: BaseViewModel {
     // MARK: - Variables
     var _predicate: NSPredicate?
     override public var predicate: NSPredicate? {
@@ -99,4 +99,4 @@ public class SetsViewModel: ViewModel {
                                                         httpBody: nil)
     }
 }
-*/
+
