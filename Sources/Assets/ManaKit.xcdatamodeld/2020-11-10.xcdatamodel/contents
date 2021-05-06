@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="20C69" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="MGArtist" representedClassName=".MGArtist" syncable="YES" codeGenerationType="category">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20E241" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="MGArtist" representedClassName=".MGArtist" syncable="YES" codeGenerationType="class">
         <attribute name="firstName" optional="YES" attributeType="String"/>
         <attribute name="lastName" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String">
@@ -12,7 +12,7 @@
         <attribute name="nameSection" optional="YES" attributeType="String"/>
         <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="artist" inverseEntity="MGCard"/>
     </entity>
-    <entity name="MGCard" representedClassName=".MGCard" syncable="YES" codeGenerationType="category">
+    <entity name="MGCard" representedClassName=".MGCard" syncable="YES" codeGenerationType="class">
         <attribute name="arenaId" optional="YES" attributeType="String"/>
         <attribute name="cardBackId" optional="YES" attributeType="String"/>
         <attribute name="cmc" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
@@ -81,7 +81,7 @@
         <relationship name="variations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="variations" inverseEntity="MGCard"/>
         <relationship name="watermark" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGWatermark" inverseName="cards" inverseEntity="MGWatermark"/>
     </entity>
-    <entity name="MGCardComponentPart" representedClassName=".MGCardComponentPart" syncable="YES" codeGenerationType="category">
+    <entity name="MGCardComponentPart" representedClassName=".MGCardComponentPart" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES">
             <userInfo>
                 <entry key="hyper.isPrimaryKey" value="true"/>
@@ -92,7 +92,7 @@
         <relationship name="component" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGComponent" inverseName="componentParts" inverseEntity="MGComponent"/>
         <relationship name="part" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGCard" inverseName="partComponentParts" inverseEntity="MGCard"/>
     </entity>
-    <entity name="MGCardFormatLegality" representedClassName=".MGCardFormatLegality" syncable="YES" codeGenerationType="category">
+    <entity name="MGCardFormatLegality" representedClassName=".MGCardFormatLegality" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES">
             <userInfo>
                 <entry key="hyper.isPrimaryKey" value="true"/>
@@ -103,7 +103,7 @@
         <relationship name="format" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGFormat" inverseName="cardFormatLegalities" inverseEntity="MGFormat"/>
         <relationship name="legality" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGLegality" inverseName="cardFormatLegalities" inverseEntity="MGLegality"/>
     </entity>
-    <entity name="MGCardPrice" representedClassName=".MGCardPrice" syncable="YES" codeGenerationType="category">
+    <entity name="MGCardPrice" representedClassName=".MGCardPrice" syncable="YES" codeGenerationType="class">
         <attribute name="condition" optional="YES" attributeType="String"/>
         <attribute name="dateUpdated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="directLow" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
@@ -121,7 +121,7 @@
         <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGCard" inverseName="prices" inverseEntity="MGCard"/>
         <relationship name="store" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGStore" inverseName="prices" inverseEntity="MGStore"/>
     </entity>
-    <entity name="MGCardType" representedClassName=".MGCardType" syncable="YES" codeGenerationType="category">
+    <entity name="MGCardType" representedClassName=".MGCardType" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="hyper.isPrimaryKey" value="true"/>
@@ -134,7 +134,7 @@
         <relationship name="subtypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="subtypes" inverseEntity="MGCard"/>
         <relationship name="supertypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="supertypes" inverseEntity="MGCard"/>
     </entity>
-    <entity name="MGColor" representedClassName=".MGColor" syncable="YES" codeGenerationType="category">
+    <entity name="MGColor" representedClassName=".MGColor" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="hyper.isPrimaryKey" value="true"/>
@@ -147,7 +147,7 @@
         <relationship name="identities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="colorIdentities" inverseEntity="MGCard"/>
         <relationship name="indicators" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="colorIndicators" inverseEntity="MGCard"/>
     </entity>
-    <entity name="MGComponent" representedClassName=".MGComponent" syncable="YES" codeGenerationType="category">
+    <entity name="MGComponent" representedClassName=".MGComponent" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="hyper.isPrimaryKey" value="true"/>
@@ -157,7 +157,7 @@
         <attribute name="nameSection" optional="YES" attributeType="String"/>
         <relationship name="componentParts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardComponentPart" inverseName="component" inverseEntity="MGCardComponentPart"/>
     </entity>
-    <entity name="MGFormat" representedClassName=".MGFormat" syncable="YES" codeGenerationType="category">
+    <entity name="MGFormat" representedClassName=".MGFormat" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="hyper.isPrimaryKey" value="true"/>
@@ -167,7 +167,7 @@
         <attribute name="nameSection" optional="YES" attributeType="String"/>
         <relationship name="cardFormatLegalities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardFormatLegality" inverseName="format" inverseEntity="MGCardFormatLegality"/>
     </entity>
-    <entity name="MGFrame" representedClassName=".MGFrame" syncable="YES" codeGenerationType="category">
+    <entity name="MGFrame" representedClassName=".MGFrame" syncable="YES" codeGenerationType="class">
         <attribute name="description_" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="sync.remoteKey" value="description"/>
@@ -182,7 +182,7 @@
         <attribute name="nameSection" optional="YES" attributeType="String"/>
         <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="frame" inverseEntity="MGCard"/>
     </entity>
-    <entity name="MGFrameEffect" representedClassName=".MGFrameEffect" syncable="YES" codeGenerationType="category">
+    <entity name="MGFrameEffect" representedClassName=".MGFrameEffect" syncable="YES" codeGenerationType="class">
         <attribute name="description_" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="sync.remoteKey" value="description"/>
@@ -198,7 +198,7 @@
         <attribute name="nameSection" optional="YES" attributeType="String"/>
         <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="frameEffect" inverseEntity="MGCard"/>
     </entity>
-    <entity name="MGLanguage" representedClassName=".MGLanguage" syncable="YES" codeGenerationType="category">
+    <entity name="MGLanguage" representedClassName=".MGLanguage" syncable="YES" codeGenerationType="class">
         <attribute name="code" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="hyper.isPrimaryKey" value="true"/>
@@ -211,7 +211,7 @@
         <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="language" inverseEntity="MGCard"/>
         <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGSet" inverseName="languages" inverseEntity="MGSet"/>
     </entity>
-    <entity name="MGLayout" representedClassName=".MGLayout" syncable="YES" codeGenerationType="category">
+    <entity name="MGLayout" representedClassName=".MGLayout" syncable="YES" codeGenerationType="class">
         <attribute name="description_" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="sync.remoteKey" value="description"/>
@@ -226,7 +226,7 @@
         <attribute name="nameSection" optional="YES" attributeType="String"/>
         <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="layout" inverseEntity="MGCard"/>
     </entity>
-    <entity name="MGLegality" representedClassName=".MGLegality" syncable="YES" codeGenerationType="category">
+    <entity name="MGLegality" representedClassName=".MGLegality" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="hyper.isPrimaryKey" value="true"/>
@@ -236,7 +236,7 @@
         <attribute name="nameSection" optional="YES" attributeType="String"/>
         <relationship name="cardFormatLegalities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardFormatLegality" inverseName="legality" inverseEntity="MGCardFormatLegality"/>
     </entity>
-    <entity name="MGLocalCache" representedClassName=".MGLocalCache" syncable="YES" codeGenerationType="category">
+    <entity name="MGLocalCache" representedClassName=".MGLocalCache" syncable="YES" codeGenerationType="class">
         <attribute name="dateCreated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="lastUpdated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="page" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
@@ -246,7 +246,7 @@
         <attribute name="rowCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="tableName" optional="YES" attributeType="String"/>
     </entity>
-    <entity name="MGRarity" representedClassName=".MGRarity" syncable="YES" codeGenerationType="category">
+    <entity name="MGRarity" representedClassName=".MGRarity" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="hyper.isPrimaryKey" value="true"/>
@@ -256,7 +256,7 @@
         <attribute name="nameSection" optional="YES" attributeType="String"/>
         <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="rarity" inverseEntity="MGCard"/>
     </entity>
-    <entity name="MGRule" representedClassName=".MGRule" syncable="YES" codeGenerationType="category">
+    <entity name="MGRule" representedClassName=".MGRule" syncable="YES" codeGenerationType="class">
         <attribute name="definition" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES">
             <userInfo>
@@ -270,7 +270,7 @@
         <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGRule" inverseName="parent" inverseEntity="MGRule"/>
         <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGRule" inverseName="children" inverseEntity="MGRule"/>
     </entity>
-    <entity name="MGRuling" representedClassName=".MGRuling" syncable="YES" codeGenerationType="category">
+    <entity name="MGRuling" representedClassName=".MGRuling" syncable="YES" codeGenerationType="class">
         <attribute name="datePublished" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES">
             <userInfo>
@@ -281,17 +281,16 @@
         <attribute name="oracleId" optional="YES" attributeType="String"/>
         <attribute name="text" optional="YES" attributeType="String"/>
     </entity>
-    <entity name="MGServerInfo" representedClassName=".MGServerInfo" syncable="YES" codeGenerationType="category">
-        <attribute name="id" optional="YES" attributeType="String">
+    <entity name="MGServerInfo" representedClassName=".MGServerInfo" syncable="YES" codeGenerationType="class">
+        <attribute name="keyruneVersion" optional="YES" attributeType="String"/>
+        <attribute name="scryfallVersion" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="hyper.isPrimaryKey" value="true"/>
                 <entry key="sync.isPrimaryKey" value="true"/>
             </userInfo>
         </attribute>
-        <attribute name="keyruneVersion" optional="YES" attributeType="String"/>
-        <attribute name="scryfallVersion" optional="YES" attributeType="String"/>
     </entity>
-    <entity name="MGSet" representedClassName=".MGSet" syncable="YES" codeGenerationType="category">
+    <entity name="MGSet" representedClassName=".MGSet" syncable="YES" codeGenerationType="class">
         <attribute name="cardCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="code" optional="YES" attributeType="String">
             <userInfo>
@@ -326,7 +325,7 @@
             <entry key="sync.isPrimaryKey" value="true"/>
         </userInfo>
     </entity>
-    <entity name="MGSetBlock" representedClassName=".MGSetBlock" syncable="YES" codeGenerationType="category">
+    <entity name="MGSetBlock" representedClassName=".MGSetBlock" syncable="YES" codeGenerationType="class">
         <attribute name="code" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String">
             <userInfo>
@@ -337,7 +336,7 @@
         <attribute name="nameSection" optional="YES" attributeType="String"/>
         <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGSet" inverseName="setBlock" inverseEntity="MGSet"/>
     </entity>
-    <entity name="MGSetType" representedClassName=".MGSetType" syncable="YES" codeGenerationType="category">
+    <entity name="MGSetType" representedClassName=".MGSetType" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="hyper.isPrimaryKey" value="true"/>
@@ -347,7 +346,7 @@
         <attribute name="nameSection" optional="YES" attributeType="String"/>
         <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGSet" inverseName="setType" inverseEntity="MGSet"/>
     </entity>
-    <entity name="MGStore" representedClassName=".MGStore" syncable="YES" codeGenerationType="category">
+    <entity name="MGStore" representedClassName=".MGStore" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="hyper.isPrimaryKey" value="true"/>
@@ -357,7 +356,7 @@
         <attribute name="nameSection" optional="YES" attributeType="String"/>
         <relationship name="prices" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardPrice" inverseName="store" inverseEntity="MGCardPrice"/>
     </entity>
-    <entity name="MGWatermark" representedClassName=".MGWatermark" syncable="YES" codeGenerationType="category">
+    <entity name="MGWatermark" representedClassName=".MGWatermark" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String">
             <userInfo>
                 <entry key="hyper.isPrimaryKey" value="true"/>
@@ -382,11 +381,11 @@
         <element name="MGLanguage" positionX="-18" positionY="171" width="128" height="119"/>
         <element name="MGLayout" positionX="9" positionY="171" width="128" height="89"/>
         <element name="MGLegality" positionX="9" positionY="180" width="128" height="74"/>
-        <element name="MGLocalCache" positionX="-9" positionY="135" width="128" height="14"/>
+        <element name="MGLocalCache" positionX="-9" positionY="135" width="128" height="149"/>
         <element name="MGRarity" positionX="-27" positionY="135" width="128" height="74"/>
         <element name="MGRule" positionX="0" positionY="162" width="128" height="134"/>
         <element name="MGRuling" positionX="-27" positionY="135" width="128" height="89"/>
-        <element name="MGServerInfo" positionX="-9" positionY="135" width="128" height="74"/>
+        <element name="MGServerInfo" positionX="-9" positionY="135" width="128" height="59"/>
         <element name="MGSet" positionX="-63" positionY="-18" width="128" height="329"/>
         <element name="MGSetBlock" positionX="-18" positionY="144" width="128" height="89"/>
         <element name="MGSetType" positionX="-27" positionY="135" width="128" height="74"/>

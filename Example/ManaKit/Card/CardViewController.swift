@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreData
-import FontAwesome_swift
 import ManaKit
 import PromiseKit
 
@@ -107,19 +106,19 @@ extension CardViewController : UITableViewDataSource {
                 if layoutName == "Double faced token" ||
                     layoutName == "Transform" {
                     button.isHidden = false
-                    button.setImage(UIImage.fontAwesomeIcon(name: .sync,
-                                                            style: .solid,
-                                                            textColor: UIColor.white,
-                                                            size: CGSize(width: 30, height: 30)),
-                                    for: .normal)
+//                    button.setImage(UIImage.fontAwesomeIcon(name: .sync,
+//                                                            style: .solid,
+//                                                            textColor: UIColor.white,
+//                                                            size: CGSize(width: 30, height: 30)),
+//                                    for: .normal)
                 } else if layoutName == "Flip" ||
                     layoutName == "Planar" {
                     button.isHidden = false
-                    button.setImage(UIImage.fontAwesomeIcon(name: .redo,
-                                                            style: .solid,
-                                                            textColor: UIColor.white,
-                                                            size: CGSize(width: 30, height: 30)),
-                                    for: .normal)
+//                    button.setImage(UIImage.fontAwesomeIcon(name: .redo,
+//                                                            style: .solid,
+//                                                            textColor: UIColor.white,
+//                                                            size: CGSize(width: 30, height: 30)),
+//                                    for: .normal)
                 } else {
                     button.isHidden = true
                 }

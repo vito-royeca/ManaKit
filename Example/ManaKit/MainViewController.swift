@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import FontAwesome_swift
 
 class MainViewController: UITabBarController {
     
@@ -19,10 +18,10 @@ class MainViewController: UITabBarController {
             return
         }
         
-        items[0].image = UIImage.fontAwesomeIcon(name: .book,
-                                                 style: .solid,
-                                                 textColor: UIColor.blue,
-                                                 size: CGSize(width: 30, height: 30))
+//        items[0].image = UIImage.fontAwesomeIcon(name: .book,
+//                                                 style: .solid,
+//                                                 textColor: UIColor.blue,
+//                                                 size: CGSize(width: 30, height: 30))
 //        items[1].image = UIImage.fontAwesomeIcon(name: .cubes,
 //                                                 style: .solid,
 //                                                 textColor: UIColor.blue,

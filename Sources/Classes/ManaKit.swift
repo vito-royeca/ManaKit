@@ -79,10 +79,14 @@ public class ManaKit {
     public var dataStack: DataStack? {
         get {
             if _dataStack == nil {
-                guard let bundleURL = Bundle(for: ManaKit.self).url(forResource: "ManaKit", withExtension: "bundle"),
-                    let bundle = Bundle(url: bundleURL),
-                    let momURL = bundle.url(forResource: "ManaKit", withExtension: "momd"),
-                    let objectModel = NSManagedObjectModel(contentsOf: momURL.appendingPathComponent("\(Constants.MomModel)")) else {
+//                guard let bundleURL = Bundle(for: ManaKit.self).url(forResource: "ManaKit", withExtension: "bundle"),
+//                    let bundle = Bundle(url: bundleURL),
+//                    let momURL = bundle.url(forResource: "ManaKit", withExtension: "momd"),
+//                    let objectModel = NSManagedObjectModel(contentsOf: momURL.appendingPathComponent("\(Constants.MomModel)")) else {
+//                    return nil
+//                }
+                guard let modelURL = Bundle(for: type(of: self)).url(forResource: "ManaKit", withExtension: "momd"),
+                      let objectModel = NSManagedObjectModel(contentsOf: modelURL) else {
                     return nil
                 }
                 _dataStack = DataStack(model: objectModel, storeType: .sqLite)

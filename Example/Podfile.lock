@@ -2,7 +2,6 @@ PODS:
   - BlueSocket (1.0.52)
   - BlueSSLService (1.0.52):
     - BlueSocket (~> 1.0.52)
-  - FontAwesome.swift (1.9.1)
   - Kanna (5.2.4)
   - KeychainAccess (4.2.2)
   - ManaKit (7.0.0):
@@ -32,7 +31,6 @@ PODS:
   - Sync (6.5.0)
 
 DEPENDENCIES:
-  - FontAwesome.swift
   - Kanna
   - KeychainAccess
   - ManaKit (from `../`)
@@ -46,7 +44,6 @@ SPEC REPOS:
   trunk:
     - BlueSocket
     - BlueSSLService
-    - FontAwesome.swift
     - Kanna
     - KeychainAccess
     - MBProgressHUD
@@ -63,10 +60,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   BlueSocket: 1acd943acb07b55905291d608649fcfbf8cbd57d
   BlueSSLService: b791a3db95b841973c44870f59bbf94628845b58
-  FontAwesome.swift: 6b52cb7be66eacd28cbfaa0ca7ffd0de4a186a1d
   Kanna: b9d00d7c11428308c7f95e1f1f84b8205f567a8f
   KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
-  ManaKit: 86e3e2c06d62d3e6bf8d8f59c19a3b4970df9620
+  ManaKit: 9f7ed242639244a261166692f538bfaddf7c8579
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   PostgresClientKit: 13d5a468d22f16c909474e2a0cf201c3aa5b87b0
   PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
@@ -74,6 +70,6 @@ SPEC CHECKSUMS:
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Sync: 86bb8aa0ea2f955ea5ac97b7b73129f86591c39e
 
-PODFILE CHECKSUM: 178474330fcec064e0811a54549fd3cac913dfdb
+PODFILE CHECKSUM: 63904dc584f2e44ee6b24809af0c34e262b6e052
 
 COCOAPODS: 1.10.1

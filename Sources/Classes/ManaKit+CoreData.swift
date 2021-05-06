@@ -53,7 +53,7 @@ extension ManaKit {
     }
 
     public func deleteCache(_ entityName: String, objectFinder: [String: AnyObject]?) {
-        var newObjectFinder = ["name": entityName]
+        var newObjectFinder = ["tableName": entityName]
         var query: String?
         
         if let objectFinder = objectFinder {

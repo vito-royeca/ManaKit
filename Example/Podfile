@@ -11,9 +11,8 @@ end
 
 target 'ManaKit_Example' do
     default_pods
-    platform :ios, "13.0"
+    platform :ios, "14.1"
 
-    pod 'FontAwesome.swift'
     pod 'KeychainAccess'
     pod 'MBProgressHUD'
     pod 'PostgresClientKit', '~> 1.0'
@@ -21,9 +20,8 @@ end
 
 target 'ManaKit_ExampleTests' do
     default_pods
-    platform :ios, "13.0"
+    platform :ios, "14.1"
 
-    pod 'FontAwesome.swift'
     pod 'KeychainAccess'
     pod 'MBProgressHUD'
     pod 'PostgresClientKit', '~> 1.0'
@@ -31,9 +29,8 @@ end
 
 target 'ManaKit_ExampleUITests' do
     default_pods
-    platform :ios, "13.0"
+    platform :ios, "14.1"
 
-    pod 'FontAwesome.swift'
     pod 'KeychainAccess'
     pod 'MBProgressHUD'
     pod 'PostgresClientKit', '~> 1.0'
