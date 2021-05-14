@@ -8,7 +8,6 @@
 
 import UIKit
 import ManaKit
-import MBProgressHUD
 import PromiseKit
 
 class SetsViewController: BaseViewController {

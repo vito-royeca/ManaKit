@@ -145,7 +145,11 @@ extension Maintainer {
 //                      willDownload = true
 //                    }
                 } else {
-                    willDownload = true
+                    if v.hasSuffix("soon.jpg") || v.hasSuffix("soon.png") {
+                        willDownload = false
+                    } else {
+                        willDownload = true
+                    }
                 }
                 
                 if willDownload {

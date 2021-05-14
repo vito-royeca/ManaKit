@@ -8,7 +8,6 @@
 
 import UIKit
 import ManaKit
-import MBProgressHUD
 import PromiseKit
 
 class SetViewController: BaseViewController {
@@ -20,7 +19,6 @@ class SetViewController: BaseViewController {
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = "Filter"
-        searchController.dimsBackgroundDuringPresentation = false
         definesPresentationContext = true
         
         if #available(iOS 11.0, *) {

@@ -9,7 +9,6 @@
 import UIKit
 import CoreData
 import ManaKit
-import MBProgressHUD
 import PromiseKit
 
 class BaseViewController: UIViewController {
@@ -33,14 +32,14 @@ class BaseViewController: UIViewController {
                 print(error)
             }
             
-            MBProgressHUD.hide(for: self.view,
-                               animated: true)
+//            MBProgressHUD.hide(for: self.view,
+//                               animated: true)
             self.title = self.viewModel.title
             self.tableView.reloadData()
         }
         
-        MBProgressHUD.showAdded(to: self.view,
-                                animated: true)
+//        MBProgressHUD.showAdded(to: self.view,
+//                                animated: true)
         viewModel.fetchData(callback: callback)
     }
 }

@@ -175,7 +175,7 @@ class Maintainer: NSObject {
             self.fetchData(from: self.cardsRemotePath, saveTo: "\(cachePath)/\(self.cardsRemotePath.components(separatedBy: "/").last ?? "")")
         }.then {
             self.fetchData(from: self.rulingsRemotePath, saveTo: "\(cachePath)/\(self.rulingsRemotePath.components(separatedBy: "/").last ?? "")")
-        }/*.then {
+        }.then {
             self.fetchCardImages()
         }.then {
             self.createSetsData()
@@ -187,7 +187,7 @@ class Maintainer: NSObject {
             self.createRulesData()
         }.then {
             self.createOtherCardsData()
-        }*/.then {
+        }.then {
             self.createPricingData()
         }.then {
             self.createScryfallPromise()
