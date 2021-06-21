@@ -14,19 +14,19 @@ PODS:
   - PostgresClientKit (1.4.0):
     - BlueSocket (~> 1.0)
     - BlueSSLService (~> 1.0)
-  - PromiseKit (6.13.1):
-    - PromiseKit/CorePromise (= 6.13.1)
-    - PromiseKit/Foundation (= 6.13.1)
-    - PromiseKit/UIKit (= 6.13.1)
-  - PromiseKit/CorePromise (6.13.1)
-  - PromiseKit/Foundation (6.13.1):
+  - PromiseKit (6.15.3):
+    - PromiseKit/CorePromise (= 6.15.3)
+    - PromiseKit/Foundation (= 6.15.3)
+    - PromiseKit/UIKit (= 6.15.3)
+  - PromiseKit/CorePromise (6.15.3)
+  - PromiseKit/Foundation (6.15.3):
     - PromiseKit/CorePromise
-  - PromiseKit/UIKit (6.13.1):
+  - PromiseKit/UIKit (6.15.3):
     - PromiseKit/CorePromise
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
   - SDWebImage/Core (5.11.1)
-  - SSZipArchive (2.2.3)
+  - SSZipArchive (2.4.2)
   - Sync (6.5.0)
 
 DEPENDENCIES:
@@ -61,9 +61,9 @@ SPEC CHECKSUMS:
   KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
   ManaKit: 9f7ed242639244a261166692f538bfaddf7c8579
   PostgresClientKit: 13d5a468d22f16c909474e2a0cf201c3aa5b87b0
-  PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
+  PromiseKit: 3b2b6995e51a954c46dbc550ce3da44fbfb563c5
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
-  SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
+  SSZipArchive: e7b4f3d9e780c2acc1764cd88fbf2de28f26e5b2
   Sync: 86bb8aa0ea2f955ea5ac97b7b73129f86591c39e
 
 PODFILE CHECKSUM: 4fb33c2f5a8f5c08e0b39066a0e68ed8fa9e80ba

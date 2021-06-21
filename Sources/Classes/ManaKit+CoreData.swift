@@ -170,48 +170,47 @@ extension ManaKit {
         }
         let targetPath = "\(docsPath)/\(bundleName).sqlite"
 
-        if needsUpgrade() {
-            print("Copying database file: \(Constants.ScryfallDate)")
-            
-            // Shutdown database
-            dataStack = nil
-
-            // Remove old database files in docs directory
-            for file in try! FileManager.default.contentsOfDirectory(atPath: docsPath) {
-                let path = "\(docsPath)/\(file)"
-                if file.hasPrefix(bundleName) {
-                    try! FileManager.default.removeItem(atPath: path)
-                }
-            }
-            
-            // remove the contents of crop directory
-            let cropPath = "\(cachePath)/crop/"
-            if FileManager.default.fileExists(atPath: cropPath) {
-                for file in try! FileManager.default.contentsOfDirectory(atPath: cropPath) {
-                    let path = "\(cropPath)/\(file)"
-                    try! FileManager.default.removeItem(atPath: path)
-                }
-            }
-
-            // delete image cache
-            let imageCache = SDImageCache.init()
-            imageCache.clearDisk(onCompletion: nil)
-            
-            // Unzip
-            SSZipArchive.unzipFile(atPath: sourcePath, toDestination: docsPath)
-            
-            // rename
-            try! FileManager.default.moveItem(atPath: "\(docsPath)/ManaKit.sqlite", toPath: targetPath)
-            
-            // skip from iCloud backups!
-            var targetURL = URL(fileURLWithPath: targetPath)
-            var resourceValues = URLResourceValues()
-            resourceValues.isExcludedFromBackup = true
-            try! targetURL.setResourceValues(resourceValues)
-            
-            UserDefaults.standard.set(Constants.ScryfallDate, forKey: UserDefaultsKeys.ScryfallDate)
-            UserDefaults.standard.synchronize()
-        }
+//        if needsUpgrade() {
+//            print("Copying database file: \(Constants.ScryfallDate)")
+//            
+//            // Shutdown database
+//            dataStack = nil
+//
+//            // Remove old database files in docs directory
+//            for file in try! FileManager.default.contentsOfDirectory(atPath: docsPath) {
+//                let path = "\(docsPath)/\(file)"
+//                if file.hasPrefix(bundleName) {
+//                    try! FileManager.default.removeItem(atPath: path)
+//                }
+//            }
+//            
+//            // remove the contents of crop directory
+//            let cropPath = "\(cachePath)/crop/"
+//            if FileManager.default.fileExists(atPath: cropPath) {
+//                for file in try! FileManager.default.contentsOfDirectory(atPath: cropPath) {
+//                    let path = "\(cropPath)/\(file)"
+//                    try! FileManager.default.removeItem(atPath: path)
+//                }
+//            }
+//
+//            // delete image cache
+//            let imageCache = SDImageCache.init()
+//            imageCache.clearDisk(onCompletion: nil)
+//            
+//            // Unzip
+//            SSZipArchive.unzipFile(atPath: sourcePath, toDestination: docsPath)
+//            
+//            // rename
+//            try! FileManager.default.moveItem(atPath: "\(docsPath)/ManaKit.sqlite", toPath: targetPath)
+//            
+//            // skip from iCloud backups!
+//            var targetURL = URL(fileURLWithPath: targetPath)
+//            var resourceValues = URLResourceValues()
+//            resourceValues.isExcludedFromBackup = true
+//            try! targetURL.setResourceValues(resourceValues)
+//            
+//            UserDefaults.standard.synchronize()
+//        }
     }
     
     public func keyruneUnicode2String(set: MGSet) -> String? {

@@ -23,20 +23,8 @@ extension ManaKit {
         if let httpBody = httpBody {
             rq.httpBody = httpBody.replacingOccurrences(of: "\n", with: "").data(using: .utf8)
         }
-    
+        
         return URLSession.shared.dataTask(.promise, with: rq)
-    }
-    
-    public func needsUpgrade() -> Bool {
-        var willUpgrade = true
-        
-        if let scryfallDate = UserDefaults.standard.string(forKey: UserDefaultsKeys.ScryfallDate) {
-            if scryfallDate == Constants.ScryfallDate {
-                willUpgrade = false
-            }
-        }
-        
-        return willUpgrade
     }
     
 }

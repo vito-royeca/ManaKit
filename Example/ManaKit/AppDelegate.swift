@@ -28,9 +28,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                          privateKey: ManaKit.Constants.TcgPlayerPrivateKey)
         ManaKit.sharedInstance.setupResources()
 
-        let maintainer = Maintainer()
-        maintainer.checkServerInfo()
-        
         return true
     }
 
