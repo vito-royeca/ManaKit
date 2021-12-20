@@ -25,11 +25,11 @@ public class MGFrameEffect: NSManagedObject, Codable {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        description_ = try container.decode(String.self, forKey: .description_)
-        id = try container.decode(String.self, forKey: .id)
-        name = try container.decode(String.self, forKey: .name)
-        nameSection = try container.decode(String.self, forKey: .nameSection)
-        cards = try container.decode(Set<MGCard>.self, forKey: .cards) as NSSet
+        description_ = try container.decodeIfPresent(String.self, forKey: .description_)
+        id = try container.decodeIfPresent(String.self, forKey: .id)
+        name = try container.decodeIfPresent(String.self, forKey: .name)
+        nameSection = try container.decodeIfPresent(String.self, forKey: .nameSection)
+        cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards) as NSSet?
     }
     
     public func encode(to encoder: Encoder) throws {

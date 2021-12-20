@@ -24,10 +24,10 @@ public class MGCardFormatLegality: NSManagedObject, Codable {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        id = try container.decode(Int32.self, forKey: .id)
-        card = try container.decode(MGCard.self, forKey: .card)
-        format = try container.decode(MGFormat.self, forKey: .format)
-        legality = try container.decode(MGLegality.self, forKey: .legality)
+        id = try container.decodeIfPresent(Int32.self, forKey: .id) ?? Int32(0)
+        card = try container.decodeIfPresent(MGCard.self, forKey: .card)
+        format = try container.decodeIfPresent(MGFormat.self, forKey: .format)
+        legality = try container.decodeIfPresent(MGLegality.self, forKey: .legality)
     }
     
     public func encode(to encoder: Encoder) throws {

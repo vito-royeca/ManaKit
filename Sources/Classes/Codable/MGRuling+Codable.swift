@@ -24,10 +24,10 @@ public class MGRuling: NSManagedObject, Codable {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        datePublished = try container.decode(Date.self, forKey: .datePublished)
-        id = try container.decode(Int32.self, forKey: .id)
-        oracleId = try container.decode(String.self, forKey: .oracleId)
-        text = try container.decode(String.self, forKey: .text)
+        datePublished = try container.decodeIfPresent(Date.self, forKey: .datePublished)
+        id = try container.decodeIfPresent(Int32.self, forKey: .id) ?? Int32(0)
+        oracleId = try container.decodeIfPresent(String.self, forKey: .oracleId)
+        text = try container.decodeIfPresent(String.self, forKey: .text)
     }
     
     public func encode(to encoder: Encoder) throws {

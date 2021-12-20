@@ -24,10 +24,10 @@ public class MGArtist: NSManagedObject, Codable {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        firstName = try container.decode(String.self, forKey: .firstName)
-        lastName = try container.decode(String.self, forKey: .lastName)
-        name = try container.decode(String.self, forKey: .name)
-        nameSection = try container.decode(String.self, forKey: .nameSection)
+        firstName = try container.decodeIfPresent(String.self, forKey: .firstName)
+        lastName = try container.decodeIfPresent(String.self, forKey: .lastName)
+        name = try container.decodeIfPresent(String.self, forKey: .name)
+        nameSection = try container.decodeIfPresent(String.self, forKey: .nameSection)
     }
     
     public func encode(to encoder: Encoder) throws {

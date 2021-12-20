@@ -27,13 +27,13 @@ public class MGRule: NSManagedObject, Codable {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        definition = try container.decode(String.self, forKey: .definition)
-        id = try container.decode(Int32.self, forKey: .id)
-        order = try container.decode(Double.self, forKey: .order)
-        term = try container.decode(String.self, forKey: .term)
-        termSection = try container.decode(String.self, forKey: .termSection)
-        children = try container.decode(Set<MGRule>.self, forKey: .children) as NSSet
-        parent = try container.decode(MGRule.self, forKey: .parent)
+        definition = try container.decodeIfPresent(String.self, forKey: .definition)
+        id = try container.decodeIfPresent(Int32.self, forKey: .id) ?? Int32(0)
+        order = try container.decodeIfPresent(Double.self, forKey: .order) ?? Double(0)
+        term = try container.decodeIfPresent(String.self, forKey: .term)
+        termSection = try container.decodeIfPresent(String.self, forKey: .termSection)
+        children = try container.decodeIfPresent(Set<MGRule>.self, forKey: .children) as NSSet?
+        parent = try container.decodeIfPresent(MGRule.self, forKey: .parent)
     }
     
     public func encode(to encoder: Encoder) throws {

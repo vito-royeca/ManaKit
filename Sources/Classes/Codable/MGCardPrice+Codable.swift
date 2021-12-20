@@ -31,17 +31,17 @@ public class MGCardPrice: NSManagedObject, Codable {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        condition = try container.decode(String.self, forKey: .condition)
-        dateUpdated = try container.decode(Date.self, forKey: .dateUpdated)
-        directLow = try container.decode(Double.self, forKey: .directLow)
-        high = try container.decode(Double.self, forKey: .high)
-        id = try container.decode(Int32.self, forKey: .id)
-        isFoil = try container.decode(Bool.self, forKey: .isFoil)
-        low = try container.decode(Double.self, forKey: .low)
-        market = try container.decode(Double.self, forKey: .market)
-        median = try container.decode(Double.self, forKey: .median)
-        card = try container.decode(MGCard.self, forKey: .card)
-        store = try container.decode(MGStore.self, forKey: .store)
+        condition = try container.decodeIfPresent(String.self, forKey: .condition)
+        dateUpdated = try container.decodeIfPresent(Date.self, forKey: .dateUpdated)
+        directLow = try container.decodeIfPresent(Double.self, forKey: .directLow) ?? Double(0)
+        high = try container.decodeIfPresent(Double.self, forKey: .high) ?? Double(0)
+        id = try container.decodeIfPresent(Int32.self, forKey: .id) ?? Int32(0)
+        isFoil = try container.decodeIfPresent(Bool.self, forKey: .isFoil) ?? false
+        low = try container.decodeIfPresent(Double.self, forKey: .low) ?? Double(0)
+        market = try container.decodeIfPresent(Double.self, forKey: .market) ?? Double(0)
+        median = try container.decodeIfPresent(Double.self, forKey: .median) ?? Double(0)
+        card = try container.decodeIfPresent(MGCard.self, forKey: .card)
+        store = try container.decodeIfPresent(MGStore.self, forKey: .store)
     }
     
     public func encode(to encoder: Encoder) throws {

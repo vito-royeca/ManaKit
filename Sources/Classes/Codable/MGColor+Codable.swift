@@ -26,11 +26,11 @@ public class MGColor: NSManagedObject, Codable {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        name = try container.decode(String.self, forKey: .name)
-        nameSection = try container.decode(String.self, forKey: .nameSection)
-        cards = try container.decode(Set<MGCard>.self, forKey: .cards) as NSSet
-        identities = try container.decode(Set<MGCard>.self, forKey: .identities) as NSSet
-        indicators = try container.decode(Set<MGCard>.self, forKey: .indicators) as NSSet
+        name = try container.decodeIfPresent(String.self, forKey: .name)
+        nameSection = try container.decodeIfPresent(String.self, forKey: .nameSection)
+        cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards) as NSSet?
+        identities = try container.decodeIfPresent(Set<MGCard>.self, forKey: .identities) as NSSet?
+        indicators = try container.decodeIfPresent(Set<MGCard>.self, forKey: .indicators) as NSSet?
     }
     
     public func encode(to encoder: Encoder) throws {

@@ -26,12 +26,12 @@ public class MGCardType: NSManagedObject, Codable {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        name = try container.decode(String.self, forKey: .name)
-        nameSection = try container.decode(String.self, forKey: .nameSection)
-        children = try container.decode(Set<MGCardType>.self, forKey: .children) as NSSet
-        parent = try container.decode(MGCardType.self, forKey: .parent)
-        subtypes = try container.decode(Set<MGCard>.self, forKey: .subtypes) as NSSet
-        supertypes = try container.decode(Set<MGCard>.self, forKey: .supertypes) as NSSet
+        name = try container.decodeIfPresent(String.self, forKey: .name)
+        nameSection = try container.decodeIfPresent(String.self, forKey: .nameSection)
+        children = try container.decodeIfPresent(Set<MGCardType>.self, forKey: .children) as NSSet?
+        parent = try container.decodeIfPresent(MGCardType.self, forKey: .parent)
+        subtypes = try container.decodeIfPresent(Set<MGCard>.self, forKey: .subtypes) as NSSet?
+        supertypes = try container.decodeIfPresent(Set<MGCard>.self, forKey: .supertypes) as NSSet?
     }
     
     public func encode(to encoder: Encoder) throws {

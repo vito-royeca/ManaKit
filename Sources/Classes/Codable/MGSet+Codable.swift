@@ -40,26 +40,26 @@ public class MGSet: NSManagedObject, Codable {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        cardCount = try container.decode(Int32.self, forKey: .cardCount)
-        code = try container.decode(String.self, forKey: .code)
-        dateCreated = try container.decode(Date.self, forKey: .dateCreated)
-        dateUpdated = try container.decode(Date.self, forKey: .dateUpdated)
-        isFoilOnly = try container.decode(Bool.self, forKey: .isFoilOnly)
-        isOnlineOnly = try container.decode(Bool.self, forKey: .isOnlineOnly)
-        keyruneClass = try container.decode(String.self, forKey: .keyruneClass)
-        keyruneUnicode = try container.decode(String.self, forKey: .keyruneUnicode)
-        mtgoCode = try container.decode(String.self, forKey: .mtgoCode)
-        myNameSection = try container.decode(String.self, forKey: .myNameSection)
-        myYearSection = try container.decode(String.self, forKey: .myYearSection)
-        name = try container.decode(String.self, forKey: .name)
-        releaseDate = try container.decode(String.self, forKey: .releaseDate)
-        tcgPlayerId = try container.decode(Int32.self, forKey: .tcgPlayerId)
-        cards = try container.decode(Set<MGCard>.self, forKey: .cards) as NSSet
-        children = try container.decode(Set<MGSet>.self, forKey: .children) as NSSet
-        languages = try container.decode(Set<MGLanguage>.self, forKey: .languages) as NSSet
-        parent = try container.decode(MGSet.self, forKey: .parent)
-        setBlock = try container.decode(MGSetBlock.self, forKey: .setBlock)
-        setType = try container.decode(MGSetType.self, forKey: .setType)
+        cardCount = try container.decodeIfPresent(Int32.self, forKey: .cardCount) ?? Int32(0)
+        code = try container.decodeIfPresent(String.self, forKey: .code)
+        dateCreated = try container.decodeIfPresent(Date.self, forKey: .dateCreated)
+        dateUpdated = try container.decodeIfPresent(Date.self, forKey: .dateUpdated)
+        isFoilOnly = try container.decodeIfPresent(Bool.self, forKey: .isFoilOnly) ?? false
+        isOnlineOnly = try container.decodeIfPresent(Bool.self, forKey: .isOnlineOnly) ?? false
+        keyruneClass = try container.decodeIfPresent(String.self, forKey: .keyruneClass)
+        keyruneUnicode = try container.decodeIfPresent(String.self, forKey: .keyruneUnicode)
+        mtgoCode = try container.decodeIfPresent(String.self, forKey: .mtgoCode)
+        myNameSection = try container.decodeIfPresent(String.self, forKey: .myNameSection)
+        myYearSection = try container.decodeIfPresent(String.self, forKey: .myYearSection)
+        name = try container.decodeIfPresent(String.self, forKey: .name)
+        releaseDate = try container.decodeIfPresent(String.self, forKey: .releaseDate)
+        tcgPlayerId = try container.decodeIfPresent(Int32.self, forKey: .tcgPlayerId) ?? Int32(0)
+        cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards) as NSSet?
+        children = try container.decodeIfPresent(Set<MGSet>.self, forKey: .children) as NSSet?
+        languages = try container.decodeIfPresent(Set<MGLanguage>.self, forKey: .languages) as NSSet?
+        parent = try container.decodeIfPresent(MGSet.self, forKey: .parent)
+        setBlock = try container.decodeIfPresent(MGSetBlock.self, forKey: .setBlock)
+        setType = try container.decodeIfPresent(MGSetType.self, forKey: .setType)
     }
     
     public func encode(to encoder: Encoder) throws {

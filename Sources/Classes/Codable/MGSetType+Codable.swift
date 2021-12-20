@@ -23,9 +23,9 @@ public class MGSetType: NSManagedObject, Codable {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        name = try container.decode(String.self, forKey: .name)
-        nameSection = try container.decode(String.self, forKey: .nameSection)
-        sets = try container.decode(Set<MGSet>.self, forKey: .sets) as NSSet
+        name = try container.decodeIfPresent(String.self, forKey: .name)
+        nameSection = try container.decodeIfPresent(String.self, forKey: .nameSection)
+        sets = try container.decodeIfPresent(Set<MGSet>.self, forKey: .sets) as NSSet?
     }
     
     public func encode(to encoder: Encoder) throws {

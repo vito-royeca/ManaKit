@@ -24,10 +24,10 @@ public class MGCardComponentPart: NSManagedObject, Codable {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        id = try container.decode(Int32.self, forKey: .id)
-        card = try container.decode(MGCard.self, forKey: .card)
-        component = try container.decode(MGComponent.self, forKey: .component)
-        part = try container.decode(MGCard.self, forKey: .part)
+        id = try container.decodeIfPresent(Int32.self, forKey: .id) ?? Int32(0)
+        card = try container.decodeIfPresent(MGCard.self, forKey: .card)
+        component = try container.decodeIfPresent(MGComponent.self, forKey: .component)
+        part = try container.decodeIfPresent(MGCard.self, forKey: .part)
     }
     
     public func encode(to encoder: Encoder) throws {
