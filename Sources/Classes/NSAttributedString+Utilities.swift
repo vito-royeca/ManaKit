@@ -5,6 +5,7 @@
 //  Created by Jovito Royeca on 20/06/2018.
 //
 
+#if canImport(UIKit)
 import UIKit
 import Kanna
 
@@ -45,7 +46,7 @@ public extension NSAttributedString {
                         cleanCode = "Chaos"
                     }
                     
-                    guard let image = ManaKit.sharedInstance.symbolImage(name: cleanCode as String) else {
+                    guard let image = ManaKit.shared.symbolImage(name: cleanCode as String) else {
                         self.init(string: symbol)
                         return
                     }
@@ -210,3 +211,4 @@ fileprivate func convertFromNSAttributedStringDocumentType(_ input: NSAttributed
 fileprivate func convertToNSAttributedStringDocumentReadingOptionKeyDictionary(_ input: [String: Any]) -> [NSAttributedString.DocumentReadingOptionKey: Any] {
 	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.DocumentReadingOptionKey(rawValue: key), value)})
 }
+#endif // #if canImport(UIKit)

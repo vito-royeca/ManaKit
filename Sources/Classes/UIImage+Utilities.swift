@@ -6,6 +6,8 @@
 //  Copyright © 2018 Jovito Royeca. All rights reserved.
 //
 
+#if canImport(UIKit)
+
 import Foundation
 import UIKit
 
@@ -57,3 +59,5 @@ public extension UIImage {
         return result
     }
 }
+
+#endif // #if canImport(UIKit)

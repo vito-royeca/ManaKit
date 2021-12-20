@@ -8,7 +8,6 @@
 
 import CoreData
 import PromiseKit
-import CoreData
 
 public class CardViewModel: BaseViewModel {
     // MARK: - Variables
@@ -60,8 +59,7 @@ public class CardViewModel: BaseViewModel {
         }
         let objectFinder = ["id": id] as [String : AnyObject]
         
-        return ManaKit.sharedInstance.willFetchCache(entityName,
-                                                     objectFinder: objectFinder)
+        return ManaKit.shared.willFetchCache(entityName, objectFinder: objectFinder)
     }
     
     override public func deleteCache() {
@@ -71,8 +69,7 @@ public class CardViewModel: BaseViewModel {
         }
         let objectFinder = ["id": id] as [String : AnyObject]
         
-        return ManaKit.sharedInstance.deleteCache(entityName,
-                                                  objectFinder: objectFinder)
+        return ManaKit.shared.deleteCache(entityName, objectFinder: objectFinder)
     }
     
     override public func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
@@ -81,8 +78,8 @@ public class CardViewModel: BaseViewModel {
         }
         let path = "/cards/\(id)?json=true"
         
-        return ManaKit.sharedInstance.createNodePromise(apiPath: path,
-                                                        httpMethod: "GET",
-                                                        httpBody: nil)
+        return ManaKit.shared.createNodePromise(apiPath: path,
+                                                httpMethod: "GET",
+                                                httpBody: nil)
     }
 }

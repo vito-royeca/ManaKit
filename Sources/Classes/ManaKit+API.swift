@@ -6,7 +6,11 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+    import FoundationNetworking
+#endif
 import PromiseKit
+//import PMKFoundation
 
 extension ManaKit {
     public func createNodePromise(apiPath: String, httpMethod: String, httpBody: String?) -> Promise<(data: Data, response: URLResponse)> {
@@ -23,7 +27,7 @@ extension ManaKit {
         if let httpBody = httpBody {
             rq.httpBody = httpBody.replacingOccurrences(of: "\n", with: "").data(using: .utf8)
         }
-        
+    
         return URLSession.shared.dataTask(.promise, with: rq)
     }
     

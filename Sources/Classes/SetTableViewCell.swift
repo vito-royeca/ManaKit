@@ -5,6 +5,8 @@
 //  Created by Jovito Royeca on 01/01/2019.
 //
 
+#if canImport(UIKit)
+
 import UIKit
 
 public protocol SetTableViewCellDelegate: NSObjectProtocol {
@@ -69,7 +71,7 @@ public class SetTableViewCell: UITableViewCell {
     // MARK: - Variables
     public var set: MGSet! {
         didSet {
-            logoLabel.text = ManaKit.sharedInstance.keyruneUnicode2String(set: set)
+//            logoLabel.text = set.keyrune2Unicode()
             nameLabel.text = set.name
             codeLabel.text = set.code
             releaseDateLabel.text = set.releaseDate ?? " "
@@ -166,3 +168,5 @@ public class SetTableViewCell: UITableViewCell {
     }
     
 }
+
+#endif // #if canImport(UIKit)

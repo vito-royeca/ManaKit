@@ -65,7 +65,7 @@ open class BaseViewModel: NSObject {
     open var fetchRequest: NSFetchRequest<NSFetchRequestResult>?
     
     // MARK: - private variables
-    private let context = ManaKit.sharedInstance.dataStack!.viewContext
+//    private let context = ManaKit.sharedInstance.dataStack!.viewContext
     private var _sectionIndexTitles = [String]()
     private var _sectionTitles = [String]()
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
@@ -165,8 +165,7 @@ open class BaseViewModel: NSObject {
             fatalError("entityName is nil")
         }
 
-        return ManaKit.sharedInstance.willFetchCache(entityName,
-                                                     objectFinder: nil)
+        return ManaKit.shared.willFetchCache(entityName, objectFinder: nil)
     }
     
     open func deleteCache() {
@@ -174,8 +173,7 @@ open class BaseViewModel: NSObject {
             fatalError("entityName is nil")
         }
 
-        ManaKit.sharedInstance.deleteCache(entityName,
-                                           objectFinder: nil)
+        ManaKit.shared.deleteCache(entityName, objectFinder: nil)
     }
     
     open func deleteAllCache() {
@@ -183,55 +181,54 @@ open class BaseViewModel: NSObject {
                         String(describing: MGCard.self)]
 
         for entity in entities {
-            ManaKit.sharedInstance.deleteCache(entity,
-                                               objectFinder: nil)
+            ManaKit.shared.deleteCache(entity, objectFinder: nil)
         }
     }
     
-    open func fetchData(callback: ((_ error: Error?) -> Void)?) {
-        if willFetchCache() {
-            firstly {
-                fetchRemoteData()
-            }.compactMap { (data, result) in
-                try JSONSerialization.jsonObject(with: data) as? [[String: Any]]
-            }.then { data in
-                self.saveLocalData(data: data)
-            }.then {
-                self.fetchLocalData()
-            }.done {
-                if let callback = callback {
-                    callback(nil)
-                }
-            }.catch { error in
-                self.deleteCache()
-                
-                if let callback = callback {
-                    callback(error)
-                }
-            }
-        } else {
-            firstly {
-                fetchLocalData()
-            }.done {
-                if let callback = callback {
-                    callback(nil)
-                }
-            }.catch { error in
-                self.deleteCache()
-                
-                if let callback = callback {
-                    callback(error)
-                }
-            }
-        }
-    }
+//    open func fetchData(callback: ((_ error: Error?) -> Void)?) {
+//        if willFetchCache() {
+//            firstly {
+//                fetchRemoteData()
+//            }.compactMap { (data, result) in
+//                try JSONSerialization.jsonObject(with: data) as? [[String: Any]]
+//            }.then { data in
+//                self.saveLocalData(data: data)
+//            }.then {
+//                self.fetchLocalData()
+//            }.done {
+//                if let callback = callback {
+//                    callback(nil)
+//                }
+//            }.catch { error in
+//                self.deleteCache()
+//                
+//                if let callback = callback {
+//                    callback(error)
+//                }
+//            }
+//        } else {
+//            firstly {
+//                fetchLocalData()
+//            }.done {
+//                if let callback = callback {
+//                    callback(nil)
+//                }
+//            }.catch { error in
+//                self.deleteCache()
+//                
+//                if let callback = callback {
+//                    callback(error)
+//                }
+//            }
+//        }
+//    }
         
     open func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
         let path = "/"
         
-        return ManaKit.sharedInstance.createNodePromise(apiPath: path,
-                                                        httpMethod: "GET",
-                                                        httpBody: nil)
+        return ManaKit.shared.createNodePromise(apiPath: path,
+                                                httpMethod: "GET",
+                                                httpBody: nil)
     }
     
     open func saveLocalData(data: [[String: Any]]) -> Promise<Void> {
@@ -243,26 +240,26 @@ open class BaseViewModel: NSObject {
             let completion = { (error: NSError?) in
                 seal.fulfill(())
             }
-            ManaKit.sharedInstance.dataStack?.sync(data,
-                                                   inEntityNamed: entityName,
-                                                   predicate: predicate,
-                                                   operations: .all,
-                                                   completion: completion)
+//            ManaKit.sharedInstance.dataStack?.sync(data,
+//                                                   inEntityNamed: entityName,
+//                                                   predicate: predicate,
+//                                                   operations: .all,
+//                                                   completion: completion)
         }
     }
     
-    open func fetchLocalData() -> Promise<Void> {
-        return Promise { seal in
-            if let request: NSFetchRequest<NSFetchRequestResult> = fetchRequest {
-                request.predicate = predicate
-                request.sortDescriptors = self.sortDescriptors
-            
-                self.fetchedResultsController = self.getFetchedResultsController(with: request)
-                self.updateSections()
-            }
-            seal.fulfill(())
-        }
-    }
+//    open func fetchLocalData() -> Promise<Void> {
+//        return Promise { seal in
+//            if let request: NSFetchRequest<NSFetchRequestResult> = fetchRequest {
+//                request.predicate = predicate
+//                request.sortDescriptors = self.sortDescriptors
+//
+//                self.fetchedResultsController = self.getFetchedResultsController(with: request)
+//                self.updateSections()
+//            }
+//            seal.fulfill(())
+//        }
+//    }
     
     open func updateSections() {
         guard let fetchedResultsController = fetchedResultsController,
@@ -295,41 +292,40 @@ open class BaseViewModel: NSObject {
         _sectionTitles.sort()
     }
     
-    open func getFetchedResultsController(with fetchRequest: NSFetchRequest<NSFetchRequestResult>?) -> NSFetchedResultsController<NSFetchRequestResult> {
-        guard let entityName = entityName else {
-            fatalError("entityName is nil")
-        }
-        
-        var request: NSFetchRequest<NSFetchRequestResult>?
-        
-        if let fetchRequest = fetchRequest {
-            request = fetchRequest
-        } else {
-            // Create a default fetchRequest
-            request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-            request!.predicate = predicate
-            request!.sortDescriptors = sortDescriptors
-        }
-        
-        // Create Fetched Results Controller
-        let frc = NSFetchedResultsController(fetchRequest: request!,
-                                             managedObjectContext: context,
-                                             sectionNameKeyPath: sectionName,
-                                             cacheName: nil)
-        
-        // Configure Fetched Results Controller
-//        frc.delegate = self
-        
-        // perform fetch
-        do {
-            try frc.performFetch()
-        } catch {
-            let fetchError = error as NSError
-            print("Unable to Perform Fetch Request")
-            print("\(fetchError), \(fetchError.localizedDescription)")
-        }
-        
-        return frc
-    }
+//    open func getFetchedResultsController(with fetchRequest: NSFetchRequest<NSFetchRequestResult>?) -> NSFetchedResultsController<NSFetchRequestResult> {
+//        guard let entityName = entityName else {
+//            fatalError("entityName is nil")
+//        }
+//
+//        var request: NSFetchRequest<NSFetchRequestResult>?
+//
+//        if let fetchRequest = fetchRequest {
+//            request = fetchRequest
+//        } else {
+//            // Create a default fetchRequest
+//            request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+//            request!.predicate = predicate
+//            request!.sortDescriptors = sortDescriptors
+//        }
+//
+//        // Create Fetched Results Controller
+//        let frc = NSFetchedResultsController(fetchRequest: request!,
+//                                             managedObjectContext: context,
+//                                             sectionNameKeyPath: sectionName,
+//                                             cacheName: nil)
+//
+//        // Configure Fetched Results Controller
+////        frc.delegate = self
+//
+//        // perform fetch
+//        do {
+//            try frc.performFetch()
+//        } catch {
+//            let fetchError = error as NSError
+//            print("Unable to Perform Fetch Request")
+//            print("\(fetchError), \(fetchError.localizedDescription)")
+//        }
+//
+//        return frc
+//    }
 }
-

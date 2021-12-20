@@ -1,0 +1,79 @@
+//
+//  SetsDataManager.swift
+//  ManaKit_Example
+//
+//  Created by Vito Royeca on 10/7/21.
+//  Copyright © 2021 CocoaPods. All rights reserved.
+//
+
+import Foundation
+import Combine
+
+public protocol SetsDataManagerProtocol {
+    func fetchRemoteData(completion: @escaping (Result<[SetModel], Error>) -> Void)
+}
+
+public class SetsDataManager {
+    public static let shared: SetsDataManagerProtocol = SetsDataManager()
+        
+    private var sets = [SetModel]()
+        
+    private init() { }
+    deinit {
+        cancelable?.cancel()
+    }
+    
+    private var cancelable: AnyCancellable?
+    private static let sessionProcessingQueue = DispatchQueue(label: "SessionProcessingQueue")
+
+}
+
+// MARK: - SetsDataManagerProtocol
+
+extension SetsDataManager: SetsDataManagerProtocol {
+    public func fetchRemoteData(completion: @escaping (Result<[SetModel], Error>) -> Void) {
+        guard let url = URL(string: "https://managuideapp.com/sets?json=true") else {
+            completion(.failure(ManaKitError.badURL))
+            return
+        }
+        
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        
+        cancelable = URLSession.shared.dataTaskPublisher(for: url)
+            .subscribe(on: Self.sessionProcessingQueue)
+            .map({
+                return $0.data
+            })
+            .decode(type: [SetModel].self, decoder: decoder)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { (suscriberCompletion) in
+                switch suscriberCompletion {
+                case .finished:
+                    completion(.success(self.sets))
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }, receiveValue: { [weak self] (sets) in
+                self?.sets = sets
+            })
+        
+//
+//        let request = URLRequest(url: url)
+//        URLSession.shared.dataTask(with: request) { data, response, error in
+//            if let error = error {
+//                completion(.failure(error))
+//            } else {
+//                if let data = data {
+//                    let decoder = JSONDecoder()
+//                    decoder.keyDecodingStrategy = .convertFromSnakeCase
+//
+//                    if let response_obj = try? decoder.decode([SetModel].self, from: data) {
+//                        self.sets = response_obj
+//                        completion(.success(self.sets))
+//                    }
+//                }
+//            }
+//        }.resume()
+    }
+}

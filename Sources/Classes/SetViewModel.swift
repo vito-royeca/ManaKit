@@ -93,8 +93,7 @@ public class SetViewModel: BaseViewModel {
         let objectFinder = ["setCode": setCode,
                             "languageCode": languageCode] as [String : AnyObject]
         
-        return ManaKit.sharedInstance.willFetchCache(entityName,
-                                                     objectFinder: objectFinder)
+        return ManaKit.shared.willFetchCache(entityName, objectFinder: objectFinder)
     }
     
     override public func deleteCache() {
@@ -107,8 +106,7 @@ public class SetViewModel: BaseViewModel {
         let objectFinder = ["setCode": setCode,
                             "languageCode": languageCode] as [String : AnyObject]
         
-        ManaKit.sharedInstance.deleteCache(entityName,
-                                           objectFinder: objectFinder)
+        ManaKit.shared.deleteCache(entityName, objectFinder: objectFinder)
     }
     
     override public func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
@@ -119,8 +117,8 @@ public class SetViewModel: BaseViewModel {
         }
         let path = "/set/\(setCode)/\(languageCode)?json=true"
         
-        return ManaKit.sharedInstance.createNodePromise(apiPath: path,
-                                                        httpMethod: "GET",
-                                                        httpBody: nil)
+        return ManaKit.shared.createNodePromise(apiPath: path,
+                                                httpMethod: "GET",
+                                                httpBody: nil)
     }
 }

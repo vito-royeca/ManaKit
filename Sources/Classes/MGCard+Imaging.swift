@@ -5,6 +5,8 @@
 //  Created by Vito Royeca on 12/24/19.
 //
 
+#if canImport(UIKit)
+
 import UIKit
 import SDWebImage
 
@@ -156,7 +158,7 @@ extension MGCard {
         }
 
         if let symbolName = symbolName {
-            return ManaKit.sharedInstance.symbolImage(name: symbolName)
+            return ManaKit.shared.symbolImage(name: symbolName)
         }
 
         return nil
@@ -230,11 +232,11 @@ extension MGCard {
         }
 
         if set.code == "ced" {
-            return ManaKit.sharedInstance.imageFromFramework(imageName: .collectorsCardBack)
+            return ManaKit.shared.imageFromFramework(imageName: .collectorsCardBack)
         } else if set.code == "cei" {
-            return ManaKit.sharedInstance.imageFromFramework(imageName: .intlCollectorsCardBack)
+            return ManaKit.shared.imageFromFramework(imageName: .intlCollectorsCardBack)
         } else {
-            return ManaKit.sharedInstance.imageFromFramework(imageName: .cardBack)
+            return ManaKit.shared.imageFromFramework(imageName: .cardBack)
         }
     }
 
@@ -260,3 +262,5 @@ extension MGCard {
         return cardImage
     }
 }
+
+#endif // #if canImport(UIKit)

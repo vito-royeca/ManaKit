@@ -5,10 +5,11 @@
 //  Created by Vito Royeca on 11/27/19.
 //
 
+#if canImport(UIKit)
+
 import Foundation
 import PromiseKit
 import SDWebImage
-import UIKit
 
 extension ManaKit {
     public func imageFromFramework(imageName: ImageName) -> UIImage? {
@@ -90,3 +91,5 @@ extension ManaKit {
         }
     }
 }
+
+#endif // #if canImport(UIKit)

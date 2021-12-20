@@ -94,9 +94,9 @@ public class SetsViewModel: BaseViewModel {
     override public func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
         let path = "/sets?json=true"
         
-        return ManaKit.sharedInstance.createNodePromise(apiPath: path,
-                                                        httpMethod: "GET",
-                                                        httpBody: nil)
+        return ManaKit.shared.createNodePromise(apiPath: path,
+                                                httpMethod: "GET",
+                                                httpBody: nil)
     }
 }
 

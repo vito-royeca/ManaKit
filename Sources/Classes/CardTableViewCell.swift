@@ -6,6 +6,8 @@
 //  Copyright © 2017 CocoaPods. All rights reserved.
 //
 
+#if canImport(UIKit)
+
 import UIKit
 import PromiseKit
 
@@ -54,7 +56,7 @@ public class CardTableViewCell: UITableViewCell {
     
     // MARK: - Custom methods
     public func clearDataDisplay() {
-        thumbnailImage.image = ManaKit.sharedInstance.imageFromFramework(imageName: .cardBackCropped)
+        thumbnailImage.image = ManaKit.shared.imageFromFramework(imageName: .cardBackCropped)
         removeAnnotation()
         nameLabel.text = nil
         castingCostLabel.text = nil
@@ -121,12 +123,12 @@ public class CardTableViewCell: UITableViewCell {
                                          roundCornered: false) {
             thumbnailImage.image = croppedImage
         } else {
-            thumbnailImage.image = ManaKit.sharedInstance.imageFromFramework(imageName: .cardBackCropped)
+            thumbnailImage.image = ManaKit.shared.imageFromFramework(imageName: .cardBackCropped)
 
             firstly {
-                ManaKit.sharedInstance.downloadImage(ofCard: card,
-                                                     type: .artCrop,
-                                                     faceOrder: faceOrder)
+                ManaKit.shared.downloadImage(ofCard: card,
+                                             type: .artCrop,
+                                             faceOrder: faceOrder)
             }.done {
                 guard let image = card.image(type: .artCrop,
                                              faceOrder: self.faceOrder,
@@ -149,7 +151,7 @@ public class CardTableViewCell: UITableViewCell {
         
         // set symbol
         if let set = card.set {
-            setImage.text = ManaKit.sharedInstance.keyruneUnicode2String(set: set)
+//            setImage.text = set.keyrune2Unicode()
             setImage.textColor = card.keyruneColor()
         }
 
@@ -231,3 +233,5 @@ public class CardTableViewCell: UITableViewCell {
                                              context: nil).size
     }
 }
+
+#endif // #if canImport(UIKit)

@@ -11,4 +11,5 @@ import Foundation
 public enum ManaKitError: Error {
   case missingManagedObjectContext
   case missingPersistentContainer
+  case badURL
 }

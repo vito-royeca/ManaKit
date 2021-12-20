@@ -9,8 +9,8 @@ import Foundation
 import CoreData
 import PromiseKit
 import SDWebImage
-import SSZipArchive
-import Sync
+//import SSZipArchive
+//import Sync
 
 extension ManaKit {
     public func willFetchCache(_ entityName: String, objectFinder: [String: AnyObject]?) -> Bool {
@@ -71,7 +71,7 @@ extension ManaKit {
     public func findObject(_ entityName: String,
                            objectFinder: [String: AnyObject]?,
                            createIfNotFound: Bool) -> NSManagedObject? {
-        let context = dataStack!.viewContext
+//        let context = dataStack!.viewContext
         
         var object: NSManagedObject?
         var predicate: NSPredicate?
@@ -90,24 +90,24 @@ extension ManaKit {
             fetchRequest!.predicate = predicate
         }
         
-        if let fetchRequest = fetchRequest {
-            if let m = try! context.fetch(fetchRequest).first as? NSManagedObject {
-                object = m
-            } else {
-                if createIfNotFound {
-                    if let desc = NSEntityDescription.entity(forEntityName: entityName, in: context) {
-                        object = NSManagedObject(entity: desc, insertInto: context)
-                    }
-                }
-            }
-        }
+//        if let fetchRequest = fetchRequest {
+//            if let m = try! context.fetch(fetchRequest).first as? NSManagedObject {
+//                object = m
+//            } else {
+//                if createIfNotFound {
+//                    if let desc = NSEntityDescription.entity(forEntityName: entityName, in: context) {
+//                        object = NSManagedObject(entity: desc, insertInto: context)
+//                    }
+//                }
+//            }
+//        }
         
         return object
     }
     
     public func findObjects(_ entityName: String,
                            objectFinder: [String: AnyObject]?) -> [NSManagedObject] {
-        let context = dataStack!.viewContext
+//        let context = dataStack!.viewContext
         
         var objects = [NSManagedObject]()
         var predicate: NSPredicate?
@@ -126,37 +126,37 @@ extension ManaKit {
             fetchRequest!.predicate = predicate
         }
         
-        if let fetchRequest = fetchRequest {
-            objects = try! context.fetch(fetchRequest) as! [NSManagedObject]
-        }
+//        if let fetchRequest = fetchRequest {
+//            objects = try! context.fetch(fetchRequest) as! [NSManagedObject]
+//        }
         
         return objects
     }
     
     public func deleteObject(_ entityName: String, objectFinder: [String: AnyObject]?) {
-        guard let dataStack = dataStack,
-            let object = findObject(entityName, objectFinder: objectFinder, createIfNotFound: false) else {
-            return
-        }
-        dataStack.mainContext.delete(object)
+//        guard let dataStack = dataStack,
+//            let object = findObject(entityName, objectFinder: objectFinder, createIfNotFound: false) else {
+//            return
+//        }
+//        dataStack.mainContext.delete(object)
     }
 
-    public func saveContext() {
-        guard let dataStack = dataStack else {
-            return
-        }
-        
-        if dataStack.mainContext.hasChanges {
-            do {
-                try dataStack.mainContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
-        }
-    }
+//    public func saveContext() {
+//        guard let dataStack = dataStack else {
+//            return
+//        }
+//
+//        if dataStack.mainContext.hasChanges {
+//            do {
+//                try dataStack.mainContext.save()
+//            } catch {
+//                // Replace this implementation with code to handle the error appropriately.
+//                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+//                let nserror = error as NSError
+//                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+//            }
+//        }
+//    }
     
     func copyDatabaseFile() {
         let bundle = Bundle(for: ManaKit.self)
@@ -213,21 +213,7 @@ extension ManaKit {
 //        }
     }
     
-    public func keyruneUnicode2String(set: MGSet) -> String? {
-        var unicode:String?
-        
-        if let keyruneUnicode = set.keyruneUnicode {
-            let charAsInt = Int(keyruneUnicode, radix: 16)!
-            let uScalar = UnicodeScalar(charAsInt)!
-            unicode = "\(uScalar)"
-        } else {
-            let charAsInt = Int("e684", radix: 16)!
-            let uScalar = UnicodeScalar(charAsInt)!
-            unicode = "\(uScalar)"
-        }
-        
-        return unicode
-    }
+    
     
 }
 
