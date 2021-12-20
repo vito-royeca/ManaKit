@@ -40,6 +40,6 @@ class BaseViewController: UIViewController {
         
 //        MBProgressHUD.showAdded(to: self.view,
 //                                animated: true)
-        viewModel.fetchData(callback: callback)
+//        viewModel.fetchData(callback: callback)
     }
 }

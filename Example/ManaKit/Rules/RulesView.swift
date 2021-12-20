@@ -10,7 +10,14 @@ import SwiftUI
 
 struct RulesView: View {
     var body: some View {
-        Text("Rules")
+        NavigationView {
+            Text("Rules")
+                .navigationBarTitle("Rules", displayMode: .automatic)
+        }
+            .navigationViewStyle(StackNavigationViewStyle())
+            .onAppear {
+    //                self.viewModel.fetchRemoteData()
+            }
     }
 }
 

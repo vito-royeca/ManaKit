@@ -33,8 +33,7 @@ class SetsViewController: BaseViewController {
         }
         tableView.keyboardDismissMode = .onDrag
         
-        tableView.register(ManaKit.sharedInstance.nibFromBundle("SetTableViewCell"),
-                           forCellReuseIdentifier: SetTableViewCell.reuseIdentifier)
+        tableView.register(ManaKit.shared.nibFromBundle("SetTableViewCell"), forCellReuseIdentifier: SetTableViewCell.reuseIdentifier)
         fetchData()
     }
 

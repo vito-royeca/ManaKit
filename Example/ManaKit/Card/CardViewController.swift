@@ -21,8 +21,7 @@ class CardViewController: BaseViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        tableView.register(ManaKit.sharedInstance.nibFromBundle("CardTableViewCell"),
-                           forCellReuseIdentifier: CardTableViewCell.reuseIdentifier)
+        tableView.register(ManaKit.shared.nibFromBundle("CardTableViewCell"), forCellReuseIdentifier: CardTableViewCell.reuseIdentifier)
         fetchData()
     }
     
@@ -137,9 +136,9 @@ extension CardViewController : UITableViewDataSource {
                 imageView.image = card.backImage()
 
                 firstly {
-                    ManaKit.sharedInstance.downloadImage(ofCard: card,
-                                                         type: .normal,
-                                                         faceOrder: faceOrder)
+                    ManaKit.shared.downloadImage(ofCard: card,
+                                                 type: .normal,
+                                                 faceOrder: faceOrder)
                 }.done {
                     guard let image = card.image(type: .normal,
                                                  faceOrder: self.faceOrder,

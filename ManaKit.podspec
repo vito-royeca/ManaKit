@@ -27,7 +27,7 @@ A database of Magic: The Gathering cards. Includes prices and images.
   s.author           = { 'vito-royeca' => 'vito.royeca@gmail.com' }
   s.source           = { :git => 'https://github.com/vito-royeca/ManaKit.git', :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/ManaGuideApp'
-  s.swift_version    = '5.0'
+#  s.swift_version    = '5.0'
   
   s.ios.deployment_target = '14.1'
 #  s.osx.deployment_target = '10.13'
@@ -42,7 +42,7 @@ A database of Magic: The Gathering cards. Includes prices and images.
   s.pod_target_xcconfig = { 'HEADER_SEARCH_PATHS' => "$(SDKROOT)/usr/include/libxml2" }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  s.frameworks = 'UIKit', 'Kanna', 'KeychainAccess', 'PromiseKit', 'SSZipArchive', 'SDWebImage', 'Sync'
+  s.frameworks = 'Combine', 'UIKit', 'Kanna', 'KeychainAccess', 'PromiseKit', 'SSZipArchive', 'SDWebImage', 'Sync'
   s.dependency 'Kanna'
   s.dependency 'KeychainAccess'
   s.dependency 'PromiseKit'

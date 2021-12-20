@@ -1,8 +1,5 @@
 PODS:
-  - BlueSocket (1.0.52)
-  - BlueSSLService (1.0.52):
-    - BlueSocket (~> 1.0.52)
-  - Kanna (5.2.4)
+  - Kanna (5.2.7)
   - KeychainAccess (4.2.2)
   - ManaKit (7.0.0):
     - Kanna
@@ -11,9 +8,6 @@ PODS:
     - SDWebImage
     - SSZipArchive
     - Sync
-  - PostgresClientKit (1.4.0):
-    - BlueSocket (~> 1.0)
-    - BlueSSLService (~> 1.0)
   - PromiseKit (6.15.3):
     - PromiseKit/CorePromise (= 6.15.3)
     - PromiseKit/Foundation (= 6.15.3)
@@ -23,9 +17,9 @@ PODS:
     - PromiseKit/CorePromise
   - PromiseKit/UIKit (6.15.3):
     - PromiseKit/CorePromise
-  - SDWebImage (5.11.1):
-    - SDWebImage/Core (= 5.11.1)
-  - SDWebImage/Core (5.11.1)
+  - SDWebImage (5.12.0):
+    - SDWebImage/Core (= 5.12.0)
+  - SDWebImage/Core (5.12.0)
   - SSZipArchive (2.4.2)
   - Sync (6.5.0)
 
@@ -33,18 +27,14 @@ DEPENDENCIES:
   - Kanna
   - KeychainAccess
   - ManaKit (from `../`)
-  - PostgresClientKit (~> 1.0)
   - PromiseKit
   - SDWebImage
   - Sync
 
 SPEC REPOS:
   trunk:
-    - BlueSocket
-    - BlueSSLService
     - Kanna
     - KeychainAccess
-    - PostgresClientKit
     - PromiseKit
     - SDWebImage
     - SSZipArchive
@@ -55,17 +45,14 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  BlueSocket: 1acd943acb07b55905291d608649fcfbf8cbd57d
-  BlueSSLService: b791a3db95b841973c44870f59bbf94628845b58
-  Kanna: b9d00d7c11428308c7f95e1f1f84b8205f567a8f
+  Kanna: 01cfbddc127f5ff0963692f285fcbc8a9d62d234
   KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
-  ManaKit: 9f7ed242639244a261166692f538bfaddf7c8579
-  PostgresClientKit: 13d5a468d22f16c909474e2a0cf201c3aa5b87b0
+  ManaKit: 48eebf2ce798f8e6a2439736f95c9a30fd1008f8
   PromiseKit: 3b2b6995e51a954c46dbc550ce3da44fbfb563c5
-  SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
+  SDWebImage: 4ea20cca2986adc5aacde07aa686742fd4c67a37
   SSZipArchive: e7b4f3d9e780c2acc1764cd88fbf2de28f26e5b2
   Sync: 86bb8aa0ea2f955ea5ac97b7b73129f86591c39e
 
-PODFILE CHECKSUM: 4fb33c2f5a8f5c08e0b39066a0e68ed8fa9e80ba
+PODFILE CHECKSUM: 7ea55d6b0fa12ea6f06b296e730156e32d748410
 
 COCOAPODS: 1.10.1

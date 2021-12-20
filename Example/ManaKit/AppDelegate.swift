@@ -22,11 +22,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
         
         
-        ManaKit.sharedInstance.configure(apiURL: "http://192.168.1.182:1993",
-                                         partnerKey: "ManaGuide",
-                                         publicKey: ManaKit.Constants.TcgPlayerPublicKey,
-                                         privateKey: ManaKit.Constants.TcgPlayerPrivateKey)
-        ManaKit.sharedInstance.setupResources()
+        ManaKit.shared.configure(apiURL: "http://192.168.1.182:1993",
+                                 partnerKey: "ManaGuide",
+                                 publicKey: ManaKit.Constants.TcgPlayerPublicKey,
+                                 privateKey: ManaKit.Constants.TcgPlayerPrivateKey)
+        ManaKit.shared.setupResources()
 
         return true
     }

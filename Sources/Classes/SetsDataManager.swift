@@ -10,13 +10,13 @@ import Foundation
 import Combine
 
 public protocol SetsDataManagerProtocol {
-    func fetchRemoteData(completion: @escaping (Result<[SetModel], Error>) -> Void)
+    func fetchData(completion: @escaping (Result<[MGSet], Error>) -> Void)
 }
 
 public class SetsDataManager {
     public static let shared: SetsDataManagerProtocol = SetsDataManager()
         
-    private var sets = [SetModel]()
+    private var sets = [MGSet]()
         
     private init() { }
     deinit {
@@ -31,21 +31,22 @@ public class SetsDataManager {
 // MARK: - SetsDataManagerProtocol
 
 extension SetsDataManager: SetsDataManagerProtocol {
-    public func fetchRemoteData(completion: @escaping (Result<[SetModel], Error>) -> Void) {
-        guard let url = URL(string: "https://managuideapp.com/sets?json=true") else {
+    public func fetchData(completion: @escaping (Result<[MGSet], Error>) -> Void) {
+        guard let url = URL(string: "http://managuideapp.com/sets?json=true") else {
             completion(.failure(ManaKitError.badURL))
             return
         }
         
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
+        decoder.userInfo[CodingUserInfoKey.managedObjectContext] = ManaKit.shared.persistentContainer.viewContext
         
         cancelable = URLSession.shared.dataTaskPublisher(for: url)
             .subscribe(on: Self.sessionProcessingQueue)
             .map({
                 return $0.data
             })
-            .decode(type: [SetModel].self, decoder: decoder)
+            .decode(type: [MGSet].self, decoder: decoder)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { (suscriberCompletion) in
                 switch suscriberCompletion {
@@ -56,6 +57,7 @@ extension SetsDataManager: SetsDataManagerProtocol {
                 }
             }, receiveValue: { [weak self] (sets) in
                 self?.sets = sets
+                try! ManaKit.shared.persistentContainer.viewContext.save()
             })
         
 //

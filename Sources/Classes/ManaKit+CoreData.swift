@@ -158,8 +158,26 @@ extension ManaKit {
 //        }
 //    }
     
+    func copyModelFile() {
+        guard let modelURL = Bundle(for: type(of: self)).url(forResource: "ManaKit", withExtension: "momd"),
+              let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first,
+              let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first,
+//              let sourcePath = resourceBundle.path(forResource: "ManaKit.sqlite", ofType: "zip"),
+              let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String else {
+            return
+        }
+        let targetPath = "\(docsPath)/\(bundleName).momd"
+        
+        print(modelURL)
+        print(targetPath)
+        if !FileManager.default.fileExists(atPath: targetPath) {
+            try! FileManager.default.copyItem(atPath: modelURL.path, toPath: targetPath)
+        }
+    }
+    
     func copyDatabaseFile() {
         let bundle = Bundle(for: ManaKit.self)
+        
         guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
             let resourceBundle = Bundle(url: bundleURL),
             let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first,
@@ -171,31 +189,31 @@ extension ManaKit {
         let targetPath = "\(docsPath)/\(bundleName).sqlite"
 
 //        if needsUpgrade() {
-//            print("Copying database file: \(Constants.ScryfallDate)")
+            print("Copying database file...")
 //            
 //            // Shutdown database
 //            dataStack = nil
 //
 //            // Remove old database files in docs directory
-//            for file in try! FileManager.default.contentsOfDirectory(atPath: docsPath) {
-//                let path = "\(docsPath)/\(file)"
-//                if file.hasPrefix(bundleName) {
-//                    try! FileManager.default.removeItem(atPath: path)
-//                }
-//            }
+            for file in try! FileManager.default.contentsOfDirectory(atPath: docsPath) {
+                let path = "\(docsPath)/\(file)"
+                if file.hasPrefix(bundleName) {
+                    try! FileManager.default.removeItem(atPath: path)
+                }
+            }
 //            
 //            // remove the contents of crop directory
-//            let cropPath = "\(cachePath)/crop/"
-//            if FileManager.default.fileExists(atPath: cropPath) {
-//                for file in try! FileManager.default.contentsOfDirectory(atPath: cropPath) {
-//                    let path = "\(cropPath)/\(file)"
-//                    try! FileManager.default.removeItem(atPath: path)
-//                }
-//            }
+            let cropPath = "\(cachePath)/crop/"
+            if FileManager.default.fileExists(atPath: cropPath) {
+                for file in try! FileManager.default.contentsOfDirectory(atPath: cropPath) {
+                    let path = "\(cropPath)/\(file)"
+                    try! FileManager.default.removeItem(atPath: path)
+                }
+            }
 //
 //            // delete image cache
-//            let imageCache = SDImageCache.init()
-//            imageCache.clearDisk(onCompletion: nil)
+            let imageCache = SDImageCache.init()
+            imageCache.clearDisk(onCompletion: nil)
 //            
 //            // Unzip
 //            SSZipArchive.unzipFile(atPath: sourcePath, toDestination: docsPath)
@@ -217,99 +235,3 @@ extension ManaKit {
     
 }
 
-// MARK: - Identifiables
-//extension MGArtist : Identifiable {
-//
-//}
-//
-//extension MGCard : Identifiable {
-//
-//}
-//
-//extension MGCardComponentPart : Identifiable {
-//
-//}
-//
-//extension MGCardFormatLegality : Identifiable {
-//
-//}
-//
-//extension MGCardPrice : Identifiable {
-//
-//}
-//
-//extension MGCardType : Identifiable {
-//
-//}
-//
-//extension MGColor : Identifiable {
-//
-//}
-//
-//extension MGComponent : Identifiable {
-//
-//}
-//
-//extension MGFormat : Identifiable {
-//
-//}
-//
-//extension MGFrame : Identifiable {
-//
-//}
-//
-//extension MGFrameEffect : Identifiable {
-//
-//}
-//
-//extension MGLanguage : Identifiable {
-//
-//}
-//
-//extension MGLayout : Identifiable {
-//
-//}
-//
-//extension MGLegality : Identifiable {
-//
-//}
-//
-//extension MGLocalCache : Identifiable {
-//
-//}
-//
-//extension MGRarity : Identifiable {
-//
-//}
-//
-//extension MGRule : Identifiable {
-//
-//}
-//
-//extension MGRuling : Identifiable {
-//
-//}
-//
-//extension MGServerInfo : Identifiable {
-//
-//}
-//
-//extension MGSet : Identifiable {
-//
-//}
-//
-//extension MGSetBlock : Identifiable {
-//
-//}
-//
-//extension MGSetType : Identifiable {
-//
-//}
-//
-//extension MGStore : Identifiable {
-//
-//}
-//
-//extension MGWatermark : Identifiable {
-//
-//}

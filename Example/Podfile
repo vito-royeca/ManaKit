@@ -14,7 +14,6 @@ target 'ManaKit_Example' do
     platform :ios, "14.1"
 
     pod 'KeychainAccess'
-    pod 'PostgresClientKit', '~> 1.0'
 end
 
 target 'ManaKit_ExampleTests' do
@@ -22,7 +21,6 @@ target 'ManaKit_ExampleTests' do
     platform :ios, "14.1"
 
     pod 'KeychainAccess'
-    pod 'PostgresClientKit', '~> 1.0'
 end
 
 target 'ManaKit_ExampleUITests' do
@@ -30,5 +28,4 @@ target 'ManaKit_ExampleUITests' do
     platform :ios, "14.1"
 
     pod 'KeychainAccess'
-    pod 'PostgresClientKit', '~> 1.0'
 end

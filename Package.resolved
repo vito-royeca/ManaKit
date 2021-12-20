@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/tid-kijyun/Kanna.git",
         "state": {
           "branch": null,
-          "revision": "9b8f73f8c8e145dc496565bbf878a709793e7ba3",
-          "version": "5.0.0"
+          "revision": "c657fb9f5827ef138068215c76ad0bb62bbc92da",
+          "version": "5.2.4"
         }
       },
       {
@@ -21,11 +21,11 @@
       },
       {
         "package": "PromiseKit",
-        "repositoryURL": "https://github.com/mxcl/PromiseKit.git",
+        "repositoryURL": "https://github.com/mxcl/PromiseKit",
         "state": {
           "branch": null,
-          "revision": "80963d4317bcdc03891e0fbaa744f20511d1bc08",
-          "version": "6.12.0"
+          "revision": "dc04daa3c7e9d9585dc3e9d06b1295de0fb14901",
+          "version": "7.0.0-rc2"
         }
       },
       {
@@ -35,15 +35,6 @@
           "branch": null,
           "revision": "7ef9a314b12c1a31edb0d09d41fcba93143fe772",
           "version": "5.4.0"
-        }
-      },
-      {
-        "package": "SSZipArchive",
-        "repositoryURL": "https://github.com/vito-royeca/ZipArchive.git",
-        "state": {
-          "branch": null,
-          "revision": "4f35b1ae56dfab17f13d09a8f5dc6941827ffeda",
-          "version": "2.2.4"
         }
       }
     ]

@@ -28,8 +28,7 @@ class SetViewController: BaseViewController {
             tableView.tableHeaderView = searchController.searchBar
         }
         tableView.keyboardDismissMode = .onDrag
-        tableView.register(ManaKit.sharedInstance.nibFromBundle("CardTableViewCell"),
-                           forCellReuseIdentifier: CardTableViewCell.reuseIdentifier)
+        tableView.register(ManaKit.shared.nibFromBundle("CardTableViewCell"), forCellReuseIdentifier: CardTableViewCell.reuseIdentifier)
         
         fetchData()
     }
