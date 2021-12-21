@@ -13,6 +13,10 @@ public enum DecoderConfigurationError: Error {
     case missingManagedObjectContext
 }
 
+public enum JSONDataError: Error {
+    case unableToParse
+}
+
 // MARK: - CodingUserInfoKey
 
 public extension CodingUserInfoKey {

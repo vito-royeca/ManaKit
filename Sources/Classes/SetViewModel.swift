@@ -9,7 +9,7 @@
 import CoreData
 import PromiseKit
 
-public class SetViewModel: BaseViewModel {
+public class SetViewModel: BaseViewModel<MGSet> {
     // MARK: - Variables
     private var _set: MGSet?
     private var _languageCode: String?
@@ -65,7 +65,7 @@ public class SetViewModel: BaseViewModel {
         _languageCode = languageCode
         
         let _ = predicate // init the predicate
-        entityName = String(describing: MGSet.self)
+        entity = MGSet.self
         sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         sectionName = "myNameSection"
         
@@ -87,38 +87,38 @@ public class SetViewModel: BaseViewModel {
         guard let set = _set,
             let setCode = set.code,
             let languageCode = _languageCode,
-            let entityName = entityName else {
+            let entity = entity else {
             fatalError("set, languageCode, entityName are nil")
         }
-        let objectFinder = ["setCode": setCode,
-                            "languageCode": languageCode] as [String : AnyObject]
+        let query = ["setCode": setCode,
+                     "languageCode": languageCode] as [String : AnyObject]
         
-        return ManaKit.shared.willFetchCache(entityName, objectFinder: objectFinder)
+        return ManaKit.shared.willFetchCache(MGSet.self, query: query)
     }
     
-    override public func deleteCache() {
-        guard let set = _set,
-            let setCode = set.code,
-            let languageCode = _languageCode,
-            let entityName = entityName else {
-            fatalError("set, languageCode, and entityName are nil")
-        }
-        let objectFinder = ["setCode": setCode,
-                            "languageCode": languageCode] as [String : AnyObject]
-        
-        ManaKit.shared.deleteCache(entityName, objectFinder: objectFinder)
-    }
+//    override public func deleteCache() {
+//        guard let set = _set,
+//            let setCode = set.code,
+//            let languageCode = _languageCode,
+//            let entityName = entityName else {
+//            fatalError("set, languageCode, and entityName are nil")
+//        }
+//        let query = ["setCode": setCode,
+//                     "languageCode": languageCode] as [String : AnyObject]
+//
+//        ManaKit.shared.delete
+//    }
     
-    override public func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
-        guard let set = _set,
-            let setCode = set.code,
-            let languageCode = _languageCode else {
-            fatalError("set and languageCode are nil")
-        }
-        let path = "/set/\(setCode)/\(languageCode)?json=true"
-        
-        return ManaKit.shared.createNodePromise(apiPath: path,
-                                                httpMethod: "GET",
-                                                httpBody: nil)
-    }
+//    override public func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
+//        guard let set = _set,
+//            let setCode = set.code,
+//            let languageCode = _languageCode else {
+//            fatalError("set and languageCode are nil")
+//        }
+//        let path = "/set/\(setCode)/\(languageCode)?json=true"
+//        
+//        return ManaKit.shared.createNodePromise(apiPath: path,
+//                                                httpMethod: "GET",
+//                                                httpBody: nil)
+//    }
 }

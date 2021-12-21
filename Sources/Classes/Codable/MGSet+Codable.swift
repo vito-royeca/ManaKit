@@ -56,7 +56,8 @@ public class MGSet: NSManagedObject, Codable {
         tcgPlayerId = try container.decodeIfPresent(Int32.self, forKey: .tcgPlayerId) ?? Int32(0)
         cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards) as NSSet?
         children = try container.decodeIfPresent(Set<MGSet>.self, forKey: .children) as NSSet?
-        languages = try container.decodeIfPresent(Set<MGLanguage>.self, forKey: .languages) as NSSet?
+        // Don't include many-to-many relations
+//        languages = try container.decodeIfPresent(Set<MGLanguage>.self, forKey: .languages) as NSSet?
         parent = try container.decodeIfPresent(MGSet.self, forKey: .parent)
         setBlock = try container.decodeIfPresent(MGSetBlock.self, forKey: .setBlock)
         setType = try container.decodeIfPresent(MGSetType.self, forKey: .setType)
@@ -81,7 +82,8 @@ public class MGSet: NSManagedObject, Codable {
         try container.encode(tcgPlayerId, forKey: .tcgPlayerId)
         try container.encode(cards as! Set<MGCard>, forKey: .cards)
         try container.encode(children as! Set<MGSet>, forKey: .children)
-        try container.encode(languages as! Set<MGLanguage>, forKey: .languages)
+        // Don't include many-to-many relations
+//        try container.encode(languages as! Set<MGLanguage>, forKey: .languages)
         try container.encode(parent, forKey: .parent)
         try container.encode(setBlock, forKey: .setBlock)
         try container.encode(setType, forKey: .setType)
@@ -90,8 +92,12 @@ public class MGSet: NSManagedObject, Codable {
 
 extension MGSet {
     public func keyrune2Unicode() -> String {
-        let charAsInt = Int(keyruneUnicode ?? "", radix: 16)!
-        let uScalar = UnicodeScalar(charAsInt)!
+        let keyruneUnicode = keyruneUnicode ?? "e684"
+        
+        guard let charAsInt = Int(keyruneUnicode, radix: 16),
+           let uScalar = UnicodeScalar(charAsInt) else {
+            return ""
+        }
         let unicode = "\(uScalar)"
         
         return unicode

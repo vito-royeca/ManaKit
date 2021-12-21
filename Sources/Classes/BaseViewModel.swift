@@ -51,9 +51,9 @@ public enum ViewModelMode: Int {
     }
 }
 
-open class BaseViewModel: NSObject {
+open class BaseViewModel<T: NSManagedObject>: NSObject {
     // MARK: - public variables
-    public var entityName: String?
+    public var entity: T.Type?
     public var sortDescriptors: [NSSortDescriptor]?
     public var sectionName: String?
     public var title: String?
@@ -65,7 +65,6 @@ open class BaseViewModel: NSObject {
     open var fetchRequest: NSFetchRequest<NSFetchRequestResult>?
     
     // MARK: - private variables
-//    private let context = ManaKit.sharedInstance.dataStack!.viewContext
     private var _sectionIndexTitles = [String]()
     private var _sectionTitles = [String]()
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
@@ -161,29 +160,29 @@ open class BaseViewModel: NSObject {
     }
     
     open func willFetchCache() -> Bool {
-        guard let entityName = entityName else {
-            fatalError("entityName is nil")
+        guard let entity = entity else {
+            fatalError("entity is nil")
         }
 
-        return ManaKit.shared.willFetchCache(entityName, objectFinder: nil)
+        return ManaKit.shared.willFetchCache(entity, query: nil)
     }
     
-    open func deleteCache() {
-        guard let entityName = entityName else {
-            fatalError("entityName is nil")
-        }
-
-        ManaKit.shared.deleteCache(entityName, objectFinder: nil)
-    }
+//    open func deleteCache() {
+//        guard let entity = entity else {
+//            fatalError("entity is nil")
+//        }
+//
+//        ManaKit.shared.deleteCache(entityName, objectFinder: nil)
+//    }
     
-    open func deleteAllCache() {
-        let entities = [String(describing: MGSet.self),
-                        String(describing: MGCard.self)]
-
-        for entity in entities {
-            ManaKit.shared.deleteCache(entity, objectFinder: nil)
-        }
-    }
+//    open func deleteAllCache() {
+//        let entities = [String(describing: MGSet.self),
+//                        String(describing: MGCard.self)]
+//
+//        for entity in entities {
+//            ManaKit.shared.deleteCache(entity, objectFinder: nil)
+//        }
+//    }
     
 //    open func fetchData(callback: ((_ error: Error?) -> Void)?) {
 //        if willFetchCache() {
@@ -223,30 +222,30 @@ open class BaseViewModel: NSObject {
 //        }
 //    }
         
-    open func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
-        let path = "/"
-        
-        return ManaKit.shared.createNodePromise(apiPath: path,
-                                                httpMethod: "GET",
-                                                httpBody: nil)
-    }
+//    open func fetchRemoteData() -> Promise<(data: Data, response: URLResponse)> {
+//        let path = "/"
+//
+//        return ManaKit.shared.createNodePromise(apiPath: path,
+//                                                httpMethod: "GET",
+//                                                httpBody: nil)
+//    }
     
-    open func saveLocalData(data: [[String: Any]]) -> Promise<Void> {
-        return Promise { seal in
-            guard let entityName = entityName else {
-                fatalError("entityName is nil")
-            }
-
-            let completion = { (error: NSError?) in
-                seal.fulfill(())
-            }
+//    open func saveLocalData(data: [[String: Any]]) -> Promise<Void> {
+//        return Promise { seal in
+//            guard let entityName = entityName else {
+//                fatalError("entityName is nil")
+//            }
+//
+//            let completion = { (error: NSError?) in
+//                seal.fulfill(())
+//            }
 //            ManaKit.sharedInstance.dataStack?.sync(data,
 //                                                   inEntityNamed: entityName,
 //                                                   predicate: predicate,
 //                                                   operations: .all,
 //                                                   completion: completion)
-        }
-    }
+//        }
+//    }
     
 //    open func fetchLocalData() -> Promise<Void> {
 //        return Promise { seal in

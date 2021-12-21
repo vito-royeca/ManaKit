@@ -28,13 +28,13 @@ public class ManaKit: DatabaseProtocol {
 
     public enum Constants {
         public static let EightEditionRelease = "2003-07-28"
-        public static let ManaGuideDataAge    = 24 * 3 // 3 days
+        public static let ManaGuideDataAge    = 5 // 5 mins 
         public static let TcgPlayerApiVersion = "v1.36.0"
         public static let TcgPlayerApiLimit   = 300
         public static let TcgPlayerPricingAge = 24 * 3 // 3 days
         public static let TcgPlayerPublicKey  = "A49D81FB-5A76-4634-9152-E1FB5A657720"
         public static let TcgPlayerPrivateKey = "C018EF82-2A4D-4F7A-A785-04ADEBF2A8E5"
-        public static let MomModel            = "2020-01-30.mom"
+//        public static let MomModel            = "2020-01-30.mom"
     }
     
     public enum ImageName: String {
@@ -155,8 +155,8 @@ public class ManaKit: DatabaseProtocol {
     }
     
     public func setupResources() {
-        copyModelFile()
-        copyDatabaseFile()
+//        copyModelFile()
+//        copyDatabaseFile()
         loadCustomFonts()
     }
     
@@ -279,14 +279,21 @@ public class ManaKit: DatabaseProtocol {
     // MARK: - Core Data
     
     public lazy var persistentContainer: NSPersistentContainer = {
+        let bundle = Bundle(for: ManaKit.self)
         let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "ManaKit"
-        let container = NSPersistentCloudKitContainer(name: bundleName)
-        container.viewContext.automaticallyMergesChangesFromParent = true
+        
+        guard let momURL = bundle.url(forResource: "ManaKit", withExtension: "momd"),
+           let managedObjectModel = NSManagedObjectModel(contentsOf: momURL) else {
+               fatalError("Can't load persistent container")
+           }
+        let container = NSPersistentContainer(name: bundleName, managedObjectModel: managedObjectModel)
+        
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
+        container.viewContext.automaticallyMergesChangesFromParent = true
         return container
     }()
 

@@ -32,50 +32,68 @@ public class SetsDataManager {
 
 extension SetsDataManager: SetsDataManagerProtocol {
     public func fetchData(completion: @escaping (Result<[MGSet], Error>) -> Void) {
-        guard let url = URL(string: "http://managuideapp.com/sets?json=true") else {
-            completion(.failure(ManaKitError.badURL))
-            return
+        let query = ["page": Int32(0)]
+        let sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: false),
+                               NSSortDescriptor(key: "name", ascending: true)]
+        let done = {
+            self.sets = ManaKit.shared.find(MGSet.self,
+                                            query: nil,
+                                            sortDescriptors: sortDescriptors,
+                                            createIfNotFound: false) ?? [MGSet]()
+            completion(.success(self.sets))
         }
         
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        decoder.userInfo[CodingUserInfoKey.managedObjectContext] = ManaKit.shared.persistentContainer.viewContext
-        
-        cancelable = URLSession.shared.dataTaskPublisher(for: url)
-            .subscribe(on: Self.sessionProcessingQueue)
-            .map({
-                return $0.data
-            })
-            .decode(type: [MGSet].self, decoder: decoder)
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { (suscriberCompletion) in
-                switch suscriberCompletion {
-                case .finished:
-                    completion(.success(self.sets))
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }, receiveValue: { [weak self] (sets) in
-                self?.sets = sets
-                try! ManaKit.shared.persistentContainer.viewContext.save()
-            })
-        
-//
-//        let request = URLRequest(url: url)
-//        URLSession.shared.dataTask(with: request) { data, response, error in
-//            if let error = error {
-//                completion(.failure(error))
-//            } else {
-//                if let data = data {
-//                    let decoder = JSONDecoder()
-//                    decoder.keyDecodingStrategy = .convertFromSnakeCase
-//
-//                    if let response_obj = try? decoder.decode([SetModel].self, from: data) {
-//                        self.sets = response_obj
-//                        completion(.success(self.sets))
-//                    }
-//                }
-//            }
-//        }.resume()
+        if ManaKit.shared.willFetchCache(MGSet.self, query: query) {
+            guard let url = URL(string: "\(ManaKit.shared.apiURL)/sets?json=true") else {
+                completion(.failure(ManaKitError.badURL))
+                return
+            }
+            
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            decoder.userInfo[CodingUserInfoKey.managedObjectContext] = ManaKit.shared.persistentContainer.viewContext
+            
+            cancelable = URLSession.shared.dataTaskPublisher(for: url)
+                .subscribe(on: Self.sessionProcessingQueue)
+                .map({
+                    return $0.data
+                })
+                .decode(type: [MGSet].self, decoder: decoder)
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { (suscriberCompletion) in
+                    switch suscriberCompletion {
+                    case .finished:
+                        done()
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    }
+                }, receiveValue: { _ /*[weak self] (sets)*/ in
+                    do {
+                        try ManaKit.shared.persistentContainer.viewContext.save()
+                    } catch {
+                        print(error)
+                    }
+                })
+            
+    //
+    //        let request = URLRequest(url: url)
+    //        URLSession.shared.dataTask(with: request) { data, response, error in
+    //            if let error = error {
+    //                completion(.failure(error))
+    //            } else {
+    //                if let data = data {
+    //                    let decoder = JSONDecoder()
+    //                    decoder.keyDecodingStrategy = .convertFromSnakeCase
+    //
+    //                    if let response_obj = try? decoder.decode([SetModel].self, from: data) {
+    //                        self.sets = response_obj
+    //                        completion(.success(self.sets))
+    //                    }
+    //                }
+    //            }
+    //        }.resume()
+        } else {
+            done()
+        }
     }
 }
