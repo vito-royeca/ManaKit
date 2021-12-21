@@ -7,7 +7,7 @@
 
 import CoreData
 
-public class MGWatermark: NSManagedObject, Codable {
+public class MGWatermark: MGEntity {
     enum CodingKeys: CodingKey {
         case name,
              nameSection,
@@ -28,7 +28,7 @@ public class MGWatermark: NSManagedObject, Codable {
         cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards) as NSSet?
     }
     
-    public func encode(to encoder: Encoder) throws {
+    public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(name, forKey: .name)

@@ -10,26 +10,31 @@ import Foundation
 import Combine
 import ManaKit
 
-protocol SetsViewModelProtocol {
-    var sets: [MGSet] { get }
-    
-    func fetchData()
-}
-
 final class SetsViewModel: ObservableObject {
     @Published var sets = [MGSet]()
     
-    var dataManager: SetsDataManagerProtocol
+    var dataAPI: API
+    var cancellables = Set<AnyCancellable>()
     
-    init(dataManager: SetsDataManagerProtocol = SetsDataManager.shared) {
-        self.dataManager = dataManager
+    init(dataAPI: API = ManaKit.shared) {
+        self.dataAPI = dataAPI
     }
-}
-
-// MARK: - SetsViewModelProtocol
-extension SetsViewModel: SetsViewModelProtocol {
+    
+    deinit {
+        for can in cancellables {
+            can.cancel()
+        }
+    }
+        
     func fetchData() {
-        dataManager.fetchData(completion: { result in
+        let query = ["page": Int32(0)]
+        let sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: false),
+                               NSSortDescriptor(key: "name", ascending: true)]
+
+        dataAPI.fetchSets(query: query,
+                          sortDescriptors: sortDescriptors,
+                          cancellables: &cancellables,
+                          completion: { result in
             switch result {
             case .success(let sets):
                 self.sets = sets

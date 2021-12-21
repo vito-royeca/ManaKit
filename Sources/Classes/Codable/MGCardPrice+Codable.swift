@@ -7,7 +7,7 @@
 
 import CoreData
 
-public class MGCardPrice: NSManagedObject, Codable {
+public class MGCardPrice: MGEntity {
     enum CodingKeys: CodingKey {
         case condition,
              dateUpdated,
@@ -35,7 +35,7 @@ public class MGCardPrice: NSManagedObject, Codable {
         dateUpdated = try container.decodeIfPresent(Date.self, forKey: .dateUpdated)
         directLow = try container.decodeIfPresent(Double.self, forKey: .directLow) ?? Double(0)
         high = try container.decodeIfPresent(Double.self, forKey: .high) ?? Double(0)
-        id = try container.decodeIfPresent(Int32.self, forKey: .id) ?? Int32(0)
+        id = "\(try container.decodeIfPresent(Int32.self, forKey: .id) ?? Int32(0))"
         isFoil = try container.decodeIfPresent(Bool.self, forKey: .isFoil) ?? false
         low = try container.decodeIfPresent(Double.self, forKey: .low) ?? Double(0)
         market = try container.decodeIfPresent(Double.self, forKey: .market) ?? Double(0)
@@ -44,7 +44,7 @@ public class MGCardPrice: NSManagedObject, Codable {
         store = try container.decodeIfPresent(MGStore.self, forKey: .store)
     }
     
-    public func encode(to encoder: Encoder) throws {
+    public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(condition, forKey: .condition)

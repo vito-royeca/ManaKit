@@ -23,10 +23,21 @@ public extension CodingUserInfoKey {
   static let managedObjectContext = CodingUserInfoKey(rawValue: "managedObjectContext")!
 }
 
-public class MGLocalCache: NSManagedObject {
+// MARK: - Classes and Protocols
+
+public class MGEntity: NSManagedObject, Codable {
+    public required convenience init(from decoder: Decoder) throws {
+        guard let context = decoder.userInfo[CodingUserInfoKey.managedObjectContext] as? NSManagedObjectContext else {
+          throw DecoderConfigurationError.missingManagedObjectContext
+        }
+
+        self.init(context: context)
+    }
+    
+//    public func encode(to encoder: Encoder) throws {}
+}
+
+public class MGLocalCache: MGEntity {
     
 }
 
-public class MGServerInfo: NSManagedObject {
-    
-}

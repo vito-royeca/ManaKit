@@ -7,7 +7,7 @@
 
 import CoreData
 
-public class MGArtist: NSManagedObject, Codable {
+public class MGArtist: MGEntity {
     enum CodingKeys: CodingKey {
         case firstName,
              lastName,
@@ -30,7 +30,7 @@ public class MGArtist: NSManagedObject, Codable {
         nameSection = try container.decodeIfPresent(String.self, forKey: .nameSection)
     }
     
-    public func encode(to encoder: Encoder) throws {
+    public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(firstName, forKey: .firstName)

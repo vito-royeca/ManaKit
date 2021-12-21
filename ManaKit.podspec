@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ManaKit'
-  s.version          = '7.0.0'
+  s.version          = '7.1.0'
   s.summary          = 'MTG API database.'
 
 # This description is used to generate tags and improve search results.
@@ -42,12 +42,11 @@ A database of Magic: The Gathering cards. Includes prices and images.
   s.pod_target_xcconfig = { 'HEADER_SEARCH_PATHS' => "$(SDKROOT)/usr/include/libxml2" }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  s.frameworks = 'Combine', 'UIKit', 'Kanna', 'KeychainAccess', 'PromiseKit', 'SSZipArchive', 'SDWebImage', 'Sync'
+  s.frameworks = 'Combine', 'UIKit', 'Kanna', 'KeychainAccess', 'PromiseKit', 'SSZipArchive', 'SDWebImage'
   s.dependency 'Kanna'
   s.dependency 'KeychainAccess'
   s.dependency 'PromiseKit'
   s.dependency 'SSZipArchive'
   s.dependency 'SDWebImage'
-  s.dependency 'Sync'
 
 end

@@ -6,7 +6,6 @@ def default_pods
     pod 'Kanna'
     pod 'PromiseKit'
     pod 'SDWebImage'
-    pod 'Sync'
 end
 
 target 'ManaKit_Example' do

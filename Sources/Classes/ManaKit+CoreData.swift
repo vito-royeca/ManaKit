@@ -7,13 +7,57 @@
 
 import Foundation
 import CoreData
-import PromiseKit
-import SDWebImage
-//import SSZipArchive
-//import Sync
+import Combine
 
 extension ManaKit {
-    public func willFetchCache<T: NSManagedObject>(_ entity: T.Type, query: [String: Any]?) -> Bool {
+    func fetchData<T: MGEntity>(_ entity: T.Type,
+                                query: [String: Any]?,
+                                sortDescriptors: [NSSortDescriptor]?,
+                                url: URL,
+                                cancellables: inout Set<AnyCancellable>,
+                                completion: @escaping (Result<[T], Error>) -> Void) {
+        let done = {
+            let result = self.find(entity,
+                                   query: nil,
+                                   sortDescriptors: sortDescriptors,
+                                   createIfNotFound: false) ?? [T]()
+            completion(.success(result))
+        }
+        
+        if willFetchCache(entity, query: query) {
+            guard let url = URL(string: "\(apiURL)/sets?json=true") else {
+                completion(.failure(ManaKitError.badURL))
+                return
+            }
+            
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            decoder.userInfo[CodingUserInfoKey.managedObjectContext] = persistentContainer.viewContext
+            
+            URLSession.shared.dataTaskPublisher(for: url)
+                .subscribe(on: sessionProcessingQueue)
+                .map({
+                    return $0.data
+                })
+                .decode(type: [T].self, decoder: decoder)
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { (suscriberCompletion) in
+                    switch suscriberCompletion {
+                    case .finished:
+                        done()
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    }
+                }, receiveValue: { _ /*[weak self] (sets)*/ in
+                    self.saveContext()
+                })
+                .store(in: &cancellables)
+        } else {
+            done()
+        }
+    }
+    
+    func willFetchCache<T: MGEntity>(_ entity: T.Type, query: [String: Any]?) -> Bool {
         let entityName = String(describing: entity)
         var willFetch = true
         var newQuery = [String: Any]()
@@ -40,26 +84,19 @@ extension ManaKit {
             }
             
             if willFetch {
-                do {
-                    let context = persistentContainer.viewContext
-                    cache.lastUpdated = Date()
-                    cache.tableName = entityName
-                    
-                    try context.save()
-                } catch {
-                    print(error)
-                    return false
-                }
+                cache.lastUpdated = Date()
+                cache.tableName = entityName
+                saveContext()
             }
         }
         
         return willFetch
     }
 
-    public func find<T: NSManagedObject>(_ entity: T.Type,
-                                         query: [String: Any]?,
-                                         sortDescriptors: [NSSortDescriptor]?,
-                                         createIfNotFound: Bool) -> [T]? {
+    func find<T: MGEntity>(_ entity: T.Type,
+                           query: [String: Any]?,
+                           sortDescriptors: [NSSortDescriptor]?,
+                           createIfNotFound: Bool) -> [T]? {
         let context = persistentContainer.viewContext
         let entityName = String(describing: entity)
         let request = NSFetchRequest<T>(entityName: entityName)
@@ -81,7 +118,7 @@ extension ManaKit {
                                 object.setValue(value, forKey: key)
                             }
                         }
-                        try context.save()
+                        saveContext()
                         
                         return find(entity, query: query, sortDescriptors: sortDescriptors, createIfNotFound: createIfNotFound)
                     } else {
@@ -97,7 +134,9 @@ extension ManaKit {
         }
     }
     
-    public func delete<T: NSManagedObject>(_ entity: T.Type, query: [String: AnyObject]?, completion: () -> Void) {
+    public func delete<T: MGEntity>(_ entity: T.Type,
+                                    query: [String: AnyObject]?,
+                                    completion: () -> Void) {
         let context = persistentContainer.viewContext
         let entityName = String(describing: entity)
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
@@ -120,7 +159,7 @@ extension ManaKit {
         }
     }
 
-    func count<T: NSManagedObject>(_ entity: T.Type, query: [String: AnyObject]?) -> Int {
+    public func count<T: NSManagedObject>(_ entity: T.Type, query: [String: AnyObject]?) -> Int {
         let context = persistentContainer.viewContext
         let entityName = String(describing: entity)
         let request = NSFetchRequest<T>(entityName: entityName)
@@ -159,24 +198,18 @@ extension ManaKit {
         return predicate
     }
 
-    
-//    public func saveContext() {
-//        guard let dataStack = dataStack else {
-//            return
-//        }
-//
-//        if dataStack.mainContext.hasChanges {
-//            do {
-//                try dataStack.mainContext.save()
-//            } catch {
-//                // Replace this implementation with code to handle the error appropriately.
-//                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-//                let nserror = error as NSError
-//                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-//            }
-//        }
-//    }
-    
+    public func saveContext () {
+        let context = persistentContainer.viewContext
+        
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                print(error)
+            }
+        }
+    }
+        
 //    func copyModelFile() {
 //        guard let modelURL = Bundle(for: type(of: self)).url(forResource: "ManaKit", withExtension: "momd"),
 //              let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first,

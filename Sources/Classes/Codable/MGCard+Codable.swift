@@ -7,7 +7,7 @@
 
 import CoreData
 
-public class MGCard: NSManagedObject, Codable {
+public class MGCard: MGEntity {
     enum CodingKeys: CodingKey {
         case arenaId,
              cardBackId,
@@ -146,7 +146,7 @@ public class MGCard: NSManagedObject, Codable {
         watermark = try container.decodeIfPresent(MGWatermark.self, forKey: .watermark)
     }
     
-    public func encode(to encoder: Encoder) throws {
+    public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(arenaId, forKey: .arenaId)

@@ -7,7 +7,7 @@
 
 import CoreData
 
-public class MGCardType: NSManagedObject, Codable {
+public class MGCardType: MGEntity {
     enum CodingKeys: CodingKey {
         case name,
              nameSection,
@@ -34,7 +34,7 @@ public class MGCardType: NSManagedObject, Codable {
         supertypes = try container.decodeIfPresent(Set<MGCard>.self, forKey: .supertypes) as NSSet?
     }
     
-    public func encode(to encoder: Encoder) throws {
+    public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(name, forKey: .name)

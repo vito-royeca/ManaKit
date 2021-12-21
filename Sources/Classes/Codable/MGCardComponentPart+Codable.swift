@@ -7,7 +7,7 @@
 
 import CoreData
 
-public class MGCardComponentPart: NSManagedObject, Codable {
+public class MGCardComponentPart: MGEntity {
     enum CodingKeys: CodingKey {
         case id,
              card,
@@ -24,13 +24,13 @@ public class MGCardComponentPart: NSManagedObject, Codable {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        id = try container.decodeIfPresent(Int32.self, forKey: .id) ?? Int32(0)
         card = try container.decodeIfPresent(MGCard.self, forKey: .card)
         component = try container.decodeIfPresent(MGComponent.self, forKey: .component)
         part = try container.decodeIfPresent(MGCard.self, forKey: .part)
+        id = "\(card?.id ?? "")_\(component?.name ?? "")_\(part?.id ?? "")"
     }
     
-    public func encode(to encoder: Encoder) throws {
+    public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(id, forKey: .id)

@@ -1,5 +1,5 @@
 //
-//  MockSetsDataManager.swift
+//  MockAPI.swift
 //  ManaKit
 //
 //  Created by Vito Royeca on 10/7/21.
@@ -7,24 +7,19 @@
 //
 
 import Foundation
+import Combine
 import ManaKit
 
-class MockSetsDataManager {
-    private var sets = [MGSet]()
-        
-}
-
-extension MockSetsDataManager: SetsDataManagerProtocol {
-    func fetchData(completion: @escaping (Result<[MGSet], Error>) -> Void) {
+class MockAPI: API {
+    func fetchSets(query: [String: Any]?,
+                   sortDescriptors: [NSSortDescriptor]?,
+                   cancellables: inout Set<AnyCancellable>,
+                   completion: @escaping (Result<[MGSet], Error>) -> Void) {
         do {
             let data = try JSONSerialization.data(withJSONObject: [
                 [
                     "cardCount": Int32(295),
                     "code": "lea",
-                    "dateCreated": Date(),
-                    "dateUpdated": Date(),
-                    "isFoilOnly": false,
-                    "isOnlineOnly": false,
                     "keyruneClass": "lea",
                     "keyruneUnicode": "e600",
                     "name": "Limited Edition Alpha",
@@ -33,10 +28,6 @@ extension MockSetsDataManager: SetsDataManagerProtocol {
                 [
                     "cardCount": Int32(295),
                     "code": "leb",
-                    "dateCreated": Date(),
-                    "dateUpdated": Date(),
-                    "isFoilOnly": false,
-                    "isOnlineOnly": false,
                     "keyruneClass": "leb",
                     "keyruneUnicode": "e601",
                     "name": "Limited Edition Beta",
@@ -46,11 +37,30 @@ extension MockSetsDataManager: SetsDataManagerProtocol {
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
             decoder.userInfo[CodingUserInfoKey.managedObjectContext] = ManaKit.shared.persistentContainer.viewContext
-            sets = try decoder.decode([MGSet].self, from: data)
+            let sets = try decoder.decode([MGSet].self, from: data)
             
             completion(.success(sets))
         } catch {
             completion(.failure(JSONDataError.unableToParse))
         }
+    }
+    
+    func fetchSet(code: String,
+                  languageCode: String,
+                  cancellables: inout Set<AnyCancellable>,
+                  completion: @escaping (Result<[MGSet], Error>) -> Void) {
+        
+    }
+    
+    func fetchCards(query: String,
+                    cancellables: inout Set<AnyCancellable>,
+                    completion: @escaping (Result<[MGCard], Error>) -> Void) {
+        
+    }
+    
+    func fetchCard(id: String,
+                   cancellables: inout Set<AnyCancellable>,
+                   completion: @escaping (Result<[MGCard], Error>) -> Void) {
+        
     }
 }

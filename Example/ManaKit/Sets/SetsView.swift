@@ -11,24 +11,32 @@ import ManaKit
 
 struct SetsView: View {
     @ObservedObject var viewModel = SetsViewModel()
+    @State private var selectedSet: MGSet? = nil
     
     var body: some View {
         NavigationView {
             List(viewModel.sets, id: \.code) { set in
                 SetsRowView(set: set)
+                    .onTapGesture {
+                        show(set: set)
+                    }
             }
                 .navigationBarTitle("Sets", displayMode: .automatic)
         }
             .navigationViewStyle(StackNavigationViewStyle())
             .onAppear {
-                self.viewModel.fetchData()
+                viewModel.fetchData()
             }
+    }
+    
+    func show(set: MGSet) {
+        selectedSet = set
     }
 }
 
 struct SetsView_Previews: PreviewProvider {
     static var previews: some View {
-        let viewModel = SetsViewModel(dataManager: MockSetsDataManager())
+        let viewModel = SetsViewModel(dataAPI: MockAPI())
         
         var view = SetsView()
         view.viewModel = viewModel

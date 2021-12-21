@@ -7,7 +7,7 @@
 
 import CoreData
 
-public class MGSetType: NSManagedObject, Codable {
+public class MGSetType: MGEntity {
     enum CodingKeys: CodingKey {
         case name,
              nameSection,
@@ -28,7 +28,7 @@ public class MGSetType: NSManagedObject, Codable {
         sets = try container.decodeIfPresent(Set<MGSet>.self, forKey: .sets) as NSSet?
     }
     
-    public func encode(to encoder: Encoder) throws {
+    public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(name, forKey: .name)

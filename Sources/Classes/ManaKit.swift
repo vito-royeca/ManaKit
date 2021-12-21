@@ -16,7 +16,7 @@ import SDWebImage
 import Combine
 import CoreData
 
-public class ManaKit: DatabaseProtocol {
+public class ManaKit {
     public enum Fonts {
         public static let preEightEdition      = UIFont(name: "Magic:the Gathering", size: 17.0)
         public static let preEightEditionSmall = UIFont(name: "Magic:the Gathering", size: 15.0)
@@ -28,13 +28,12 @@ public class ManaKit: DatabaseProtocol {
 
     public enum Constants {
         public static let EightEditionRelease = "2003-07-28"
-        public static let ManaGuideDataAge    = 5 // 5 mins 
+        public static let ManaGuideDataAge    = 5 // 5 mins
         public static let TcgPlayerApiVersion = "v1.36.0"
         public static let TcgPlayerApiLimit   = 300
         public static let TcgPlayerPricingAge = 24 * 3 // 3 days
         public static let TcgPlayerPublicKey  = "A49D81FB-5A76-4634-9152-E1FB5A657720"
         public static let TcgPlayerPrivateKey = "C018EF82-2A4D-4F7A-A785-04ADEBF2A8E5"
-//        public static let MomModel            = "2020-01-30.mom"
     }
     
     public enum ImageName: String {
@@ -55,10 +54,8 @@ public class ManaKit: DatabaseProtocol {
         public static let TcgPlayerExpiration   = "TcgPlayerExpiration"
     }
     
-    // MARK: - Shared Instance
-    public static let shared = ManaKit()
-    
     // MARK: - Variables
+
     var tcgPlayerPartnerKey: String?
     var tcgPlayerPublicKey: String?
     var tcgPlayerPrivateKey: String?
@@ -74,66 +71,16 @@ public class ManaKit: DatabaseProtocol {
         }
     }
     
-    // MARK: - Public variables
-    /*private var _dataStack: DataStack?
-    public var dataStack: DataStack? {
-        get {
-            if _dataStack == nil {
-//                guard let bundleURL = Bundle(for: ManaKit.self).url(forResource: "ManaKit", withExtension: "bundle"),
-//                    let bundle = Bundle(url: bundleURL),
-//                    let momURL = bundle.url(forResource: "ManaKit", withExtension: "momd"),
-//                    let objectModel = NSManagedObjectModel(contentsOf: momURL.appendingPathComponent("\(Constants.MomModel)")) else {
-//                    return nil
-//                }
-                guard let modelURL = Bundle(for: type(of: self)).url(forResource: "ManaKit", withExtension: "momd"),
-                      let objectModel = NSManagedObjectModel(contentsOf: modelURL) else {
-                    return nil
-                }
-                _dataStack = DataStack(model: objectModel, storeType: .sqLite)
-            }
-            return _dataStack
-        }
-        set {
-            _dataStack = newValue
-        }
-    }*/
+    let sessionProcessingQueue = DispatchQueue(label: "SessionProcessingQueue")
+
+    // MARK: - Shared Instance
     
-//    private var _container: NSPersistentContainer?
-//    public let container: NSPersistentContainer? {
-//        get {
-//            if _container == nil {
-//                guard let bundleURL = Bundle(for: ManaKit.self).url(forResource: "ManaKit", withExtension: "bundle"),
-//                    let bundle = Bundle(url: bundleURL),
-//                    let momURL = bundle.url(forResource: "ManaKit", withExtension: "momd"),
-//                    let objectModel = NSManagedObjectModel(contentsOf: momURL.appendingPathComponent("\(Constants.MomModel)")) else {
-//                    return nil
-//                }
-//                _container = NSPersistentContainer(name: "ManaKit", managedObjectModel: objectModel)
-//            }
-//            return _container
-//        }
-//    }*/
-//
-//    init() {
-//        container = NSPersistentContainer(name: "SwuiftUIWithCoreData")
-//        container.viewContext.automaticallyMergesChangesFromParent = true
-//        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-//            if let error = error as NSError? {
-//                // Replace this implementation with code to handle the error appropriately.
-//                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-//
-//                /*
-//                Typical reasons for an error here include:
-//                * The parent directory does not exist, cannot be created, or disallows writing.
-//                * The persistent store is not accessible, due to permissions or data protection when the device is locked.
-//                * The device is out of space.
-//                * The store could not be migrated to the current model version.
-//                Check the error message to determine what the actual problem was.
-//                */
-//                fatalError("Unresolved error \(error), \(error.userInfo)")
-//            }
-//        })
-//    }
+    public static let shared = ManaKit()
+    
+    // MARK: - Initializers
+    
+    private init() { }
+
     
     // MARK: - Resource methods
     
@@ -226,55 +173,55 @@ public class ManaKit: DatabaseProtocol {
     
     // MARK: - DatabaseProtocol
     
-    public typealias ObjectType = NSManagedObject
-    public typealias PredicateType = NSPredicate
-    var context: NSManagedObjectContext { persistentContainer.viewContext }
-    
-    public func create(_ object: NSManagedObject) {
-        do {
-            try context.save()
-        } catch {
-            fatalError("error saving context while creating an object")
-        }
-    }
-    
-    public func fetch<T: NSManagedObject>(_ objectType: T.Type, predicate: NSPredicate? = nil, limit: Int? = nil) -> Result<[T], Error> {
-        let request = objectType.fetchRequest()
-        request.predicate = predicate
-        
-        if let limit = limit {
-            request.fetchLimit = limit
-        }
-        do {
-            let result = try context.fetch(request)
-            return .success(result as? [T] ?? [])
-        } catch {
-            return .failure(error)
-        }
-    }
-    
-    public func fetchFirst<T: NSManagedObject>(_ objectType: T.Type, predicate: NSPredicate?) -> Result<T?, Error> {
-        let result = fetch(objectType, predicate: predicate, limit: 1)
-        
-        switch result {
-        case .success(let objects):
-            return .success(objects.first as? T)
-        case .failure(let error):
-            return .failure(error)
-        }
-    }
-    
-    public func update(_ object: NSManagedObject) {
-        do {
-            try context.save()
-        } catch {
-            fatalError("error saving context while updating an object")
-        }
-    }
-
-    public func delete(_ object: NSManagedObject) {
-
-    }
+//    public typealias ObjectType = NSManagedObject
+//    public typealias PredicateType = NSPredicate
+//    var context: NSManagedObjectContext { persistentContainer.viewContext }
+//
+//    public func create(_ object: NSManagedObject) {
+//        do {
+//            try context.save()
+//        } catch {
+//            fatalError("error saving context while creating an object")
+//        }
+//    }
+//
+//    public func fetch<T: NSManagedObject>(_ objectType: T.Type, predicate: NSPredicate? = nil, limit: Int? = nil) -> Result<[T], Error> {
+//        let request = objectType.fetchRequest()
+//        request.predicate = predicate
+//
+//        if let limit = limit {
+//            request.fetchLimit = limit
+//        }
+//        do {
+//            let result = try context.fetch(request)
+//            return .success(result as? [T] ?? [])
+//        } catch {
+//            return .failure(error)
+//        }
+//    }
+//
+//    public func fetchFirst<T: NSManagedObject>(_ objectType: T.Type, predicate: NSPredicate?) -> Result<T?, Error> {
+//        let result = fetch(objectType, predicate: predicate, limit: 1)
+//
+//        switch result {
+//        case .success(let objects):
+//            return .success(objects.first as? T)
+//        case .failure(let error):
+//            return .failure(error)
+//        }
+//    }
+//
+//    public func update(_ object: NSManagedObject) {
+//        do {
+//            try context.save()
+//        } catch {
+//            fatalError("error saving context while updating an object")
+//        }
+//    }
+//
+//    public func delete(_ object: NSManagedObject) {
+//
+//    }
     
     // MARK: - Core Data
     
@@ -293,36 +240,24 @@ public class ManaKit: DatabaseProtocol {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
-        container.viewContext.automaticallyMergesChangesFromParent = true
+        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         return container
     }()
-
-    public func saveContext () {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
-        }
-    }
 }
 
-public protocol DatabaseProtocol {
-    associatedtype ObjectType
-    associatedtype PredicateType
-    
-    func create(_ object: ObjectType)
-    func fetch(_ objectType: ObjectType.Type, predicate: PredicateType?, limit: Int?) -> Result<[ObjectType], Error>
-    func fetchFirst(_ objectType: ObjectType.Type, predicate: PredicateType?) -> Result<ObjectType?, Error>
-    func update(_ object: ObjectType)
-    func delete(_ object: ObjectType)
-}
-
-public extension DatabaseProtocol {
-    func fetch(_ objectType: ObjectType.Type, predicate: PredicateType? = nil, limit: Int? = nil) -> Result<[ObjectType], Error> {
-        return fetch(objectType, predicate: predicate, limit: limit)
-    }
-}
+//public protocol DatabaseProtocol {
+//    associatedtype ObjectType
+//    associatedtype PredicateType
+//
+//    func create(_ object: ObjectType)
+//    func fetch(_ objectType: ObjectType.Type, predicate: PredicateType?, limit: Int?) -> Result<[ObjectType], Error>
+//    func fetchFirst(_ objectType: ObjectType.Type, predicate: PredicateType?) -> Result<ObjectType?, Error>
+//    func update(_ object: ObjectType)
+//    func delete(_ object: ObjectType)
+//}
+//
+//public extension DatabaseProtocol {
+//    func fetch(_ objectType: ObjectType.Type, predicate: PredicateType? = nil, limit: Int? = nil) -> Result<[ObjectType], Error> {
+//        return fetch(objectType, predicate: predicate, limit: limit)
+//    }
+//}

@@ -23,12 +23,12 @@
 		8B426108270FE8A1000DC07D /* SetsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B426107270FE8A1000DC07D /* SetsViewModel.swift */; };
 		8B426109270FE8A1000DC07D /* SetsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B426107270FE8A1000DC07D /* SetsViewModel.swift */; };
 		8B42610A270FE8A1000DC07D /* SetsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B426107270FE8A1000DC07D /* SetsViewModel.swift */; };
-		8B42610E270FF651000DC07D /* MockSetsDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B42610D270FF651000DC07D /* MockSetsDataManager.swift */; };
-		8B42610F270FF651000DC07D /* MockSetsDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B42610D270FF651000DC07D /* MockSetsDataManager.swift */; };
-		8B426110270FF651000DC07D /* MockSetsDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B42610D270FF651000DC07D /* MockSetsDataManager.swift */; };
+		8B42610E270FF651000DC07D /* MockAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B42610D270FF651000DC07D /* MockAPI.swift */; };
 		8B626D912403094C00972EED /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = 8B626D902403094C00972EED /* CHANGELOG.md */; };
 		8B70144723B425200097298B /* ManaKit_ExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B70144623B425200097298B /* ManaKit_ExampleUITests.swift */; };
 		8B70145523B4252D0097298B /* ManaKit_ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B70145423B4252D0097298B /* ManaKit_ExampleTests.swift */; };
+		8BC1A7A2277256BE00A2472C /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC1A7A1277256BE00A2472C /* TestView.swift */; };
+		8BC1A7A4277273F500A2472C /* SetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC1A7A3277273F500A2472C /* SetView.swift */; };
 		D04091B86FCFF73BABF68902 /* Pods_ManaKit_ExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20CFA8CE4ECF85F02F1619DA /* Pods_ManaKit_ExampleTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -109,7 +109,7 @@
 		8B421A03255A5BD800F7B8AE /* SetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetsView.swift; sourceTree = "<group>"; };
 		8B421A08255A5BFC00F7B8AE /* RulesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesView.swift; sourceTree = "<group>"; };
 		8B426107270FE8A1000DC07D /* SetsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetsViewModel.swift; sourceTree = "<group>"; };
-		8B42610D270FF651000DC07D /* MockSetsDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSetsDataManager.swift; sourceTree = "<group>"; };
+		8B42610D270FF651000DC07D /* MockAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPI.swift; sourceTree = "<group>"; };
 		8B626D902403094C00972EED /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
 		8B70144423B425200097298B /* ManaKit_ExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ManaKit_ExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B70144623B425200097298B /* ManaKit_ExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManaKit_ExampleUITests.swift; sourceTree = "<group>"; };
@@ -117,6 +117,8 @@
 		8B70145223B4252D0097298B /* ManaKit_ExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ManaKit_ExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B70145423B4252D0097298B /* ManaKit_ExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManaKit_ExampleTests.swift; sourceTree = "<group>"; };
 		8B70145623B4252D0097298B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8BC1A7A1277256BE00A2472C /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		8BC1A7A3277273F500A2472C /* SetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetView.swift; sourceTree = "<group>"; };
 		91B7A9FA4B4AAA078ADB4898 /* Pods-ManaKit_ExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit_ExampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit_ExampleTests/Pods-ManaKit_ExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		933905FD05F69001F1434BA3 /* Pods_ManaKit_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ManaKit_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C51EFE570A26CCBB9742879C /* Pods_ManaKit_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ManaKit_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -156,6 +158,7 @@
 		114A53B0213F954C0046CC82 /* Set */ = {
 			isa = PBXGroup;
 			children = (
+				8BC1A7A3277273F500A2472C /* SetView.swift */,
 			);
 			path = Set;
 			sourceTree = "<group>";
@@ -166,7 +169,6 @@
 				8B426106270FE87D000DC07D /* Old Code */,
 				8B421A03255A5BD800F7B8AE /* SetsView.swift */,
 				8B426107270FE8A1000DC07D /* SetsViewModel.swift */,
-				8B42610D270FF651000DC07D /* MockSetsDataManager.swift */,
 			);
 			path = Sets;
 			sourceTree = "<group>";
@@ -227,15 +229,17 @@
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				8B4219F5255A597C00F7B8AE /* SceneDelegate.swift */,
 				8B4219FD255A5A0800F7B8AE /* MainView.swift */,
+				8B42610D270FF651000DC07D /* MockAPI.swift */,
 				119588DD2125E24F00B5D7C4 /* Card */,
 				115151B81F1E24130061C270 /* data */,
 				8B379A3B23A57DFD005D0171 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
+				8B421A07255A5BE100F7B8AE /* Rules */,
 				114A53B0213F954C0046CC82 /* Set */,
 				119588DA2125DC9600B5D7C4 /* Sets */,
-				8B421A07255A5BE100F7B8AE /* Rules */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
+				8BC1A7A1277256BE00A2472C /* TestView.swift */,
 			);
 			name = "Example for ManaKit";
 			path = ManaKit;
@@ -476,7 +480,6 @@
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
-				"${BUILT_PRODUCTS_DIR}/Sync/Sync.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -486,7 +489,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sync.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -506,7 +508,6 @@
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
-				"${BUILT_PRODUCTS_DIR}/Sync/Sync.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -516,7 +517,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sync.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -554,7 +554,6 @@
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
-				"${BUILT_PRODUCTS_DIR}/Sync/Sync.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -564,7 +563,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sync.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -640,10 +638,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B42610E270FF651000DC07D /* MockSetsDataManager.swift in Sources */,
+				8B42610E270FF651000DC07D /* MockAPI.swift in Sources */,
 				8B4219FE255A5A0800F7B8AE /* MainView.swift in Sources */,
 				8B426108270FE8A1000DC07D /* SetsViewModel.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				8BC1A7A4277273F500A2472C /* SetView.swift in Sources */,
+				8BC1A7A2277256BE00A2472C /* TestView.swift in Sources */,
 				8B421A04255A5BD800F7B8AE /* SetsView.swift in Sources */,
 				8B4219F6255A597C00F7B8AE /* SceneDelegate.swift in Sources */,
 				8B421A09255A5BFC00F7B8AE /* RulesView.swift in Sources */,
@@ -655,7 +655,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B70144723B425200097298B /* ManaKit_ExampleUITests.swift in Sources */,
-				8B42610F270FF651000DC07D /* MockSetsDataManager.swift in Sources */,
 				8B426109270FE8A1000DC07D /* SetsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -665,7 +664,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B70145523B4252D0097298B /* ManaKit_ExampleTests.swift in Sources */,
-				8B426110270FF651000DC07D /* MockSetsDataManager.swift in Sources */,
 				8B42610A270FE8A1000DC07D /* SetsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
