@@ -1,18 +1,18 @@
 //
-//  MGCardComponentPart+Codable.swift
+//  MGImageURI+Codable.swift
 //  ManaKit
 //
-//  Created by Vito Royeca on 12/16/21.
+//  Created by Vito Royeca on 12/22/21.
 //
 
 import CoreData
 
-public class MGCardComponentPart: MGEntity {
+public class MGImageURI: MGEntity {
     enum CodingKeys: CodingKey {
-        case id,
-             card,
-             component,
-             part
+        case artCrop,
+             normal,
+             png,
+             card
     }
 
     public required convenience init(from decoder: Decoder) throws {
@@ -24,18 +24,20 @@ public class MGCardComponentPart: MGEntity {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
+        artCrop = try container.decodeIfPresent(String.self, forKey: .artCrop)
+        normal = try container.decodeIfPresent(String.self, forKey: .normal)
+        png = try container.decodeIfPresent(String.self, forKey: .png)
         card = try container.decodeIfPresent(MGCard.self, forKey: .card)
-        component = try container.decodeIfPresent(MGComponent.self, forKey: .component)
-        part = try container.decodeIfPresent(MGCard.self, forKey: .part)
-        id = "\(card?.newId ?? "")_\(component?.name ?? "")_\(part?.newId ?? "")"
     }
     
     public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
-        try container.encode(id, forKey: .id)
-        try container.encode(card, forKey: .card)
-        try container.encode(component, forKey: .component)
-        try container.encode(part, forKey: .part)
+        try container.encode(artCrop, forKey: .artCrop)
+        try container.encode(normal, forKey: .normal)
+        try container.encode(png, forKey: .png)
+        if let card = card {
+            try container.encode(card, forKey: .card)
+        }
     }
 }

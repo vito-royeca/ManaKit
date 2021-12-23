@@ -17,6 +17,8 @@ import Combine
 import CoreData
 
 public class ManaKit {
+    // MARK: - Constants
+    
     public enum Fonts {
         public static let preEightEdition      = UIFont(name: "Magic:the Gathering", size: 17.0)
         public static let preEightEditionSmall = UIFont(name: "Magic:the Gathering", size: 15.0)
@@ -29,11 +31,6 @@ public class ManaKit {
     public enum Constants {
         public static let EightEditionRelease = "2003-07-28"
         public static let ManaGuideDataAge    = 5 // 5 mins
-        public static let TcgPlayerApiVersion = "v1.36.0"
-        public static let TcgPlayerApiLimit   = 300
-        public static let TcgPlayerPricingAge = 24 * 3 // 3 days
-        public static let TcgPlayerPublicKey  = "A49D81FB-5A76-4634-9152-E1FB5A657720"
-        public static let TcgPlayerPrivateKey = "C018EF82-2A4D-4F7A-A785-04ADEBF2A8E5"
     }
     
     public enum ImageName: String {
@@ -50,15 +47,12 @@ public class ManaKit {
         public static let ScryfallDate          = "ScryfallDate"
         public static let KeyruneVersion        = "KeyruneVersion"
         public static let MTGJSONVersion        = "kMTGJSONVersion"
-        public static let TcgPlayerToken        = "TcgPlayerToken"
-        public static let TcgPlayerExpiration   = "TcgPlayerExpiration"
     }
+    
+//    public static let queryCachePrefix = "cache_"
     
     // MARK: - Variables
 
-    var tcgPlayerPartnerKey: String?
-    var tcgPlayerPublicKey: String?
-    var tcgPlayerPrivateKey: String?
     var apiURL = ""
     
     var _keyChain: Keychain?
@@ -84,11 +78,8 @@ public class ManaKit {
     
     // MARK: - Resource methods
     
-    public func configure(apiURL: String, partnerKey: String, publicKey: String?, privateKey: String?) {
+    public func configure(apiURL: String) {
         self.apiURL = apiURL
-        tcgPlayerPartnerKey = partnerKey
-        tcgPlayerPublicKey = publicKey
-        tcgPlayerPrivateKey = privateKey
     }
     
     public func nibFromBundle(_ name: String) -> UINib? {

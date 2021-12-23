@@ -16,7 +16,6 @@ public class MGCard: MGEntity {
              faceOrder,
              flavorText,
              handModifier,
-             id,
              illustrationId,
              imageUris,
              isBooster,
@@ -40,6 +39,7 @@ public class MGCard: MGEntity {
              myNameSection,
              myNumberOrder,
              name,
+             newId,
              oracleId,
              oracleText,
              power,
@@ -89,9 +89,10 @@ public class MGCard: MGEntity {
         faceOrder = try container.decodeIfPresent(Int32.self, forKey: .faceOrder) ?? Int32(0)
         flavorText = try container.decodeIfPresent(String.self, forKey: .flavorText)
         handModifier = try container.decodeIfPresent(String.self, forKey: .handModifier)
-        id = try container.decodeIfPresent(String.self, forKey: .id)
         illustrationId = try container.decodeIfPresent(String.self, forKey: .illustrationId)
-        imageUris = try container.decodeIfPresent(Data.self, forKey: .imageUris)
+        if let array = try container.decodeIfPresent([MGImageURI].self, forKey: .imageUris) {
+           imageUri = array.first
+        }
         isBooster = try container.decodeIfPresent(Bool.self, forKey: .isBooster) ?? false
         isDigital = try container.decodeIfPresent(Bool.self, forKey: .isDigital) ?? false
         isFoil = try container.decodeIfPresent(Bool.self, forKey: .isFoil) ?? false
@@ -109,10 +110,14 @@ public class MGCard: MGEntity {
         manaCost = try container.decodeIfPresent(String.self, forKey: .manaCost)
         mtgoFoilId = try container.decodeIfPresent(String.self, forKey: .mtgoFoilId)
         mtgoId = try container.decodeIfPresent(String.self, forKey: .mtgoId)
-        multiverseIds = try container.decodeIfPresent(Data.self, forKey: .multiverseIds)
+        if let array = try container.decodeIfPresent([Int64].self, forKey: .multiverseIds),
+           !array.isEmpty {
+            multiverseIds = try NSKeyedArchiver.archivedData(withRootObject: array, requiringSecureCoding: false)
+        }
         myNameSection = try container.decodeIfPresent(String.self, forKey: .myNameSection)
         myNumberOrder = try container.decodeIfPresent(Double.self, forKey: .myNumberOrder) ?? Double(0)
         name = try container.decodeIfPresent(String.self, forKey: .name)
+        newId = try container.decodeIfPresent(String.self, forKey: .newId)
         oracleId = try container.decodeIfPresent(String.self, forKey: .oracleId)
         oracleText = try container.decodeIfPresent(String.self, forKey: .oracleText)
         power = try container.decodeIfPresent(String.self, forKey: .power)
@@ -120,7 +125,7 @@ public class MGCard: MGEntity {
         printedText = try container.decodeIfPresent(String.self, forKey: .printedText)
         printedTypeLine = try container.decodeIfPresent(String.self, forKey: .printedTypeLine)
         releasedAt = try container.decodeIfPresent(String.self, forKey: .releasedAt)
-        tcgPlayerId = try container.decodeIfPresent(Int32.self, forKey: .tcgPlayerId) ?? Int32(0)
+        tcgPlayerId = try container.decodeIfPresent(Int64.self, forKey: .tcgPlayerId) ?? Int64(0)
         toughness = try container.decodeIfPresent(String.self, forKey: .toughness)
         typeLine = try container.decodeIfPresent(String.self, forKey: .typeLine)
         artist = try container.decodeIfPresent(MGArtist.self, forKey: .artist)
@@ -156,9 +161,12 @@ public class MGCard: MGEntity {
         try container.encode(faceOrder, forKey: .faceOrder)
         try container.encode(flavorText, forKey: .flavorText)
         try container.encode(handModifier, forKey: .handModifier)
-        try container.encode(id, forKey: .id)
         try container.encode(illustrationId, forKey: .illustrationId)
-        try container.encode(imageUris, forKey: .imageUris)
+        if let imageUri = imageUri {
+            var set = Set<MGImageURI>()
+            set.insert(imageUri)
+            try container.encode(set, forKey: .imageUris)
+        }
         try container.encode(isBooster, forKey: .isBooster)
         try container.encode(isDigital, forKey: .isDigital)
         try container.encode(isFoil, forKey: .isFoil)
@@ -176,10 +184,13 @@ public class MGCard: MGEntity {
         try container.encode(manaCost, forKey: .manaCost)
         try container.encode(mtgoFoilId, forKey: .mtgoFoilId)
         try container.encode(mtgoId, forKey: .mtgoId)
-        try container.encode(multiverseIds, forKey: .multiverseIds)
+        if let multiverseIds = multiverseIds {
+            try container.encode(multiverseIds, forKey: .multiverseIds)
+        }
         try container.encode(myNameSection, forKey: .myNameSection)
         try container.encode(myNumberOrder, forKey: .myNumberOrder)
         try container.encode(name, forKey: .name)
+        try container.encode(newId, forKey: .newId)
         try container.encode(oracleId, forKey: .oracleId)
         try container.encode(oracleText, forKey: .oracleText)
         try container.encode(power, forKey: .power)

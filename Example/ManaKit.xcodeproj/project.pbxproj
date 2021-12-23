@@ -26,9 +26,11 @@
 		8B42610E270FF651000DC07D /* MockAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B42610D270FF651000DC07D /* MockAPI.swift */; };
 		8B626D912403094C00972EED /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = 8B626D902403094C00972EED /* CHANGELOG.md */; };
 		8B70144723B425200097298B /* ManaKit_ExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B70144623B425200097298B /* ManaKit_ExampleUITests.swift */; };
-		8B70145523B4252D0097298B /* ManaKit_ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B70145423B4252D0097298B /* ManaKit_ExampleTests.swift */; };
+		8BADF87A27738186004271D7 /* APITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BADF87927738186004271D7 /* APITest.swift */; };
 		8BC1A7A2277256BE00A2472C /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC1A7A1277256BE00A2472C /* TestView.swift */; };
 		8BC1A7A4277273F500A2472C /* SetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC1A7A3277273F500A2472C /* SetView.swift */; };
+		8BC1A7A62772AA4E00A2472C /* SetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC1A7A52772AA4E00A2472C /* SetViewModel.swift */; };
+		8BC1A7A82772D86B00A2472C /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC1A7A72772D86B00A2472C /* ActivityIndicatorView.swift */; };
 		D04091B86FCFF73BABF68902 /* Pods_ManaKit_ExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20CFA8CE4ECF85F02F1619DA /* Pods_ManaKit_ExampleTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -115,10 +117,12 @@
 		8B70144623B425200097298B /* ManaKit_ExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManaKit_ExampleUITests.swift; sourceTree = "<group>"; };
 		8B70144823B425200097298B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8B70145223B4252D0097298B /* ManaKit_ExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ManaKit_ExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		8B70145423B4252D0097298B /* ManaKit_ExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManaKit_ExampleTests.swift; sourceTree = "<group>"; };
 		8B70145623B4252D0097298B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8BADF87927738186004271D7 /* APITest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITest.swift; sourceTree = "<group>"; };
 		8BC1A7A1277256BE00A2472C /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		8BC1A7A3277273F500A2472C /* SetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetView.swift; sourceTree = "<group>"; };
+		8BC1A7A52772AA4E00A2472C /* SetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetViewModel.swift; sourceTree = "<group>"; };
+		8BC1A7A72772D86B00A2472C /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
 		91B7A9FA4B4AAA078ADB4898 /* Pods-ManaKit_ExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ManaKit_ExampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ManaKit_ExampleTests/Pods-ManaKit_ExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		933905FD05F69001F1434BA3 /* Pods_ManaKit_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ManaKit_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C51EFE570A26CCBB9742879C /* Pods_ManaKit_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ManaKit_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -159,6 +163,7 @@
 			isa = PBXGroup;
 			children = (
 				8BC1A7A3277273F500A2472C /* SetView.swift */,
+				8BC1A7A52772AA4E00A2472C /* SetViewModel.swift */,
 			);
 			path = Set;
 			sourceTree = "<group>";
@@ -226,6 +231,7 @@
 		607FACD21AFB9204008FA782 /* Example for ManaKit */ = {
 			isa = PBXGroup;
 			children = (
+				8BC1A7A72772D86B00A2472C /* ActivityIndicatorView.swift */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				8B4219F5255A597C00F7B8AE /* SceneDelegate.swift */,
 				8B4219FD255A5A0800F7B8AE /* MainView.swift */,
@@ -320,8 +326,8 @@
 		8B70145323B4252D0097298B /* ManaKit_ExampleTests */ = {
 			isa = PBXGroup;
 			children = (
-				8B70145423B4252D0097298B /* ManaKit_ExampleTests.swift */,
 				8B70145623B4252D0097298B /* Info.plist */,
+				8BADF87927738186004271D7 /* APITest.swift */,
 			);
 			path = ManaKit_ExampleTests;
 			sourceTree = "<group>";
@@ -413,7 +419,6 @@
 					8B70145123B4252D0097298B = {
 						CreatedOnToolsVersion = 11.2.1;
 						ProvisioningStyle = Automatic;
-						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
 				};
 			};
@@ -643,6 +648,8 @@
 				8B426108270FE8A1000DC07D /* SetsViewModel.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				8BC1A7A4277273F500A2472C /* SetView.swift in Sources */,
+				8BC1A7A62772AA4E00A2472C /* SetViewModel.swift in Sources */,
+				8BC1A7A82772D86B00A2472C /* ActivityIndicatorView.swift in Sources */,
 				8BC1A7A2277256BE00A2472C /* TestView.swift in Sources */,
 				8B421A04255A5BD800F7B8AE /* SetsView.swift in Sources */,
 				8B4219F6255A597C00F7B8AE /* SceneDelegate.swift in Sources */,
@@ -663,8 +670,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B70145523B4252D0097298B /* ManaKit_ExampleTests.swift in Sources */,
 				8B42610A270FE8A1000DC07D /* SetsViewModel.swift in Sources */,
+				8BADF87A27738186004271D7 /* APITest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -918,7 +925,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 91B7A9FA4B4AAA078ADB4898 /* Pods-ManaKit_ExampleTests.debug.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -938,7 +944,6 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ManaKit_Example.app/ManaKit_Example";
 			};
 			name = Debug;
 		};
@@ -946,7 +951,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5D8BE09AA18CABC46014EEA4 /* Pods-ManaKit_ExampleTests.release.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -963,7 +967,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ManaKit_Example.app/ManaKit_Example";
 			};
 			name = Release;
 		};

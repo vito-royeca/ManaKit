@@ -15,22 +15,22 @@ struct SetsView: View {
     
     var body: some View {
         NavigationView {
-            List(viewModel.sets, id: \.code) { set in
-                SetsRowView(set: set)
-                    .onTapGesture {
-                        show(set: set)
+            ZStack(alignment: .center) {
+                List {
+                    ForEach(viewModel.sets) { set in
+                        NavigationLink(destination: SetView(set: set, languageCode: "en")) {
+                            SetsRowView(set: set)
+                        }
                     }
+                }
+                ActivityIndicatorView(shouldAnimate: $viewModel.isBusy)
             }
-                .navigationBarTitle("Sets", displayMode: .automatic)
+            .navigationBarTitle("Sets", displayMode: .automatic)
         }
-            .navigationViewStyle(StackNavigationViewStyle())
-            .onAppear {
-                viewModel.fetchData()
-            }
-    }
-    
-    func show(set: MGSet) {
-        selectedSet = set
+        .navigationViewStyle(StackNavigationViewStyle())
+        .onAppear {
+            viewModel.fetchData()
+        }
     }
 }
 
@@ -40,6 +40,7 @@ struct SetsView_Previews: PreviewProvider {
         
         var view = SetsView()
         view.viewModel = viewModel
+        
         return view
     }
 }
@@ -54,24 +55,29 @@ struct SetsRowView: View {
     var body: some View {
         HStack {
             Text(set.keyrune2Unicode())
-                .scaledToFit()
-                .font(Font.custom("Keyrune", size: 30))
+            .scaledToFit()
+            .font(Font.custom("Keyrune", size: 30))
+            
             VStack(alignment: .leading) {
                 Text(set.name ?? "")
-                    .font(.headline)
+                .font(.headline)
+                
                 HStack {
                     Text("Code: \(set.code ?? "")")
-                        .font(.subheadline)
-                        .foregroundColor(Color.gray)
-                    Spacer()
-                    Text("\(set.cardCount) card\(set.cardCount > 1 ? "s" : "")")
-                        .font(.subheadline)
-                        .foregroundColor(Color.gray)
-                        .multilineTextAlignment(.trailing)
-                }
-                Text("Release Date: \(set.releaseDate ?? "")")
                     .font(.subheadline)
                     .foregroundColor(Color.gray)
+                    
+                    Spacer()
+                    
+                    Text("\(set.cardCount) card\(set.cardCount > 1 ? "s" : "")")
+                    .font(.subheadline)
+                    .foregroundColor(Color.gray)
+                    .multilineTextAlignment(.trailing)
+                }
+                
+                Text("Release Date: \(set.releaseDate ?? "")")
+                .font(.subheadline)
+                .foregroundColor(Color.gray)
             }
         }
     }

@@ -7,15 +7,57 @@
 //
 
 import SwiftUI
+import ManaKit
 
 struct SetView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+    @ObservedObject var viewModel = SetViewModel()
+    
+    init(set: MGSet, languageCode: String) {
+        viewModel.set = set
+        viewModel.languageCode = languageCode
     }
+    
+    var body: some View {
+        NavigationView {
+            ZStack(alignment: .center) {
+                List {
+                    ForEach(viewModel.set?.cards?.allObjects as? [MGCard] ?? [MGCard]()) { card in
+                        SetRowView(card: card)
+                    }
+                }
+                ActivityIndicatorView(shouldAnimate: $viewModel.isBusy)
+            }
+            .navigationBarTitle(viewModel.set?.name ?? "Set name", displayMode: .automatic)
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
+        .onAppear {
+            viewModel.fetchData()
+        }
+    }
+    
+    
 }
 
 struct SetView_Previews: PreviewProvider {
     static var previews: some View {
-        SetView()
+        let set = MGSet()
+        set.name = "Ice Age"
+        let view = SetView(set: set, languageCode: "en")
+        
+        return view
+    }
+}
+
+struct SetRowView: View {
+    private let card: MGCard
+    
+    init(card: MGCard) {
+        self.card = card
+    }
+    
+    var body: some View {
+        HStack {
+            Text(card.name ?? "Card name")
+        }
     }
 }

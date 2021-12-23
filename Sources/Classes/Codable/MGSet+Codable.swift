@@ -84,9 +84,15 @@ public class MGSet: MGEntity {
         try container.encode(children as! Set<MGSet>, forKey: .children)
         // Don't include many-to-many relations
 //        try container.encode(languages as! Set<MGLanguage>, forKey: .languages)
-        try container.encode(parent, forKey: .parent)
-        try container.encode(setBlock, forKey: .setBlock)
-        try container.encode(setType, forKey: .setType)
+        if let parent = parent {
+            try container.encode(parent, forKey: .parent)
+        }
+        if let setBlock = setBlock {
+            try container.encode(setBlock, forKey: .setBlock)
+        }
+        if let setType = setType {
+            try container.encode(setType, forKey: .setType)
+        }
     }
 }
 

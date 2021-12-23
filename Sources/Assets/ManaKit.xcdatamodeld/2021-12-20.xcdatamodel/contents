@@ -25,14 +25,7 @@
         <attribute name="faceOrder" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="flavorText" optional="YES" attributeType="String"/>
         <attribute name="handModifier" optional="YES" attributeType="String"/>
-        <attribute name="id" optional="YES" attributeType="String">
-            <userInfo>
-                <entry key="hyper.isPrimaryKey" value="true"/>
-                <entry key="sync.isPrimaryKey" value="true"/>
-            </userInfo>
-        </attribute>
         <attribute name="illustrationId" optional="YES" attributeType="String"/>
-        <attribute name="imageUris" optional="YES" attributeType="Binary"/>
         <attribute name="isBooster" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isDigital" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isFoil" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
@@ -54,6 +47,12 @@
         <attribute name="myNameSection" optional="YES" attributeType="String"/>
         <attribute name="myNumberOrder" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="newId" optional="YES" attributeType="String">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
         <attribute name="oracleId" optional="YES" attributeType="String"/>
         <attribute name="oracleText" optional="YES" attributeType="String"/>
         <attribute name="power" optional="YES" attributeType="String"/>
@@ -61,7 +60,7 @@
         <attribute name="printedText" optional="YES" attributeType="String"/>
         <attribute name="printedTypeLine" optional="YES" attributeType="String"/>
         <attribute name="releasedAt" optional="YES" attributeType="String"/>
-        <attribute name="tcgPlayerId" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="tcgPlayerId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="toughness" optional="YES" attributeType="String"/>
         <attribute name="typeLine" optional="YES" attributeType="String"/>
         <relationship name="artist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGArtist" inverseName="cards" inverseEntity="MGArtist"/>
@@ -73,6 +72,7 @@
         <relationship name="formatLegalities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardFormatLegality" inverseName="card" inverseEntity="MGCardFormatLegality"/>
         <relationship name="frame" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGFrame" inverseName="cards" inverseEntity="MGFrame"/>
         <relationship name="frameEffect" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGFrameEffect" inverseName="cards" inverseEntity="MGFrameEffect"/>
+        <relationship name="imageUri" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGImageURI" inverseName="card" inverseEntity="MGImageURI"/>
         <relationship name="language" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGLanguage" inverseName="cards" inverseEntity="MGLanguage"/>
         <relationship name="layout" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGLayout" inverseName="cards" inverseEntity="MGLayout"/>
         <relationship name="otherLanguages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="otherLanguages" inverseEntity="MGCard"/>
@@ -87,7 +87,7 @@
         <relationship name="watermark" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGWatermark" inverseName="cards" inverseEntity="MGWatermark"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
-                <constraint value="id"/>
+                <constraint value="newId"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
@@ -238,6 +238,12 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
+    <entity name="MGImageURI" representedClassName=".MGImageURI" syncable="YES" codeGenerationType="category">
+        <attribute name="artCrop" optional="YES" attributeType="String"/>
+        <attribute name="normal" optional="YES" attributeType="String"/>
+        <attribute name="png" optional="YES" attributeType="String"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGCard" inverseName="imageUri" inverseEntity="MGCard"/>
+    </entity>
     <entity name="MGLanguage" representedClassName=".MGLanguage" syncable="YES" codeGenerationType="category">
         <attribute name="code" optional="YES" attributeType="String">
             <userInfo>
@@ -292,14 +298,8 @@
         </uniquenessConstraints>
     </entity>
     <entity name="MGLocalCache" representedClassName=".MGLocalCache" syncable="YES" codeGenerationType="category">
-        <attribute name="dateCreated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="lastUpdated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="page" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="pageCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="pageLimit" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="query" optional="YES" attributeType="String"/>
-        <attribute name="rowCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="tableName" optional="YES" attributeType="String"/>
+        <attribute name="url" optional="YES" attributeType="String"/>
     </entity>
     <entity name="MGRarity" representedClassName=".MGRarity" syncable="YES" codeGenerationType="category">
         <attribute name="name" optional="YES" attributeType="String">
@@ -453,7 +453,7 @@
         <element name="MGLanguage" positionX="-18" positionY="171" width="128" height="119"/>
         <element name="MGLayout" positionX="9" positionY="171" width="128" height="89"/>
         <element name="MGLegality" positionX="9" positionY="180" width="128" height="74"/>
-        <element name="MGLocalCache" positionX="-9" positionY="135" width="128" height="149"/>
+        <element name="MGLocalCache" positionX="-9" positionY="135" width="128" height="59"/>
         <element name="MGRarity" positionX="-27" positionY="135" width="128" height="74"/>
         <element name="MGRule" positionX="0" positionY="162" width="128" height="134"/>
         <element name="MGRuling" positionX="-27" positionY="135" width="128" height="89"/>
@@ -462,5 +462,6 @@
         <element name="MGSetType" positionX="-27" positionY="135" width="128" height="74"/>
         <element name="MGStore" positionX="-9" positionY="135" width="128" height="74"/>
         <element name="MGWatermark" positionX="-27" positionY="135" width="128" height="74"/>
+        <element name="MGImageURI" positionX="-9" positionY="144" width="128" height="89"/>
     </elements>
 </model>

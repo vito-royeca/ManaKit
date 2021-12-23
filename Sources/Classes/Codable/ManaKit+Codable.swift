@@ -33,8 +33,6 @@ public class MGEntity: NSManagedObject, Codable {
 
         self.init(context: context)
     }
-    
-//    public func encode(to encoder: Encoder) throws {}
 }
 
 public class MGLocalCache: MGEntity {

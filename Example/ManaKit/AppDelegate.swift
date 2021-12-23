@@ -8,7 +8,6 @@
 
 import UIKit
 import ManaKit
-import PromiseKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -22,10 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
         
         
-        ManaKit.shared.configure(apiURL: "http://managuideapp.com",
-                                 partnerKey: "ManaGuide",
-                                 publicKey: ManaKit.Constants.TcgPlayerPublicKey,
-                                 privateKey: ManaKit.Constants.TcgPlayerPrivateKey)
+        ManaKit.shared.configure(apiURL: "http://managuideapp.com")
         ManaKit.shared.setupResources()
 
         return true

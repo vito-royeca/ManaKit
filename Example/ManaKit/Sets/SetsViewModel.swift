@@ -10,8 +10,9 @@ import Foundation
 import Combine
 import ManaKit
 
-final class SetsViewModel: ObservableObject {
+class SetsViewModel: ObservableObject {
     @Published var sets = [MGSet]()
+    @Published var isBusy = false
     
     var dataAPI: API
     var cancellables = Set<AnyCancellable>()
@@ -27,14 +28,16 @@ final class SetsViewModel: ObservableObject {
     }
         
     func fetchData() {
-        let query = ["page": Int32(0)]
         let sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: false),
                                NSSortDescriptor(key: "name", ascending: true)]
 
-        dataAPI.fetchSets(query: query,
+        isBusy.toggle()
+        dataAPI.fetchSets(query: nil,
                           sortDescriptors: sortDescriptors,
                           cancellables: &cancellables,
                           completion: { result in
+            self.isBusy.toggle()
+            
             switch result {
             case .success(let sets):
                 self.sets = sets

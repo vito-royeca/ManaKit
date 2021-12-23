@@ -17,7 +17,7 @@ public protocol API {
     func fetchSet(code: String,
                   languageCode: String,
                   cancellables: inout Set<AnyCancellable>,
-                  completion: @escaping (Result<[MGSet], Error>) -> Void)
+                  completion: @escaping (Result<MGSet, Error>) -> Void)
     
     func fetchCards(query: String,
                     cancellables: inout Set<AnyCancellable>,
@@ -25,7 +25,7 @@ public protocol API {
     
     func fetchCard(id: String,
                    cancellables: inout Set<AnyCancellable>,
-                   completion: @escaping (Result<[MGCard], Error>) -> Void)
+                   completion: @escaping (Result<MGCard, Error>) -> Void)
 }
 
 extension ManaKit: API {
@@ -49,18 +49,18 @@ extension ManaKit: API {
     public func fetchSet(code: String,
                          languageCode: String,
                          cancellables: inout Set<AnyCancellable>,
-                         completion: @escaping (Result<[MGSet], Error>) -> Void) {
+                         completion: @escaping (Result<MGSet, Error>) -> Void) {
         guard let url = URL(string: "\(apiURL)/set/\(code)/\(languageCode)?json=true") else {
             completion(.failure(ManaKitError.badURL))
             return
         }
         
-        fetchData(MGSet.self,
-                  query: nil,
-                  sortDescriptors: nil,
-                  url: url,
-                  cancellables: &cancellables,
-                  completion: completion)
+        fetchOneData(MGSet.self,
+                     query: ["code": code],
+                     sortDescriptors: nil,
+                     url: url,
+                     cancellables: &cancellables,
+                     completion: completion)
     }
     
     public func fetchCards(query: String,
@@ -81,17 +81,17 @@ extension ManaKit: API {
     
     public func fetchCard(id: String,
                           cancellables: inout Set<AnyCancellable>,
-                          completion: @escaping (Result<[MGCard], Error>) -> Void) {
+                          completion: @escaping (Result<MGCard, Error>) -> Void) {
         guard let url = URL(string: "\(apiURL)/card/\(id)?json=true") else {
             completion(.failure(ManaKitError.badURL))
             return
         }
         
-        fetchData(MGCard.self,
-                  query: nil,
-                  sortDescriptors: nil,
-                  url: url,
-                  cancellables: &cancellables,
-                  completion: completion)
+        fetchOneData(MGCard.self,
+                     query: ["newId": id],
+                     sortDescriptors: nil,
+                     url: url,
+                     cancellables: &cancellables,
+                     completion: completion)
     }
 }

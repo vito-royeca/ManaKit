@@ -10,28 +10,58 @@ import CoreData
 import Combine
 
 extension ManaKit {
+    // MARK: - CRUD
+    func fetchOneData<T: MGEntity>(_ entity: T.Type,
+                                   query: [String: Any]?,
+                                   sortDescriptors: [NSSortDescriptor]?,
+                                   url: URL,
+                                   cancellables: inout Set<AnyCancellable>,
+                                   completion: @escaping (Result<T, Error>) -> Void) {
+        fetchData(entity,
+                  query: query,
+                  sortDescriptors: sortDescriptors,
+                  url: url,
+                  cancellables: &cancellables,
+                  completion: { result in
+            switch result {
+            case .success(let data):
+                completion(.success(data[0]))
+            case .failure(let error):
+                print(error)
+                completion(.failure(error))
+            }
+        })
+    }
+    
     func fetchData<T: MGEntity>(_ entity: T.Type,
                                 query: [String: Any]?,
                                 sortDescriptors: [NSSortDescriptor]?,
                                 url: URL,
                                 cancellables: inout Set<AnyCancellable>,
                                 completion: @escaping (Result<[T], Error>) -> Void) {
-        let done = {
+        let success = {
             let result = self.find(entity,
-                                   query: nil,
+                                   query: query,
                                    sortDescriptors: sortDescriptors,
                                    createIfNotFound: false) ?? [T]()
+            self.saveCache(forUrl: url)
             completion(.success(result))
         }
         
-        if willFetchCache(entity, query: query) {
-            guard let url = URL(string: "\(apiURL)/sets?json=true") else {
-                completion(.failure(ManaKitError.badURL))
-                return
-            }
+        let failure = { (error: Error) in
+            print(error)
+            self.deleteCache(forUrl: url)
+            completion(.failure(error))
+        }
+        
+        if willFetchCache(forUrl: url) {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSZ"
+            formatter.locale = Locale(identifier: "en_US_POSIX")
             
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
+            decoder.dateDecodingStrategy = .formatted(formatter)
             decoder.userInfo[CodingUserInfoKey.managedObjectContext] = persistentContainer.viewContext
             
             URLSession.shared.dataTaskPublisher(for: url)
@@ -44,55 +74,19 @@ extension ManaKit {
                 .sink(receiveCompletion: { (suscriberCompletion) in
                     switch suscriberCompletion {
                     case .finished:
-                        done()
+                        success()
                     case .failure(let error):
-                        print(error.localizedDescription)
+                        failure(error)
                     }
                 }, receiveValue: { _ /*[weak self] (sets)*/ in
                     self.saveContext()
                 })
                 .store(in: &cancellables)
         } else {
-            done()
+            success()
         }
     }
     
-    func willFetchCache<T: MGEntity>(_ entity: T.Type, query: [String: Any]?) -> Bool {
-        let entityName = String(describing: entity)
-        var willFetch = true
-        var newQuery = [String: Any]()
-        
-        if let query = query {
-            for (k,v) in query {
-                newQuery[k] = v
-            }
-        }
-        newQuery["tableName"] = entityName
-        
-        if let cache = find(MGLocalCache.self,
-                            query: newQuery,
-                            sortDescriptors: nil,
-                            createIfNotFound: true)?.first {
-            
-            if let lastUpdated = cache.lastUpdated {
-                // 5 minutes
-                if let diff = Calendar.current.dateComponents([.minute],
-                                                              from: lastUpdated,
-                                                              to: Date()).minute {
-                    willFetch = diff >= ManaKit.Constants.ManaGuideDataAge
-                }
-            }
-            
-            if willFetch {
-                cache.lastUpdated = Date()
-                cache.tableName = entityName
-                saveContext()
-            }
-        }
-        
-        return willFetch
-    }
-
     func find<T: MGEntity>(_ entity: T.Type,
                            query: [String: Any]?,
                            sortDescriptors: [NSSortDescriptor]?,
@@ -111,15 +105,16 @@ extension ManaKit {
             } else {
                 if createIfNotFound {
                     if let desc = NSEntityDescription.entity(forEntityName: entityName, in: context) {
-                        let object = NSManagedObject(entity: desc, insertInto: context)
-                        
-                        if let query = query {
-                            for (key,value) in query {
-                                object.setValue(value, forKey: key)
+//                        context.performAndWait {
+                            let object = NSManagedObject(entity: desc, insertInto: context)
+                            
+                            if let query = query {
+                                for (key,value) in query {
+                                    object.setValue(value, forKey: key)
+                                }
                             }
-                        }
-                        saveContext()
-                        
+                            self.saveContext()
+//                        }
                         return find(entity, query: query, sortDescriptors: sortDescriptors, createIfNotFound: createIfNotFound)
                     } else {
                         return nil
@@ -135,8 +130,8 @@ extension ManaKit {
     }
     
     public func delete<T: MGEntity>(_ entity: T.Type,
-                                    query: [String: AnyObject]?,
-                                    completion: () -> Void) {
+                                    query: [String: Any]?,
+                                    completion: (() -> Void)?) {
         let context = persistentContainer.viewContext
         let entityName = String(describing: entity)
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
@@ -152,14 +147,14 @@ extension ManaKit {
 
                 NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
             }
-            completion()
+            completion?()
         } catch {
             print("Failed to perform batch update: \(error)")
-            completion()
+            completion?()
         }
     }
 
-    public func count<T: NSManagedObject>(_ entity: T.Type, query: [String: AnyObject]?) -> Int {
+    public func count<T: NSManagedObject>(_ entity: T.Type, query: [String: Any]?) -> Int {
         let context = persistentContainer.viewContext
         let entityName = String(describing: entity)
         let request = NSFetchRequest<T>(entityName: entityName)
@@ -173,18 +168,34 @@ extension ManaKit {
         }
     }
     
+    public func saveContext () {
+        let context = persistentContainer.viewContext//newBackgroundContext()
+        
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                print(error)
+            }
+        }
+    }
+
+    // MARK: - Utilities
     func predicate(fromQuery query: [String: Any]?) -> NSPredicate? {
         var predicate: NSPredicate?
         
         if let query = query {
             for (key, value) in query {
-                var format = "[c] %@"
+                var format = "%@"
+                
                 if let _ = value as? Int32 {
                     format = "%d"
                 } else if let _ = value as? Double {
                     format = "%f"
                 } else if let _ = value as? Bool {
                     format = "%d"
+                } else if let _ = value as? String {
+                    format = "[c] %@"
                 }
                 
                 if predicate != nil {
@@ -197,19 +208,50 @@ extension ManaKit {
         
         return predicate
     }
+    
+    // MARK: - Caching
 
-    public func saveContext () {
-        let context = persistentContainer.viewContext
-        
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                print(error)
+    func willFetchCache(forUrl url: URL) -> Bool {
+        var willFetch = true
+
+        if let cache = find(MGLocalCache.self,
+                            query: ["url": url.absoluteString],
+                            sortDescriptors: nil,
+                            createIfNotFound: true)?.first {
+            
+            if let lastUpdated = cache.lastUpdated {
+                // 5 minutes
+                if let diff = Calendar.current.dateComponents([.minute],
+                                                              from: lastUpdated,
+                                                              to: Date()).minute {
+                    willFetch = diff >= ManaKit.Constants.ManaGuideDataAge
+                }
+            }
+            
+            if willFetch {
+                print(url)
             }
         }
-    }
         
+        return willFetch
+    }
+
+    func saveCache(forUrl url: URL) {
+        if let cache = find(MGLocalCache.self,
+                            query: ["url": url.absoluteString],
+                            sortDescriptors: nil,
+                            createIfNotFound: true)?.first {
+            cache.lastUpdated = Date()
+            saveContext()
+        }
+    }
+    
+    func deleteCache(forUrl url: URL) {
+        delete(MGLocalCache.self,
+                    query: ["url": url.absoluteString],
+                    completion: nil)
+    }
+    
 //    func copyModelFile() {
 //        guard let modelURL = Bundle(for: type(of: self)).url(forResource: "ManaKit", withExtension: "momd"),
 //              let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first,

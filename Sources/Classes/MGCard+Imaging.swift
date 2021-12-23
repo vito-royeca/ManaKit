@@ -192,39 +192,39 @@ extension MGCard {
         return typeText
     }
 
-    public func imageURL(type: CardImageType, faceOrder: Int) -> URL? {
-        var url:URL?
-        var urlString: String?
-        
-        
-        if let imageUris = imageUris,
-            let dict = NSKeyedUnarchiver.unarchiveObject(with: imageUris as Data) as? [String: String] {
-            urlString = dict[type.description]
-        } else {
-            if let faces = faces {
-                let orderedFaces = faces.sorted(by: {(a, b) -> Bool in
-                    if let a = a as? MGCard,
-                        let b = b as? MGCard {
-                        return a.faceOrder < b.faceOrder
-                    } else {
-                        return false
-                    }
-                })
-                
-                if let face = orderedFaces[faceOrder] as? MGCard,
-                    let imageURIs = face.imageUris,
-                    let dict = NSKeyedUnarchiver.unarchiveObject(with: imageURIs as Data) as? [String: String] {
-                    urlString = dict[type.description]
-                }
-            }
-        }
-        
-        if let urlString = urlString {
-            url = URL(string: urlString)
-        }
-        
-        return url
-    }
+//    public func imageURL(type: CardImageType, faceOrder: Int) -> URL? {
+//        var url:URL?
+//        var urlString: String?
+//
+//
+//        if let imageUris = imageUris,
+//            let dict = NSKeyedUnarchiver.unarchiveObject(with: imageUris as Data) as? [String: String] {
+//            urlString = dict[type.description]
+//        } else {
+//            if let faces = faces {
+//                let orderedFaces = faces.sorted(by: {(a, b) -> Bool in
+//                    if let a = a as? MGCard,
+//                        let b = b as? MGCard {
+//                        return a.faceOrder < b.faceOrder
+//                    } else {
+//                        return false
+//                    }
+//                })
+//
+//                if let face = orderedFaces[faceOrder] as? MGCard,
+//                    let imageURIs = face.imageUris,
+//                    let dict = NSKeyedUnarchiver.unarchiveObject(with: imageURIs as Data) as? [String: String] {
+//                    urlString = dict[type.description]
+//                }
+//            }
+//        }
+//
+//        if let urlString = urlString {
+//            url = URL(string: urlString)
+//        }
+//
+//        return url
+//    }
         
     public func backImage() -> UIImage? {
         guard let set = set else {
@@ -243,11 +243,12 @@ extension MGCard {
     public func image(type: CardImageType, faceOrder: Int, roundCornered: Bool) -> UIImage? {
         var cardImage: UIImage?
 
-        guard let url = imageURL(type: type,
-                                 faceOrder: faceOrder) else {
-            return nil
-        }
-
+//        guard let url = imageURL(type: type,
+//                                 faceOrder: faceOrder) else {
+//            return nil
+//        }
+        let url = URL(fileURLWithPath: "")
+        
         let imageCache = SDImageCache.init()
         let cacheKey = url.absoluteString
 

@@ -32,30 +32,30 @@ extension ManaKit {
         return UIImage(named: name, in: resourceBundle, compatibleWith: nil)
     }
     
-    public func downloadImage(ofCard card: MGCard, type: CardImageType, faceOrder: Int) -> Promise<Void> {
-        guard let url = card.imageURL(type: type,
-                                      faceOrder: faceOrder) else {
-            
-            return Promise { seal  in
-                let error = NSError(domain: NSURLErrorDomain,
-                                    code: 404,
-                                    userInfo: [NSLocalizedDescriptionKey: "No valid URL for image"])
-                seal.reject(error)
-            }
-        }
-        
-        let roundCornered = type != .artCrop
-        
-        if let _ = card.image(type: type,
-                              faceOrder: faceOrder,
-                              roundCornered: roundCornered) {
-            return Promise { seal  in
-                seal.fulfill(())
-            }
-        } else {
-            return downloadImage(url: url)
-        }
-    }
+//    public func downloadImage(ofCard card: MGCard, type: CardImageType, faceOrder: Int) -> Promise<Void> {
+//        guard let url = card.imageURL(type: type,
+//                                      faceOrder: faceOrder) else {
+//            
+//            return Promise { seal  in
+//                let error = NSError(domain: NSURLErrorDomain,
+//                                    code: 404,
+//                                    userInfo: [NSLocalizedDescriptionKey: "No valid URL for image"])
+//                seal.reject(error)
+//            }
+//        }
+//        
+//        let roundCornered = type != .artCrop
+//        
+//        if let _ = card.image(type: type,
+//                              faceOrder: faceOrder,
+//                              roundCornered: roundCornered) {
+//            return Promise { seal  in
+//                seal.fulfill(())
+//            }
+//        } else {
+//            return downloadImage(url: url)
+//        }
+//    }
     
     public func downloadImage(url: URL) -> Promise<Void> {
         return Promise { seal in

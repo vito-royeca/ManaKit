@@ -125,28 +125,28 @@ public class CardTableViewCell: UITableViewCell {
         } else {
             thumbnailImage.image = ManaKit.shared.imageFromFramework(imageName: .cardBackCropped)
 
-            firstly {
-                ManaKit.shared.downloadImage(ofCard: card,
-                                             type: .artCrop,
-                                             faceOrder: faceOrder)
-            }.done {
-                guard let image = card.image(type: .artCrop,
-                                             faceOrder: self.faceOrder,
-                                             roundCornered: false) else {
-                    return
-                }
-
-                let animations = {
-                    self.thumbnailImage.image = image
-                }
-                UIView.transition(with: self.thumbnailImage,
-                                  duration: 1.0,
-                                  options: .transitionCrossDissolve,
-                                  animations: animations,
-                                  completion: nil)
-            }.catch { error in
-
-            }
+//            firstly {
+//                ManaKit.shared.downloadImage(ofCard: card,
+//                                             type: .artCrop,
+//                                             faceOrder: faceOrder)
+//            }.done {
+//                guard let image = card.image(type: .artCrop,
+//                                             faceOrder: self.faceOrder,
+//                                             roundCornered: false) else {
+//                    return
+//                }
+//
+//                let animations = {
+//                    self.thumbnailImage.image = image
+//                }
+//                UIView.transition(with: self.thumbnailImage,
+//                                  duration: 1.0,
+//                                  options: .transitionCrossDissolve,
+//                                  animations: animations,
+//                                  completion: nil)
+//            }.catch { error in
+//
+//            }
         }
         
         // set symbol
