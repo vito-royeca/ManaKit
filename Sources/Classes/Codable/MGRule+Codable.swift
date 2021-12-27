@@ -33,7 +33,7 @@ public class MGRule: MGEntity {
         term = try container.decodeIfPresent(String.self, forKey: .term)
         termSection = try container.decodeIfPresent(String.self, forKey: .termSection)
         children = try container.decodeIfPresent(Set<MGRule>.self, forKey: .children) as NSSet?
-        parent = try container.decodeIfPresent(MGRule.self, forKey: .parent)
+//        parent = try container.decodeIfPresent(MGRule.self, forKey: .parent)
     }
     
     public override func encode(to encoder: Encoder) throws {

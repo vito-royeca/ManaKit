@@ -9,7 +9,6 @@
 #if canImport(UIKit)
 
 import UIKit
-import PromiseKit
 
 public class CardTableViewCell: UITableViewCell {
     public static let reuseIdentifier = "CardCell"
@@ -118,12 +117,12 @@ public class CardTableViewCell: UITableViewCell {
         }
         
         // thumbnail image
-        if let croppedImage = card.image(type: .artCrop,
-                                         faceOrder: faceOrder,
-                                         roundCornered: false) {
-            thumbnailImage.image = croppedImage
-        } else {
-            thumbnailImage.image = ManaKit.shared.imageFromFramework(imageName: .cardBackCropped)
+//        if let croppedImage = card.image(type: .artCrop,
+//                                         faceOrder: faceOrder,
+//                                         roundCornered: false) {
+//            thumbnailImage.image = croppedImage
+//        } else {
+//            thumbnailImage.image = ManaKit.shared.imageFromFramework(imageName: .cardBackCropped)
 
 //            firstly {
 //                ManaKit.shared.downloadImage(ofCard: card,
@@ -147,7 +146,7 @@ public class CardTableViewCell: UITableViewCell {
 //            }.catch { error in
 //
 //            }
-        }
+//        }
         
         // set symbol
         if let set = card.set {

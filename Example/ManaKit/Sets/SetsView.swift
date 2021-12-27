@@ -18,7 +18,8 @@ struct SetsView: View {
             ZStack(alignment: .center) {
                 List {
                     ForEach(viewModel.sets) { set in
-                        NavigationLink(destination: SetView(set: set, languageCode: "en")) {
+                        let setView = SetView(setCode: set.code ?? "", languageCode: "en")
+                        NavigationLink(destination: setView) {
                             SetsRowView(set: set)
                         }
                     }
@@ -36,10 +37,8 @@ struct SetsView: View {
 
 struct SetsView_Previews: PreviewProvider {
     static var previews: some View {
-        let viewModel = SetsViewModel(dataAPI: MockAPI())
-        
-        var view = SetsView()
-        view.viewModel = viewModel
+        let view = SetsView()
+        view.viewModel.dataAPI = MockAPI()
         
         return view
     }

@@ -4,8 +4,7 @@ def default_pods
     pod 'ManaKit', :path => '../'
     
     pod 'Kanna'
-    pod 'PromiseKit'
-    pod 'SDWebImage'
+    pod 'SDWebImageSwiftUI'
 end
 
 target 'ManaKit_Example' do

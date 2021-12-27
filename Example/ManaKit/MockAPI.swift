@@ -30,20 +30,20 @@ class MockAPI: API {
         do {
             let data = try JSONSerialization.data(withJSONObject: [
                 [
-                    "card_count": Int32(295),
-                    "code": "lea",
-                    "keyrune_class": "lea",
-                    "keyrune_unicode": "e600",
-                    "name": "Limited Edition Alpha",
-                    "release_date": "1993-08-06"
+                    "card_count": Int32(199),
+                    "code": "all",
+                    "keyrune_class": "all",
+                    "keyrune_unicode": "e61a",
+                    "name": "Alliances",
+                    "release_date": "1996-06-10"
                 ],
                 [
-                    "card_count": Int32(302),
-                    "code": "2ed",
-                    "keyrune_class": "2ed",
-                    "keyrune_unicode": "e602",
-                    "name": "Unlimited Edition",
-                    "release_date": "1993-12-01"
+                    "card_count": Int32(208),
+                    "code": "emn",
+                    "keyrune_class": "emn",
+                    "keyrune_unicode": "e90b",
+                    "name": "Eldritch Moon",
+                    "release_date": "2016-07-22"
                 ]
             ], options: [])
             let sets = try decoder.decode([MGSet].self, from: data)
@@ -59,29 +59,16 @@ class MockAPI: API {
                   cancellables: inout Set<AnyCancellable>,
                   completion: @escaping (Result<MGSet, Error>) -> Void) {
         do {
-            let data = try JSONSerialization.data(withJSONObject: [
-                [
-                    "name": "Unlimited Edition",
-                    "code": "2ed",
-                    "cards":
-                    [
-                        [
-                            "new_id": "2ed_en_29",
-                            "name": "Mesa Pegasus",
-                            "set": ["name": "Unlimited Edition", "code": "2ed", "keyrune_class": "2ed"],
-                            "rarity": ["name": "Common", "name_section": "C"],
-                            "mana_cost": "{1}{W}",
-                            "image_uris":
-                            [
-                                ["art_crop": "/images/cards/2ed/en/29/art_crop.jpg", "normal": "/images/cards/2ed/en/29/normal.jpg", "png": "/images/cards/2ed/en/29/png.png"]
-                            ]
-                        ]
-                    ]
-                ]
-            ], options: [])
-            let set = try decoder.decode(MGSet.self, from: data)
+            let bundle = Bundle(for: MockAPI.self)
             
-            completion(.success(set))
+            guard let jsonURL = bundle.url(forResource: "data/\(code)_en", withExtension: "json") else {
+                fatalError("Can't load file: \(code)_en.json")
+            }
+            
+            let data = try Data(contentsOf: jsonURL)
+            let sets = try decoder.decode([MGSet].self, from: data)
+            
+            completion(.success(sets[0]))
         } catch {
             completion(.failure(JSONDataError.unableToParse))
         }

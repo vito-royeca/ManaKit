@@ -33,6 +33,10 @@ public class MGEntity: NSManagedObject, Codable {
 
         self.init(context: context)
     }
+    
+    public convenience init() {
+        self.init()
+    }
 }
 
 public class MGLocalCache: MGEntity {

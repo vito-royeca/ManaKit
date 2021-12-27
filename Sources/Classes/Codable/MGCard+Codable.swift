@@ -77,7 +77,7 @@ public class MGCard: MGEntity {
         guard let context = decoder.userInfo[CodingUserInfoKey.managedObjectContext] as? NSManagedObjectContext else {
           throw DecoderConfigurationError.missingManagedObjectContext
         }
-
+        
         self.init(context: context)
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -128,27 +128,28 @@ public class MGCard: MGEntity {
         tcgPlayerId = try container.decodeIfPresent(Int64.self, forKey: .tcgPlayerId) ?? Int64(0)
         toughness = try container.decodeIfPresent(String.self, forKey: .toughness)
         typeLine = try container.decodeIfPresent(String.self, forKey: .typeLine)
+        
         artist = try container.decodeIfPresent(MGArtist.self, forKey: .artist)
         cardComponentParts = try container.decodeIfPresent(Set<MGCardComponentPart>.self, forKey: .cardComponentParts) as NSSet?
+        colors = try container.decodeIfPresent(Set<MGColor>.self, forKey: .colors) as NSSet?
         colorIdentities = try container.decodeIfPresent(Set<MGColor>.self, forKey: .colorIdentities) as NSSet?
         colorIndicators = try container.decodeIfPresent(Set<MGColor>.self, forKey: .colorIndicators) as NSSet?
-        colors = try container.decodeIfPresent(Set<MGColor>.self, forKey: .colors) as NSSet?
         faces = try container.decodeIfPresent(Set<MGCard>.self, forKey: .faces) as NSSet?
         formatLegalities = try container.decodeIfPresent(Set<MGCardFormatLegality>.self, forKey: .formatLegalities) as NSSet?
-        frame = try container.decodeIfPresent(MGFrame.self, forKey: .frame)
-        frameEffect = try container.decodeIfPresent(MGFrameEffect.self, forKey: .frameEffect)
-        language = try container.decodeIfPresent(MGLanguage.self, forKey: .language)
-        layout = try container.decodeIfPresent(MGLayout.self, forKey: .layout)
+//        frame = try container.decodeIfPresent(MGFrame.self, forKey: .frame)
+//        frameEffect = try container.decodeIfPresent(MGFrameEffect.self, forKey: .frameEffect)
+//        language = try container.decodeIfPresent(MGLanguage.self, forKey: .language)
+//        layout = try container.decodeIfPresent(MGLayout.self, forKey: .layout)
         otherLanguages = try container.decodeIfPresent(Set<MGCard>.self, forKey: .otherLanguages) as NSSet?
         otherPrintings = try container.decodeIfPresent(Set<MGCard>.self, forKey: .otherPrintings) as NSSet?
-        partComponentParts = try container.decodeIfPresent(Set<MGCard>.self, forKey: .partComponentParts) as NSSet?
+//        partComponentParts = try container.decodeIfPresent(Set<MGCard>.self, forKey: .partComponentParts) as NSSet?
         prices = try container.decodeIfPresent(Set<MGCardPrice>.self, forKey: .prices) as NSSet?
-        rarity = try container.decodeIfPresent(MGRarity.self, forKey: .rarity)
-        set = try container.decodeIfPresent(MGSet.self, forKey: .set)
+//        rarity = try container.decodeIfPresent(MGRarity.self, forKey: .rarity)
+//        set = try container.decodeIfPresent(MGSet.self, forKey: .set)
         subtypes = try container.decodeIfPresent(Set<MGCardType>.self, forKey: .subtypes) as NSSet?
         supertypes = try container.decodeIfPresent(Set<MGCardType>.self, forKey: .supertypes) as NSSet?
         variations = try container.decodeIfPresent(Set<MGCard>.self, forKey: .variations) as NSSet?
-        watermark = try container.decodeIfPresent(MGWatermark.self, forKey: .watermark)
+//        watermark = try container.decodeIfPresent(MGWatermark.self, forKey: .watermark)
     }
     
     public override func encode(to encoder: Encoder) throws {
@@ -204,12 +205,24 @@ public class MGCard: MGEntity {
         if let artist = artist {
             try container.encode(artist, forKey: .artist)
         }
-        try container.encode(cardComponentParts as! Set<MGCardComponentPart>, forKey: .cardComponentParts)
-        try container.encode(colorIdentities as! Set<MGColor>, forKey: .colorIdentities)
-        try container.encode(colorIndicators as! Set<MGColor>, forKey: .colorIndicators)
-        try container.encode(colors as! Set<MGColor>, forKey: .colors)
-        try container.encode(faces as! Set<MGCard>, forKey: .faces)
-        try container.encode(formatLegalities as! Set<MGCardFormatLegality>, forKey: .formatLegalities)
+        if let cardComponentParts = cardComponentParts as? Set<MGCardComponentPart> {
+            try container.encode(cardComponentParts, forKey: .cardComponentParts)
+        }
+        if let colorIdentities = colorIdentities as? Set<MGColor> {
+            try container.encode(colorIdentities, forKey: .colorIdentities)
+        }
+        if let colorIndicators = colorIndicators as? Set<MGColor> {
+            try container.encode(colorIndicators, forKey: .colorIndicators)
+        }
+        if let colors = colors as? Set<MGColor> {
+            try container.encode(colors, forKey: .colors)
+        }
+        if let faces = faces as? Set<MGCard> {
+            try container.encode(faces, forKey: .faces)
+        }
+        if let formatLegalities = formatLegalities as? Set<MGCardFormatLegality> {
+            try container.encode(formatLegalities, forKey: .formatLegalities)
+        }
         if let frame = frame {
             try container.encode(frame, forKey: .frame)
         }
@@ -222,21 +235,76 @@ public class MGCard: MGEntity {
         if let layout = layout {
             try container.encode(layout, forKey: .layout)
         }
-        try container.encode(otherLanguages as! Set<MGCard>, forKey: .otherLanguages)
-        try container.encode(otherPrintings as! Set<MGCard>, forKey: .otherPrintings)
-        try container.encode(partComponentParts as! Set<MGCard>, forKey: .partComponentParts)
-        try container.encode(prices as! Set<MGCardPrice>, forKey: .prices)
+        if let otherLanguages = otherLanguages as? Set<MGCard> {
+            try container.encode(otherLanguages, forKey: .otherLanguages)
+        }
+        if let otherPrintings = otherPrintings as? Set<MGCard> {
+            try container.encode(otherPrintings, forKey: .otherPrintings)
+        }
+        if let partComponentParts = partComponentParts as? Set<MGCard> {
+            try container.encode(partComponentParts, forKey: .partComponentParts)
+        }
+        if let prices = prices as? Set<MGCardPrice> {
+            try container.encode(prices, forKey: .prices)
+        }
         if let rarity = rarity {
             try container.encode(rarity, forKey: .rarity)
         }
         if let set = set {
             try container.encode(set, forKey: .set)
         }
-        try container.encode(subtypes as! Set<MGCardType>, forKey: .subtypes)
-        try container.encode(supertypes as! Set<MGCardType>, forKey: .supertypes)
-        try container.encode(variations as! Set<MGCard>, forKey: .variations)
+        if let subtypes = subtypes as? Set<MGCardType> {
+            try container.encode(subtypes, forKey: .subtypes)
+        }
+        if let supertypes = supertypes as? Set<MGCardType> {
+            try container.encode(supertypes, forKey: .supertypes)
+        }
+        if let variations = variations as? Set<MGCard> {
+            try container.encode(variations, forKey: .variations)
+        }
         if let watermark = watermark {
             try container.encode(watermark, forKey: .watermark)
         }
+    }
+}
+
+public enum CardImageType: Int, CaseIterable {
+    case png
+    case borderCrop
+    case artCrop
+    case large
+    case normal
+    case small
+    
+    public var description : String {
+        switch self {
+            
+        case .png: return "png"
+        case .borderCrop: return "border_crop"
+        case .artCrop: return "art_crop"
+        case .large: return "large"
+        case .normal: return "normal"
+        case .small: return "small"
+        }
+    }
+}
+
+extension MGCard {
+    public func imageURL(for type: CardImageType) -> URL? {
+        guard let imageUri = imageUri else {
+            return nil
+        }
+        
+        switch type {
+        case .artCrop:
+            return URL(string: "\(ManaKit.shared.apiURL)/\(imageUri.artCrop ?? "")")
+        case .normal:
+            return URL(string: "\(ManaKit.shared.apiURL)/\(imageUri.normal ?? "")")
+        case .png:
+            return URL(string: "\(ManaKit.shared.apiURL)/\(imageUri.png ?? "")")
+        default:
+            return nil
+        }
+        
     }
 }

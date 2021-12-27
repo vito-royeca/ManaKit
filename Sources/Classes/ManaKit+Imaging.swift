@@ -8,8 +8,6 @@
 #if canImport(UIKit)
 
 import Foundation
-import PromiseKit
-import SDWebImage
 
 extension ManaKit {
     public func imageFromFramework(imageName: ImageName) -> UIImage? {
@@ -57,39 +55,39 @@ extension ManaKit {
 //        }
 //    }
     
-    public func downloadImage(url: URL) -> Promise<Void> {
-        return Promise { seal in
-            let cacheKey = url.absoluteString
-            let completion = { (image: UIImage?, data: Data?, error: Error?, finished: Bool) in
-                if let error = error {
-                    seal.reject(error)
-                } else {
-                    if let image = image {
-                        let imageCache = SDImageCache.init()
-                        let imageCacheCompletion = {
-                            seal.fulfill(())
-                        }
-
-                        imageCache.store(image,
-                                         forKey: cacheKey,
-                                         toDisk: true,
-                                         completion: imageCacheCompletion)
-
-                    } else {
-                        let error = NSError(domain: NSURLErrorDomain,
-                                            code: 404,
-                                            userInfo: [NSLocalizedDescriptionKey: "Image not found: \(url)"])
-                        seal.reject(error)
-                    }
-                }
-            }
-
-            SDWebImageDownloader.shared.downloadImage(with: url,
-                                                      options: .lowPriority,
-                                                      progress: nil,
-                                                      completed: completion)
-        }
-    }
+//    public func downloadImage(url: URL) -> Promise<Void> {
+//        return Promise { seal in
+//            let cacheKey = url.absoluteString
+//            let completion = { (image: UIImage?, data: Data?, error: Error?, finished: Bool) in
+//                if let error = error {
+//                    seal.reject(error)
+//                } else {
+//                    if let image = image {
+//                        let imageCache = SDImageCache.init()
+//                        let imageCacheCompletion = {
+//                            seal.fulfill(())
+//                        }
+//
+//                        imageCache.store(image,
+//                                         forKey: cacheKey,
+//                                         toDisk: true,
+//                                         completion: imageCacheCompletion)
+//
+//                    } else {
+//                        let error = NSError(domain: NSURLErrorDomain,
+//                                            code: 404,
+//                                            userInfo: [NSLocalizedDescriptionKey: "Image not found: \(url)"])
+//                        seal.reject(error)
+//                    }
+//                }
+//            }
+//
+//            SDWebImageDownloader.shared.downloadImage(with: url,
+//                                                      options: .lowPriority,
+//                                                      progress: nil,
+//                                                      completed: completion)
+//        }
+//    }
 }
 
 #endif // #if canImport(UIKit)

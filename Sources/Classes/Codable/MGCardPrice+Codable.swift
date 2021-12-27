@@ -17,9 +17,9 @@ public class MGCardPrice: MGEntity {
              isFoil,
              low,
              market,
-             median,
+             median/*,
              card,
-             store
+             store*/
     }
 
     public required convenience init(from decoder: Decoder) throws {
@@ -40,8 +40,8 @@ public class MGCardPrice: MGEntity {
         low = try container.decodeIfPresent(Double.self, forKey: .low) ?? Double(0)
         market = try container.decodeIfPresent(Double.self, forKey: .market) ?? Double(0)
         median = try container.decodeIfPresent(Double.self, forKey: .median) ?? Double(0)
-        card = try container.decodeIfPresent(MGCard.self, forKey: .card)
-        store = try container.decodeIfPresent(MGStore.self, forKey: .store)
+        //card = try container.decodeIfPresent(MGCard.self, forKey: .card)
+//        store = try container.decodeIfPresent(MGStore.self, forKey: .store)
     }
     
     public override func encode(to encoder: Encoder) throws {
@@ -56,7 +56,7 @@ public class MGCardPrice: MGEntity {
         try container.encode(low, forKey: .low)
         try container.encode(market, forKey: .market)
         try container.encode(median, forKey: .median)
-        try container.encode(card, forKey: .card)
-        try container.encode(store, forKey: .store)
+        //try container.encode(card, forKey: .card)
+//        try container.encode(store, forKey: .store)
     }
 }

@@ -24,9 +24,9 @@ public class MGCardComponentPart: MGEntity {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        card = try container.decodeIfPresent(MGCard.self, forKey: .card)
-        component = try container.decodeIfPresent(MGComponent.self, forKey: .component)
-        part = try container.decodeIfPresent(MGCard.self, forKey: .part)
+//        card = try container.decodeIfPresent(MGCard.self, forKey: .card)
+//        component = try container.decodeIfPresent(MGComponent.self, forKey: .component)
+//        part = try container.decodeIfPresent(MGCard.self, forKey: .part)
         id = "\(card?.newId ?? "")_\(component?.name ?? "")_\(part?.newId ?? "")"
     }
     

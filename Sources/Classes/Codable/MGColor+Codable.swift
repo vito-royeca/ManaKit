@@ -11,10 +11,10 @@ public class MGColor: MGEntity {
     enum CodingKeys: CodingKey {
         case name,
              nameSection,
-             symbol,
+             symbol/*,
              cards,
              identities,
-             indicators
+             indicators*/
     }
 
     public required convenience init(from decoder: Decoder) throws {
@@ -28,9 +28,10 @@ public class MGColor: MGEntity {
         
         name = try container.decodeIfPresent(String.self, forKey: .name)
         nameSection = try container.decodeIfPresent(String.self, forKey: .nameSection)
-        cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards) as NSSet?
-        identities = try container.decodeIfPresent(Set<MGCard>.self, forKey: .identities) as NSSet?
-        indicators = try container.decodeIfPresent(Set<MGCard>.self, forKey: .indicators) as NSSet?
+        symbol = try container.decodeIfPresent(String.self, forKey: .symbol)
+//        cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards) as NSSet?
+//        identities = try container.decodeIfPresent(Set<MGCard>.self, forKey: .identities) as NSSet?
+//        indicators = try container.decodeIfPresent(Set<MGCard>.self, forKey: .indicators) as NSSet?
     }
     
     public override func encode(to encoder: Encoder) throws {
@@ -38,8 +39,9 @@ public class MGColor: MGEntity {
         
         try container.encode(name, forKey: .name)
         try container.encode(nameSection, forKey: .nameSection)
-        try container.encode(cards as! Set<MGCard>, forKey: .cards)
-        try container.encode(identities as! Set<MGCard>, forKey: .identities)
-        try container.encode(indicators as! Set<MGCard>, forKey: .indicators)
+        try container.encode(symbol, forKey: .symbol)
+//        try container.encode(cards as! Set<MGCard>, forKey: .cards)
+//        try container.encode(identities as! Set<MGCard>, forKey: .identities)
+//        try container.encode(indicators as! Set<MGCard>, forKey: .indicators)
     }
 }

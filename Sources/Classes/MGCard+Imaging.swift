@@ -8,28 +8,6 @@
 #if canImport(UIKit)
 
 import UIKit
-import SDWebImage
-
-public enum CardImageType: Int, CaseIterable {
-    case png
-    case borderCrop
-    case artCrop
-    case large
-    case normal
-    case small
-    
-    public var description : String {
-        switch self {
-            
-        case .png: return "png"
-        case .borderCrop: return "border_crop"
-        case .artCrop: return "art_crop"
-        case .large: return "large"
-        case .normal: return "normal"
-        case .small: return "small"
-        }
-    }
-}
 
 public enum CardType: Int, CaseIterable {
     case artifact
@@ -240,28 +218,28 @@ extension MGCard {
         }
     }
 
-    public func image(type: CardImageType, faceOrder: Int, roundCornered: Bool) -> UIImage? {
-        var cardImage: UIImage?
-
-//        guard let url = imageURL(type: type,
-//                                 faceOrder: faceOrder) else {
-//            return nil
+//    public func image(type: CardImageType, faceOrder: Int, roundCornered: Bool) -> UIImage? {
+//        var cardImage: UIImage?
+//
+////        guard let url = imageURL(type: type,
+////                                 faceOrder: faceOrder) else {
+////            return nil
+////        }
+//        let url = URL(fileURLWithPath: "")
+//        
+//        let imageCache = SDImageCache.init()
+//        let cacheKey = url.absoluteString
+//
+//        cardImage = imageCache.imageFromDiskCache(forKey: cacheKey)
+//
+//        if roundCornered {
+//            if let c = cardImage {
+//                cardImage = c.roundCornered(card: self)
+//            }
 //        }
-        let url = URL(fileURLWithPath: "")
-        
-        let imageCache = SDImageCache.init()
-        let cacheKey = url.absoluteString
-
-        cardImage = imageCache.imageFromDiskCache(forKey: cacheKey)
-
-        if roundCornered {
-            if let c = cardImage {
-                cardImage = c.roundCornered(card: self)
-            }
-        }
-
-        return cardImage
-    }
+//
+//        return cardImage
+//    }
 }
 
 #endif // #if canImport(UIKit)

@@ -12,7 +12,6 @@
 
 import KeychainAccess
 //import PromiseKit
-import SDWebImage
 import Combine
 import CoreData
 
@@ -82,15 +81,15 @@ public class ManaKit {
         self.apiURL = apiURL
     }
     
-    public func nibFromBundle(_ name: String) -> UINib? {
-        let bundle = Bundle(for: ManaKit.self)
-        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
-            let resourceBundle = Bundle(url: bundleURL) else {
-            return nil
-        }
-        
-        return UINib(nibName: name, bundle: resourceBundle)
-    }
+//    public func nibFromBundle(_ name: String) -> UINib? {
+//        let bundle = Bundle(for: ManaKit.self)
+//        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
+//            let resourceBundle = Bundle(url: bundleURL) else {
+//            return nil
+//        }
+//
+//        return UINib(nibName: name, bundle: resourceBundle)
+//    }
     
     public func setupResources() {
 //        copyModelFile()
@@ -162,58 +161,6 @@ public class ManaKit {
 //            .replacingOccurrences(of: "*S%n", with: "/")
 //    }
     
-    // MARK: - DatabaseProtocol
-    
-//    public typealias ObjectType = NSManagedObject
-//    public typealias PredicateType = NSPredicate
-//    var context: NSManagedObjectContext { persistentContainer.viewContext }
-//
-//    public func create(_ object: NSManagedObject) {
-//        do {
-//            try context.save()
-//        } catch {
-//            fatalError("error saving context while creating an object")
-//        }
-//    }
-//
-//    public func fetch<T: NSManagedObject>(_ objectType: T.Type, predicate: NSPredicate? = nil, limit: Int? = nil) -> Result<[T], Error> {
-//        let request = objectType.fetchRequest()
-//        request.predicate = predicate
-//
-//        if let limit = limit {
-//            request.fetchLimit = limit
-//        }
-//        do {
-//            let result = try context.fetch(request)
-//            return .success(result as? [T] ?? [])
-//        } catch {
-//            return .failure(error)
-//        }
-//    }
-//
-//    public func fetchFirst<T: NSManagedObject>(_ objectType: T.Type, predicate: NSPredicate?) -> Result<T?, Error> {
-//        let result = fetch(objectType, predicate: predicate, limit: 1)
-//
-//        switch result {
-//        case .success(let objects):
-//            return .success(objects.first as? T)
-//        case .failure(let error):
-//            return .failure(error)
-//        }
-//    }
-//
-//    public func update(_ object: NSManagedObject) {
-//        do {
-//            try context.save()
-//        } catch {
-//            fatalError("error saving context while updating an object")
-//        }
-//    }
-//
-//    public func delete(_ object: NSManagedObject) {
-//
-//    }
-    
     // MARK: - Core Data
     
     public lazy var persistentContainer: NSPersistentContainer = {
@@ -222,8 +169,8 @@ public class ManaKit {
         
         guard let momURL = bundle.url(forResource: "ManaKit", withExtension: "momd"),
            let managedObjectModel = NSManagedObjectModel(contentsOf: momURL) else {
-               fatalError("Can't load persistent container")
-           }
+            fatalError("Can't load persistent container")
+        }
         let container = NSPersistentContainer(name: bundleName, managedObjectModel: managedObjectModel)
         
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
@@ -235,20 +182,3 @@ public class ManaKit {
         return container
     }()
 }
-
-//public protocol DatabaseProtocol {
-//    associatedtype ObjectType
-//    associatedtype PredicateType
-//
-//    func create(_ object: ObjectType)
-//    func fetch(_ objectType: ObjectType.Type, predicate: PredicateType?, limit: Int?) -> Result<[ObjectType], Error>
-//    func fetchFirst(_ objectType: ObjectType.Type, predicate: PredicateType?) -> Result<ObjectType?, Error>
-//    func update(_ object: ObjectType)
-//    func delete(_ object: ObjectType)
-//}
-//
-//public extension DatabaseProtocol {
-//    func fetch(_ objectType: ObjectType.Type, predicate: PredicateType? = nil, limit: Int? = nil) -> Result<[ObjectType], Error> {
-//        return fetch(objectType, predicate: predicate, limit: limit)
-//    }
-//}

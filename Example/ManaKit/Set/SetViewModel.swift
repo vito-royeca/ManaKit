@@ -8,6 +8,7 @@
 
 import Foundation
 import Combine
+import CoreData
 import SwiftUI
 import ManaKit
 
@@ -15,12 +16,13 @@ class SetViewModel: ObservableObject {
     @Published var set: MGSet?
     @Published var isBusy = false
     
+    var setCode: String
     var languageCode: String
     var dataAPI: API
     var cancellables = Set<AnyCancellable>()
     
-    init(set: MGSet = MGSet(), languageCode: String = "en", dataAPI: API = ManaKit.shared) {
-        self.set = set
+    init(setCode: String = "emn", languageCode: String = "en", dataAPI: API = ManaKit.shared) {
+        self.setCode = setCode
         self.languageCode = languageCode
         self.dataAPI = dataAPI
     }
@@ -32,14 +34,9 @@ class SetViewModel: ObservableObject {
     }
         
     func fetchData() {
-        guard let set = set,
-           let code = set.code else {
-            return
-        }
-        
         isBusy.toggle()
         
-        dataAPI.fetchSet(code: code,
+        dataAPI.fetchSet(code: setCode,
                          languageCode: languageCode,
                          cancellables: &cancellables,
                          completion: { result in
@@ -48,7 +45,6 @@ class SetViewModel: ObservableObject {
             switch result {
             case .success(let set):
                 self.set = set
-//                print(self.set?.cards?.count ?? 0)
             case .failure(let error):
                 print(error.localizedDescription)
             }

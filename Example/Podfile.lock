@@ -4,37 +4,24 @@ PODS:
   - ManaKit (7.1.0):
     - Kanna
     - KeychainAccess
-    - PromiseKit
-    - SDWebImage
-    - SSZipArchive
-  - PromiseKit (6.15.3):
-    - PromiseKit/CorePromise (= 6.15.3)
-    - PromiseKit/Foundation (= 6.15.3)
-    - PromiseKit/UIKit (= 6.15.3)
-  - PromiseKit/CorePromise (6.15.3)
-  - PromiseKit/Foundation (6.15.3):
-    - PromiseKit/CorePromise
-  - PromiseKit/UIKit (6.15.3):
-    - PromiseKit/CorePromise
   - SDWebImage (5.12.1):
     - SDWebImage/Core (= 5.12.1)
   - SDWebImage/Core (5.12.1)
-  - SSZipArchive (2.4.2)
+  - SDWebImageSwiftUI (2.0.2):
+    - SDWebImage (~> 5.10)
 
 DEPENDENCIES:
   - Kanna
   - KeychainAccess
   - ManaKit (from `../`)
-  - PromiseKit
-  - SDWebImage
+  - SDWebImageSwiftUI
 
 SPEC REPOS:
   trunk:
     - Kanna
     - KeychainAccess
-    - PromiseKit
     - SDWebImage
-    - SSZipArchive
+    - SDWebImageSwiftUI
 
 EXTERNAL SOURCES:
   ManaKit:
@@ -43,11 +30,10 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Kanna: 01cfbddc127f5ff0963692f285fcbc8a9d62d234
   KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
-  ManaKit: 73ce878b6ae0a6789af3566e723a6ab0f40a92f6
-  PromiseKit: 3b2b6995e51a954c46dbc550ce3da44fbfb563c5
+  ManaKit: 458a9215b6f1a4c3bcce6801906b4687f8ad3b24
   SDWebImage: 4dc3e42d9ec0c1028b960a33ac6b637bb432207b
-  SSZipArchive: e7b4f3d9e780c2acc1764cd88fbf2de28f26e5b2
+  SDWebImageSwiftUI: 8a3923c95108312b03a599ec1498754af55a6819
 
-PODFILE CHECKSUM: e995daabdfc1bc6aeb0860eea1f4c9d9ef57043b
+PODFILE CHECKSUM: a6c65ef3ff44d0c46c3fed824142e8f78786df1b
 
 COCOAPODS: 1.10.1

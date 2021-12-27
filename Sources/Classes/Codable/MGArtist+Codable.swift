@@ -12,7 +12,8 @@ public class MGArtist: MGEntity {
         case firstName,
              lastName,
              name,
-             nameSection
+             nameSection,
+             cards
     }
 
     public required convenience init(from decoder: Decoder) throws {
@@ -28,6 +29,7 @@ public class MGArtist: MGEntity {
         lastName = try container.decodeIfPresent(String.self, forKey: .lastName)
         name = try container.decodeIfPresent(String.self, forKey: .name)
         nameSection = try container.decodeIfPresent(String.self, forKey: .nameSection)
+        cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards) as NSSet?
     }
     
     public override func encode(to encoder: Encoder) throws {
@@ -37,5 +39,6 @@ public class MGArtist: MGEntity {
         try container.encode(lastName, forKey: .lastName)
         try container.encode(name, forKey: .name)
         try container.encode(nameSection, forKey: .nameSection)
+        try container.encode(cards as! Set<MGCard>, forKey: .cards)
     }
 }
