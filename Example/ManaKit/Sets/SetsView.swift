@@ -14,21 +14,20 @@ struct SetsView: View {
     @State private var selectedSet: MGSet? = nil
     
     var body: some View {
-        NavigationView {
-            ZStack(alignment: .center) {
-                List {
-                    ForEach(viewModel.sets) { set in
-                        let setView = SetView(setCode: set.code ?? "", languageCode: "en")
-                        NavigationLink(destination: setView) {
+        ZStack(alignment: .center) {
+            List {
+                ForEach(viewModel.sets) { set in
+                    let setView = SetView(setName: set.name ?? "", setCode: set.code ?? "", languageCode: "en")
+                    NavigationLink(destination: setView) {
                             SetsRowView(set: set)
-                        }
                     }
                 }
-                ActivityIndicatorView(shouldAnimate: $viewModel.isBusy)
             }
-            .navigationBarTitle("Sets", displayMode: .automatic)
+            .listStyle(.plain)
+            .navigationBarTitle("Sets")
+            
+            ActivityIndicatorView(shouldAnimate: $viewModel.isBusy)
         }
-        .navigationViewStyle(StackNavigationViewStyle())
         .onAppear {
             viewModel.fetchData()
         }

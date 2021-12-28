@@ -26,24 +26,29 @@ class SetsViewModel: ObservableObject {
             can.cancel()
         }
     }
-        
+    
     func fetchData() {
+        guard !isBusy else {
+            return
+        }
+        
+        isBusy.toggle()
+        
         let sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: false),
                                NSSortDescriptor(key: "name", ascending: true)]
 
-        isBusy.toggle()
         dataAPI.fetchSets(query: nil,
                           sortDescriptors: sortDescriptors,
                           cancellables: &cancellables,
                           completion: { result in
-            self.isBusy.toggle()
-            
             switch result {
             case .success(let sets):
                 self.sets = sets
             case .failure(let error):
-                print(error.localizedDescription)
+                print(error)
             }
+            
+            self.isBusy.toggle()
         })
     }
 }

@@ -35,9 +35,9 @@ A database of Magic: The Gathering cards. Includes prices and images.
   s.source_files = 'Sources/Classes/**/*'
   
   s.resource_bundles = {
-   'ManaKit' => ['Sources/Assets/**/*']
+   'ManaKit' => ['Sources/Resources/**/*']
   }
-  s.resources = 'Sources/Assets/ManaKit.xcdatamodeld'
+  s.resources = 'Sources/Resources/ManaKit.xcdatamodeld'
   
   s.pod_target_xcconfig = { 'HEADER_SEARCH_PATHS' => "$(SDKROOT)/usr/include/libxml2" }
 

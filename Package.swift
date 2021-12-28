@@ -29,11 +29,7 @@ let package = Package(
                            "KeychainAccess",
                             "SDWebImage"],
             path: "Sources/Classes",
-            exclude: [],
-            resources: [
-        //      .process("Resources/config.json"),
-              .copy("Sources/Assets")
-            ]
+            exclude: ["Example/Manakit/data"]
         ),
         .testTarget(
             name: "ManaKitTests",

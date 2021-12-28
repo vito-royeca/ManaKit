@@ -43,21 +43,23 @@ class APITest: XCTestCase {
 
         let sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: false),
                                NSSortDescriptor(key: "name", ascending: true)]
-        var cancellables = Set<AnyCancellable>()
         
-        ManaKit.shared.fetchSets(query: nil, sortDescriptors: sortDescriptors, cancellables: &cancellables, completion: { result in
+        var cancellables1 = Set<AnyCancellable>()
+        ManaKit.shared.fetchSets(query: nil, sortDescriptors: sortDescriptors, cancellables: &cancellables1, completion: { result in
             switch result {
             case .success(let sets):
                 XCTAssert(!sets.isEmpty)
         
                 for code in sets.map({ $0.code ?? ""}) {
-                    ManaKit.shared.fetchSet(code: code, languageCode: "en", cancellables: &cancellables, completion: { result in
+                    var cancellables2 = Set<AnyCancellable>()
+                    ManaKit.shared.fetchSet(code: code, languageCode: "en", cancellables: &cancellables2, completion: { result in
                         switch result {
                         case .success(let set):
                             XCTAssert(set.code == code)
                             
                             for newId in (set.cards?.allObjects as? [MGCard] ?? [MGCard]()).map({ $0.newId ?? ""}) {
-                                ManaKit.shared.fetchCard(id: newId, cancellables: &cancellables, completion: { result in
+                                var cancellables3 = Set<AnyCancellable>()
+                                ManaKit.shared.fetchCard(id: newId, cancellables: &cancellables3, completion: { result in
                                     switch result {
                                     case .success(let card):
                                         XCTAssert(card.newId == newId)
@@ -132,8 +134,8 @@ class APITest: XCTestCase {
         let expectation = XCTestExpectation(description: "testFetchCard")
         var cancellables = Set<AnyCancellable>()
         
-//        let newId = "2ed_en_29" // Mesa Pegasus
-        let newId = "emn_en_15a" // Bruna, the Fading Light - test component parts
+        let newId = "voc_en_65"
+//        let newId = "emn_en_15a" // Bruna, the Fading Light - test component parts
         ManaKit.shared.fetchCard(id: newId, cancellables: &cancellables, completion: { result in
             switch result {
             case .success(let card):

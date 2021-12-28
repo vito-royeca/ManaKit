@@ -13,3 +13,11 @@ public enum ManaKitError: Error {
   case missingPersistentContainer
   case badURL
 }
+
+public enum DecoderConfigurationError: Error {
+    case missingManagedObjectContext
+}
+
+public enum JSONDataError: Error {
+    case unableToParse
+}

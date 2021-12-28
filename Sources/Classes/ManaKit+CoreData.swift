@@ -9,8 +9,28 @@ import Foundation
 import CoreData
 import Combine
 
+// MARK: - CodingUserInfoKey
+
+public extension CodingUserInfoKey {
+  static let managedObjectContext = CodingUserInfoKey(rawValue: "managedObjectContext")!
+}
+
+// MARK: - Base class
+
+public class MGEntity: NSManagedObject, Codable, Identifiable {
+    public required convenience init(from decoder: Decoder) throws {
+        guard let context = decoder.userInfo[CodingUserInfoKey.managedObjectContext] as? NSManagedObjectContext else {
+          throw DecoderConfigurationError.missingManagedObjectContext
+        }
+
+        self.init(context: context)
+    }
+}
+
 extension ManaKit {
+    
     // MARK: - CRUD
+    
     func fetchOneData<T: MGEntity>(_ entity: T.Type,
                                    query: [String: Any]?,
                                    sortDescriptors: [NSSortDescriptor]?,
@@ -224,7 +244,7 @@ extension ManaKit {
                 if let diff = Calendar.current.dateComponents([.minute],
                                                               from: lastUpdated,
                                                               to: Date()).minute {
-                    willFetch = diff >= ManaKit.Constants.ManaGuideDataAge
+                    willFetch = diff >= ManaKit.Constants.cacheAge
                 }
             }
             

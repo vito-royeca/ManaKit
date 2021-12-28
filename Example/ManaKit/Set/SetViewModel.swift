@@ -14,6 +14,7 @@ import ManaKit
 
 class SetViewModel: ObservableObject {
     @Published var set: MGSet?
+    @Published var cards = [MGCard]()
     @Published var isBusy = false
     
     var setCode: String
@@ -32,22 +33,29 @@ class SetViewModel: ObservableObject {
             can.cancel()
         }
     }
-        
+    
     func fetchData() {
+        guard !isBusy else {
+            return
+        }
+        
         isBusy.toggle()
         
         dataAPI.fetchSet(code: setCode,
                          languageCode: languageCode,
                          cancellables: &cancellables,
                          completion: { result in
-            self.isBusy.toggle()
-            
             switch result {
             case .success(let set):
                 self.set = set
+                self.cards = (set.cards?.allObjects as? [MGCard] ?? [MGCard]())
+                    .filter{ $0.newId != nil }
+                    .sorted{ $0.name ?? "" < $1.name ?? ""}
             case .failure(let error):
-                print(error.localizedDescription)
+                print(error)
             }
+            
+            self.isBusy.toggle()
         })
     }
 }

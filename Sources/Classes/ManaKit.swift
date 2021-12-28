@@ -11,25 +11,30 @@
 //import NSKit
 
 import KeychainAccess
-//import PromiseKit
 import Combine
 import CoreData
+import CoreText
 
 public class ManaKit {
     // MARK: - Constants
     
+    public struct Font {
+        var name: String
+        var size: Double
+    }
+    
     public enum Fonts {
-        public static let preEightEdition      = UIFont(name: "Magic:the Gathering", size: 17.0)
-        public static let preEightEditionSmall = UIFont(name: "Magic:the Gathering", size: 15.0)
-        public static let eightEdition         = UIFont(name: "Matrix-Bold", size: 17.0)
-        public static let eightEditionSmall    = UIFont(name: "Matrix-Bold", size: 15.0)
-        public static let magic2015            = UIFont(name: "Beleren", size: 17.0)
-        public static let magic2015Small       = UIFont(name: "Beleren", size: 15.0)
+        public static let preEightEdition      = Font(name: "Magic:the Gathering", size: 17.0)
+        public static let preEightEditionSmall = Font(name: "Magic:the Gathering", size: 15.0)
+        public static let eightEdition         = Font(name: "Matrix-Bold", size: 17.0)
+        public static let eightEditionSmall    = Font(name: "Matrix-Bold", size: 15.0)
+        public static let magic2015            = Font(name: "Beleren", size: 17.0)
+        public static let magic2015Small       = Font(name: "Beleren", size: 15.0)
     }
 
     public enum Constants {
-        public static let EightEditionRelease = "2003-07-28"
-        public static let ManaGuideDataAge    = 5 // 5 mins
+        public static let eightEditionRelease = "2003-07-28"
+        public static let cacheAge            = 5 // 5 mins
     }
     
     public enum ImageName: String {
@@ -47,8 +52,6 @@ public class ManaKit {
         public static let KeyruneVersion        = "KeyruneVersion"
         public static let MTGJSONVersion        = "kMTGJSONVersion"
     }
-    
-//    public static let queryCachePrefix = "cache_"
     
     // MARK: - Variables
 
@@ -181,4 +184,6 @@ public class ManaKit {
         container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         return container
     }()
+    
+    
 }

@@ -10,7 +10,7 @@
 
 import UIKit
 
-public class CardTableViewCell: UITableViewCell {
+class CardTableViewCell: UITableViewCell {
     public static let reuseIdentifier = "CardCell"
     public static let cellHeight = CGFloat(88)
     
@@ -36,7 +36,7 @@ public class CardTableViewCell: UITableViewCell {
     @IBOutlet public weak var typeView: UIView!
     
     // MARK: - Overrides
-    override public func awakeFromNib() {
+    override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         
@@ -47,7 +47,7 @@ public class CardTableViewCell: UITableViewCell {
         removeAnnotation()
     }
 
-    override public func setSelected(_ selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
@@ -66,7 +66,7 @@ public class CardTableViewCell: UITableViewCell {
         foilPriceLabel.text = "NA"
     }
     
-    public func updateDataDisplay() {
+    func updateDataDisplay() {
         guard let card = card else {
             clearDataDisplay()
             return
@@ -87,10 +87,11 @@ public class CardTableViewCell: UITableViewCell {
                 
                 if setReleaseDate.compare(m15Date) == .orderedSame ||
                     setReleaseDate.compare(m15Date) == .orderedDescending {
-                    font = ManaKit.Fonts.magic2015
+                    font = UIFont(name: ManaKit.Fonts.magic2015.name, size: ManaKit.Fonts.magic2015.size)
                     
                 } else {
-                    font = isModern ? ManaKit.Fonts.eightEdition : ManaKit.Fonts.preEightEdition
+                    font = isModern ? UIFont(name: ManaKit.Fonts.eightEdition.name, size: ManaKit.Fonts.eightEdition.size) :
+                                      UIFont(name: ManaKit.Fonts.preEightEdition.name, size: ManaKit.Fonts.preEightEdition.size)
                     
                     if !isModern {
                         shadowColor = UIColor.darkGray
@@ -161,7 +162,7 @@ public class CardTableViewCell: UITableViewCell {
         updateCardPricing()
     }
     
-    public func displayManaCost() {
+    func displayManaCost() {
         guard let card = card else {
             clearDataDisplay()
             return
@@ -196,12 +197,12 @@ public class CardTableViewCell: UITableViewCell {
         }
     }
     
-    public func add(annotation: Int) {
+    func add(annotation: Int) {
         annotationLabel.backgroundColor = UIColor.red
         annotationLabel.text = "\(annotation)"
     }
     
-    public func removeAnnotation() {
+    func removeAnnotation() {
         annotationLabel.backgroundColor = UIColor.clear
         annotationLabel.text = ""
     }

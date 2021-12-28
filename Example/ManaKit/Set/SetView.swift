@@ -12,35 +12,36 @@ import SDWebImageSwiftUI
 
 struct SetView: View {
     @ObservedObject var viewModel = SetViewModel()
+    var setName: String
     
-    init(setCode: String, languageCode: String) {
+    init(setName: String, setCode: String, languageCode: String) {
+        self.setName = setName
         viewModel.setCode = setCode
         viewModel.languageCode = languageCode
     }
     
     var body: some View {
-        NavigationView {
-            ZStack(alignment: .center) {
-                List {
-                    ForEach(viewModel.set?.cards?.allObjects as? [MGCard] ?? [MGCard]()) { card in
-                        let webImage = WebImage(url: card.imageURL(for: .normal))
-                            .resizable()
-                            .placeholder {
-                                Rectangle().foregroundColor(.gray)
-                            }
-                            .indicator(.activity) // Activity Indicator
-                            .transition(.fade(duration: 0.5)) // Fade Transition with duration
-                            .scaledToFit()
-                        NavigationLink(destination: webImage) {
-                            SetRowView(card: card)
+        ZStack(alignment: .center) {
+            List {
+                ForEach(viewModel.cards) { card in
+                    let webImage = WebImage(url: card.imageURL(for: .normal))
+                        .resizable()
+                        .placeholder {
+                            Rectangle().foregroundColor(.gray)
                         }
+                        .indicator(.activity) // Activity Indicator
+                        .transition(.fade(duration: 0.5)) // Fade Transition with duration
+                        .scaledToFit()
+                    NavigationLink(destination: webImage) {
+                        SetRowView(card: card)
                     }
                 }
-                ActivityIndicatorView(shouldAnimate: $viewModel.isBusy)
             }
-            .navigationBarTitle(viewModel.set?.name ?? "Set name", displayMode: .automatic)
+            .listStyle(.plain)
+            .navigationBarTitle(setName)
+            
+            ActivityIndicatorView(shouldAnimate: $viewModel.isBusy)
         }
-        .navigationViewStyle(StackNavigationViewStyle())
         .onAppear {
             viewModel.fetchData()
         }
@@ -51,7 +52,7 @@ struct SetView: View {
 
 struct SetView_Previews: PreviewProvider {
     static var previews: some View {
-        let view = SetView(setCode: "all", languageCode: "en")
+        let view = SetView(setName: "Alliances", setCode: "all", languageCode: "en")
         view.viewModel.dataAPI = MockAPI()
         
         return view
@@ -69,7 +70,7 @@ struct SetRowView: View {
         HStack {
             WebImage(url: card.imageURL(for: .artCrop))
             .resizable() // Resizable like SwiftUI.Image, you must use this modifier or the view will use the image bitmap size
-//                .placeholder(Image(uiImage: UIImage(named: "cropback-hq")!))
+//            .placeholder(Image(uiImage: ManaKit.shared.imageFromFramework(imageName: .cropBack)))
             .placeholder {
                 Rectangle().foregroundColor(.gray)
             }
