@@ -5,9 +5,9 @@
 //  Created by Vito Royeca on 12/24/19.
 //
 
-#if canImport(UIKit)
+//#if canImport(UIKit)
 
-import UIKit
+//import UIKit
 
 public enum CardType: Int, CaseIterable {
     case artifact
@@ -61,86 +61,86 @@ extension MGCard {
         }
     }
 
-    public func keyruneColor() -> UIColor? {
-        guard let set = set,
-            let rarity = rarity else {
-            return nil
-        }
+//    public func keyruneColor() -> UIColor? {
+//        guard let set = set,
+//            let rarity = rarity else {
+//            return nil
+//        }
+//
+//        var color: UIColor?
+//
+//        if set.code == "tsb" {
+//            color = UIColor(hex: "652978") // purple
+//        } else {
+//            if rarity.name == "Common" {
+//                color = UIColor(hex: "1A1718")
+//            } else if rarity.name == "Uncommon" {
+//                color = UIColor(hex: "707883")
+//            } else if rarity.name == "Rare" {
+//                color = UIColor(hex: "A58E4A")
+//            } else if rarity.name == "Mythic" {
+//                color = UIColor(hex: "BF4427")
+//            } else if rarity.name == "Special" {
+//                color = UIColor(hex: "BF4427")
+//            } else if rarity.name == "Timeshifted" {
+//                color = UIColor(hex: "652978")
+//            } else if rarity.name == "Basic Land" {
+//                color = UIColor(hex: "000000")
+//            }
+//        }
+//
+//        return color
+//    }
         
-        var color: UIColor?
-        
-        if set.code == "tsb" {
-            color = UIColor(hex: "652978") // purple
-        } else {
-            if rarity.name == "Common" {
-                color = UIColor(hex: "1A1718")
-            } else if rarity.name == "Uncommon" {
-                color = UIColor(hex: "707883")
-            } else if rarity.name == "Rare" {
-                color = UIColor(hex: "A58E4A")
-            } else if rarity.name == "Mythic" {
-                color = UIColor(hex: "BF4427")
-            } else if rarity.name == "Special" {
-                color = UIColor(hex: "BF4427")
-            } else if rarity.name == "Timeshifted" {
-                color = UIColor(hex: "652978")
-            } else if rarity.name == "Basic Land" {
-                color = UIColor(hex: "000000")
-            }
-        }
-        
-        return color
-    }
-        
-    public func isModern() -> Bool {
-        guard let set = set,
-            let releaseDate = set.releaseDate else {
-            return false
-        }
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        
-        if let eightEditionDate = formatter.date(from: ManaKit.Constants.eightEditionRelease),
-            let setReleaseDate = formatter.date(from: releaseDate) {
-            return setReleaseDate.compare(eightEditionDate) == .orderedDescending ||
-                setReleaseDate.compare(eightEditionDate) == .orderedSame
-        }
-        
-        return false
-    }
+//    public func isModern() -> Bool {
+//        guard let set = set,
+//            let releaseDate = set.releaseDate else {
+//            return false
+//        }
+//        
+//        let formatter = DateFormatter()
+//        formatter.dateFormat = "yyyy-MM-dd"
+//        
+//        if let eightEditionDate = formatter.date(from: ManaKit.Constants.eightEditionRelease),
+//            let setReleaseDate = formatter.date(from: releaseDate) {
+//            return setReleaseDate.compare(eightEditionDate) == .orderedDescending ||
+//                setReleaseDate.compare(eightEditionDate) == .orderedSame
+//        }
+//        
+//        return false
+//    }
     
-    public func typeImage() -> UIImage? {
-        guard let typeLine = typeLine else {
-            return nil
-        }
-
-        var types = [String]()
-        var symbolName: String?
-
-        for type in CardType.allCases {
-            let desc = type.description
-
-            for n in typeLine.components(separatedBy: " ") {
-                if n == desc && !types.contains(desc) {
-                    types.append(desc)
-                }
-            }
-        }
-
-        if types.count == 1 {
-            symbolName = types.first
-
-        } else if types.count > 1 {
-            symbolName = "Multiple"
-        }
-
-        if let symbolName = symbolName {
-            return ManaKit.shared.symbolImage(name: symbolName)
-        }
-
-        return nil
-    }
+//    public func typeImage() -> UIImage? {
+//        guard let typeLine = typeLine else {
+//            return nil
+//        }
+//
+//        var types = [String]()
+//        var symbolName: String?
+//
+//        for type in CardType.allCases {
+//            let desc = type.description
+//
+//            for n in typeLine.components(separatedBy: " ") {
+//                if n == desc && !types.contains(desc) {
+//                    types.append(desc)
+//                }
+//            }
+//        }
+//
+//        if types.count == 1 {
+//            symbolName = types.first
+//
+//        } else if types.count > 1 {
+//            symbolName = "Multiple"
+//        }
+//
+//        if let symbolName = symbolName {
+//            return ManaKit.shared.symbolImage(name: symbolName)
+//        }
+//
+//        return nil
+//    }
         
     public func typeText(includePower: Bool) -> String {
         var typeText = ""
@@ -204,19 +204,19 @@ extension MGCard {
 //        return url
 //    }
         
-    public func backImage() -> UIImage? {
-        guard let set = set else {
-            return nil
-        }
-
-        if set.code == "ced" {
-            return ManaKit.shared.imageFromFramework(imageName: .collectorsCardBack)
-        } else if set.code == "cei" {
-            return ManaKit.shared.imageFromFramework(imageName: .intlCollectorsCardBack)
-        } else {
-            return ManaKit.shared.imageFromFramework(imageName: .cardBack)
-        }
-    }
+//    public func backImage() -> UIImage? {
+//        guard let set = set else {
+//            return nil
+//        }
+//
+//        if set.code == "ced" {
+//            return ManaKit.shared.imageFromFramework(imageName: .collectorsCardBack)
+//        } else if set.code == "cei" {
+//            return ManaKit.shared.imageFromFramework(imageName: .intlCollectorsCardBack)
+//        } else {
+//            return ManaKit.shared.imageFromFramework(imageName: .cardBack)
+//        }
+//    }
 
 //    public func image(type: CardImageType, faceOrder: Int, roundCornered: Bool) -> UIImage? {
 //        var cardImage: UIImage?
@@ -242,4 +242,4 @@ extension MGCard {
 //    }
 }
 
-#endif // #if canImport(UIKit)
+//#endif // #if canImport(UIKit)

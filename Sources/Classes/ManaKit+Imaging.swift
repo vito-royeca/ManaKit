@@ -5,30 +5,28 @@
 //  Created by Vito Royeca on 11/27/19.
 //
 
-#if canImport(UIKit)
-
 import Foundation
 
 extension ManaKit {
-    public func imageFromFramework(imageName: ImageName) -> UIImage? {
-        let bundle = Bundle(for: ManaKit.self)
-        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
-            let resourceBundle = Bundle(url: bundleURL) else {
-            return nil
-        }
-
-        return UIImage(named: imageName.rawValue, in: resourceBundle, compatibleWith: nil)
-    }
-
-    public func symbolImage(name: String) -> UIImage? {
-        let bundle = Bundle(for: ManaKit.self)
-        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
-            let resourceBundle = Bundle(url: bundleURL) else {
-            return nil
-        }
-
-        return UIImage(named: name, in: resourceBundle, compatibleWith: nil)
-    }
+//    public func imageFromFramework(imageName: ImageName) -> UIImage? {
+//        let bundle = Bundle(for: ManaKit.self)
+//        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
+//            let resourceBundle = Bundle(url: bundleURL) else {
+//            return nil
+//        }
+//
+//        return UIImage(named: imageName.rawValue, in: resourceBundle, compatibleWith: nil)
+//    }
+//
+//    public func symbolImage(name: String) -> UIImage? {
+//        let bundle = Bundle(for: ManaKit.self)
+//        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
+//            let resourceBundle = Bundle(url: bundleURL) else {
+//            return nil
+//        }
+//
+//        return UIImage(named: name, in: resourceBundle, compatibleWith: nil)
+//    }
     
 //    public func downloadImage(ofCard card: MGCard, type: CardImageType, faceOrder: Int) -> Promise<Void> {
 //        guard let url = card.imageURL(type: type,
@@ -89,5 +87,3 @@ extension ManaKit {
 //        }
 //    }
 }
-
-#endif // #if canImport(UIKit)

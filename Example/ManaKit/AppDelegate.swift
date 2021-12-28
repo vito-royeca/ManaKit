@@ -20,7 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         print("docsPath = \(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
         
-        
         ManaKit.shared.configure(apiURL: "http://managuideapp.com")
         ManaKit.shared.setupResources()
 
