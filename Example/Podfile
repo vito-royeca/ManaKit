@@ -3,27 +3,26 @@ use_frameworks!
 def default_pods
     pod 'ManaKit', :path => '../'
     
-    pod 'Kanna'
-    pod 'SDWebImageSwiftUI'
+    #pod 'Kanna'
 end
 
 target 'ManaKit_Example' do
     default_pods
     platform :ios, "14.1"
 
-    pod 'KeychainAccess'
+    pod 'SDWebImageSwiftUI'
 end
 
 target 'ManaKit_ExampleTests' do
     default_pods
     platform :ios, "14.1"
 
-    pod 'KeychainAccess'
+    pod 'SDWebImageSwiftUI'
 end
 
 target 'ManaKit_ExampleUITests' do
     default_pods
     platform :ios, "14.1"
 
-    pod 'KeychainAccess'
+    pod 'SDWebImageSwiftUI'
 end

@@ -10,7 +10,6 @@
 //@available(OSX 10, *)
 //import NSKit
 
-import KeychainAccess
 import Combine
 import CoreData
 import CoreText
@@ -56,17 +55,6 @@ public class ManaKit {
     // MARK: - Variables
 
     var apiURL = ""
-    
-    var _keyChain: Keychain?
-    var keychain: Keychain {
-        get {
-            if _keyChain == nil {
-                _keyChain = Keychain(service: "com.managuide.ManaKit")
-            }
-            return _keyChain!
-        }
-    }
-    
     let sessionProcessingQueue = DispatchQueue(label: "SessionProcessingQueue")
 
     // MARK: - Shared Instance

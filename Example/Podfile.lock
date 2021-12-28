@@ -1,9 +1,5 @@
 PODS:
-  - Kanna (5.2.7)
-  - KeychainAccess (4.2.2)
-  - ManaKit (7.1.0):
-    - Kanna
-    - KeychainAccess
+  - ManaKit (7.1.0)
   - SDWebImage (5.12.1):
     - SDWebImage/Core (= 5.12.1)
   - SDWebImage/Core (5.12.1)
@@ -11,15 +7,11 @@ PODS:
     - SDWebImage (~> 5.10)
 
 DEPENDENCIES:
-  - Kanna
-  - KeychainAccess
   - ManaKit (from `../`)
   - SDWebImageSwiftUI
 
 SPEC REPOS:
   trunk:
-    - Kanna
-    - KeychainAccess
     - SDWebImage
     - SDWebImageSwiftUI
 
@@ -28,12 +20,10 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Kanna: 01cfbddc127f5ff0963692f285fcbc8a9d62d234
-  KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
-  ManaKit: a6491d2ea34eabbad5772f62962cc1299a98d4c7
+  ManaKit: 9d454f7984601ca678f24164a892bf3679d7e221
   SDWebImage: 4dc3e42d9ec0c1028b960a33ac6b637bb432207b
   SDWebImageSwiftUI: 8a3923c95108312b03a599ec1498754af55a6819
 
-PODFILE CHECKSUM: a6c65ef3ff44d0c46c3fed824142e8f78786df1b
+PODFILE CHECKSUM: 705e110178e0f269df843723e6e42c2b519a7c78
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2

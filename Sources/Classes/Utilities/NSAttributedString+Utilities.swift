@@ -7,7 +7,6 @@
 
 #if canImport(UIKit)
 import UIKit
-import Kanna
 
 public extension NSAttributedString {
     convenience init(symbol: String, pointSize: CGFloat) {
@@ -99,18 +98,18 @@ public extension NSAttributedString {
         let html = "\(style)\(html)"
         var links = [[String: Any]]()
         
-        guard let doc = try? HTML(html: html, encoding: .utf16) else {
-            self.init(string: html)
-            return
-        }
-        
-        // Search for links
-        for link in doc.css("a, link") {
-            if let text = link.text,
-                let href = link["href"] {
-                links.append([text: href])
-            }
-        }
+//        guard let doc = try? HTML(html: html, encoding: .utf16) else {
+//            self.init(string: html)
+//            return
+//        }
+//        
+//        // Search for links
+//        for link in doc.css("a, link") {
+//            if let text = link.text,
+//                let href = link["href"] {
+//                links.append([text: href])
+//            }
+//        }
         
         guard let data = html.data(using: String.Encoding.utf16) else {
             self.init(string: html)

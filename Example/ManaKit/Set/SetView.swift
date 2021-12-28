@@ -70,7 +70,7 @@ struct SetRowView: View {
         HStack {
             WebImage(url: card.imageURL(for: .artCrop))
             .resizable() // Resizable like SwiftUI.Image, you must use this modifier or the view will use the image bitmap size
-//            .placeholder(Image(uiImage: ManaKit.shared.imageFromFramework(imageName: .cropBack)))
+//            .placeholder(Image("cropback-hq", bundle: .main))
             .placeholder {
                 Rectangle().foregroundColor(.gray)
             }
