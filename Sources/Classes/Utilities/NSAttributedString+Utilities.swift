@@ -45,13 +45,13 @@ public extension NSAttributedString {
                         cleanCode = "Chaos"
                     }
                     
-                    guard let image = ManaKit.shared.symbolImage(name: cleanCode as String) else {
-                        self.init(string: symbol)
-                        return
-                    }
+//                    guard let image = ManaKit.shared.symbolImage(name: cleanCode as String) else {
+//                        self.init(string: symbol)
+//                        return
+//                    }
                     
                     let imageAttachment =  NSTextAttachment()
-                    imageAttachment.image = image
+//                    imageAttachment.image = image
                     
                     var width = CGFloat(16)
                     let height = CGFloat(16)
