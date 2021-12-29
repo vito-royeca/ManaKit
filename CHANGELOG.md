@@ -1,3 +1,7 @@
+**Version 7.1.0** @ 28.12.2021
+- Streamlined code. lots of refactoring
+- Support for SPM (Swift Package Manager)
+
 **Version 6.1.4** @ 08.09.2020
 - Now using JSON API.
 - Updated the Scryfall database to: 2020-09-07 21:17 UTC.

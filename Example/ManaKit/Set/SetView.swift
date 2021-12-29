@@ -22,18 +22,13 @@ struct SetView: View {
     
     var body: some View {
         ZStack(alignment: .center) {
-            List {
-                ForEach(viewModel.cards) { card in
-                    let webImage = WebImage(url: card.imageURL(for: .normal))
-                        .resizable()
-                        .placeholder {
-                            Rectangle().foregroundColor(.gray)
+            GeometryReader { (geometry) in
+                List {
+                    ForEach(viewModel.cards) { card in
+                        let cardView = CardView(newId: card.newId ?? "")
+                        NavigationLink(destination: cardView) {
+                            SetRowView(card: card)
                         }
-                        .indicator(.activity) // Activity Indicator
-                        .transition(.fade(duration: 0.5)) // Fade Transition with duration
-                        .scaledToFit()
-                    NavigationLink(destination: webImage) {
-                        SetRowView(card: card)
                     }
                 }
             }
@@ -46,8 +41,6 @@ struct SetView: View {
             viewModel.fetchData()
         }
     }
-    
-    
 }
 
 struct SetView_Previews: PreviewProvider {
@@ -61,24 +54,56 @@ struct SetView_Previews: PreviewProvider {
 
 struct SetRowView: View {
     private let card: MGCard
+    private var nameFont: Font
     
     init(card: MGCard) {
         self.card = card
+        
+        let font = card.nameFont()
+        nameFont = Font.custom(font.name, size: font.size)
     }
     
     var body: some View {
-        HStack {
-            WebImage(url: card.imageURL(for: .artCrop))
-            .resizable() // Resizable like SwiftUI.Image, you must use this modifier or the view will use the image bitmap size
-//            .placeholder(Image("cropback-hq", bundle: .main))
-            .placeholder {
-                Rectangle().foregroundColor(.gray)
+        HStack(spacing: 10) {
+            ZStack(alignment: .bottomTrailing) {
+                WebImage(url: card.imageURL(for: .artCrop))
+                .resizable()
+    //            .placeholder(Image("cropback-hq", bundle: .main))
+                .placeholder {
+                    Rectangle().foregroundColor(.gray)
+                }
+                .indicator(.activity)
+                .transition(.fade(duration: 0.5))
+                .scaledToFit()
+                .frame(width: 100, height: 100, alignment: .center)
+                
+                if !card.displayPowerToughness.isEmpty {
+                    Text(card.displayPowerToughness)
+                        .font(.footnote)
+                        .frame(maxWidth: 30, maxHeight: 30)
+                        .background(RoundedRectangle(cornerRadius: 15).fill(Color.white))
+                }
             }
-            .indicator(.activity) // Activity Indicator
-            .transition(.fade(duration: 0.5)) // Fade Transition with duration
-            .scaledToFit()
-            .frame(width: 100, height: 100, alignment: .center)
-            Text(card.name ?? "Card name")
+            
+            VStack(alignment: .leading) {
+                Text(card.displayName)
+                    .font(nameFont)
+                HStack {
+                    Text(card.displayTypeLine)
+                        .font(.footnote)
+                    Spacer()
+                    Text(card.displayKeyrune)
+                        .scaledToFit()
+                        .font(Font.custom("Keyrune", size: 30))
+                        .foregroundColor(Color(card.keyruneColor()))
+                }
+                HStack {
+                    Text("Normal \(card.displayNormalPrice)")
+                    Spacer()
+                    Text("Foil \(card.displayFoilPrice)")
+                }
+            }
         }
     }
 }
+

@@ -83,6 +83,19 @@ class MockAPI: API {
     func fetchCard(id: String,
                    cancellables: inout Set<AnyCancellable>,
                    completion: @escaping (Result<MGCard, Error>) -> Void) {
-        
+        do {
+            let bundle = Bundle(for: MockAPI.self)
+            
+            guard let jsonURL = bundle.url(forResource: "data/emn_en_15a", withExtension: "json") else {
+                fatalError("Can't load file: data/emn_en_15a.json")
+            }
+            
+            let data = try Data(contentsOf: jsonURL)
+            let cards = try decoder.decode([MGCard].self, from: data)
+            
+            completion(.success(cards[0]))
+        } catch {
+            completion(.failure(JSONDataError.unableToParse))
+        }
     }
 }

@@ -18,8 +18,8 @@ public class ManaKit {
     // MARK: - Constants
     
     public struct Font {
-        var name: String
-        var size: Double
+        public var name: String
+        public var size: Double
     }
     
     public enum Fonts {
@@ -156,21 +156,40 @@ public class ManaKit {
     
     public lazy var persistentContainer: NSPersistentContainer = {
         let bundle = Bundle(for: ManaKit.self)
-        let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "ManaKit"
-        
+
         guard let momURL = bundle.url(forResource: "ManaKit", withExtension: "momd"),
            let managedObjectModel = NSManagedObjectModel(contentsOf: momURL) else {
             fatalError("Can't load persistent container")
         }
+
+        let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "ManaKit"
         let container = NSPersistentContainer(name: bundleName, managedObjectModel: managedObjectModel)
-        
+
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
         container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+
         return container
+        
+//        guard let modelURL = Bundle.module.url(forResource:"ManaKit", withExtension: "momd"),
+//              let model = NSManagedObjectModel(contentsOf: modelURL) else {
+//            fatalError("Can't load persistent container")
+//        }
+//
+//        let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "ManaKit"
+//        let container = NSPersistentContainer(name: bundleName, managedObjectModel: model)
+//
+//        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+//            if let error = error as NSError? {
+//                print("Unresolved error \(error), \(error.userInfo)")
+//            }
+//        })
+//        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+//
+//        return container
     }()
     
     

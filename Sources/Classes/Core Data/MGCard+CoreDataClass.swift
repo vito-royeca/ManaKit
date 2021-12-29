@@ -129,7 +129,7 @@ public class MGCard: MGEntity {
         toughness = try container.decodeIfPresent(String.self, forKey: .toughness)
         typeLine = try container.decodeIfPresent(String.self, forKey: .typeLine)
         
-//        artist = try container.decodeIfPresent(MGArtist.self, forKey: .artist)
+        artist = try container.decodeIfPresent(MGArtist.self, forKey: .artist)
 //        cardComponentParts = try container.decodeIfPresent(Set<MGCardComponentPart>.self, forKey: .cardComponentParts) as NSSet?
         if let colors = try container.decodeIfPresent(Set<MGColor>.self, forKey: .colors) as NSSet? {
             addToColors(colors)
@@ -146,13 +146,13 @@ public class MGCard: MGEntity {
         if let formatLegalities = try container.decodeIfPresent(Set<MGCardFormatLegality>.self, forKey: .formatLegalities) as NSSet? {
             addToFormatLegalities(formatLegalities)
         }
-//        frame = try container.decodeIfPresent(MGFrame.self, forKey: .frame)
-//        frameEffect = try container.decodeIfPresent(MGFrameEffect.self, forKey: .frameEffect)
-//        language = try container.decodeIfPresent(MGLanguage.self, forKey: .language)
-//        layout = try container.decodeIfPresent(MGLayout.self, forKey: .layout)
-//        if let otherLanguages = try container.decodeIfPresent(Set<MGCard>.self, forKey: .otherLanguages) as NSSet? {
-//            addToOtherLanguages(otherLanguages)
-//        }
+        frame = try container.decodeIfPresent(MGFrame.self, forKey: .frame)
+        frameEffect = try container.decodeIfPresent(MGFrameEffect.self, forKey: .frameEffect)
+        language = try container.decodeIfPresent(MGLanguage.self, forKey: .language)
+        layout = try container.decodeIfPresent(MGLayout.self, forKey: .layout)
+        if let otherLanguages = try container.decodeIfPresent(Set<MGCard>.self, forKey: .otherLanguages) as NSSet? {
+            addToOtherLanguages(otherLanguages)
+        }
         if let otherPrintings = try container.decodeIfPresent(Set<MGCard>.self, forKey: .otherPrintings) as NSSet? {
             addToOtherPrintings(otherPrintings)
         }
@@ -160,8 +160,8 @@ public class MGCard: MGEntity {
         if let prices = try container.decodeIfPresent(Set<MGCardPrice>.self, forKey: .prices) as NSSet? {
             addToPrices(prices)
         }
-//        rarity = try container.decodeIfPresent(MGRarity.self, forKey: .rarity)
-//        set = try container.decodeIfPresent(MGSet.self, forKey: .set)
+        rarity = try container.decodeIfPresent(MGRarity.self, forKey: .rarity)
+        set = try container.decodeIfPresent(MGSet.self, forKey: .set)
         if let subtypes = try container.decodeIfPresent(Set<MGCardType>.self, forKey: .subtypes) as NSSet? {
             addToSubtypes(subtypes)
         }

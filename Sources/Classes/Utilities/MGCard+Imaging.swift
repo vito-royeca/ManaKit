@@ -49,67 +49,6 @@ public enum CardType: Int, CaseIterable {
 }
 
 extension MGCard {
-    public var displayName: String? {
-        get {
-            var dName: String?
-            
-            if let language = language,
-                let code = language.code {
-                dName = (code == "en" ? name : printedName) ?? name
-            }
-            return dName
-        }
-    }
-
-//    public func keyruneColor() -> UIColor? {
-//        guard let set = set,
-//            let rarity = rarity else {
-//            return nil
-//        }
-//
-//        var color: UIColor?
-//
-//        if set.code == "tsb" {
-//            color = UIColor(hex: "652978") // purple
-//        } else {
-//            if rarity.name == "Common" {
-//                color = UIColor(hex: "1A1718")
-//            } else if rarity.name == "Uncommon" {
-//                color = UIColor(hex: "707883")
-//            } else if rarity.name == "Rare" {
-//                color = UIColor(hex: "A58E4A")
-//            } else if rarity.name == "Mythic" {
-//                color = UIColor(hex: "BF4427")
-//            } else if rarity.name == "Special" {
-//                color = UIColor(hex: "BF4427")
-//            } else if rarity.name == "Timeshifted" {
-//                color = UIColor(hex: "652978")
-//            } else if rarity.name == "Basic Land" {
-//                color = UIColor(hex: "000000")
-//            }
-//        }
-//
-//        return color
-//    }
-        
-//    public func isModern() -> Bool {
-//        guard let set = set,
-//            let releaseDate = set.releaseDate else {
-//            return false
-//        }
-//        
-//        let formatter = DateFormatter()
-//        formatter.dateFormat = "yyyy-MM-dd"
-//        
-//        if let eightEditionDate = formatter.date(from: ManaKit.Constants.eightEditionRelease),
-//            let setReleaseDate = formatter.date(from: releaseDate) {
-//            return setReleaseDate.compare(eightEditionDate) == .orderedDescending ||
-//                setReleaseDate.compare(eightEditionDate) == .orderedSame
-//        }
-//        
-//        return false
-//    }
-    
 //    public func typeImage() -> UIImage? {
 //        guard let typeLine = typeLine else {
 //            return nil
@@ -142,34 +81,6 @@ extension MGCard {
 //        return nil
 //    }
         
-    public func typeText(includePower: Bool) -> String {
-        var typeText = ""
-        
-        if let language = language,
-            let code = language.code {
-            
-            typeText = code == "en" ? typeLine ?? "" : printedTypeLine ?? ""
-            
-            // fallback to default typeLine
-            if typeText.count == 0 {
-                typeText = typeLine ?? ""
-            }
-            
-            if includePower {
-                if let power = power,
-                    let toughness = toughness {
-                    typeText.append(" (\(power)/\(toughness))")
-                }
-                
-                if let loyalty = loyalty {
-                    typeText.append(" (\(loyalty))")
-                }
-            }
-        }
-        
-        return typeText
-    }
-
 //    public func imageURL(type: CardImageType, faceOrder: Int) -> URL? {
 //        var url:URL?
 //        var urlString: String?

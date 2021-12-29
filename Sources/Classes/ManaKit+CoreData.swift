@@ -79,10 +79,13 @@ extension ManaKit {
             formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSZ"
             formatter.locale = Locale(identifier: "en_US_POSIX")
             
+            let context = persistentContainer.newBackgroundContext()
+            context.automaticallyMergesChangesFromParent = true
+            
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
             decoder.dateDecodingStrategy = .formatted(formatter)
-            decoder.userInfo[CodingUserInfoKey.managedObjectContext] = persistentContainer.viewContext
+            decoder.userInfo[CodingUserInfoKey.managedObjectContext] = context
             
             URLSession.shared.dataTaskPublisher(for: url)
                 .subscribe(on: sessionProcessingQueue)
@@ -99,7 +102,7 @@ extension ManaKit {
                         failure(error)
                     }
                 }, receiveValue: { _ /*[weak self] (sets)*/ in
-                    self.saveContext()
+                    self.save(context: context)
                 })
                 .store(in: &cancellables)
         } else {
@@ -111,10 +114,11 @@ extension ManaKit {
                            query: [String: Any]?,
                            sortDescriptors: [NSSortDescriptor]?,
                            createIfNotFound: Bool) -> [T]? {
-        let context = persistentContainer.viewContext
+        let context = persistentContainer.newBackgroundContext()
         let entityName = String(describing: entity)
         let request = NSFetchRequest<T>(entityName: entityName)
         
+        context.automaticallyMergesChangesFromParent = true
         request.predicate = predicate(fromQuery: query)
         request.sortDescriptors = sortDescriptors
         do {
@@ -125,7 +129,7 @@ extension ManaKit {
             } else {
                 if createIfNotFound {
                     if let desc = NSEntityDescription.entity(forEntityName: entityName, in: context) {
-//                        context.performAndWait {
+                        try context.performAndWait {
                             let object = NSManagedObject(entity: desc, insertInto: context)
                             
                             if let query = query {
@@ -133,8 +137,9 @@ extension ManaKit {
                                     object.setValue(value, forKey: key)
                                 }
                             }
-                            self.saveContext()
-//                        }
+//                            self.saveContext()
+                            try context.save()
+                        }
                         return find(entity, query: query, sortDescriptors: sortDescriptors, createIfNotFound: createIfNotFound)
                     } else {
                         return nil
@@ -190,7 +195,7 @@ extension ManaKit {
     
     public func saveContext () {
         let context = persistentContainer.viewContext//newBackgroundContext()
-        
+
         if context.hasChanges {
             do {
                 try context.save()
@@ -200,6 +205,16 @@ extension ManaKit {
         }
     }
 
+    func save(context: NSManagedObjectContext) {
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
     // MARK: - Utilities
     func predicate(fromQuery query: [String: Any]?) -> NSPredicate? {
         var predicate: NSPredicate?
@@ -216,6 +231,8 @@ extension ManaKit {
                     format = "%d"
                 } else if let _ = value as? String {
                     format = "[c] %@"
+                } else if let _ = value as? Date {
+                    format = "%@"
                 }
                 
                 if predicate != nil {
@@ -257,13 +274,17 @@ extension ManaKit {
     }
 
     func saveCache(forUrl url: URL) {
-        if let cache = find(MGLocalCache.self,
-                            query: ["url": url.absoluteString],
-                            sortDescriptors: nil,
-                            createIfNotFound: true)?.first {
-            cache.lastUpdated = Date()
-            saveContext()
-        }
+//        if let cache = find(MGLocalCache.self,
+//                            query: ["url": url.absoluteString, "lastUpdated": Date()],
+//                            sortDescriptors: nil,
+//                            createIfNotFound: true)?.first {
+//            cache.lastUpdated = Date()
+//            saveContext()
+//        }
+        let _ = find(MGLocalCache.self,
+                     query: ["url": url.absoluteString, "lastUpdated": Date()],
+                     sortDescriptors: nil,
+                     createIfNotFound: true)
     }
     
     func deleteCache(forUrl url: URL) {
