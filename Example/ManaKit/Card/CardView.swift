@@ -63,7 +63,6 @@ struct CardView: View {
                         CardTextRowView(title: viewModel.card?.language?.name ?? "", subtitle: "Language")
                         CardTextRowView(title: viewModel.card?.layout?.name ?? "", subtitle: "Layout")
                         CardTextRowView(title: viewModel.otherLanguages.map { $0.name ?? ""}.description, subtitle: "Other Languages")
-//                        CardTextRowView(title: viewModel.otherPrintings.map { $0.displayName}.description, subtitle: "Other Printings")
                         HStack {
                             Text("Other Printings")
                                 .font(.headline)
@@ -96,7 +95,7 @@ struct CardView: View {
 
 struct CardView_Previews: PreviewProvider {
     static var previews: some View {
-        let view = CardView(newId: "emn_en_15a")
+        let view = CardView(newId: "all_en_116a")
         view.viewModel.dataAPI = MockAPI()
         
         return view

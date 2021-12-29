@@ -134,7 +134,7 @@ class APITest: XCTestCase {
         let expectation = XCTestExpectation(description: "testFetchCard")
         var cancellables = Set<AnyCancellable>()
         
-        let newId = "emn_en_15a" // Bruna, the Fading Light - test component parts
+        let newId = "emn_en_15a" // Bruna, the Fading Light - for testing component parts
         ManaKit.shared.fetchCard(id: newId, cancellables: &cancellables, completion: { result in
             switch result {
             case .success(let card):

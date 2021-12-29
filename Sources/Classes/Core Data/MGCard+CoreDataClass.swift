@@ -161,7 +161,7 @@ public class MGCard: MGEntity {
             addToPrices(prices)
         }
         rarity = try container.decodeIfPresent(MGRarity.self, forKey: .rarity)
-        set = try container.decodeIfPresent(MGSet.self, forKey: .set)
+//        set = try container.decodeIfPresent(MGSet.self, forKey: .set)
         if let subtypes = try container.decodeIfPresent(Set<MGCardType>.self, forKey: .subtypes) as NSSet? {
             addToSubtypes(subtypes)
         }

@@ -27,9 +27,9 @@ public class MGLayout: MGEntity {
         description_ = try container.decodeIfPresent(String.self, forKey: .description_)
         name = try container.decodeIfPresent(String.self, forKey: .name)
         nameSection = try container.decodeIfPresent(String.self, forKey: .nameSection)
-        if let cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards) as NSSet? {
-            addToCards(cards)
-        }
+//        if let cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards) as NSSet? {
+//            addToCards(cards)
+//        }
     }
     
     public override func encode(to encoder: Encoder) throws {

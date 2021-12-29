@@ -79,7 +79,7 @@ extension ManaKit {
             formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSZ"
             formatter.locale = Locale(identifier: "en_US_POSIX")
             
-            let context = persistentContainer.newBackgroundContext()
+            let context = persistentContainer.viewContext
             context.automaticallyMergesChangesFromParent = true
             
             let decoder = JSONDecoder()
@@ -102,7 +102,7 @@ extension ManaKit {
                         failure(error)
                     }
                 }, receiveValue: { _ /*[weak self] (sets)*/ in
-                    self.save(context: context)
+                    self.saveContext()
                 })
                 .store(in: &cancellables)
         } else {
@@ -114,13 +114,16 @@ extension ManaKit {
                            query: [String: Any]?,
                            sortDescriptors: [NSSortDescriptor]?,
                            createIfNotFound: Bool) -> [T]? {
-        let context = persistentContainer.newBackgroundContext()
-        let entityName = String(describing: entity)
-        let request = NSFetchRequest<T>(entityName: entityName)
         
+        let entityName = String(describing: entity)
+        
+        let context = /*createIfNotFound ?*/ persistentContainer.viewContext //: persistentContainer.newBackgroundContext()
         context.automaticallyMergesChangesFromParent = true
+        
+        let request = NSFetchRequest<T>(entityName: entityName)
         request.predicate = predicate(fromQuery: query)
         request.sortDescriptors = sortDescriptors
+        
         do {
             let objects = try context.fetch(request)
             
@@ -137,7 +140,6 @@ extension ManaKit {
                                     object.setValue(value, forKey: key)
                                 }
                             }
-//                            self.saveContext()
                             try context.save()
                         }
                         return find(entity, query: query, sortDescriptors: sortDescriptors, createIfNotFound: createIfNotFound)
@@ -194,7 +196,7 @@ extension ManaKit {
     }
     
     public func saveContext () {
-        let context = persistentContainer.viewContext//newBackgroundContext()
+        let context = persistentContainer.viewContext
 
         if context.hasChanges {
             do {
@@ -205,15 +207,15 @@ extension ManaKit {
         }
     }
 
-    func save(context: NSManagedObjectContext) {
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                print(error)
-            }
-        }
-    }
+//    func save(context: NSManagedObjectContext) {
+//        if context.hasChanges {
+//            do {
+//                try context.save()
+//            } catch {
+//                print(error)
+//            }
+//        }
+//    }
     
     // MARK: - Utilities
     func predicate(fromQuery query: [String: Any]?) -> NSPredicate? {
@@ -231,8 +233,6 @@ extension ManaKit {
                     format = "%d"
                 } else if let _ = value as? String {
                     format = "[c] %@"
-                } else if let _ = value as? Date {
-                    format = "%@"
                 }
                 
                 if predicate != nil {
@@ -274,17 +274,13 @@ extension ManaKit {
     }
 
     func saveCache(forUrl url: URL) {
-//        if let cache = find(MGLocalCache.self,
-//                            query: ["url": url.absoluteString, "lastUpdated": Date()],
-//                            sortDescriptors: nil,
-//                            createIfNotFound: true)?.first {
-//            cache.lastUpdated = Date()
-//            saveContext()
-//        }
-        let _ = find(MGLocalCache.self,
-                     query: ["url": url.absoluteString, "lastUpdated": Date()],
-                     sortDescriptors: nil,
-                     createIfNotFound: true)
+        if let cache = find(MGLocalCache.self,
+                            query: ["url": url.absoluteString],
+                            sortDescriptors: nil,
+                            createIfNotFound: true)?.first {
+            cache.lastUpdated = Date()
+            saveContext()
+        }
     }
     
     func deleteCache(forUrl url: URL) {

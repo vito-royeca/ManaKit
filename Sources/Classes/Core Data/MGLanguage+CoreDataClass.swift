@@ -31,12 +31,12 @@ public class MGLanguage: MGEntity {
         name = try container.decodeIfPresent(String.self, forKey: .name)
         nameSection = try container.decodeIfPresent(String.self, forKey: .nameSection)
         
-        if let cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards) as NSSet? {
-            addToCards(cards)
-        }
-        if let sets = try container.decodeIfPresent(Set<MGSet>.self, forKey: .sets) as NSSet? {
-            addToSets(sets)
-        }
+//        if let cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards) as NSSet? {
+//            addToCards(cards)
+//        }
+//        if let sets = try container.decodeIfPresent(Set<MGSet>.self, forKey: .sets) as NSSet? {
+//            addToSets(sets)
+//        }
     }
     
     public override func encode(to encoder: Encoder) throws {
