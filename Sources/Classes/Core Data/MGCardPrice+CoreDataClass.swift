@@ -7,7 +7,7 @@
 
 import CoreData
 
-public class MGCardPrice: MGEntity {
+class MGCardPrice: MGEntity {
     enum CodingKeys: CodingKey {
         case condition,
              dateUpdated,
@@ -22,7 +22,7 @@ public class MGCardPrice: MGEntity {
              store*/
     }
 
-    public required convenience init(from decoder: Decoder) throws {
+    required convenience init(from decoder: Decoder) throws {
         guard let context = decoder.userInfo[CodingUserInfoKey.managedObjectContext] as? NSManagedObjectContext else {
           throw DecoderConfigurationError.missingManagedObjectContext
         }
@@ -31,20 +31,65 @@ public class MGCardPrice: MGEntity {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        condition = try container.decodeIfPresent(String.self, forKey: .condition)
-        dateUpdated = try container.decodeIfPresent(Date.self, forKey: .dateUpdated)
-        directLow = try container.decodeIfPresent(Double.self, forKey: .directLow) ?? Double(0)
-        high = try container.decodeIfPresent(Double.self, forKey: .high) ?? Double(0)
-        id = "\(try container.decodeIfPresent(Int32.self, forKey: .id) ?? Int32(0))"
-        isFoil = try container.decodeIfPresent(Bool.self, forKey: .isFoil) ?? false
-        low = try container.decodeIfPresent(Double.self, forKey: .low) ?? Double(0)
-        market = try container.decodeIfPresent(Double.self, forKey: .market) ?? Double(0)
-        median = try container.decodeIfPresent(Double.self, forKey: .median) ?? Double(0)
+        // condition
+        if let condition = try container.decodeIfPresent(String.self, forKey: .condition),
+           self.condition != condition {
+            self.condition = condition
+        }
+        
+        // dateUpdated
+        if let dateUpdated = try container.decodeIfPresent(Date.self, forKey: .dateUpdated),
+           self.dateUpdated != dateUpdated {
+            self.dateUpdated = dateUpdated
+        }
+        
+        // directLow
+        if let directLow = try container.decodeIfPresent(Double.self, forKey: .directLow),
+           self.directLow != directLow {
+            self.directLow = directLow
+        }
+        
+        // high
+        if let high = try container.decodeIfPresent(Double.self, forKey: .high),
+           self.high != high {
+            self.high = high
+        }
+        
+        // id
+        if let id = try container.decodeIfPresent(Int32.self, forKey: .id),
+           self.id != "\(id)" {
+            self.id = "\(id)"
+        }
+        
+        // isFoil
+        if let isFoil = try container.decodeIfPresent(Bool.self, forKey: .isFoil),
+           self.isFoil != isFoil {
+            self.isFoil = isFoil
+        }
+        
+        // low
+        if let low = try container.decodeIfPresent(Double.self, forKey: .low),
+           self.low != low {
+            self.low = low
+        }
+        
+        // market
+        if let market = try container.decodeIfPresent(Double.self, forKey: .market),
+           self.market != market {
+            self.market = market
+        }
+        
+        // median
+        if let median = try container.decodeIfPresent(Double.self, forKey: .median),
+           self.median != median {
+            self.median = median
+        }
+        
         //card = try container.decodeIfPresent(MGCard.self, forKey: .card)
 //        store = try container.decodeIfPresent(MGStore.self, forKey: .store)
     }
     
-    public override func encode(to encoder: Encoder) throws {
+    override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(condition, forKey: .condition)
@@ -56,7 +101,22 @@ public class MGCardPrice: MGEntity {
         try container.encode(low, forKey: .low)
         try container.encode(market, forKey: .market)
         try container.encode(median, forKey: .median)
+
         //try container.encode(card, forKey: .card)
 //        try container.encode(store, forKey: .store)
+    }
+    
+    func toModel() -> MCardPrice {
+        return MCardPrice(condition: condition,
+                          dateUpdated: dateUpdated,
+                          directLow: directLow,
+                          high: high,
+                          id: id,
+                          isFoil: isFoil,
+                          low: low,
+                          market: market,
+                          median: median,
+//                          card: card?.toModel(),
+                          store: store?.toModel())
     }
 }

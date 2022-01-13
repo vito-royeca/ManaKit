@@ -45,7 +45,7 @@ extension MGCard {
     @NSManaged public var myNameSection: String?
     @NSManaged public var myNumberOrder: Double
     @NSManaged public var name: String?
-    @NSManaged public var newId: String?
+    @NSManaged public var newId: String
     @NSManaged public var oracleId: String?
     @NSManaged public var oracleText: String?
     @NSManaged public var power: String?
@@ -61,14 +61,16 @@ extension MGCard {
     @NSManaged public var colorIdentities: NSSet?
     @NSManaged public var colorIndicators: NSSet?
     @NSManaged public var colors: NSSet?
+    @NSManaged public var face: MGSet?
     @NSManaged public var faces: NSSet?
     @NSManaged public var formatLegalities: NSSet?
     @NSManaged public var frame: MGFrame?
-    @NSManaged public var frameEffect: MGFrameEffect?
+    @NSManaged public var frameEffects: NSSet?
     @NSManaged public var imageUri: MGImageURI?
     @NSManaged public var language: MGLanguage?
     @NSManaged public var layout: MGLayout?
     @NSManaged public var otherLanguages: NSSet?
+    @NSManaged public var otherPrinting: MGCard?
     @NSManaged public var otherPrintings: NSSet?
     @NSManaged public var partComponentParts: NSSet?
     @NSManaged public var prices: NSSet?
@@ -76,6 +78,7 @@ extension MGCard {
     @NSManaged public var set: MGSet?
     @NSManaged public var subtypes: NSSet?
     @NSManaged public var supertypes: NSSet?
+    @NSManaged public var variation: MGSet?
     @NSManaged public var variations: NSSet?
     @NSManaged public var watermark: MGWatermark?
 
@@ -180,6 +183,23 @@ extension MGCard {
 
     @objc(removeFormatLegalities:)
     @NSManaged public func removeFromFormatLegalities(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for frameEffects
+extension MGCard {
+
+    @objc(addFrameEffectsObject:)
+    @NSManaged public func addToFrameEffects(_ value: MGFrameEffect)
+
+    @objc(removeFrameEffectsObject:)
+    @NSManaged public func removeFromFrameEffects(_ value: MGFrameEffect)
+
+    @objc(addFrameEffects:)
+    @NSManaged public func addToFrameEffects(_ values: NSSet)
+
+    @objc(removeFrameEffects:)
+    @NSManaged public func removeFromFrameEffects(_ values: NSSet)
 
 }
 

@@ -7,14 +7,14 @@
 
 import CoreData
 
-public class MGComponent: MGEntity {
+class MGComponent: MGEntity {
     enum CodingKeys: CodingKey {
         case name,
              nameSection,
              componentParts
     }
 
-    public required convenience init(from decoder: Decoder) throws {
+    required convenience init(from decoder: Decoder) throws {
         guard let context = decoder.userInfo[CodingUserInfoKey.managedObjectContext] as? NSManagedObjectContext else {
           throw DecoderConfigurationError.missingManagedObjectContext
         }
@@ -23,16 +23,35 @@ public class MGComponent: MGEntity {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        name = try container.decodeIfPresent(String.self, forKey: .name)
-        nameSection = try container.decodeIfPresent(String.self, forKey: .nameSection)
-        componentParts = try container.decodeIfPresent(Set<MGCardComponentPart>.self, forKey: .componentParts) as NSSet?
+        // name
+        if let name = try container.decodeIfPresent(String.self, forKey: .name),
+           self.name != name {
+            self.name = name
+        }
+        
+        // nameSection
+        if let nameSection = try container.decodeIfPresent(String.self, forKey: .nameSection),
+           self.nameSection != nameSection {
+               self.nameSection = nameSection
+        }
+        
+        // componentParts
+//        if let componentParts = try container.decodeIfPresent(Set<MGCardComponentPart>.self, forKey: .componentParts) as NSSet? {
+//            self.componentParts = componentParts
+//        }
     }
     
-    public override func encode(to encoder: Encoder) throws {
+    override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(name, forKey: .name)
         try container.encode(nameSection, forKey: .nameSection)
         try container.encode(componentParts as! Set<MGCardComponentPart>, forKey: .componentParts)
+    }
+    
+    func toModel() -> MComponent {
+        return MComponent(name: name,
+                          nameSection: nameSection,
+                          componentParts: (componentParts?.allObjects as? [MGCardComponentPart] ?? []).map { $0.toModel() })
     }
 }

@@ -7,7 +7,7 @@
 
 import CoreData
 
-public class MGCardFormatLegality: MGEntity {
+class MGCardFormatLegality: MGEntity {
     enum CodingKeys: CodingKey {
         case id,
              card,
@@ -15,7 +15,7 @@ public class MGCardFormatLegality: MGEntity {
              legality
     }
 
-    public required convenience init(from decoder: Decoder) throws {
+    required convenience init(from decoder: Decoder) throws {
         guard let context = decoder.userInfo[CodingUserInfoKey.managedObjectContext] as? NSManagedObjectContext else {
           throw DecoderConfigurationError.missingManagedObjectContext
         }
@@ -30,12 +30,19 @@ public class MGCardFormatLegality: MGEntity {
 //        legality = try container.decodeIfPresent(MGLegality.self, forKey: .legality)
     }
     
-    public override func encode(to encoder: Encoder) throws {
+    override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(id, forKey: .id)
 //        try container.encode(card, forKey: .card)
 //        try container.encode(format, forKey: .format)
 //        try container.encode(legality, forKey: .legality)
+    }
+    
+    func toModel() -> MCardFormatLegality {
+        return MCardFormatLegality(id: id,
+//                                   card: card?.toModel(),
+                                   format: format?.toModel(),
+                                   legality: legality?.toModel())
     }
 }

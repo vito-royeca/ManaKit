@@ -1,8 +1,8 @@
 PODS:
   - ManaKit (7.1.0)
-  - SDWebImage (5.12.1):
-    - SDWebImage/Core (= 5.12.1)
-  - SDWebImage/Core (5.12.1)
+  - SDWebImage (5.12.2):
+    - SDWebImage/Core (= 5.12.2)
+  - SDWebImage/Core (5.12.2)
   - SDWebImageSwiftUI (2.0.2):
     - SDWebImage (~> 5.10)
 
@@ -21,7 +21,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   ManaKit: 7271d5813a00686b9f5339c1bc827a698117edbb
-  SDWebImage: 4dc3e42d9ec0c1028b960a33ac6b637bb432207b
+  SDWebImage: 240e5c12b592fb1268c1d03b8c90d90e8c2ffe82
   SDWebImageSwiftUI: 8a3923c95108312b03a599ec1498754af55a6819
 
 PODFILE CHECKSUM: c6b46897b7777bdac7f0f6f847f3e82fcb168ebf

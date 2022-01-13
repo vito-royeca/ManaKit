@@ -7,11 +7,12 @@
 //
 
 import Foundation
+import CoreData
 import Combine
 import ManaKit
 
 class SetsViewModel: ObservableObject {
-    @Published var sets = [MGSet]()
+    @Published var sets = [MSet]()
     @Published var isBusy = false
     
     var dataAPI: API
@@ -25,10 +26,11 @@ class SetsViewModel: ObservableObject {
         for can in cancellables {
             can.cancel()
         }
+        sets.removeAll()
     }
     
     func fetchData() {
-        guard !isBusy else {
+        guard !isBusy && sets.isEmpty else {
             return
         }
         
@@ -37,18 +39,20 @@ class SetsViewModel: ObservableObject {
         let sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: false),
                                NSSortDescriptor(key: "name", ascending: true)]
 
-        dataAPI.fetchSets(query: nil,
+        dataAPI.fetchSets(predicate: nil,
                           sortDescriptors: sortDescriptors,
                           cancellables: &cancellables,
                           completion: { result in
+            self.isBusy.toggle()
+            
             switch result {
             case .success(let sets):
-                self.sets = sets
+                DispatchQueue.main.async {
+                    self.sets = sets
+                }
             case .failure(let error):
                 print(error)
             }
-            
-            self.isBusy.toggle()
         })
     }
 }

@@ -24,6 +24,11 @@
 		8B426109270FE8A1000DC07D /* SetsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B426107270FE8A1000DC07D /* SetsViewModel.swift */; };
 		8B42610A270FE8A1000DC07D /* SetsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B426107270FE8A1000DC07D /* SetsViewModel.swift */; };
 		8B42610E270FF651000DC07D /* MockAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B42610D270FF651000DC07D /* MockAPI.swift */; };
+		8B4EB8E1278B598E0002922D /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4EB8E0278B598E0002922D /* SearchView.swift */; };
+		8B4EB8E3278B59A40002922D /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4EB8E2278B59A40002922D /* SearchViewModel.swift */; };
+		8B4EB8E6278B63FC0002922D /* CardRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4EB8E5278B63FC0002922D /* CardRowView.swift */; };
+		8B4EB8E8278B66690002922D /* SearchNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4EB8E7278B66690002922D /* SearchNavigation.swift */; };
+		8B4EB8EC278E647A0002922D /* AttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4EB8EB278E647A0002922D /* AttributedText.swift */; };
 		8B626D912403094C00972EED /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = 8B626D902403094C00972EED /* CHANGELOG.md */; };
 		8B70144723B425200097298B /* ManaKit_ExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B70144623B425200097298B /* ManaKit_ExampleUITests.swift */; };
 		8BADF87A27738186004271D7 /* APITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BADF87927738186004271D7 /* APITest.swift */; };
@@ -116,6 +121,11 @@
 		8B421A08255A5BFC00F7B8AE /* RulesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesView.swift; sourceTree = "<group>"; };
 		8B426107270FE8A1000DC07D /* SetsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetsViewModel.swift; sourceTree = "<group>"; };
 		8B42610D270FF651000DC07D /* MockAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPI.swift; sourceTree = "<group>"; };
+		8B4EB8E0278B598E0002922D /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		8B4EB8E2278B59A40002922D /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		8B4EB8E5278B63FC0002922D /* CardRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardRowView.swift; sourceTree = "<group>"; };
+		8B4EB8E7278B66690002922D /* SearchNavigation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchNavigation.swift; sourceTree = "<group>"; };
+		8B4EB8EB278E647A0002922D /* AttributedText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributedText.swift; sourceTree = "<group>"; };
 		8B626D902403094C00972EED /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
 		8B70144423B425200097298B /* ManaKit_ExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ManaKit_ExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B70144623B425200097298B /* ManaKit_ExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManaKit_ExampleUITests.swift; sourceTree = "<group>"; };
@@ -241,6 +251,7 @@
 		607FACD21AFB9204008FA782 /* Example for ManaKit */ = {
 			isa = PBXGroup;
 			children = (
+				8B4EB8E4278B63DE0002922D /* Common Views */,
 				8BFA8102277BC38D00335176 /* Experimental */,
 				8BC1A7A72772D86B00A2472C /* ActivityIndicatorView.swift */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
@@ -253,10 +264,10 @@
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				8B421A07255A5BE100F7B8AE /* Rules */,
+				8B4EB8DF278B59700002922D /* Search */,
 				114A53B0213F954C0046CC82 /* Set */,
 				119588DA2125DC9600B5D7C4 /* Sets */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
-				8BC1A7A1277256BE00A2472C /* TestView.swift */,
 			);
 			name = "Example for ManaKit";
 			path = ManaKit;
@@ -325,6 +336,24 @@
 			path = "Old Code";
 			sourceTree = "<group>";
 		};
+		8B4EB8DF278B59700002922D /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				8B4EB8E0278B598E0002922D /* SearchView.swift */,
+				8B4EB8E2278B59A40002922D /* SearchViewModel.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		8B4EB8E4278B63DE0002922D /* Common Views */ = {
+			isa = PBXGroup;
+			children = (
+				8B4EB8E5278B63FC0002922D /* CardRowView.swift */,
+				8B4EB8E7278B66690002922D /* SearchNavigation.swift */,
+			);
+			path = "Common Views";
+			sourceTree = "<group>";
+		};
 		8B70144523B425200097298B /* ManaKit_ExampleUITests */ = {
 			isa = PBXGroup;
 			children = (
@@ -346,6 +375,8 @@
 		8BFA8102277BC38D00335176 /* Experimental */ = {
 			isa = PBXGroup;
 			children = (
+				8B4EB8EB278E647A0002922D /* AttributedText.swift */,
+				8BC1A7A1277256BE00A2472C /* TestView.swift */,
 				8BFA8103277BC3BB00335176 /* alignment-guides-tool.swift */,
 				8BFA8105277BC3D100335176 /* AlignmentGuideView.swift */,
 			);
@@ -650,14 +681,19 @@
 				8B4219FE255A5A0800F7B8AE /* MainView.swift in Sources */,
 				8B426108270FE8A1000DC07D /* SetsViewModel.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				8B4EB8E8278B66690002922D /* SearchNavigation.swift in Sources */,
 				8BC1A7A4277273F500A2472C /* SetView.swift in Sources */,
 				8BFA8106277BC3D100335176 /* AlignmentGuideView.swift in Sources */,
+				8B4EB8EC278E647A0002922D /* AttributedText.swift in Sources */,
 				8BC1A7A62772AA4E00A2472C /* SetViewModel.swift in Sources */,
 				8BC1A7A82772D86B00A2472C /* ActivityIndicatorView.swift in Sources */,
 				8BC1A7A2277256BE00A2472C /* TestView.swift in Sources */,
 				8B421A04255A5BD800F7B8AE /* SetsView.swift in Sources */,
 				8B4219F6255A597C00F7B8AE /* SceneDelegate.swift in Sources */,
+				8B4EB8E1278B598E0002922D /* SearchView.swift in Sources */,
 				8BFA8104277BC3BB00335176 /* alignment-guides-tool.swift in Sources */,
+				8B4EB8E3278B59A40002922D /* SearchViewModel.swift in Sources */,
+				8B4EB8E6278B63FC0002922D /* CardRowView.swift in Sources */,
 				8B421A09255A5BFC00F7B8AE /* RulesView.swift in Sources */,
 				8BFA810A277BD45600335176 /* CardViewModel.swift in Sources */,
 			);

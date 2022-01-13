@@ -7,14 +7,14 @@
 
 import CoreData
 
-public class MGStore: MGEntity {
+class MGStore: MGEntity {
     enum CodingKeys: CodingKey {
         case name,
              nameSection,
              prices
     }
 
-    public required convenience init(from decoder: Decoder) throws {
+    required convenience init(from decoder: Decoder) throws {
         guard let context = decoder.userInfo[CodingUserInfoKey.managedObjectContext] as? NSManagedObjectContext else {
           throw DecoderConfigurationError.missingManagedObjectContext
         }
@@ -23,16 +23,34 @@ public class MGStore: MGEntity {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        name = try container.decodeIfPresent(String.self, forKey: .name)
-        nameSection = try container.decodeIfPresent(String.self, forKey: .nameSection)
-        prices = try container.decodeIfPresent(Set<MGCardPrice>.self, forKey: .prices) as NSSet?
+        // name
+        if let name = try container.decodeIfPresent(String.self, forKey: .name),
+           self.name != name {
+            self.name = name
+        }
+        
+        // nameSection
+        if let nameSection = try container.decodeIfPresent(String.self, forKey: .nameSection),
+           self.nameSection != nameSection {
+            self.nameSection = nameSection
+        }
+        
+        // prices
+//        if let prices = try container.decodeIfPresent(Set<MGCardPrice>.self, forKey: .prices) as NSSet? {
+//            self.prices = prices
+//        }
     }
     
-    public override func encode(to encoder: Encoder) throws {
+    override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(name, forKey: .name)
         try container.encode(nameSection, forKey: .nameSection)
         try container.encode(prices as! Set<MGCardPrice>, forKey: .prices)
+    }
+    
+    func toModel() -> MStore {
+        return MStore(name: name,
+                      nameSection: nameSection)
     }
 }

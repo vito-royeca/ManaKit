@@ -12,7 +12,7 @@ import Foundation
 import UIKit
 
 public extension UIImage {
-    func roundCornered(card: MGCard) -> UIImage {
+    func roundCornered(card: MCard) -> UIImage {
         var radius = CGFloat(22)
 
         if let set = card.set {
@@ -58,6 +58,21 @@ public extension UIImage {
         let result = UIImage(cgImage: cgImage!)
         return result
     }
+    
+    func copy(newSize: CGSize, retina: Bool = true) -> UIImage? {
+        // In next line, pass 0 to use the current device's pixel scaling factor (and thus account for Retina resolution).
+        // Pass 1 to force exact pixel size.
+        UIGraphicsBeginImageContextWithOptions(
+            /* size: */ newSize,
+            /* opaque: */ false,
+            /* scale: */ retina ? 0 : 1
+        )
+        defer { UIGraphicsEndImageContext() }
+
+        self.draw(in: CGRect(origin: .zero, size: newSize))
+        return UIGraphicsGetImageFromCurrentImageContext()
+    }
 }
+
 
 #endif // #if canImport(UIKit)

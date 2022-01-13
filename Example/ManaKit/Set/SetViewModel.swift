@@ -12,8 +12,8 @@ import SwiftUI
 import ManaKit
 
 class SetViewModel: ObservableObject {
-    @Published var set: MGSet?
-    @Published var cards = [MGCard]()
+    @Published var set: MSet?
+    @Published var cards = [MCard]()
     @Published var isBusy = false
     
     var setCode: String
@@ -31,10 +31,12 @@ class SetViewModel: ObservableObject {
         for can in cancellables {
             can.cancel()
         }
+        set = nil
+        cards.removeAll()
     }
     
     func fetchData() {
-        guard !isBusy else {
+        guard !isBusy && set == nil else {
             return
         }
         
@@ -44,17 +46,31 @@ class SetViewModel: ObservableObject {
                          languageCode: languageCode,
                          cancellables: &cancellables,
                          completion: { result in
+            self.isBusy.toggle()
+            
             switch result {
             case .success(let set):
-                self.set = set
-                self.cards = (set.cards?.allObjects as? [MGCard] ?? [MGCard]())
-                    .filter{ $0.newId != nil }
-                    .sorted{ $0.name ?? "" < $1.name ?? ""}
+                DispatchQueue.main.async {
+                    self.set = set
+                    self.findCards()
+                }
             case .failure(let error):
                 print(error)
             }
-            
-            self.isBusy.toggle()
         })
+    }
+    
+    func findCards() {
+        guard let set = set else {
+            return
+        }
+        
+        let sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        
+        cards = ManaKit.shared.find(MCard.self,
+                                    properties: nil,
+                                    predicate: NSPredicate(format: "set.code == %@ AND language.code == %@", set.code ?? "", "en"),
+                                    sortDescriptors: sortDescriptors,
+                                    createIfNotFound: false) ?? []
     }
 }

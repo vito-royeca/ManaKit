@@ -1,5 +1,5 @@
 //
-//  MGCard+Imaging.swift
+//  MCard+Imaging.swift
 //  ManaKit-iOS
 //
 //  Created by Vito Royeca on 12/24/19.
@@ -48,7 +48,7 @@ public enum CardType: Int, CaseIterable {
     }
 }
 
-extension MGCard {
+extension MCard {
 //    public func typeImage() -> UIImage? {
 //        guard let typeLine = typeLine else {
 //            return nil

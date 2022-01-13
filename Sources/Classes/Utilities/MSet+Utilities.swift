@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  MSet+Utilities.swift
 //  
 //
 //  Created by Vito Royeca on 12/27/21.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension MGSet {
+extension MSet {
     public func keyrune2Unicode() -> String {
         let keyruneUnicode = keyruneUnicode ?? "e684"
         

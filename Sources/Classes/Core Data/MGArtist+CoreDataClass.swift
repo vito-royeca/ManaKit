@@ -7,7 +7,7 @@
 
 import CoreData
 
-public class MGArtist: MGEntity {
+class MGArtist: MGEntity {
     enum CodingKeys: CodingKey {
         case firstName,
              lastName,
@@ -16,7 +16,7 @@ public class MGArtist: MGEntity {
              cards
     }
 
-    public required convenience init(from decoder: Decoder) throws {
+    required convenience init(from decoder: Decoder) throws {
         guard let context = decoder.userInfo[CodingUserInfoKey.managedObjectContext] as? NSManagedObjectContext else {
           throw DecoderConfigurationError.missingManagedObjectContext
         }
@@ -25,16 +25,36 @@ public class MGArtist: MGEntity {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        firstName = try container.decodeIfPresent(String.self, forKey: .firstName)
-        lastName = try container.decodeIfPresent(String.self, forKey: .lastName)
-        name = try container.decodeIfPresent(String.self, forKey: .name)
-        nameSection = try container.decodeIfPresent(String.self, forKey: .nameSection)
+        // firstName
+        if let firstName = try container.decodeIfPresent(String.self, forKey: .firstName),
+           self.firstName != firstName {
+            self.firstName = firstName
+        }
+        
+        // lastName
+        if let lastName = try container.decodeIfPresent(String.self, forKey: .lastName),
+           self.lastName != lastName {
+            self.lastName = lastName
+        }
+        
+        // name
+        if let name = try container.decodeIfPresent(String.self, forKey: .name),
+           self.name != name {
+            self.name = name
+        }
+        
+        // nameSection
+        if let nameSection = try container.decodeIfPresent(String.self, forKey: .nameSection),
+           self.nameSection != nameSection {
+            self.nameSection = nameSection
+        }
+        
 //        if let cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards) as NSSet? {
 //            addToCards(cards)
 //        }
     }
     
-    public override func encode(to encoder: Encoder) throws {
+    override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(firstName, forKey: .firstName)
@@ -44,5 +64,12 @@ public class MGArtist: MGEntity {
         if let cards = cards as? Set<MGCard> {
             try container.encode(cards, forKey: .cards)
         }
+    }
+    
+    func toModel() -> MArtist {
+        return MArtist(firstName: firstName,
+                       lastName: lastName,
+                       name: name,
+                       nameSection: nameSection)
     }
 }

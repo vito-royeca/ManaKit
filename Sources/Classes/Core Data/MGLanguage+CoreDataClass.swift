@@ -7,7 +7,7 @@
 
 import CoreData
 
-public class MGLanguage: MGEntity {
+class MGLanguage: MGEntity {
     enum CodingKeys: CodingKey {
         case code,
              displayCode,
@@ -17,7 +17,7 @@ public class MGLanguage: MGEntity {
              sets
     }
 
-    public required convenience init(from decoder: Decoder) throws {
+    required convenience init(from decoder: Decoder) throws {
         guard let context = decoder.userInfo[CodingUserInfoKey.managedObjectContext] as? NSManagedObjectContext else {
           throw DecoderConfigurationError.missingManagedObjectContext
         }
@@ -26,20 +26,54 @@ public class MGLanguage: MGEntity {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        code = try container.decodeIfPresent(String.self, forKey: .code)
-        displayCode = try container.decodeIfPresent(String.self, forKey: .displayCode)
-        name = try container.decodeIfPresent(String.self, forKey: .name)
-        nameSection = try container.decodeIfPresent(String.self, forKey: .nameSection)
+        // code
+        if let code = try container.decodeIfPresent(String.self, forKey: .code),
+           self.code != code {
+            self.code = code
+        }
         
-//        if let cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards) as NSSet? {
-//            addToCards(cards)
+        // displayCode
+        if let displayCode = try container.decodeIfPresent(String.self, forKey: .displayCode),
+           self.displayCode != displayCode {
+            self.displayCode = displayCode
+        }
+        
+        // name
+        if let name = try container.decodeIfPresent(String.self, forKey: .name),
+           self.name != name {
+            self.name = name
+        }
+        
+        // nameSection
+        if let nameSection = try container.decodeIfPresent(String.self, forKey: .nameSection),
+           self.nameSection != nameSection {
+            self.nameSection = nameSection
+        }
+        
+//        if let cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards) {
+//            for card in self.cards?.allObjects as? [MGCard] ?? [] {
+//                self.removeFromCards(card)
+//            }
+//            addToCards(cards as NSSet)
+//            
+//            cards.forEach {
+//                $0.language = self
+//            }
 //        }
-//        if let sets = try container.decodeIfPresent(Set<MGSet>.self, forKey: .sets) as NSSet? {
-//            addToSets(sets)
+//
+//        if let sets = try container.decodeIfPresent(Set<MGSet>.self, forKey: .sets) {
+//            for set in self.sets?.allObjects as? [MGSet] ?? [] {
+//                self.removeFromSets(set)
+//            }
+//            addToSets(sets as NSSet)
+//            
+//            sets.forEach {
+//                $0.addToLanguages(self)
+//            }
 //        }
     }
     
-    public override func encode(to encoder: Encoder) throws {
+    override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(code, forKey: .code)
@@ -52,5 +86,12 @@ public class MGLanguage: MGEntity {
         if let sets = sets as? Set<MGSet> {
             try container.encode(sets, forKey: .sets)
         }
+    }
+    
+    func toModel() -> MLanguage {
+        return MLanguage(code: code,
+                         displayCode: displayCode,
+                         name: name,
+                         nameSection: nameSection)
     }
 }

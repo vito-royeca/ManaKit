@@ -17,9 +17,7 @@ extension MGSet {
     }
 
     @NSManaged public var cardCount: Int32
-    @NSManaged public var code: String?
-    @NSManaged public var dateCreated: Date?
-    @NSManaged public var dateUpdated: Date?
+    @NSManaged public var code: String
     @NSManaged public var isFoilOnly: Bool
     @NSManaged public var isOnlineOnly: Bool
     @NSManaged public var keyruneClass: String?

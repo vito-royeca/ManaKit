@@ -7,7 +7,7 @@
 
 import CoreData
 
-public class MGFrame: MGEntity {
+class MGFrame: MGEntity {
     enum CodingKeys: CodingKey {
         case description_,
              name,
@@ -15,7 +15,7 @@ public class MGFrame: MGEntity {
              cards
     }
 
-    public required convenience init(from decoder: Decoder) throws {
+    required convenience init(from decoder: Decoder) throws {
         guard let context = decoder.userInfo[CodingUserInfoKey.managedObjectContext] as? NSManagedObjectContext else {
           throw DecoderConfigurationError.missingManagedObjectContext
         }
@@ -24,15 +24,33 @@ public class MGFrame: MGEntity {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        description_ = try container.decodeIfPresent(String.self, forKey: .description_)
-        name = try container.decodeIfPresent(String.self, forKey: .name)
-        nameSection = try container.decodeIfPresent(String.self, forKey: .nameSection)
-//        if let cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards) as NSSet? {
-//            addToCards(cards)
+        // description_
+        if let description_ = try container.decodeIfPresent(String.self, forKey: .description_),
+           self.description_ != description_ {
+            self.description_ = description_
+        }
+        
+        // name
+        if let name = try container.decodeIfPresent(String.self, forKey: .name),
+           self.name != name {
+            self.name = name
+        }
+        
+        // nameSection
+        if let nameSection = try container.decodeIfPresent(String.self, forKey: .nameSection),
+           self.nameSection != nameSection {
+            self.nameSection = nameSection
+        }
+        
+//        if let cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards) {
+////            addToCards(cards)
+//            cards.forEach {
+//                $0.frame = self
+//            }
 //        }
     }
     
-    public override func encode(to encoder: Encoder) throws {
+    override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(description_, forKey: .description_)
@@ -41,5 +59,11 @@ public class MGFrame: MGEntity {
         if let cards = cards as? Set<MGCard> {
             try container.encode(cards, forKey: .cards)
         }
+    }
+    
+    func toModel() -> MFrame {
+        return MFrame(description_: description_,
+                      name: name,
+                      nameSection: nameSection)
     }
 }

@@ -7,7 +7,7 @@
 
 import CoreData
 
-public class MGCardComponentPart: MGEntity {
+class MGCardComponentPart: MGEntity {
     enum CodingKeys: CodingKey {
         case id,
              card,
@@ -15,7 +15,7 @@ public class MGCardComponentPart: MGEntity {
              part
     }
 
-    public required convenience init(from decoder: Decoder) throws {
+    required convenience init(from decoder: Decoder) throws {
         guard let context = decoder.userInfo[CodingUserInfoKey.managedObjectContext] as? NSManagedObjectContext else {
           throw DecoderConfigurationError.missingManagedObjectContext
         }
@@ -30,12 +30,19 @@ public class MGCardComponentPart: MGEntity {
         id = "\(card?.newId ?? "")_\(component?.name ?? "")_\(part?.newId ?? "")"
     }
     
-    public override func encode(to encoder: Encoder) throws {
+    override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(id, forKey: .id)
         try container.encode(card, forKey: .card)
         try container.encode(component, forKey: .component)
         try container.encode(part, forKey: .part)
+    }
+    
+    func toModel() -> MCardComponentPart {
+        return MCardComponentPart(id: id,
+                                  card: card?.toModel(),
+                                  component: component?.toModel(),
+                                  part: card?.toModel())
     }
 }

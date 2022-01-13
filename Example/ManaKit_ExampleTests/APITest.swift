@@ -139,7 +139,6 @@ class APITest: XCTestCase {
             switch result {
             case .success(let card):
                 XCTAssert(card.newId == newId)
-//                print(card)
                 expectation.fulfill()
             case .failure(let error):
                 print(error)

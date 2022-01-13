@@ -9,6 +9,10 @@ import Foundation
 import CoreData
 import Combine
 
+extension NSManagedObjectID : Identifiable {
+    
+}
+
 // MARK: - CodingUserInfoKey
 
 public extension CodingUserInfoKey {
@@ -17,13 +21,17 @@ public extension CodingUserInfoKey {
 
 // MARK: - Base class
 
-public class MGEntity: NSManagedObject, Codable, Identifiable {
-    public required convenience init(from decoder: Decoder) throws {
+class MGEntity: NSManagedObject, Codable, Identifiable {
+    required convenience init(from decoder: Decoder) throws {
         guard let context = decoder.userInfo[CodingUserInfoKey.managedObjectContext] as? NSManagedObjectContext else {
           throw DecoderConfigurationError.missingManagedObjectContext
         }
 
         self.init(context: context)
+    }
+    
+    func toModel<T: MEntity>(_ entity: T.Type) -> T? {
+        return nil
     }
 }
 
@@ -32,13 +40,15 @@ extension ManaKit {
     // MARK: - CRUD
     
     func fetchOneData<T: MGEntity>(_ entity: T.Type,
-                                   query: [String: Any]?,
+                                   properties: [String: Any]?,
+                                   predicate: NSPredicate?,
                                    sortDescriptors: [NSSortDescriptor]?,
                                    url: URL,
                                    cancellables: inout Set<AnyCancellable>,
                                    completion: @escaping (Result<T, Error>) -> Void) {
         fetchData(entity,
-                  query: query,
+                  properties: properties,
+                  predicate: predicate,
                   sortDescriptors: sortDescriptors,
                   url: url,
                   cancellables: &cancellables,
@@ -54,17 +64,18 @@ extension ManaKit {
     }
     
     func fetchData<T: MGEntity>(_ entity: T.Type,
-                                query: [String: Any]?,
+                                properties: [String: Any]?,
+                                predicate: NSPredicate?,
                                 sortDescriptors: [NSSortDescriptor]?,
                                 url: URL,
                                 cancellables: inout Set<AnyCancellable>,
                                 completion: @escaping (Result<[T], Error>) -> Void) {
         let success = {
             let result = self.find(entity,
-                                   query: query,
+                                   properties: properties,
+                                   predicate: predicate,
                                    sortDescriptors: sortDescriptors,
                                    createIfNotFound: false) ?? [T]()
-            self.saveCache(forUrl: url)
             completion(.success(result))
         }
         
@@ -97,12 +108,26 @@ extension ManaKit {
                 .sink(receiveCompletion: { (suscriberCompletion) in
                     switch suscriberCompletion {
                     case .finished:
-                        success()
+                        DispatchQueue.main.async {
+                            success()
+                        }
                     case .failure(let error):
-                        failure(error)
+                        DispatchQueue.main.async {
+                            failure(error)
+                        }
                     }
-                }, receiveValue: { _ /*[weak self] (sets)*/ in
-                    self.saveContext()
+                    
+                }, receiveValue: { sets /*[weak self] (sets)*/ in
+                    DispatchQueue.main.async {
+                        do {
+                            try context.performAndWait {
+                                try context.save()
+                                self.saveContext()
+                            }
+                        } catch {
+                            failure(error)
+                        }
+                    }
                 })
                 .store(in: &cancellables)
         } else {
@@ -111,17 +136,16 @@ extension ManaKit {
     }
     
     func find<T: MGEntity>(_ entity: T.Type,
-                           query: [String: Any]?,
+                           properties: [String: Any]?,
+                           predicate: NSPredicate?,
                            sortDescriptors: [NSSortDescriptor]?,
                            createIfNotFound: Bool) -> [T]? {
         
         let entityName = String(describing: entity)
-        
-        let context = /*createIfNotFound ?*/ persistentContainer.viewContext //: persistentContainer.newBackgroundContext()
-        context.automaticallyMergesChangesFromParent = true
+        let context = persistentContainer.viewContext
         
         let request = NSFetchRequest<T>(entityName: entityName)
-        request.predicate = predicate(fromQuery: query)
+        request.predicate = predicate
         request.sortDescriptors = sortDescriptors
         
         do {
@@ -135,14 +159,17 @@ extension ManaKit {
                         try context.performAndWait {
                             let object = NSManagedObject(entity: desc, insertInto: context)
                             
-                            if let query = query {
-                                for (key,value) in query {
-                                    object.setValue(value, forKey: key)
-                                }
+                            for (key,value) in properties ?? [:] {
+                                object.setValue(value, forKey: key)
                             }
+                            
                             try context.save()
                         }
-                        return find(entity, query: query, sortDescriptors: sortDescriptors, createIfNotFound: createIfNotFound)
+                        return find(entity,
+                                    properties: properties,
+                                    predicate: predicate,
+                                    sortDescriptors: sortDescriptors,
+                                    createIfNotFound: createIfNotFound)
                     } else {
                         return nil
                     }
@@ -156,13 +183,208 @@ extension ManaKit {
         }
     }
     
-    public func delete<T: MGEntity>(_ entity: T.Type,
-                                    query: [String: Any]?,
-                                    completion: (() -> Void)?) {
+    public func find<T: MEntity>(_ entity: T.Type,
+                                 properties: [String: Any]?,
+                                 predicate: NSPredicate?,
+                                 sortDescriptors: [NSSortDescriptor]?,
+                                 createIfNotFound: Bool) -> [T]? {
+
+        if entity == MArtist.self {
+            if let array = find(MGArtist.self,
+                                properties: properties,
+                                predicate: predicate,
+                                sortDescriptors: sortDescriptors,
+                                createIfNotFound: createIfNotFound) {
+                return array.map { $0.toModel() as! T }
+            }
+        } else if entity == MCard.self {
+            if let array = find(MGCard.self,
+                                properties: properties,
+                                predicate: predicate,
+                                sortDescriptors: sortDescriptors,
+                                createIfNotFound: createIfNotFound) {
+                return array.map { $0.toModel() as! T }
+            }
+        } else if entity == MCardComponentPart.self {
+            if let array = find(MGCardComponentPart.self,
+                                properties: properties,
+                                predicate: predicate,
+                                sortDescriptors: sortDescriptors,
+                                createIfNotFound: createIfNotFound) {
+                return array.map { $0.toModel() as! T }
+            }
+        } else if entity == MCardFormatLegality.self {
+            if let array = find(MGCardFormatLegality.self,
+                                properties: properties,
+                                predicate: predicate,
+                                sortDescriptors: sortDescriptors,
+                                createIfNotFound: createIfNotFound) {
+                return array.map { $0.toModel() as! T }
+            }
+        } else if entity == MCardPrice.self {
+            if let array = find(MGCardPrice.self,
+                                properties: properties,
+                                predicate: predicate,
+                                sortDescriptors: sortDescriptors,
+                                createIfNotFound: createIfNotFound) {
+                return array.map { $0.toModel() as! T }
+            }
+        } else if entity == MCardType.self {
+            if let array = find(MGCardType.self,
+                                properties: properties,
+                                predicate: predicate,
+                                sortDescriptors: sortDescriptors,
+                                createIfNotFound: createIfNotFound) {
+                return array.map { $0.toModel() as! T }
+            }
+        } else if entity == MColor.self {
+            if let array = find(MGColor.self,
+                                properties: properties,
+                                predicate: predicate,
+                                sortDescriptors: sortDescriptors,
+                                createIfNotFound: createIfNotFound) {
+                return array.map { $0.toModel() as! T }
+            }
+        } else if entity == MComponent.self {
+            if let array = find(MGComponent.self,
+                                properties: properties,
+                                predicate: predicate,
+                                sortDescriptors: sortDescriptors,
+                                createIfNotFound: createIfNotFound) {
+                return array.map { $0.toModel() as! T }
+            }
+        } else if entity == MFormat.self {
+            if let array = find(MGFormat.self,
+                                properties: properties,
+                                predicate: predicate,
+                                sortDescriptors: sortDescriptors,
+                                createIfNotFound: createIfNotFound) {
+                return array.map { $0.toModel() as! T }
+            }
+        } else if entity == MFrame.self {
+            if let array = find(MGFrame.self,
+                                properties: properties,
+                                predicate: predicate,
+                                sortDescriptors: sortDescriptors,
+                                createIfNotFound: createIfNotFound) {
+                return array.map { $0.toModel() as! T }
+            }
+        } else if entity == MFrameEffect.self {
+            if let array = find(MGFrameEffect.self,
+                                properties: properties,
+                                predicate: predicate,
+                                sortDescriptors: sortDescriptors,
+                                createIfNotFound: createIfNotFound) {
+                return array.map { $0.toModel() as! T }
+            }
+        } else if entity == MImageURI.self {
+            if let array = find(MGImageURI.self,
+                                properties: properties,
+                                predicate: predicate,
+                                sortDescriptors: sortDescriptors,
+                                createIfNotFound: createIfNotFound) {
+                return array.map { $0.toModel() as! T }
+            }
+        } else if entity == MLanguage.self {
+            if let array = find(MGLanguage.self,
+                                properties: properties,
+                                predicate: predicate,
+                                sortDescriptors: sortDescriptors,
+                                createIfNotFound: createIfNotFound) {
+                return array.map { $0.toModel() as! T }
+            }
+        } else if entity == MLayout.self {
+            if let array = find(MGLayout.self,
+                                properties: properties,
+                                predicate: predicate,
+                                sortDescriptors: sortDescriptors,
+                                createIfNotFound: createIfNotFound) {
+                return array.map { $0.toModel() as! T }
+            }
+        } else if entity == MLegality.self {
+            if let array = find(MGLegality.self,
+                                properties: properties,
+                                predicate: predicate,
+                                sortDescriptors: sortDescriptors,
+                                createIfNotFound: createIfNotFound) {
+                return array.map { $0.toModel() as! T }
+            }
+        } else if entity == MRarity.self {
+            if let array = find(MGRarity.self,
+                                properties: properties,
+                                predicate: predicate,
+                                sortDescriptors: sortDescriptors,
+                                createIfNotFound: createIfNotFound) {
+                return array.map { $0.toModel() as! T }
+            }
+        } else if entity == MRule.self {
+            if let array = find(MGRule.self,
+                                properties: properties,
+                                predicate: predicate,
+                                sortDescriptors: sortDescriptors,
+                                createIfNotFound: createIfNotFound) {
+                return array.map { $0.toModel() as! T }
+            }
+        } else if entity == MRuling.self {
+            if let array = find(MGRuling.self,
+                                properties: properties,
+                                predicate: predicate,
+                                sortDescriptors: sortDescriptors,
+                                createIfNotFound: createIfNotFound) {
+                return array.map { $0.toModel() as! T }
+            }
+        } else if entity == MSet.self {
+            if let array = find(MGSet.self,
+                                properties: properties,
+                                predicate: predicate,
+                                sortDescriptors: sortDescriptors,
+                                createIfNotFound: createIfNotFound) {
+                return array.map { $0.toModel() as! T }
+            }
+        } else if entity == MSetBlock.self {
+            if let array = find(MGSetBlock.self,
+                                properties: properties,
+                                predicate: predicate,
+                                sortDescriptors: sortDescriptors,
+                                createIfNotFound: createIfNotFound) {
+                return array.map { $0.toModel() as! T }
+            }
+        } else if entity == MSetType.self {
+            if let array = find(MGSetType.self,
+                                properties: properties,
+                                predicate: predicate,
+                                sortDescriptors: sortDescriptors,
+                                createIfNotFound: createIfNotFound) {
+                return array.map { $0.toModel() as! T }
+            }
+        } else if entity == MStore.self {
+            if let array = find(MGStore.self,
+                                properties: properties,
+                                predicate: predicate,
+                                sortDescriptors: sortDescriptors,
+                                createIfNotFound: createIfNotFound) {
+                return array.map { $0.toModel() as! T }
+            }
+        } else if entity == MWatermark.self {
+            if let array = find(MGWatermark.self,
+                                properties: properties,
+                                predicate: predicate,
+                                sortDescriptors: sortDescriptors,
+                                createIfNotFound: createIfNotFound) {
+                return array.map { $0.toModel() as! T }
+            }
+        }
+        
+        return nil
+     }
+    
+    func delete<T: MGEntity>(_ entity: T.Type,
+                             predicate: NSPredicate,
+                             completion: (() -> Void)?) {
         let context = persistentContainer.viewContext
         let entityName = String(describing: entity)
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        fetchRequest.predicate =  predicate(fromQuery: query)
+        fetchRequest.predicate =  predicate
         
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         deleteRequest.resultType = .resultTypeObjectIDs
@@ -181,26 +403,28 @@ extension ManaKit {
         }
     }
 
-    public func count<T: NSManagedObject>(_ entity: T.Type, query: [String: Any]?) -> Int {
-        let context = persistentContainer.viewContext
-        let entityName = String(describing: entity)
-        let request = NSFetchRequest<T>(entityName: entityName)
-        
-        request.predicate = predicate(fromQuery: query)
-        do {
-            return try context.count(for: request)
-        } catch {
-            print(error)
-            return 0
-        }
-    }
+//    func count<T: MGEntity>(_ entity: T.Type, query: [String: Any]?) -> Int {
+//        let context = persistentContainer.viewContext
+//        let entityName = String(describing: entity)
+//        let request = NSFetchRequest<T>(entityName: entityName)
+//
+//        request.predicate = predicate(fromQuery: query)
+//        do {
+//            return try context.count(for: request)
+//        } catch {
+//            print(error)
+//            return 0
+//        }
+//    }
     
     public func saveContext () {
         let context = persistentContainer.viewContext
 
         if context.hasChanges {
             do {
-                try context.save()
+                try context.performAndWait {
+                    try context.save()
+                }
             } catch {
                 print(error)
             }
@@ -218,33 +442,46 @@ extension ManaKit {
 //    }
     
     // MARK: - Utilities
-    func predicate(fromQuery query: [String: Any]?) -> NSPredicate? {
-        var predicate: NSPredicate?
-        
-        if let query = query {
-            for (key, value) in query {
-                var format = "%@"
-                
-                if let _ = value as? Int32 {
-                    format = "%d"
-                } else if let _ = value as? Double {
-                    format = "%f"
-                } else if let _ = value as? Bool {
-                    format = "%d"
-                } else if let _ = value as? String {
-                    format = "[c] %@"
-                }
-                
-                if predicate != nil {
-                    predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate!, NSPredicate(format: "%K == \(format)", key, value as! CVarArg)])
-                } else {
-                    predicate = NSPredicate(format: "%K == \(format)", key, value as! CVarArg)
-                }
-            }
-        }
-        
-        return predicate
-    }
+//    public func object<T: MGEntity>(_ type: T.Type, forID id: NSManagedObjectID) -> T {
+//        return persistentContainer.viewContext.object(with: id) as! T
+//    }
+//    
+//    public func objects<T: MGEntity>(_ type: T.Type, forIDs ids: [NSManagedObjectID]) -> [T] {
+//        var array = [T]()
+//        
+//        for id in ids {
+//            array.append(object(type, forID: id))
+//        }
+//        return array
+//    }
+    
+//    func predicate(fromQuery query: [String: Any]?) -> NSPredicate? {
+//        var predicate: NSPredicate?
+//
+//        if let query = query {
+//            for (key, value) in query {
+//                var format = "%@"
+//
+//                if let _ = value as? Int32 {
+//                    format = "%d"
+//                } else if let _ = value as? Double {
+//                    format = "%f"
+//                } else if let _ = value as? Bool {
+//                    format = "%d"
+//                } else if let _ = value as? String {
+//                    format = "[c] %@"
+//                }
+//
+//                if predicate != nil {
+//                    predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate!, NSPredicate(format: "%K == \(format)", key, value as! CVarArg)])
+//                } else {
+//                    predicate = NSPredicate(format: "%K == \(format)", key, value as! CVarArg)
+//                }
+//            }
+//        }
+//
+//        return predicate
+//    }
     
     // MARK: - Caching
 
@@ -252,7 +489,8 @@ extension ManaKit {
         var willFetch = true
 
         if let cache = find(MGLocalCache.self,
-                            query: ["url": url.absoluteString],
+                            properties: ["url": url.absoluteString],
+                            predicate: NSPredicate(format: "url == %@", url.absoluteString),
                             sortDescriptors: nil,
                             createIfNotFound: true)?.first {
             
@@ -267,26 +505,29 @@ extension ManaKit {
             
             if willFetch {
                 print(url)
+                cache.lastUpdated = Date()
+                saveContext()
             }
         }
         
         return willFetch
     }
 
-    func saveCache(forUrl url: URL) {
-        if let cache = find(MGLocalCache.self,
-                            query: ["url": url.absoluteString],
-                            sortDescriptors: nil,
-                            createIfNotFound: true)?.first {
-            cache.lastUpdated = Date()
-            saveContext()
-        }
-    }
-    
+//    func saveCache(forUrl url: URL) {
+//        if let cache = find(MGLocalCache.self,
+//                            query: ["url": url.absoluteString],
+//                            sortDescriptors: nil,
+//                            createIfNotFound: true)?.first {
+//            cache.lastUpdated = Date()
+//            saveContext()
+//        }
+//    }
+
     func deleteCache(forUrl url: URL) {
         delete(MGLocalCache.self,
-                    query: ["url": url.absoluteString],
-                    completion: nil)
+               predicate: NSPredicate(format: "url == %@", url.absoluteString),
+               completion: nil)
+        saveContext()
     }
     
 //    func copyModelFile() {

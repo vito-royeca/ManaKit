@@ -7,7 +7,7 @@
 
 import CoreData
 
-public class MGColor: MGEntity {
+class MGColor: MGEntity {
     enum CodingKeys: CodingKey {
         case name,
              nameSection,
@@ -17,7 +17,7 @@ public class MGColor: MGEntity {
              indicators*/
     }
 
-    public required convenience init(from decoder: Decoder) throws {
+    required convenience init(from decoder: Decoder) throws {
         guard let context = decoder.userInfo[CodingUserInfoKey.managedObjectContext] as? NSManagedObjectContext else {
           throw DecoderConfigurationError.missingManagedObjectContext
         }
@@ -26,22 +26,44 @@ public class MGColor: MGEntity {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        name = try container.decodeIfPresent(String.self, forKey: .name)
-        nameSection = try container.decodeIfPresent(String.self, forKey: .nameSection)
-        symbol = try container.decodeIfPresent(String.self, forKey: .symbol)
+        // name
+        if let name = try container.decodeIfPresent(String.self, forKey: .name),
+           self.name != name {
+            self.name = name
+        }
+        
+        // nameSection
+        if let nameSection = try container.decodeIfPresent(String.self, forKey: .nameSection),
+           self.nameSection != nameSection {
+            self.nameSection = nameSection
+        }
+        
+        // symbol
+        if let symbol = try container.decodeIfPresent(String.self, forKey: .symbol),
+           self.symbol != symbol {
+            self.symbol = symbol
+        }
+        
 //        cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards) as NSSet?
 //        identities = try container.decodeIfPresent(Set<MGCard>.self, forKey: .identities) as NSSet?
 //        indicators = try container.decodeIfPresent(Set<MGCard>.self, forKey: .indicators) as NSSet?
     }
     
-    public override func encode(to encoder: Encoder) throws {
+    override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(name, forKey: .name)
         try container.encode(nameSection, forKey: .nameSection)
         try container.encode(symbol, forKey: .symbol)
+        
 //        try container.encode(cards as! Set<MGCard>, forKey: .cards)
 //        try container.encode(identities as! Set<MGCard>, forKey: .identities)
 //        try container.encode(indicators as! Set<MGCard>, forKey: .indicators)
+    }
+    
+    func toModel() -> MColor {
+        return MColor(name: name,
+                      nameSection: nameSection,
+                      symbol: symbol)
     }
 }

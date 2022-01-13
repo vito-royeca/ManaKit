@@ -7,7 +7,7 @@
 
 import CoreData
 
-public class MGRule: MGEntity {
+class MGRule: MGEntity {
     enum CodingKeys: CodingKey {
         case definition,
              id,
@@ -18,7 +18,7 @@ public class MGRule: MGEntity {
              parent
     }
 
-    public required convenience init(from decoder: Decoder) throws {
+    required convenience init(from decoder: Decoder) throws {
         guard let context = decoder.userInfo[CodingUserInfoKey.managedObjectContext] as? NSManagedObjectContext else {
           throw DecoderConfigurationError.missingManagedObjectContext
         }
@@ -27,18 +27,56 @@ public class MGRule: MGEntity {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        definition = try container.decodeIfPresent(String.self, forKey: .definition)
-        id = "\(try container.decodeIfPresent(Int32.self, forKey: .id) ?? Int32(0))"
-        order = try container.decodeIfPresent(Double.self, forKey: .order) ?? Double(0)
-        term = try container.decodeIfPresent(String.self, forKey: .term)
-        termSection = try container.decodeIfPresent(String.self, forKey: .termSection)
-        if let children = try container.decodeIfPresent(Set<MGRule>.self, forKey: .children) as NSSet? {
-            addToChildren(children)
+        // definition
+        if let definition = try container.decodeIfPresent(String.self, forKey: .definition),
+           self.definition != definition {
+            self.definition = definition
         }
-//        parent = try container.decodeIfPresent(MGRule.self, forKey: .parent)
+        
+        // id
+        if let id = try container.decodeIfPresent(Int32.self, forKey: .id),
+           self.id != "\(id)" {
+            self.id = "\(id)"
+        }
+        
+        // order
+        if let order = try container.decodeIfPresent(Double.self, forKey: .order),
+           self.order != order {
+            self.order = order
+        }
+        
+        // term
+        if let term = try container.decodeIfPresent(String.self, forKey: .term),
+           self.term != term {
+            self.term = term
+        }
+        
+        // termSection
+        if let termSection = try container.decodeIfPresent(String.self, forKey: .termSection),
+           self.termSection != termSection {
+            self.termSection = termSection
+        }
+        
+        // children
+        if let children = try container.decodeIfPresent(Set<MGRule>.self, forKey: .children),
+           !children.isEmpty {
+            for child in self.children?.allObjects as? [MGRule] ?? [] {
+                self.removeFromChildren(child)
+            }
+            
+            children.forEach {
+                $0.parent = self
+            }
+            addToChildren(children as NSSet)
+        }
+        
+        // parent
+//        if let parent = try container.decodeIfPresent(MGRule.self, forKey: .parent) {
+//            self.parent = parent
+//        }
     }
     
-    public override func encode(to encoder: Encoder) throws {
+    override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(definition, forKey: .definition)
@@ -50,5 +88,14 @@ public class MGRule: MGEntity {
             try container.encode(children, forKey: .children)
         }
         try container.encode(parent, forKey: .parent)
+    }
+    
+    func toModel() -> MRule {
+        return MRule(definition: definition,
+                     id: id,
+                     order: order,
+                     term: term,
+                     termSection: termSection,
+                     children: (children?.allObjects as? [MGRule] ?? []).map { $0.toModel() })
     }
 }

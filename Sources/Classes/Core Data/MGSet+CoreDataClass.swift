@@ -7,7 +7,7 @@
 
 import CoreData
 
-public class MGSet: MGEntity {
+class MGSet: MGEntity {
     enum CodingKeys: CodingKey {
         case cardCount,
              code,
@@ -31,51 +31,149 @@ public class MGSet: MGEntity {
              setType
     }
 
-    public required convenience init(from decoder: Decoder) throws {
+    required convenience init(from decoder: Decoder) throws {
         guard let context = decoder.userInfo[CodingUserInfoKey.managedObjectContext] as? NSManagedObjectContext else {
           throw DecoderConfigurationError.missingManagedObjectContext
         }
 
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
         self.init(context: context)
         
-        let container = try decoder.container(keyedBy: CodingKeys.self)
+        // MARK: - attributes
         
-        cardCount = try container.decodeIfPresent(Int32.self, forKey: .cardCount) ?? Int32(0)
-        code = try container.decodeIfPresent(String.self, forKey: .code)
-        dateCreated = try container.decodeIfPresent(Date.self, forKey: .dateCreated)
-        dateUpdated = try container.decodeIfPresent(Date.self, forKey: .dateUpdated)
-        isFoilOnly = try container.decodeIfPresent(Bool.self, forKey: .isFoilOnly) ?? false
-        isOnlineOnly = try container.decodeIfPresent(Bool.self, forKey: .isOnlineOnly) ?? false
-        keyruneClass = try container.decodeIfPresent(String.self, forKey: .keyruneClass)
-        keyruneUnicode = try container.decodeIfPresent(String.self, forKey: .keyruneUnicode)
-        mtgoCode = try container.decodeIfPresent(String.self, forKey: .mtgoCode)
-        myNameSection = try container.decodeIfPresent(String.self, forKey: .myNameSection)
-        myYearSection = try container.decodeIfPresent(String.self, forKey: .myYearSection)
-        name = try container.decodeIfPresent(String.self, forKey: .name)
-        releaseDate = try container.decodeIfPresent(String.self, forKey: .releaseDate)
-        tcgPlayerId = try container.decodeIfPresent(Int32.self, forKey: .tcgPlayerId) ?? Int32(0)
+        // cardCount
+        if let cardCount = try container.decodeIfPresent(Int32.self, forKey: .cardCount),
+           self.cardCount != cardCount {
+            self.cardCount = cardCount
+        }
         
-        if let cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards) as NSSet? {
-            addToCards(cards)
+        // code
+        if let code = try container.decodeIfPresent(String.self, forKey: .code),
+           self.code != code {
+            self.code = code
         }
-        if let children = try container.decodeIfPresent(Set<MGSet>.self, forKey: .children) as NSSet? {
-            addToChildren(children)
+        
+        // isFoilOnly
+        if let isFoilOnly = try container.decodeIfPresent(Bool.self, forKey: .isFoilOnly),
+           self.isFoilOnly != isFoilOnly {
+            self.isFoilOnly = isFoilOnly
         }
-//        if let languages = try container.decodeIfPresent(Set<MGLanguage>.self, forKey: .languages) as NSSet? {
-//            addToLanguages(languages)
+        
+        // isOnlineOnly
+        if let isOnlineOnly = try container.decodeIfPresent(Bool.self, forKey: .isOnlineOnly),
+           self.isOnlineOnly != isOnlineOnly {
+            self.isOnlineOnly = isOnlineOnly
+        }
+        
+        // keyruneClass
+        if let keyruneClass = try container.decodeIfPresent(String.self, forKey: .keyruneClass),
+           self.keyruneClass != keyruneClass {
+            self.keyruneClass = keyruneClass
+        }
+        
+        // keyruneUnicode
+        if let keyruneUnicode = try container.decodeIfPresent(String.self, forKey: .keyruneUnicode),
+           self.keyruneUnicode != keyruneUnicode {
+            self.keyruneUnicode = keyruneUnicode
+        }
+        
+        // mtgoCode
+        if let mtgoCode = try container.decodeIfPresent(String.self, forKey: .mtgoCode),
+           self.mtgoCode != mtgoCode {
+            self.mtgoCode = mtgoCode
+        }
+        
+        // myNameSection
+        if let myNameSection = try container.decodeIfPresent(String.self, forKey: .myNameSection),
+           self.myNameSection != myNameSection {
+            self.myNameSection = myNameSection
+        }
+        
+        // myYearSection
+        if let myYearSection = try container.decodeIfPresent(String.self, forKey: .myYearSection),
+           self.myYearSection != myYearSection {
+            self.myYearSection = myYearSection
+        }
+        
+        // name
+        if let name = try container.decodeIfPresent(String.self, forKey: .name),
+           self.name != name {
+            self.name = name
+        }
+
+        // releaseDate
+        if let releaseDate = try container.decodeIfPresent(String.self, forKey: .releaseDate) {
+            self.releaseDate = releaseDate
+        }
+        
+        // tcgPlayerId
+        if let tcgPlayerId = try container.decodeIfPresent(Int32.self, forKey: .tcgPlayerId),
+           self.tcgPlayerId != tcgPlayerId {
+            self.tcgPlayerId = tcgPlayerId
+        }
+
+        // MARK: - relationships
+        
+        // cards
+        if let cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards),
+           !cards.isEmpty {
+            for card in self.cards?.allObjects as? [MGCard] ?? [] {
+                self.removeFromCards(card)
+            }
+            addToCards(cards as NSSet)
+            
+            cards.forEach {
+                $0.set = self
+            }
+        }
+
+        // children
+        if let children = try container.decodeIfPresent(Set<MGSet>.self, forKey: .children),
+           !children.isEmpty {
+            for child in self.children?.allObjects as? [MGSet] ?? [] {
+                self.removeFromChildren(child)
+            }
+            
+            children.forEach {
+                $0.parent = self
+            }
+            addToChildren(children as NSSet)
+        }
+        
+        // languages
+//        if let languages = try container.decodeIfPresent(Set<MGLanguage>.self, forKey: .languages) {
+//            for language in self.languages?.allObjects as? [MGLanguage] ?? [] {
+//                self.removeFromLanguages(language)
+//            }
+//            
+//            languages.forEach {
+//                $0.addToSets(self)
+//            }
+//            addToLanguages(languages as NSSet)
 //        }
-//        parent = try container.decodeIfPresent(MGSet.self, forKey: .parent)
-//        setBlock = try container.decodeIfPresent(MGSetBlock.self, forKey: .setBlock)
-//        setType = try container.decodeIfPresent(MGSetType.self, forKey: .setType)
+        
+        // parent
+//        if let parent = try container.decodeIfPresent(MGSet.self, forKey: .parent) {
+//            self.parent = parent
+//        }
+        
+        // setBlock
+//        if let setBlock = try container.decodeIfPresent(MGSetBlock.self, forKey: .setBlock) {
+//            self.setBlock = setBlock
+//        }
+        
+        // setType
+//        if let setType = try container.decodeIfPresent(MGSetType.self, forKey: .setType) {
+//            self.setType = setType
+//        }
     }
     
-    public override func encode(to encoder: Encoder) throws {
+    override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(cardCount, forKey: .cardCount)
         try container.encode(code, forKey: .code)
-        try container.encode(dateCreated, forKey: .dateCreated)
-        try container.encode(dateUpdated, forKey: .dateUpdated)
         try container.encode(isFoilOnly, forKey: .isFoilOnly)
         try container.encode(isOnlineOnly, forKey: .isOnlineOnly)
         try container.encode(keyruneClass, forKey: .keyruneClass)
@@ -104,6 +202,26 @@ public class MGSet: MGEntity {
         if let setType = setType {
             try container.encode(setType, forKey: .setType)
         }
+    }
+    
+    func toModel() -> MSet {
+        return MSet(cardCount: cardCount,
+                    code: code,
+                    isFoilOnly: isFoilOnly,
+                    isOnlineOnly: isOnlineOnly,
+                    keyruneClass: keyruneClass,
+                    keyruneUnicode: keyruneUnicode,
+                    mtgoCode: mtgoCode,
+                    myNameSection: myNameSection,
+                    myYearSection: myYearSection,
+                    name: name,
+                    releaseDate: releaseDate,
+                    tcgPlayerId: tcgPlayerId,
+//                    cards: (cards?.allObjects as? [MGCard] ?? [MGCard]()).map { $0.toModel() },
+                    children: (children?.allObjects as? [MGSet] ?? [MGSet]()).map { $0.toModel() },
+                    languages: (languages?.allObjects as? [MGLanguage] ?? [MGLanguage]()).map { $0.toModel() },
+                    setBlock: setBlock?.toModel(),
+                    setType: setType?.toModel())
     }
 }
 

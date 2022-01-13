@@ -7,14 +7,14 @@
 
 import CoreData
 
-public class MGSetType: MGEntity {
+class MGSetType: MGEntity {
     enum CodingKeys: CodingKey {
         case name,
              nameSection,
              sets
     }
 
-    public required convenience init(from decoder: Decoder) throws {
+    required convenience init(from decoder: Decoder) throws {
         guard let context = decoder.userInfo[CodingUserInfoKey.managedObjectContext] as? NSManagedObjectContext else {
           throw DecoderConfigurationError.missingManagedObjectContext
         }
@@ -23,14 +23,32 @@ public class MGSetType: MGEntity {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        name = try container.decodeIfPresent(String.self, forKey: .name)
-        nameSection = try container.decodeIfPresent(String.self, forKey: .nameSection)
-        if let sets = try container.decodeIfPresent(Set<MGSet>.self, forKey: .sets) as NSSet? {
-            addToSets(sets)
+        // name
+        if let name = try container.decodeIfPresent(String.self, forKey: .name),
+           self.name != name {
+            self.name = name
         }
+        
+        // nameSection
+        if let nameSection = try container.decodeIfPresent(String.self, forKey: .nameSection),
+           self.nameSection != nameSection {
+            self.nameSection = nameSection
+        }
+
+        // sets
+//        if let sets = try container.decodeIfPresent(Set<MGSet>.self, forKey: .sets) {
+//            for set in self.sets?.allObjects as? [MGSet] ?? [] {
+//                self.removeFromSets(set)
+//            }
+//            addToSets(sets as NSSet)
+//            
+//            sets.forEach {
+//                $0.setType = self
+//            }
+//        }
     }
     
-    public override func encode(to encoder: Encoder) throws {
+    override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(name, forKey: .name)
@@ -38,5 +56,10 @@ public class MGSetType: MGEntity {
         if let sets = sets as? Set<MGSet> {
             try container.encode(sets, forKey: .sets)
         }
+    }
+    
+    func toModel() -> MSetType {
+        return MSetType(name: name,
+                        nameSection: nameSection)
     }
 }

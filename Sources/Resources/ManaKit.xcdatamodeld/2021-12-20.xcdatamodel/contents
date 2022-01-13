@@ -47,7 +47,7 @@
         <attribute name="myNameSection" optional="YES" attributeType="String"/>
         <attribute name="myNumberOrder" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
-        <attribute name="newId" optional="YES" attributeType="String">
+        <attribute name="newId" attributeType="String">
             <userInfo>
                 <entry key="hyper.isPrimaryKey" value="true"/>
                 <entry key="sync.isPrimaryKey" value="true"/>
@@ -68,22 +68,25 @@
         <relationship name="colorIdentities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGColor" inverseName="identities" inverseEntity="MGColor"/>
         <relationship name="colorIndicators" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGColor" inverseName="indicators" inverseEntity="MGColor"/>
         <relationship name="colors" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGColor" inverseName="cards" inverseEntity="MGColor"/>
-        <relationship name="faces" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="faces" inverseEntity="MGCard"/>
+        <relationship name="face" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGCard" inverseName="faces" inverseEntity="MGCard"/>
+        <relationship name="faces" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="face" inverseEntity="MGCard"/>
         <relationship name="formatLegalities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardFormatLegality" inverseName="card" inverseEntity="MGCardFormatLegality"/>
         <relationship name="frame" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGFrame" inverseName="cards" inverseEntity="MGFrame"/>
-        <relationship name="frameEffect" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGFrameEffect" inverseName="cards" inverseEntity="MGFrameEffect"/>
+        <relationship name="frameEffects" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGFrameEffect" inverseName="cards" inverseEntity="MGFrameEffect"/>
         <relationship name="imageUri" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGImageURI" inverseName="card" inverseEntity="MGImageURI"/>
         <relationship name="language" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGLanguage" inverseName="cards" inverseEntity="MGLanguage"/>
         <relationship name="layout" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGLayout" inverseName="cards" inverseEntity="MGLayout"/>
         <relationship name="otherLanguages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="otherLanguages" inverseEntity="MGCard"/>
-        <relationship name="otherPrintings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="otherPrintings" inverseEntity="MGCard"/>
+        <relationship name="otherPrinting" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGCard" inverseName="otherPrintings" inverseEntity="MGCard"/>
+        <relationship name="otherPrintings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="otherPrinting" inverseEntity="MGCard"/>
         <relationship name="partComponentParts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardComponentPart" inverseName="part" inverseEntity="MGCardComponentPart"/>
         <relationship name="prices" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardPrice" inverseName="card" inverseEntity="MGCardPrice"/>
         <relationship name="rarity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGRarity" inverseName="cards" inverseEntity="MGRarity"/>
         <relationship name="set" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGSet" inverseName="cards" inverseEntity="MGSet"/>
         <relationship name="subtypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardType" inverseName="subtypes" inverseEntity="MGCardType"/>
         <relationship name="supertypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardType" inverseName="supertypes" inverseEntity="MGCardType"/>
-        <relationship name="variations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="variations" inverseEntity="MGCard"/>
+        <relationship name="variation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGCard" inverseName="variations" inverseEntity="MGCard"/>
+        <relationship name="variations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="variation" inverseEntity="MGCard"/>
         <relationship name="watermark" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGWatermark" inverseName="cards" inverseEntity="MGWatermark"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
@@ -231,7 +234,7 @@
         </attribute>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="nameSection" optional="YES" attributeType="String"/>
-        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="frameEffect" inverseEntity="MGCard"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="frameEffects" inverseEntity="MGCard"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="id"/>
@@ -348,14 +351,12 @@
     </entity>
     <entity name="MGSet" representedClassName=".MGSet" syncable="YES">
         <attribute name="cardCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="code" optional="YES" attributeType="String">
+        <attribute name="code" attributeType="String">
             <userInfo>
                 <entry key="hyper.isPrimaryKey" value="true"/>
                 <entry key="sync.isPrimaryKey" value="true"/>
             </userInfo>
         </attribute>
-        <attribute name="dateCreated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="dateUpdated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="isFoilOnly" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isOnlineOnly" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="keyruneClass" optional="YES" attributeType="String"/>
@@ -395,6 +396,7 @@
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="code"/>
+                <constraint value="name"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
@@ -445,7 +447,7 @@
     </entity>
     <elements>
         <element name="MGArtist" positionX="-45" positionY="153" width="128" height="104"/>
-        <element name="MGCard" positionX="-54" positionY="72" width="128" height="959"/>
+        <element name="MGCard" positionX="-54" positionY="72" width="128" height="1004"/>
         <element name="MGCardComponentPart" positionX="0" positionY="144" width="128" height="89"/>
         <element name="MGCardFormatLegality" positionX="-27" positionY="135" width="128" height="89"/>
         <element name="MGCardPrice" positionX="-9" positionY="135" width="128" height="194"/>
@@ -463,7 +465,7 @@
         <element name="MGRarity" positionX="-27" positionY="135" width="128" height="74"/>
         <element name="MGRule" positionX="0" positionY="162" width="128" height="134"/>
         <element name="MGRuling" positionX="-27" positionY="135" width="128" height="89"/>
-        <element name="MGSet" positionX="-63" positionY="-18" width="128" height="329"/>
+        <element name="MGSet" positionX="-63" positionY="-18" width="128" height="299"/>
         <element name="MGSetBlock" positionX="-18" positionY="144" width="128" height="89"/>
         <element name="MGSetType" positionX="-27" positionY="135" width="128" height="74"/>
         <element name="MGStore" positionX="-9" positionY="135" width="128" height="74"/>

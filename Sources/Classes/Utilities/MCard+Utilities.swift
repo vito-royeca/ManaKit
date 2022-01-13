@@ -1,11 +1,12 @@
 //
-//  File.swift
+//  MCard+Utilities.swift
 //  
 //
 //  Created by Vito Royeca on 12/27/21.
 //
 
 import Foundation
+//import SwiftUI
 
 public enum CardImageType: Int, CaseIterable {
     case png
@@ -30,14 +31,30 @@ public enum CardImageType: Int, CaseIterable {
 
 // MARK: - Display data
 
-extension MGCard {
-    public var displayFoilPrice: String {
+extension MCard {
+//    public var displayManaCost: Text {
+//        get {
+//            guard let manaCost = manaCost else {
+//                return Text("")
+//            }
+//
+//            return symbols(manaCost)
+//        }
+//    }
+    
+    public var displayFlavorText: String {
         get {
-            guard let prices = prices else {
-                return "\u{2014}"
+            guard let flavorText = flavorText else {
+                return ""
             }
             
-            for price in prices.allObjects as? [MGCardPrice] ?? [MGCardPrice]() {
+            return flavorText
+        }
+    }
+    
+    public var displayFoilPrice: String {
+        get {
+            for price in prices {
                 if price.isFoil {
                     return price.market > 0 ? String(format: "$%.2f", price.market) : "\u{2014}"
                 }
@@ -71,11 +88,7 @@ extension MGCard {
     
     public var displayNormalPrice: String {
         get {
-            guard let prices = prices else {
-                return "\u{2014}"
-            }
-            
-            for price in prices.allObjects as? [MGCardPrice] ?? [MGCardPrice]() {
+            for price in prices {
                 if !price.isFoil {
                     return price.market > 0 ? String(format: "$%.2f", price.market) : "\u{2014}"
                 }
@@ -84,6 +97,16 @@ extension MGCard {
             return "\u{2014}"
         }
     }
+    
+//    public var displayOracleText: Text {
+//        get {
+//            guard let oracleText = oracleText else {
+//                return Text("")
+//            }
+//
+//            return symbols(oracleText)
+//        }
+//    }
     
     public var displayPowerToughness: String {
         get {
@@ -94,6 +117,16 @@ extension MGCard {
             }
         }
     }
+    
+//    public var displayPrintedText: Text {
+//        get {
+//            guard let printedText = printedText else {
+//                return Text("")
+//            }
+//
+//            return symbols(printedText)
+//        }
+//    }
     
     public var displayTypeLine: String {
         get {
@@ -113,11 +146,84 @@ extension MGCard {
             return typeText
         }
     }
+    
+//    func symbols(_ text: String) -> Text {
+//        if text.isEmpty {
+//            return Text("")
+//        }
+//        
+//        let trimmedText = text.trimmingCharacters(in: CharacterSet.whitespaces)
+//        var array = [Any]()
+//        var textFragment = ""
+//        var sentinel = 0
+//        
+//        repeat {
+//            for i in sentinel...trimmedText.count - 1 {
+//                let c = trimmedText[trimmedText.index(trimmedText.startIndex, offsetBy: i)]
+//                
+//                if c == "{" {
+//                    let code = NSMutableString()
+//                    
+//                    for j in i...text.count - 1 {
+//                        let cc = trimmedText[trimmedText.index(trimmedText.startIndex, offsetBy: j)]
+//                        code.append(String(cc))
+//                        
+//                        if cc == "}" {
+//                            sentinel = j + 1
+//                            break
+//                        }
+//                    }
+//                    
+//                    var cleanCode = code.replacingOccurrences(of: "{", with: "")
+//                        .replacingOccurrences(of: "}", with: "")
+//                        .replacingOccurrences(of: "/", with: "")
+//                    
+//                    if cleanCode.lowercased() == "chaos" {
+//                        cleanCode = "Chaos"
+//                    }
+//                    
+//                    guard let image = ManaKit.shared.symbolImage(name: cleanCode as String) else {
+//                        return Text("")
+//                    }
+//                    var width = CGFloat(16)
+//                    let height = CGFloat(16)
+//                    
+//                    if cleanCode == "100" {
+//                        width = 35
+//                    } else if cleanCode == "1000000" {
+//                        width = 60
+//                    }
+//                    
+//                    if let resizedImage = image.copy(newSize: CGSize(width: width, height: height)) {
+//                        let newImage = Image(uiImage: resizedImage)
+//                        if !textFragment.isEmpty {
+//                            array.append(textFragment)
+//                        }
+//                        array.append(newImage)
+//                        textFragment = ""
+//                    }
+//                    break
+//                   
+//                } else {
+//                    textFragment.append(String(c))
+//                    sentinel += 1
+//                }
+//                
+//            }
+//        } while sentinel <= text.count - 1
+//        
+//        var newString = ""
+//        for a in array {
+//            newString.append("\(a)")
+//        }
+//        return Text(newString)
+//    }
 }
+
 
 // MARK: - Methods
 
-extension MGCard {
+extension MCard {
     public func imageURL(for type: CardImageType) -> URL? {
         guard let imageUri = imageUri else {
             return nil
@@ -157,7 +263,7 @@ extension MGCard {
     public func keyruneColor() -> UIColor {
         guard let set = set,
             let rarity = rarity else {
-                return .black
+            return .black
         }
 
         var color: UIColor?
@@ -205,5 +311,19 @@ extension MGCard {
         }
         
         return ManaKit.Fonts.magic2015
+    }
+    
+    public func multiverseIDArray() -> [Int64] {
+        guard let multiverseIds = multiverseIds else {
+            return [Int64]()
+        }
+        
+//        do {
+//            let array = try NSKeyedUnarchiver.unarchivedObject(ofClass: [Int64].self, from: multiverseIds)
+//            return array
+//        } catch {
+            return [Int64]()
+//        }
+        
     }
 }

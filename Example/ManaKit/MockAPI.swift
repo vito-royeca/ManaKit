@@ -23,10 +23,10 @@ class MockAPI: API {
         decoder.userInfo[CodingUserInfoKey.managedObjectContext] = ManaKit.shared.persistentContainer.viewContext
     }
     
-    func fetchSets(query: [String: Any]?,
+    func fetchSets(predicate: NSPredicate?,
                    sortDescriptors: [NSSortDescriptor]?,
                    cancellables: inout Set<AnyCancellable>,
-                   completion: @escaping (Result<[MGSet], Error>) -> Void) {
+                   completion: @escaping (Result<[MSet], Error>) -> Void) {
         do {
             let data = try JSONSerialization.data(withJSONObject: [
                 [
@@ -46,7 +46,7 @@ class MockAPI: API {
                     "release_date": "2016-07-22"
                 ]
             ], options: [])
-            let sets = try decoder.decode([MGSet].self, from: data)
+            let sets = try decoder.decode([MSet].self, from: data)
             
             completion(.success(sets))
         } catch {
@@ -57,7 +57,7 @@ class MockAPI: API {
     func fetchSet(code: String,
                   languageCode: String,
                   cancellables: inout Set<AnyCancellable>,
-                  completion: @escaping (Result<MGSet, Error>) -> Void) {
+                  completion: @escaping (Result<MSet, Error>) -> Void) {
         do {
             let bundle = Bundle(for: MockAPI.self)
             
@@ -66,7 +66,7 @@ class MockAPI: API {
             }
             
             let data = try Data(contentsOf: jsonURL)
-            let sets = try decoder.decode([MGSet].self, from: data)
+            let sets = try decoder.decode([MSet].self, from: data)
             
             completion(.success(sets[0]))
         } catch {
@@ -75,14 +75,16 @@ class MockAPI: API {
     }
     
     func fetchCards(query: String,
+                    predicate: NSPredicate?,
+                    sortDescriptors: [NSSortDescriptor]?,
                     cancellables: inout Set<AnyCancellable>,
-                    completion: @escaping (Result<[MGCard], Error>) -> Void) {
+                    completion: @escaping (Result<[MCard], Error>) -> Void) {
         
     }
     
-    func fetchCard(id: String,
+    func fetchCard(newId: String,
                    cancellables: inout Set<AnyCancellable>,
-                   completion: @escaping (Result<MGCard, Error>) -> Void) {
+                   completion: @escaping (Result<MCard, Error>) -> Void) {
         do {
             let bundle = Bundle(for: MockAPI.self)
             
@@ -91,7 +93,7 @@ class MockAPI: API {
             }
             
             let data = try Data(contentsOf: jsonURL)
-            let cards = try decoder.decode([MGCard].self, from: data)
+            let cards = try decoder.decode([MCard].self, from: data)
             
             completion(.success(cards[0]))
         } catch {
