@@ -12,8 +12,6 @@ public struct MComponent {
 
     public var name: String?
     public var nameSection: String?
-    public var componentParts: [MCardComponentPart]?
-
 }
 
 // MARK: - Identifiable

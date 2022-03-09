@@ -12,7 +12,7 @@ import Foundation
 import UIKit
 
 public extension UIImage {
-    func roundCornered(card: MCard) -> UIImage {
+    func roundCornered(card: MGCard) -> UIImage {
         var radius = CGFloat(22)
 
         if let set = card.set {

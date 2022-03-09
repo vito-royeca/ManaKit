@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension MSet {
+extension MGSet {
     public func keyrune2Unicode() -> String {
         let keyruneUnicode = keyruneUnicode ?? "e684"
         

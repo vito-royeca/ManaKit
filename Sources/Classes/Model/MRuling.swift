@@ -14,5 +14,4 @@ public struct MRuling: MEntity {
     public var id: String?
     public var oracleId: String?
     public var text: String?
-
 }

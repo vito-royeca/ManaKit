@@ -8,22 +8,15 @@
 import CoreData
 
 // MARK: - Temporary structs
-
-struct tempArtist: Decodable {
-    let name: String
-}
-
-struct tempFrame: Decodable {
-    let name: String
-}
-
 struct tempLanguage: Decodable {
-    let name: String
     let code: String
+    let name: String
 }
 
 struct tempLayout: Decodable {
     let name: String
+    let nameSection: String
+    let description: String
 }
 
 struct tempRarity: Decodable {
@@ -38,13 +31,8 @@ struct tempSet: Decodable {
     let keyruneUnicode: String
 }
 
-struct tempWatermark: Decodable {
-    let name: String
-    let nameSection: String
-}
-
 // MARK: - MGCard
-class MGCard: MGEntity {
+public class MGCard: MGEntity {
     enum CodingKeys: CodingKey {
         case arenaId,
              cardBackId,
@@ -88,7 +76,7 @@ class MGCard: MGEntity {
              toughness,
              typeLine,
              artist,
-             cardComponentParts,
+             componentParts,
              colorIdentities,
              colorIndicators,
              colors,
@@ -119,10 +107,10 @@ class MGCard: MGEntity {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         try updateAttributes(container: container)
-        try updateRelationships(container: container)
+        try updateRelationships(container: container, context: context)
     }
     
-    override func encode(to encoder: Encoder) throws {
+    public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(arenaId, forKey: .arenaId)
@@ -133,11 +121,6 @@ class MGCard: MGEntity {
         try container.encode(flavorText, forKey: .flavorText)
         try container.encode(handModifier, forKey: .handModifier)
         try container.encode(illustrationId, forKey: .illustrationId)
-        if let imageUri = imageUri {
-            var set = Set<MGImageURI>()
-            set.insert(imageUri)
-            try container.encode(set, forKey: .imageUris)
-        }
         try container.encode(isBooster, forKey: .isBooster)
         try container.encode(isDigital, forKey: .isDigital)
         try container.encode(isFoil, forKey: .isFoil)
@@ -172,135 +155,71 @@ class MGCard: MGEntity {
         try container.encode(tcgPlayerId, forKey: .tcgPlayerId)
         try container.encode(toughness, forKey: .toughness)
         try container.encode(typeLine, forKey: .typeLine)
-        if let artist = artist {
-            try container.encode(artist, forKey: .artist)
-        }
-        if let cardComponentParts = cardComponentParts as? Set<MGCardComponentPart> {
-            try container.encode(cardComponentParts, forKey: .cardComponentParts)
-        }
-        if let colorIdentities = colorIdentities as? Set<MGColor> {
-            try container.encode(colorIdentities, forKey: .colorIdentities)
-        }
-        if let colorIndicators = colorIndicators as? Set<MGColor> {
-            try container.encode(colorIndicators, forKey: .colorIndicators)
-        }
-        if let colors = colors as? Set<MGColor> {
-            try container.encode(colors, forKey: .colors)
-        }
-        if let faces = faces as? Set<MGCard> {
-            try container.encode(faces, forKey: .faces)
-        }
-        if let formatLegalities = formatLegalities as? Set<MGCardFormatLegality> {
-            try container.encode(formatLegalities, forKey: .formatLegalities)
-        }
-        if let frame = frame {
-            try container.encode(frame, forKey: .frame)
-        }
-        if let frameEffects = frameEffects as? Set<MGFrameEffect> {
-            try container.encode(frameEffects, forKey: .frameEffects)
-        }
-        if let language = language {
-            try container.encode(language, forKey: .language)
-        }
-        if let layout = layout {
-            try container.encode(layout, forKey: .layout)
-        }
-        if let otherLanguages = otherLanguages as? Set<MGCard> {
-            try container.encode(otherLanguages, forKey: .otherLanguages)
-        }
-        if let otherPrintings = otherPrintings as? Set<MGCard> {
-            try container.encode(otherPrintings, forKey: .otherPrintings)
-        }
-        if let partComponentParts = partComponentParts as? Set<MGCard> {
-            try container.encode(partComponentParts, forKey: .partComponentParts)
-        }
-        if let prices = prices as? Set<MGCardPrice> {
-            try container.encode(prices, forKey: .prices)
-        }
-        if let rarity = rarity {
-            try container.encode(rarity, forKey: .rarity)
-        }
-        if let set = set {
-            try container.encode(set, forKey: .set)
-        }
-        if let subtypes = subtypes as? Set<MGCardType> {
-            try container.encode(subtypes, forKey: .subtypes)
-        }
-        if let supertypes = supertypes as? Set<MGCardType> {
-            try container.encode(supertypes, forKey: .supertypes)
-        }
-        if let variations = variations as? Set<MGCard> {
-            try container.encode(variations, forKey: .variations)
-        }
-        if let watermark = watermark {
-            try container.encode(watermark, forKey: .watermark)
-        }
     }
     
-    func toModel() -> MCard {
-        return MCard(arenaId: arenaId,
-                     cardBackId: cardBackId,
-                     cmc: cmc,
-                     collectorNumber: collectorNumber,
-                     faceOrder: faceOrder,
-                     flavorText: flavorText,
-                     handModifier: handModifier,
-                     illustrationId: illustrationId,
-                     isBooster: isBooster,
-                     isDigital: isDigital,
-                     isFoil: isFoil,
-                     isFullArt: isFullArt,
-                     isHighResImage: isHighResImage,
-                     isNonFoil: isNonFoil,
-                     isOversized: isOversized,
-                     isPromo: isPromo,
-                     isReprint: isReprint,
-                     isReserved: isReserved,
-                     isStorySpotlight: isStorySpotlight,
-                     isTextless: isTextless,
-                     lifeModifier: lifeModifier,
-                     loyalty: loyalty,
-                     manaCost: manaCost,
-                     mtgoFoilId: mtgoFoilId,
-                     mtgoId: mtgoId,
-                     multiverseIds: multiverseIds,
-                     myNameSection: myNameSection,
-                     myNumberOrder: myNumberOrder,
-                     name: name,
-                     newId: newId,
-                     oracleId: oracleId,
-                     oracleText: oracleText,
-                     power: power,
-                     printedName: printedName,
-                     printedText: printedText,
-                     printedTypeLine: printedTypeLine,
-                     releasedAt: releasedAt,
-                     tcgPlayerId: tcgPlayerId,
-                     toughness: toughness,
-                     typeLine: typeLine,
-                     artist: artist?.toModel(),
-                     cardComponentParts: (cardComponentParts?.allObjects as? [MGCardComponentPart] ?? []).map { $0.toModel() },
-                     colorIdentities: (colorIdentities?.allObjects as? [MGColor] ?? []).map { $0.toModel() },
-                     colorIndicators: (colorIndicators?.allObjects as? [MGColor] ?? []).map { $0.toModel() },
-                     colors: (colors?.allObjects as? [MGColor] ?? [MGColor]()).map { $0.toModel() },
-                     faces: (faces?.allObjects as? [MGCard] ?? [MGCard]()).map { $0.toModel() },
-                     formatLegalities: (formatLegalities?.allObjects as? [MGCardFormatLegality] ?? []).map { $0.toModel() },
-                     frame: frame?.toModel(),
-                     frameEffects: (frameEffects?.allObjects as? [MGFrameEffect] ?? []).map { $0.toModel() },
-                     imageUri: imageUri?.toModel(),
-                     language: language?.toModel(),
-                     layout: layout?.toModel(),
-                     otherLanguages: (otherLanguages?.allObjects as? [MGLanguage] ?? [MGLanguage]()).map { $0.toModel() },
-                     otherPrintings: (otherPrintings?.allObjects as? [MGCard] ?? [MGCard]()).map { $0.toModel() },
-                     partComponentParts: (partComponentParts?.allObjects as? [MGCardComponentPart] ?? [MGCardComponentPart]()).map { $0.toModel() },
-                     prices: (prices?.allObjects as? [MGCardPrice] ?? [MGCardPrice]()).map { $0.toModel() },
-                     rarity: rarity?.toModel(),
-                     set: set?.toModel(),
-                     subtypes: (subtypes?.allObjects as? [MGCardType] ?? [MGCardType]()).map { $0.toModel() },
-                     supertypes: (subtypes?.allObjects as? [MGCardType] ?? [MGCardType]()).map { $0.toModel() },
-                     variations: (variations?.allObjects as? [MGCard] ?? [MGCard]()).map { $0.toModel() },
-                     watermark: watermark?.toModel())
-    }
+//    func toModel() -> MCard {
+//        return MCard(arenaId: arenaId,
+//                     cardBackId: cardBackId,
+//                     cmc: cmc,
+//                     collectorNumber: collectorNumber,
+//                     faceOrder: faceOrder,
+//                     flavorText: flavorText,
+//                     handModifier: handModifier,
+//                     illustrationId: illustrationId,
+//                     isBooster: isBooster,
+//                     isDigital: isDigital,
+//                     isFoil: isFoil,
+//                     isFullArt: isFullArt,
+//                     isHighResImage: isHighResImage,
+//                     isNonFoil: isNonFoil,
+//                     isOversized: isOversized,
+//                     isPromo: isPromo,
+//                     isReprint: isReprint,
+//                     isReserved: isReserved,
+//                     isStorySpotlight: isStorySpotlight,
+//                     isTextless: isTextless,
+//                     lifeModifier: lifeModifier,
+//                     loyalty: loyalty,
+//                     manaCost: manaCost,
+//                     mtgoFoilId: mtgoFoilId,
+//                     mtgoId: mtgoId,
+//                     multiverseIds: multiverseIds,
+//                     myNameSection: myNameSection,
+//                     myNumberOrder: myNumberOrder,
+//                     name: name,
+//                     newId: newId,
+//                     oracleId: oracleId,
+//                     oracleText: oracleText,
+//                     power: power,
+//                     printedName: printedName,
+//                     printedText: printedText,
+//                     printedTypeLine: printedTypeLine,
+//                     releasedAt: releasedAt,
+//                     tcgPlayerId: tcgPlayerId,
+//                     toughness: toughness,
+//                     typeLine: typeLine,
+//                     artist: artist?.toModel(),
+//                     componentParts: (componentParts?.allObjects as? [MGCardComponentPart] ?? []).map { $0.toModel() },
+//                     colorIdentities: (colorIdentities?.allObjects as? [MGColor] ?? []).map { $0.toModel() },
+//                     colorIndicators: (colorIndicators?.allObjects as? [MGColor] ?? []).map { $0.toModel() },
+//                     colors: (colors?.allObjects as? [MGColor] ?? []).map { $0.toModel() },
+//                     faces: (faces?.allObjects as? [MGCard] ?? []).map { $0.toModel() },
+//                     formatLegalities: (formatLegalities?.allObjects as? [MGCardFormatLegality] ?? []).map { $0.toModel() },
+//                     frame: frame?.toModel(),
+//                     frameEffects: (frameEffects?.allObjects as? [MGFrameEffect] ?? []).map { $0.toModel() },
+//                     imageUri: imageUri?.toModel(),
+//                     language: language?.toModel(),
+//                     layout: layout?.toModel(),
+//                     otherLanguages: (otherLanguages?.allObjects as? [MGLanguage] ?? []).map { $0.toModel() },
+//                     otherPrintings: [MGCard]().map{ $0.toModel() },//(otherPrintings?.allObjects as? [MGCard] ?? []).map { $0.toModel() },
+//                     prices: (prices?.allObjects as? [MGCardPrice] ?? []).map { $0.toModel() },
+//                     rarity: rarity?.toModel(),
+//                     set: set?.toModel(),
+//                     subtypes: (subtypes?.allObjects as? [MGCardType] ?? []).map { $0.toModel() },
+//                     supertypes: (subtypes?.allObjects as? [MGCardType] ?? []).map { $0.toModel() },
+//                     variations: (variations?.allObjects as? [MGCard] ?? []).map { $0.toModel() },
+//                     watermark: watermark?.toModel())
+//    }
     
     // MARK: - Attributes
     
@@ -555,14 +474,13 @@ class MGCard: MGEntity {
 
     // MARK: - Relationships
     
-    func updateRelationships(container: KeyedDecodingContainer<CodingKeys>) throws {
+    func updateRelationships(container: KeyedDecodingContainer<CodingKeys>, context: NSManagedObjectContext) throws {
         // artist
         if let artist = try container.decodeIfPresent(MGArtist.self, forKey: .artist) {
             self.artist = artist
         }
-//        try updateArtist(container: container)
 
-        // cardComponentParts
+        // componentParts
 //        cardComponentParts = try container.decodeIfPresent(Set<MGCardComponentPart>.self, forKey: .cardComponentParts) as NSSet?
         
         // colors
@@ -571,9 +489,9 @@ class MGCard: MGEntity {
                 self.removeFromColors(color)
             }
             
-            colors.forEach {
-                $0.addToCards(self)
-            }
+//            colors.forEach {
+//                $0.addToCards(self)
+//            }
             addToColors(colors as NSSet)
         }
         
@@ -583,9 +501,9 @@ class MGCard: MGEntity {
                 self.removeFromColorIdentities(color)
             }
 
-            colorIdentities.forEach {
-                $0.addToCards(self)
-            }
+//            colorIdentities.forEach {
+//                $0.addToCards(self)
+//            }
             addToColorIdentities(colorIdentities as NSSet)
         }
         
@@ -595,9 +513,9 @@ class MGCard: MGEntity {
                 self.removeFromColorIndicators(color)
             }
 
-            colorIndicators.forEach {
-                $0.addToCards(self)
-            }
+//            colorIndicators.forEach {
+//                $0.addToCards(self)
+//            }
             addToColorIndicators(colorIndicators as NSSet)
         }
 
@@ -629,7 +547,6 @@ class MGCard: MGEntity {
         if let frame = try container.decodeIfPresent(MGFrame.self, forKey: .frame) {
             self.frame = frame
         }
-//        try updateFrame(container: container)
         
         // frameEffect
         if let frameEffects = try container.decodeIfPresent(Set<MGFrameEffect>.self, forKey: .frameEffects) {
@@ -643,13 +560,13 @@ class MGCard: MGEntity {
         if let language = try container.decodeIfPresent(MGLanguage.self, forKey: .language) {
             self.language = language
         }
-//        try updateLanguage(container: container)
+//        try updateLanguage(container: container, context: context)
         
         // layout
         if let layout = try container.decodeIfPresent(MGLayout.self, forKey: .layout) {
             self.layout = layout
         }
-//        try updateLayout(container: container)
+//        try updateLayout(container: container, context: context)
 
         // otherLanguages
 //        if let otherLanguages = try container.decodeIfPresent(Set<MGCard>.self, forKey: .otherLanguages)  {
@@ -660,16 +577,16 @@ class MGCard: MGEntity {
 //        }
         
         // otherPrintings
-        if let otherPrintings = try container.decodeIfPresent(Set<MGCard>.self, forKey: .otherPrintings) {
-            for otherPrinting in self.otherPrintings?.allObjects as? [MGCard] ?? [] {
-                self.removeFromOtherPrintings(otherPrinting)
-            }
+//        if let otherPrintings = try container.decodeIfPresent(Set<MGCard>.self, forKey: .otherPrintings) {
+//            for otherPrinting in self.otherPrintings?.allObjects as? [MGCard] ?? [] {
+//                self.removeFromOtherPrintings(otherPrinting)
+//            }
 
 //            otherPrintings.forEach {
 //                $0.otherPrinting = self
 //            }
-            addToOtherPrintings(otherPrintings as NSSet)
-        }
+//            addToOtherPrintings(otherPrintings as NSSet)
+//        }
         
         // partComponentParts
 //        partComponentParts = try container.decodeIfPresent(Set<MGCard>.self, forKey: .partComponentParts) as NSSet?
@@ -680,9 +597,9 @@ class MGCard: MGEntity {
                 self.removeFromPrices(price)
             }
             
-            prices.forEach {
-                $0.card = self
-            }
+//            prices.forEach {
+//                $0.card = self
+//            }
             addToPrices(prices as NSSet)
         }
         
@@ -690,13 +607,13 @@ class MGCard: MGEntity {
         if let rarity = try container.decodeIfPresent(MGRarity.self, forKey: .rarity) {
             self.rarity = rarity
         }
-//        try updateRarity(container: container)
+//        try updateRarity(container: container, context: context)
 
         // set
         if let set = try container.decodeIfPresent(MGSet.self, forKey: .set) {
             self.set = set
         }
-//        try self.updateSet(container: container)
+//        try updateSet(container: container, context: context)
 
         // subtypes
         if let subtypes = try container.decodeIfPresent(Set<MGCardType>.self, forKey: .subtypes) {
@@ -730,83 +647,58 @@ class MGCard: MGEntity {
         if let watermark = try container.decodeIfPresent(MGWatermark.self, forKey: .watermark) {
             self.watermark = watermark
         }
-//        try updateWatermark(container: container)
- 
     }
     
-    func updateArtist(container: KeyedDecodingContainer<CodingKeys>) throws {
-        guard let tempArtist = try container.decodeIfPresent(tempArtist.self, forKey: .artist) else {
-            return
-        }
-        
-        if let artist = ManaKit.shared.find(MGArtist.self,
-                                            properties: ["name": tempArtist.name],
-                                            predicate: NSPredicate(format: "name == %@", tempArtist.name),
-                                            sortDescriptors: nil,
-                                            createIfNotFound: true)?.first {
-            self.artist = artist
-        }
-    }
-    
-    func updateFrame(container: KeyedDecodingContainer<CodingKeys>) throws {
-        guard let tempFrame = try container.decodeIfPresent(tempFrame.self, forKey: .frame) else {
-            return
-        }
-        
-        if let frame = ManaKit.shared.find(MGFrame.self,
-                                           properties: ["name": tempFrame.name],
-                                           predicate: NSPredicate(format: "name == %@", tempFrame.name),
-                                           sortDescriptors: nil,
-                                           createIfNotFound: true)?.first {
-            self.frame = frame
-        }
-    }
-    
-    func updateLanguage(container: KeyedDecodingContainer<CodingKeys>) throws {
+    func updateLanguage(container: KeyedDecodingContainer<CodingKeys>, context: NSManagedObjectContext) throws {
         guard let tempLanguage = try container.decodeIfPresent(tempLanguage.self, forKey: .language) else {
             return
         }
-        
+
         if let language = ManaKit.shared.find(MGLanguage.self,
-                                              properties: ["name": tempLanguage.name,
-                                                           "code": tempLanguage.code],
-                                              predicate: NSPredicate(format: "name == %@ AND code == %@", tempLanguage.name, tempLanguage.code),
+                                              properties: ["code": tempLanguage.code,
+                                                           "name": tempLanguage.name],
+                                              predicate: NSPredicate(format: "code == %@", tempLanguage.code),
                                               sortDescriptors: nil,
-                                              createIfNotFound: true)?.first {
+                                              createIfNotFound: true,
+                                              context: context)?.first {
             self.language = language
         }
     }
     
-    func updateLayout(container: KeyedDecodingContainer<CodingKeys>) throws {
+    func updateLayout(container: KeyedDecodingContainer<CodingKeys>, context: NSManagedObjectContext) throws {
         guard let tempLayout = try container.decodeIfPresent(tempLayout.self, forKey: .layout) else {
             return
         }
-        
+
         if let layout = ManaKit.shared.find(MGLayout.self,
-                                            properties: ["name": tempLayout.name],
+                                            properties: ["name": tempLayout.name,
+                                                         "nameSection": tempLayout.nameSection,
+                                                         "description_": tempLayout.description],
                                             predicate: NSPredicate(format: "name == %@", tempLayout.name),
                                             sortDescriptors: nil,
-                                            createIfNotFound: true)?.first {
+                                            createIfNotFound: true,
+                                            context: context)?.first {
             self.layout = layout
         }
     }
     
-    func updateRarity(container: KeyedDecodingContainer<CodingKeys>) throws {
+    func updateRarity(container: KeyedDecodingContainer<CodingKeys>, context: NSManagedObjectContext) throws {
         guard let tempRarity = try container.decodeIfPresent(tempRarity.self, forKey: .rarity) else {
             return
         }
-        
+
         if let rarity = ManaKit.shared.find(MGRarity.self,
                                             properties: ["name": tempRarity.name,
                                                          "nameSection": tempRarity.nameSection],
                                             predicate: NSPredicate(format: "name == %@", tempRarity.name),
                                             sortDescriptors: nil,
-                                            createIfNotFound: true)?.first {
+                                            createIfNotFound: true,
+                                            context: context)?.first {
             self.rarity = rarity
         }
     }
     
-    func updateSet(container: KeyedDecodingContainer<CodingKeys>) throws {
+    func updateSet(container: KeyedDecodingContainer<CodingKeys>, context: NSManagedObjectContext) throws {
         guard let tempSet = try container.decodeIfPresent(tempSet.self, forKey: .set) else {
             return
         }
@@ -818,23 +710,9 @@ class MGCard: MGEntity {
                                                       "keyruneUnicode": tempSet.keyruneUnicode],
                                          predicate: NSPredicate(format: "code == %@", tempSet.code),
                                          sortDescriptors: nil,
-                                         createIfNotFound: true)?.first {
+                                         createIfNotFound: true,
+                                         context: context)?.first {
             self.set = set
-        }
-    }
-    
-    func updateWatermark(container: KeyedDecodingContainer<CodingKeys>) throws {
-        guard let tempWatermark = try container.decodeIfPresent(tempWatermark.self, forKey: .watermark) else {
-            return
-        }
-        
-        if let watermark = ManaKit.shared.find(MGWatermark.self,
-                                               properties: ["name": tempWatermark.name,
-                                                            "nameSection": tempWatermark.nameSection],
-                                               predicate: NSPredicate(format: "name == %@", tempWatermark.name),
-                                               sortDescriptors: nil,
-                                               createIfNotFound: true)?.first {
-            self.watermark = watermark
         }
     }
 }

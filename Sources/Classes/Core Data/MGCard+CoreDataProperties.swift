@@ -13,7 +13,10 @@ import CoreData
 extension MGCard {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<MGCard> {
-        return NSFetchRequest<MGCard>(entityName: "MGCard")
+        let request = NSFetchRequest<MGCard>(entityName: "MGCard")
+        
+        request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        return request
     }
 
     @NSManaged public var arenaId: String?
@@ -57,11 +60,11 @@ extension MGCard {
     @NSManaged public var toughness: String?
     @NSManaged public var typeLine: String?
     @NSManaged public var artist: MGArtist?
-    @NSManaged public var cardComponentParts: NSSet?
+    @NSManaged public var componentParts: NSSet?
     @NSManaged public var colorIdentities: NSSet?
     @NSManaged public var colorIndicators: NSSet?
     @NSManaged public var colors: NSSet?
-    @NSManaged public var face: MGSet?
+    @NSManaged public var face: MGCard?
     @NSManaged public var faces: NSSet?
     @NSManaged public var formatLegalities: NSSet?
     @NSManaged public var frame: MGFrame?
@@ -70,34 +73,16 @@ extension MGCard {
     @NSManaged public var language: MGLanguage?
     @NSManaged public var layout: MGLayout?
     @NSManaged public var otherLanguages: NSSet?
-    @NSManaged public var otherPrinting: MGCard?
     @NSManaged public var otherPrintings: NSSet?
-    @NSManaged public var partComponentParts: NSSet?
+    @NSManaged public var otherPrintingInverses: NSSet?
     @NSManaged public var prices: NSSet?
     @NSManaged public var rarity: MGRarity?
     @NSManaged public var set: MGSet?
     @NSManaged public var subtypes: NSSet?
     @NSManaged public var supertypes: NSSet?
-    @NSManaged public var variation: MGSet?
+    @NSManaged public var variation: MGCard?
     @NSManaged public var variations: NSSet?
     @NSManaged public var watermark: MGWatermark?
-
-}
-
-// MARK: Generated accessors for cardComponentParts
-extension MGCard {
-
-    @objc(addCardComponentPartsObject:)
-    @NSManaged public func addToCardComponentParts(_ value: MGCardComponentPart)
-
-    @objc(removeCardComponentPartsObject:)
-    @NSManaged public func removeFromCardComponentParts(_ value: MGCardComponentPart)
-
-    @objc(addCardComponentParts:)
-    @NSManaged public func addToCardComponentParts(_ values: NSSet)
-
-    @objc(removeCardComponentParts:)
-    @NSManaged public func removeFromCardComponentParts(_ values: NSSet)
 
 }
 
@@ -149,6 +134,23 @@ extension MGCard {
 
     @objc(removeColors:)
     @NSManaged public func removeFromColors(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for componentParts
+extension MGCard {
+
+    @objc(addComponentPartsObject:)
+    @NSManaged public func addToComponentParts(_ value: MGCardComponentPart)
+
+    @objc(removeComponentPartsObject:)
+    @NSManaged public func removeFromComponentParts(_ value: MGCardComponentPart)
+
+    @objc(addComponentParts:)
+    @NSManaged public func addToComponentParts(_ values: NSSet)
+
+    @objc(removeComponentParts:)
+    @NSManaged public func removeFromComponentParts(_ values: NSSet)
 
 }
 
@@ -237,20 +239,20 @@ extension MGCard {
 
 }
 
-// MARK: Generated accessors for partComponentParts
+// MARK: Generated accessors for parts
 extension MGCard {
 
-    @objc(addPartComponentPartsObject:)
-    @NSManaged public func addToPartComponentParts(_ value: MGCardComponentPart)
+    @objc(addPartsObject:)
+    @NSManaged public func addToParts(_ value: MGCard)
 
-    @objc(removePartComponentPartsObject:)
-    @NSManaged public func removeFromPartComponentParts(_ value: MGCardComponentPart)
+    @objc(removePartsObject:)
+    @NSManaged public func removeFromParts(_ value: MGCard)
 
-    @objc(addPartComponentParts:)
-    @NSManaged public func addToPartComponentParts(_ values: NSSet)
+    @objc(addParts:)
+    @NSManaged public func addToParts(_ values: NSSet)
 
-    @objc(removePartComponentParts:)
-    @NSManaged public func removeFromPartComponentParts(_ values: NSSet)
+    @objc(removeParts:)
+    @NSManaged public func removeFromParts(_ values: NSSet)
 
 }
 

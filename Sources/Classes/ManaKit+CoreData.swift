@@ -21,17 +21,13 @@ public extension CodingUserInfoKey {
 
 // MARK: - Base class
 
-class MGEntity: NSManagedObject, Codable, Identifiable {
-    required convenience init(from decoder: Decoder) throws {
+public class MGEntity: NSManagedObject, Codable, Identifiable {
+    public required convenience init(from decoder: Decoder) throws {
         guard let context = decoder.userInfo[CodingUserInfoKey.managedObjectContext] as? NSManagedObjectContext else {
           throw DecoderConfigurationError.missingManagedObjectContext
         }
 
         self.init(context: context)
-    }
-    
-    func toModel<T: MEntity>(_ entity: T.Type) -> T? {
-        return nil
     }
 }
 
@@ -70,12 +66,16 @@ extension ManaKit {
                                 url: URL,
                                 cancellables: inout Set<AnyCancellable>,
                                 completion: @escaping (Result<[T], Error>) -> Void) {
+        let context = persistentContainer.viewContext
+        
         let success = {
             let result = self.find(entity,
                                    properties: properties,
                                    predicate: predicate,
                                    sortDescriptors: sortDescriptors,
-                                   createIfNotFound: false) ?? [T]()
+                                   createIfNotFound: false,
+                                   context: context) ?? [T]()
+            self.saveCache(forUrl: url)
             completion(.success(result))
         }
         
@@ -89,9 +89,6 @@ extension ManaKit {
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSZ"
             formatter.locale = Locale(identifier: "en_US_POSIX")
-            
-            let context = persistentContainer.viewContext
-            context.automaticallyMergesChangesFromParent = true
             
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
@@ -108,25 +105,14 @@ extension ManaKit {
                 .sink(receiveCompletion: { (suscriberCompletion) in
                     switch suscriberCompletion {
                     case .finished:
-                        DispatchQueue.main.async {
-                            success()
-                        }
+                        success()
                     case .failure(let error):
-                        DispatchQueue.main.async {
-                            failure(error)
-                        }
+                        failure(error)
                     }
                     
-                }, receiveValue: { sets /*[weak self] (sets)*/ in
-                    DispatchQueue.main.async {
-                        do {
-                            try context.performAndWait {
-                                try context.save()
-                                self.saveContext()
-                            }
-                        } catch {
-                            failure(error)
-                        }
+                }, receiveValue: { _ /*[weak self] (sets)*/ in
+                    context.performAndWait {
+                        self.save(context: context)
                     }
                 })
                 .store(in: &cancellables)
@@ -139,10 +125,10 @@ extension ManaKit {
                            properties: [String: Any]?,
                            predicate: NSPredicate?,
                            sortDescriptors: [NSSortDescriptor]?,
-                           createIfNotFound: Bool) -> [T]? {
+                           createIfNotFound: Bool,
+                           context: NSManagedObjectContext) -> [T]? {
         
         let entityName = String(describing: entity)
-        let context = persistentContainer.viewContext
         
         let request = NSFetchRequest<T>(entityName: entityName)
         request.predicate = predicate
@@ -169,7 +155,8 @@ extension ManaKit {
                                     properties: properties,
                                     predicate: predicate,
                                     sortDescriptors: sortDescriptors,
-                                    createIfNotFound: createIfNotFound)
+                                    createIfNotFound: createIfNotFound,
+                                    context: context)
                     } else {
                         return nil
                     }
@@ -183,200 +170,224 @@ extension ManaKit {
         }
     }
     
-    public func find<T: MEntity>(_ entity: T.Type,
-                                 properties: [String: Any]?,
-                                 predicate: NSPredicate?,
-                                 sortDescriptors: [NSSortDescriptor]?,
-                                 createIfNotFound: Bool) -> [T]? {
+//    public func find<T: MGEntity>(_ entity: T.Type,
+//                                  properties: [String: Any]?,
+//                                  predicate: NSPredicate?,
+//                                  sortDescriptors: [NSSortDescriptor]?,
+//                                  createIfNotFound: Bool) -> [T]? {
+//        let context = persistentContainer.viewContext
 
-        if entity == MArtist.self {
-            if let array = find(MGArtist.self,
-                                properties: properties,
-                                predicate: predicate,
-                                sortDescriptors: sortDescriptors,
-                                createIfNotFound: createIfNotFound) {
-                return array.map { $0.toModel() as! T }
-            }
-        } else if entity == MCard.self {
-            if let array = find(MGCard.self,
-                                properties: properties,
-                                predicate: predicate,
-                                sortDescriptors: sortDescriptors,
-                                createIfNotFound: createIfNotFound) {
-                return array.map { $0.toModel() as! T }
-            }
-        } else if entity == MCardComponentPart.self {
-            if let array = find(MGCardComponentPart.self,
-                                properties: properties,
-                                predicate: predicate,
-                                sortDescriptors: sortDescriptors,
-                                createIfNotFound: createIfNotFound) {
-                return array.map { $0.toModel() as! T }
-            }
-        } else if entity == MCardFormatLegality.self {
-            if let array = find(MGCardFormatLegality.self,
-                                properties: properties,
-                                predicate: predicate,
-                                sortDescriptors: sortDescriptors,
-                                createIfNotFound: createIfNotFound) {
-                return array.map { $0.toModel() as! T }
-            }
-        } else if entity == MCardPrice.self {
-            if let array = find(MGCardPrice.self,
-                                properties: properties,
-                                predicate: predicate,
-                                sortDescriptors: sortDescriptors,
-                                createIfNotFound: createIfNotFound) {
-                return array.map { $0.toModel() as! T }
-            }
-        } else if entity == MCardType.self {
-            if let array = find(MGCardType.self,
-                                properties: properties,
-                                predicate: predicate,
-                                sortDescriptors: sortDescriptors,
-                                createIfNotFound: createIfNotFound) {
-                return array.map { $0.toModel() as! T }
-            }
-        } else if entity == MColor.self {
-            if let array = find(MGColor.self,
-                                properties: properties,
-                                predicate: predicate,
-                                sortDescriptors: sortDescriptors,
-                                createIfNotFound: createIfNotFound) {
-                return array.map { $0.toModel() as! T }
-            }
-        } else if entity == MComponent.self {
-            if let array = find(MGComponent.self,
-                                properties: properties,
-                                predicate: predicate,
-                                sortDescriptors: sortDescriptors,
-                                createIfNotFound: createIfNotFound) {
-                return array.map { $0.toModel() as! T }
-            }
-        } else if entity == MFormat.self {
-            if let array = find(MGFormat.self,
-                                properties: properties,
-                                predicate: predicate,
-                                sortDescriptors: sortDescriptors,
-                                createIfNotFound: createIfNotFound) {
-                return array.map { $0.toModel() as! T }
-            }
-        } else if entity == MFrame.self {
-            if let array = find(MGFrame.self,
-                                properties: properties,
-                                predicate: predicate,
-                                sortDescriptors: sortDescriptors,
-                                createIfNotFound: createIfNotFound) {
-                return array.map { $0.toModel() as! T }
-            }
-        } else if entity == MFrameEffect.self {
-            if let array = find(MGFrameEffect.self,
-                                properties: properties,
-                                predicate: predicate,
-                                sortDescriptors: sortDescriptors,
-                                createIfNotFound: createIfNotFound) {
-                return array.map { $0.toModel() as! T }
-            }
-        } else if entity == MImageURI.self {
-            if let array = find(MGImageURI.self,
-                                properties: properties,
-                                predicate: predicate,
-                                sortDescriptors: sortDescriptors,
-                                createIfNotFound: createIfNotFound) {
-                return array.map { $0.toModel() as! T }
-            }
-        } else if entity == MLanguage.self {
-            if let array = find(MGLanguage.self,
-                                properties: properties,
-                                predicate: predicate,
-                                sortDescriptors: sortDescriptors,
-                                createIfNotFound: createIfNotFound) {
-                return array.map { $0.toModel() as! T }
-            }
-        } else if entity == MLayout.self {
-            if let array = find(MGLayout.self,
-                                properties: properties,
-                                predicate: predicate,
-                                sortDescriptors: sortDescriptors,
-                                createIfNotFound: createIfNotFound) {
-                return array.map { $0.toModel() as! T }
-            }
-        } else if entity == MLegality.self {
-            if let array = find(MGLegality.self,
-                                properties: properties,
-                                predicate: predicate,
-                                sortDescriptors: sortDescriptors,
-                                createIfNotFound: createIfNotFound) {
-                return array.map { $0.toModel() as! T }
-            }
-        } else if entity == MRarity.self {
-            if let array = find(MGRarity.self,
-                                properties: properties,
-                                predicate: predicate,
-                                sortDescriptors: sortDescriptors,
-                                createIfNotFound: createIfNotFound) {
-                return array.map { $0.toModel() as! T }
-            }
-        } else if entity == MRule.self {
-            if let array = find(MGRule.self,
-                                properties: properties,
-                                predicate: predicate,
-                                sortDescriptors: sortDescriptors,
-                                createIfNotFound: createIfNotFound) {
-                return array.map { $0.toModel() as! T }
-            }
-        } else if entity == MRuling.self {
-            if let array = find(MGRuling.self,
-                                properties: properties,
-                                predicate: predicate,
-                                sortDescriptors: sortDescriptors,
-                                createIfNotFound: createIfNotFound) {
-                return array.map { $0.toModel() as! T }
-            }
-        } else if entity == MSet.self {
-            if let array = find(MGSet.self,
-                                properties: properties,
-                                predicate: predicate,
-                                sortDescriptors: sortDescriptors,
-                                createIfNotFound: createIfNotFound) {
-                return array.map { $0.toModel() as! T }
-            }
-        } else if entity == MSetBlock.self {
-            if let array = find(MGSetBlock.self,
-                                properties: properties,
-                                predicate: predicate,
-                                sortDescriptors: sortDescriptors,
-                                createIfNotFound: createIfNotFound) {
-                return array.map { $0.toModel() as! T }
-            }
-        } else if entity == MSetType.self {
-            if let array = find(MGSetType.self,
-                                properties: properties,
-                                predicate: predicate,
-                                sortDescriptors: sortDescriptors,
-                                createIfNotFound: createIfNotFound) {
-                return array.map { $0.toModel() as! T }
-            }
-        } else if entity == MStore.self {
-            if let array = find(MGStore.self,
-                                properties: properties,
-                                predicate: predicate,
-                                sortDescriptors: sortDescriptors,
-                                createIfNotFound: createIfNotFound) {
-                return array.map { $0.toModel() as! T }
-            }
-        } else if entity == MWatermark.self {
-            if let array = find(MGWatermark.self,
-                                properties: properties,
-                                predicate: predicate,
-                                sortDescriptors: sortDescriptors,
-                                createIfNotFound: createIfNotFound) {
-                return array.map { $0.toModel() as! T }
-            }
-        }
-        
-        return nil
-     }
+//        if entity == MArtist.self {
+//            if let array = find(entity.self,
+//                                properties: properties,
+//                                predicate: predicate,
+//                                sortDescriptors: sortDescriptors,
+//                                createIfNotFound: createIfNotFound,
+//                                context: context) {
+//                return array.map { $0 }
+//            }
+//        } else if entity == MCard.self {
+//            if let array = find(MGCard.self,
+//                                properties: properties,
+//                                predicate: predicate,
+//                                sortDescriptors: sortDescriptors,
+//                                createIfNotFound: createIfNotFound,
+//                                context: context) {
+//                return array.map { $0.toModel() as! T }
+//            }
+//        } else if entity == MCardComponentPart.self {
+//            if let array = find(MGCardComponentPart.self,
+//                                properties: properties,
+//                                predicate: predicate,
+//                                sortDescriptors: sortDescriptors,
+//                                createIfNotFound: createIfNotFound,
+//                                context: context) {
+//                return array.map { $0.toModel() as! T }
+//            }
+//        } else if entity == MCardFormatLegality.self {
+//            if let array = find(MGCardFormatLegality.self,
+//                                properties: properties,
+//                                predicate: predicate,
+//                                sortDescriptors: sortDescriptors,
+//                                createIfNotFound: createIfNotFound,
+//                                context: context) {
+//                return array.map { $0.toModel() as! T }
+//            }
+//        } else if entity == MCardPrice.self {
+//            if let array = find(MGCardPrice.self,
+//                                properties: properties,
+//                                predicate: predicate,
+//                                sortDescriptors: sortDescriptors,
+//                                createIfNotFound: createIfNotFound,
+//                                context: context) {
+//                return array.map { $0.toModel() as! T }
+//            }
+//        } else if entity == MCardType.self {
+//            if let array = find(MGCardType.self,
+//                                properties: properties,
+//                                predicate: predicate,
+//                                sortDescriptors: sortDescriptors,
+//                                createIfNotFound: createIfNotFound,
+//                                context: context) {
+//                return array.map { $0.toModel() as! T }
+//            }
+//        } else if entity == MColor.self {
+//            if let array = find(MGColor.self,
+//                                properties: properties,
+//                                predicate: predicate,
+//                                sortDescriptors: sortDescriptors,
+//                                createIfNotFound: createIfNotFound,
+//                                context: context) {
+//                return array.map { $0.toModel() as! T }
+//            }
+//        } else if entity == MComponent.self {
+//            if let array = find(MGComponent.self,
+//                                properties: properties,
+//                                predicate: predicate,
+//                                sortDescriptors: sortDescriptors,
+//                                createIfNotFound: createIfNotFound,
+//                                context: context) {
+//                return array.map { $0.toModel() as! T }
+//            }
+//        } else if entity == MFormat.self {
+//            if let array = find(MGFormat.self,
+//                                properties: properties,
+//                                predicate: predicate,
+//                                sortDescriptors: sortDescriptors,
+//                                createIfNotFound: createIfNotFound,
+//                                context: context) {
+//                return array.map { $0.toModel() as! T }
+//            }
+//        } else if entity == MFrame.self {
+//            if let array = find(MGFrame.self,
+//                                properties: properties,
+//                                predicate: predicate,
+//                                sortDescriptors: sortDescriptors,
+//                                createIfNotFound: createIfNotFound,
+//                                context: context) {
+//                return array.map { $0.toModel() as! T }
+//            }
+//        } else if entity == MFrameEffect.self {
+//            if let array = find(MGFrameEffect.self,
+//                                properties: properties,
+//                                predicate: predicate,
+//                                sortDescriptors: sortDescriptors,
+//                                createIfNotFound: createIfNotFound,
+//                                context: context) {
+//                return array.map { $0.toModel() as! T }
+//            }
+//        } else if entity == MImageURI.self {
+//            if let array = find(MGImageURI.self,
+//                                properties: properties,
+//                                predicate: predicate,
+//                                sortDescriptors: sortDescriptors,
+//                                createIfNotFound: createIfNotFound,
+//                                context: context) {
+//                return array.map { $0.toModel() as! T }
+//            }
+//        } else if entity == MLanguage.self {
+//            if let array = find(MGLanguage.self,
+//                                properties: properties,
+//                                predicate: predicate,
+//                                sortDescriptors: sortDescriptors,
+//                                createIfNotFound: createIfNotFound,
+//                                context: context) {
+//                return array.map { $0.toModel() as! T }
+//            }
+//        } else if entity == MLayout.self {
+//            if let array = find(MGLayout.self,
+//                                properties: properties,
+//                                predicate: predicate,
+//                                sortDescriptors: sortDescriptors,
+//                                createIfNotFound: createIfNotFound,
+//                                context: context) {
+//                return array.map { $0.toModel() as! T }
+//            }
+//        } else if entity == MLegality.self {
+//            if let array = find(MGLegality.self,
+//                                properties: properties,
+//                                predicate: predicate,
+//                                sortDescriptors: sortDescriptors,
+//                                createIfNotFound: createIfNotFound,
+//                                context: context) {
+//                return array.map { $0.toModel() as! T }
+//            }
+//        } else if entity == MRarity.self {
+//            if let array = find(MGRarity.self,
+//                                properties: properties,
+//                                predicate: predicate,
+//                                sortDescriptors: sortDescriptors,
+//                                createIfNotFound: createIfNotFound,
+//                                context: context) {
+//                return array.map { $0.toModel() as! T }
+//            }
+//        } else if entity == MRule.self {
+//            if let array = find(MGRule.self,
+//                                properties: properties,
+//                                predicate: predicate,
+//                                sortDescriptors: sortDescriptors,
+//                                createIfNotFound: createIfNotFound,
+//                                context: context) {
+//                return array.map { $0.toModel() as! T }
+//            }
+//        } else if entity == MRuling.self {
+//            if let array = find(MGRuling.self,
+//                                properties: properties,
+//                                predicate: predicate,
+//                                sortDescriptors: sortDescriptors,
+//                                createIfNotFound: createIfNotFound,
+//                                context: context) {
+//                return array.map { $0.toModel() as! T }
+//            }
+//        } else if entity == MSet.self {
+//            if let array = find(MGSet.self,
+//                                properties: properties,
+//                                predicate: predicate,
+//                                sortDescriptors: sortDescriptors,
+//                                createIfNotFound: createIfNotFound,
+//                                context: context) {
+//                return array.map { $0.toModel() as! T }
+//            }
+//        } else if entity == MSetBlock.self {
+//            if let array = find(MGSetBlock.self,
+//                                properties: properties,
+//                                predicate: predicate,
+//                                sortDescriptors: sortDescriptors,
+//                                createIfNotFound: createIfNotFound,
+//                                context: context) {
+//                return array.map { $0.toModel() as! T }
+//            }
+//        } else if entity == MSetType.self {
+//            if let array = find(MGSetType.self,
+//                                properties: properties,
+//                                predicate: predicate,
+//                                sortDescriptors: sortDescriptors,
+//                                createIfNotFound: createIfNotFound,
+//                                context: context) {
+//                return array.map { $0.toModel() as! T }
+//            }
+//        } else if entity == MStore.self {
+//            if let array = find(MGStore.self,
+//                                properties: properties,
+//                                predicate: predicate,
+//                                sortDescriptors: sortDescriptors,
+//                                createIfNotFound: createIfNotFound,
+//                                context: context) {
+//                return array.map { $0.toModel() as! T }
+//            }
+//        } else if entity == MWatermark.self {
+//            if let array = find(MGWatermark.self,
+//                                properties: properties,
+//                                predicate: predicate,
+//                                sortDescriptors: sortDescriptors,
+//                                createIfNotFound: createIfNotFound,
+//                                context: context) {
+//                return array.map { $0.toModel() as! T }
+//            }
+//        }
+//
+//        return nil
+//     }
     
     func delete<T: MGEntity>(_ entity: T.Type,
                              predicate: NSPredicate,
@@ -431,68 +442,28 @@ extension ManaKit {
         }
     }
 
-//    func save(context: NSManagedObjectContext) {
-//        if context.hasChanges {
-//            do {
-//                try context.save()
-//            } catch {
-//                print(error)
-//            }
-//        }
-//    }
-    
-    // MARK: - Utilities
-//    public func object<T: MGEntity>(_ type: T.Type, forID id: NSManagedObjectID) -> T {
-//        return persistentContainer.viewContext.object(with: id) as! T
-//    }
-//    
-//    public func objects<T: MGEntity>(_ type: T.Type, forIDs ids: [NSManagedObjectID]) -> [T] {
-//        var array = [T]()
-//        
-//        for id in ids {
-//            array.append(object(type, forID: id))
-//        }
-//        return array
-//    }
-    
-//    func predicate(fromQuery query: [String: Any]?) -> NSPredicate? {
-//        var predicate: NSPredicate?
-//
-//        if let query = query {
-//            for (key, value) in query {
-//                var format = "%@"
-//
-//                if let _ = value as? Int32 {
-//                    format = "%d"
-//                } else if let _ = value as? Double {
-//                    format = "%f"
-//                } else if let _ = value as? Bool {
-//                    format = "%d"
-//                } else if let _ = value as? String {
-//                    format = "[c] %@"
-//                }
-//
-//                if predicate != nil {
-//                    predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate!, NSPredicate(format: "%K == \(format)", key, value as! CVarArg)])
-//                } else {
-//                    predicate = NSPredicate(format: "%K == \(format)", key, value as! CVarArg)
-//                }
-//            }
-//        }
-//
-//        return predicate
-//    }
+    func save(context: NSManagedObjectContext) {
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                print(error)
+            }
+        }
+    }
     
     // MARK: - Caching
 
     func willFetchCache(forUrl url: URL) -> Bool {
+        let context = persistentContainer.viewContext //persistentContainer.newBackgroundContext()
         var willFetch = true
 
         if let cache = find(MGLocalCache.self,
                             properties: ["url": url.absoluteString],
                             predicate: NSPredicate(format: "url == %@", url.absoluteString),
                             sortDescriptors: nil,
-                            createIfNotFound: true)?.first {
+                            createIfNotFound: true,
+                            context: context)?.first {
             
             if let lastUpdated = cache.lastUpdated {
                 // 5 minutes
@@ -502,32 +473,33 @@ extension ManaKit {
                     willFetch = diff >= ManaKit.Constants.cacheAge
                 }
             }
-            
-            if willFetch {
-                print(url)
-                cache.lastUpdated = Date()
-                saveContext()
-            }
         }
         
+        if willFetch {
+            print(url)
+        }
         return willFetch
     }
 
-//    func saveCache(forUrl url: URL) {
-//        if let cache = find(MGLocalCache.self,
-//                            query: ["url": url.absoluteString],
-//                            sortDescriptors: nil,
-//                            createIfNotFound: true)?.first {
-//            cache.lastUpdated = Date()
-//            saveContext()
-//        }
-//    }
+    func saveCache(forUrl url: URL) {
+        let context = persistentContainer.viewContext //newBackgroundContext()
+        
+        if let cache = find(MGLocalCache.self,
+                            properties: ["url": url.absoluteString],
+                            predicate: NSPredicate(format: "url == %@", url.absoluteString),
+                            sortDescriptors: nil,
+                            createIfNotFound: true,
+                            context: context)?.first {
+            cache.lastUpdated = Date()
+            save(context: context)
+        }
+    }
 
     func deleteCache(forUrl url: URL) {
         delete(MGLocalCache.self,
                predicate: NSPredicate(format: "url == %@", url.absoluteString),
                completion: nil)
-        saveContext()
+        save(context: persistentContainer.viewContext)
     }
     
 //    func copyModelFile() {

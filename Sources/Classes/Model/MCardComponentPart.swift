@@ -11,8 +11,6 @@ import Foundation
 public struct MCardComponentPart: MEntity {
 
     public var id: String?
-    public var card: MCard?
     public var component: MComponent?
     public var part: MCard?
-
 }

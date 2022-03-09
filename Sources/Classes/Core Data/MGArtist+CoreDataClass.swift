@@ -7,7 +7,7 @@
 
 import CoreData
 
-class MGArtist: MGEntity {
+public class MGArtist: MGEntity {
     enum CodingKeys: CodingKey {
         case firstName,
              lastName,
@@ -48,28 +48,21 @@ class MGArtist: MGEntity {
            self.nameSection != nameSection {
             self.nameSection = nameSection
         }
-        
-//        if let cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards) as NSSet? {
-//            addToCards(cards)
-//        }
     }
     
-    override func encode(to encoder: Encoder) throws {
+    public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(firstName, forKey: .firstName)
         try container.encode(lastName, forKey: .lastName)
         try container.encode(name, forKey: .name)
         try container.encode(nameSection, forKey: .nameSection)
-        if let cards = cards as? Set<MGCard> {
-            try container.encode(cards, forKey: .cards)
-        }
     }
     
-    func toModel() -> MArtist {
-        return MArtist(firstName: firstName,
-                       lastName: lastName,
-                       name: name,
-                       nameSection: nameSection)
-    }
+//    func toModel() -> MArtist {
+//        return MArtist(firstName: firstName,
+//                       lastName: lastName,
+//                       name: name,
+//                       nameSection: nameSection)
+//    }
 }

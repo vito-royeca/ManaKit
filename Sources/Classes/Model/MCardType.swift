@@ -12,11 +12,6 @@ public struct MCardType {
 
     public var name: String?
     public var nameSection: String?
-    public var children: [MCardType]?
-//    public var parent: MCardType?
-    public var subtypes: [MCardType]?
-    public var supertypes: [MCardType]?
-
 }
 
 // MARK: - Identifiable

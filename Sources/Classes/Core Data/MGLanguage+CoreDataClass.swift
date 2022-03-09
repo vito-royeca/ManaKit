@@ -7,7 +7,7 @@
 
 import CoreData
 
-class MGLanguage: MGEntity {
+public class MGLanguage: MGEntity {
     enum CodingKeys: CodingKey {
         case code,
              displayCode,
@@ -49,49 +49,21 @@ class MGLanguage: MGEntity {
            self.nameSection != nameSection {
             self.nameSection = nameSection
         }
-        
-//        if let cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards) {
-//            for card in self.cards?.allObjects as? [MGCard] ?? [] {
-//                self.removeFromCards(card)
-//            }
-//            addToCards(cards as NSSet)
-//            
-//            cards.forEach {
-//                $0.language = self
-//            }
-//        }
-//
-//        if let sets = try container.decodeIfPresent(Set<MGSet>.self, forKey: .sets) {
-//            for set in self.sets?.allObjects as? [MGSet] ?? [] {
-//                self.removeFromSets(set)
-//            }
-//            addToSets(sets as NSSet)
-//            
-//            sets.forEach {
-//                $0.addToLanguages(self)
-//            }
-//        }
     }
     
-    override func encode(to encoder: Encoder) throws {
+    public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(code, forKey: .code)
         try container.encode(displayCode, forKey: .displayCode)
         try container.encode(name, forKey: .name)
         try container.encode(nameSection, forKey: .nameSection)
-        if let cards = cards as? Set<MGCard> {
-            try container.encode(cards, forKey: .cards)
-        }
-        if let sets = sets as? Set<MGSet> {
-            try container.encode(sets, forKey: .sets)
-        }
     }
     
-    func toModel() -> MLanguage {
-        return MLanguage(code: code,
-                         displayCode: displayCode,
-                         name: name,
-                         nameSection: nameSection)
-    }
+//    func toModel() -> MLanguage {
+//        return MLanguage(code: code,
+//                         displayCode: displayCode,
+//                         name: name,
+//                         nameSection: nameSection)
+//    }
 }

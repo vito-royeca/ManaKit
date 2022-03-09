@@ -48,7 +48,7 @@ public enum CardType: Int, CaseIterable {
     }
 }
 
-extension MCard {
+//extension MCard {
 //    public func typeImage() -> UIImage? {
 //        guard let typeLine = typeLine else {
 //            return nil
@@ -151,6 +151,6 @@ extension MCard {
 //
 //        return cardImage
 //    }
-}
+//}
 
 //#endif // #if canImport(UIKit)

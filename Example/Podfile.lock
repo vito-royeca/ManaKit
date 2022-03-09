@@ -1,5 +1,11 @@
 PODS:
-  - ManaKit (7.1.0)
+  - ManaKit (7.1.0):
+    - RealmSwift
+  - Realm (10.21.1):
+    - Realm/Headers (= 10.21.1)
+  - Realm/Headers (10.21.1)
+  - RealmSwift (10.21.1):
+    - Realm (= 10.21.1)
   - SDWebImage (5.12.2):
     - SDWebImage/Core (= 5.12.2)
   - SDWebImage/Core (5.12.2)
@@ -8,10 +14,13 @@ PODS:
 
 DEPENDENCIES:
   - ManaKit (from `../`)
+  - RealmSwift (~> 10)
   - SDWebImageSwiftUI
 
 SPEC REPOS:
   trunk:
+    - Realm
+    - RealmSwift
     - SDWebImage
     - SDWebImageSwiftUI
 
@@ -20,10 +29,12 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  ManaKit: 7271d5813a00686b9f5339c1bc827a698117edbb
+  ManaKit: 923ca19252d85767710a4f14fcae053ff884afa9
+  Realm: 44b41c3ae39e3ecfded71a04434bfde066c7b317
+  RealmSwift: dbf9a4eb06e0c929d51c4ef2e8f951bca541feab
   SDWebImage: 240e5c12b592fb1268c1d03b8c90d90e8c2ffe82
   SDWebImageSwiftUI: 8a3923c95108312b03a599ec1498754af55a6819
 
-PODFILE CHECKSUM: c6b46897b7777bdac7f0f6f847f3e82fcb168ebf
+PODFILE CHECKSUM: 1f3dc6932c9cfe8b283bb77e135737a14cc81ae8
 
 COCOAPODS: 1.11.2

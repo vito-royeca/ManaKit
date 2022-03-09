@@ -7,7 +7,7 @@
 
 import CoreData
 
-class MGStore: MGEntity {
+public class MGStore: MGEntity {
     enum CodingKeys: CodingKey {
         case name,
              nameSection,
@@ -34,23 +34,17 @@ class MGStore: MGEntity {
            self.nameSection != nameSection {
             self.nameSection = nameSection
         }
-        
-        // prices
-//        if let prices = try container.decodeIfPresent(Set<MGCardPrice>.self, forKey: .prices) as NSSet? {
-//            self.prices = prices
-//        }
     }
     
-    override func encode(to encoder: Encoder) throws {
+    public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(name, forKey: .name)
         try container.encode(nameSection, forKey: .nameSection)
-        try container.encode(prices as! Set<MGCardPrice>, forKey: .prices)
     }
     
-    func toModel() -> MStore {
-        return MStore(name: name,
-                      nameSection: nameSection)
-    }
+//    func toModel() -> MStore {
+//        return MStore(name: name,
+//                      nameSection: nameSection)
+//    }
 }

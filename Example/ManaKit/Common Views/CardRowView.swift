@@ -12,14 +12,10 @@ import SDWebImageSwiftUI
 
 
 struct CardRowView: View {
-    private let card: MCard
-    private var nameFont: Font
+    private let card: MGCard
     
-    init(card: MCard) {
+    init(card: MGCard) {
         self.card = card
-        
-        let font = card.nameFont()
-        nameFont = Font.custom(font.name, size: font.size)
     }
     
     var body: some View {
@@ -44,8 +40,9 @@ struct CardRowView: View {
 //            }
             
             VStack(alignment: .leading) {
+                let font = card.nameFont()
                 Text(card.displayName)
-                    .font(nameFont)
+                    .font(Font.custom(font.name, size: font.size))
                 
                 HStack {
                     Text(card.displayTypeLine)

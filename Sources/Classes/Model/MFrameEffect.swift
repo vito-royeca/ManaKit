@@ -14,6 +14,4 @@ public struct MFrameEffect: MEntity {
     public var id: String?
     public var name: String?
     public var nameSection: String?
-//    public var cards: [MCard]?
-
 }

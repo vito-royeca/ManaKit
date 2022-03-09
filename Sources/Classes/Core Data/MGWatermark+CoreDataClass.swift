@@ -7,7 +7,7 @@
 
 import CoreData
 
-class MGWatermark: MGEntity {
+public class MGWatermark: MGEntity {
     enum CodingKeys: CodingKey {
         case name,
              nameSection,
@@ -34,27 +34,17 @@ class MGWatermark: MGEntity {
            self.nameSection != nameSection {
             self.nameSection = nameSection
         }
-        
-//        if let cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards) {
-////            addToCards(cards)
-//            cards.forEach {
-//                $0.watermark = self
-//            }
-//        }
     }
     
-    override func encode(to encoder: Encoder) throws {
+    public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(name, forKey: .name)
         try container.encode(nameSection, forKey: .nameSection)
-        if let cards = cards as? Set<MGCard> {
-            try container.encode(cards, forKey: .cards)
-        }
     }
     
-    func toModel() -> MWatermark {
-        return MWatermark(name: name,
-                          nameSection: nameSection)
-    }
+//    func toModel() -> MWatermark {
+//        return MWatermark(name: name,
+//                          nameSection: nameSection)
+//    }
 }

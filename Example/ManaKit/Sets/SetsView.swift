@@ -15,9 +15,9 @@ struct SetsView: View {
     var body: some View {
         List {
             ForEach(viewModel.sets) { set in
-                let setView = SetView(setCode: set.code ?? "", languageCode: "en")
+                let setView = SetView(setCode: set.code, languageCode: "en")
                 NavigationLink(destination: setView) {
-                        SetsRowView(set: set)
+                    SetsRowView(set: set)
                 }
             }
         }
@@ -28,11 +28,11 @@ struct SetsView: View {
                     if viewModel.isBusy {
                         ProgressView()
                             .progressViewStyle(.circular)
-                    }
-                    else {
+                    } else {
                         EmptyView()
                     }
-            })
+                }
+            )
             .onAppear {
                 viewModel.fetchData()
             }
@@ -49,9 +49,9 @@ struct SetsView_Previews: PreviewProvider {
 }
 
 struct SetsRowView: View {
-    private let set: MSet
+    private let set: MGSet
     
-    init(set: MSet) {
+    init(set: MGSet) {
         self.set = set
     }
     
@@ -66,7 +66,7 @@ struct SetsRowView: View {
                     .font(.headline)
                 
                 HStack {
-                    Text("Code: \(set.code ?? "")")
+                    Text("Code: \(set.code)")
                         .font(.subheadline)
                         .foregroundColor(Color.gray)
                     

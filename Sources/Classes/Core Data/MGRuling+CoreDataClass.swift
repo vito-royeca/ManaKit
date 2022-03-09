@@ -7,7 +7,7 @@
 
 import CoreData
 
-class MGRuling: MGEntity {
+public class MGRuling: MGEntity {
     enum CodingKeys: CodingKey {
         case datePublished,
              id,
@@ -49,7 +49,7 @@ class MGRuling: MGEntity {
         }
     }
     
-    override func encode(to encoder: Encoder) throws {
+    public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(datePublished, forKey: .datePublished)
@@ -58,10 +58,10 @@ class MGRuling: MGEntity {
         try container.encode(text, forKey: .text)
     }
     
-    func toModel() -> MRuling {
-        return MRuling(datePublished: datePublished,
-                       id: id,
-                       oracleId: oracleId,
-                       text: text)
-    }
+//    func toModel() -> MRuling {
+//        return MRuling(datePublished: datePublished,
+//                       id: id,
+//                       oracleId: oracleId,
+//                       text: text)
+//    }
 }

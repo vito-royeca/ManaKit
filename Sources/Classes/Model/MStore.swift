@@ -12,8 +12,6 @@ public struct MStore {
 
     public var name: String?
     public var nameSection: String?
-//    public var prices: [MCardPrice]?
-
 }
 
 // MARK: - Identifiable

@@ -7,7 +7,7 @@
 
 import CoreData
 
-class MGCardComponentPart: MGEntity {
+public class MGCardComponentPart: MGEntity {
     enum CodingKeys: CodingKey {
         case id,
              card,
@@ -25,24 +25,20 @@ class MGCardComponentPart: MGEntity {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
 //        card = try container.decodeIfPresent(MGCard.self, forKey: .card)
-//        component = try container.decodeIfPresent(MGComponent.self, forKey: .component)
-//        part = try container.decodeIfPresent(MGCard.self, forKey: .part)
-        id = "\(card?.newId ?? "")_\(component?.name ?? "")_\(part?.newId ?? "")"
+        component = try container.decodeIfPresent(MGComponent.self, forKey: .component)
+        part = try container.decodeIfPresent(MGCard.self, forKey: .part)
+        id = "\(component?.name ?? "")_\(part?.newId ?? "")"
     }
     
-    override func encode(to encoder: Encoder) throws {
+    public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(id, forKey: .id)
-        try container.encode(card, forKey: .card)
-        try container.encode(component, forKey: .component)
-        try container.encode(part, forKey: .part)
     }
     
-    func toModel() -> MCardComponentPart {
-        return MCardComponentPart(id: id,
-                                  card: card?.toModel(),
-                                  component: component?.toModel(),
-                                  part: card?.toModel())
-    }
+//    func toModel() -> MCardComponentPart {
+//        return MCardComponentPart(id: id,
+//                                  component: component?.toModel(),
+//                                  part: part?.toModel())
+//    }
 }

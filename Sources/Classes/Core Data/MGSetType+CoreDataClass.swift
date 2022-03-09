@@ -7,7 +7,7 @@
 
 import CoreData
 
-class MGSetType: MGEntity {
+public class MGSetType: MGEntity {
     enum CodingKeys: CodingKey {
         case name,
              nameSection,
@@ -34,32 +34,17 @@ class MGSetType: MGEntity {
            self.nameSection != nameSection {
             self.nameSection = nameSection
         }
-
-        // sets
-//        if let sets = try container.decodeIfPresent(Set<MGSet>.self, forKey: .sets) {
-//            for set in self.sets?.allObjects as? [MGSet] ?? [] {
-//                self.removeFromSets(set)
-//            }
-//            addToSets(sets as NSSet)
-//            
-//            sets.forEach {
-//                $0.setType = self
-//            }
-//        }
     }
     
-    override func encode(to encoder: Encoder) throws {
+    public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(name, forKey: .name)
         try container.encode(nameSection, forKey: .nameSection)
-        if let sets = sets as? Set<MGSet> {
-            try container.encode(sets, forKey: .sets)
-        }
     }
     
-    func toModel() -> MSetType {
-        return MSetType(name: name,
-                        nameSection: nameSection)
-    }
+//    func toModel() -> MSetType {
+//        return MSetType(name: name,
+//                        nameSection: nameSection)
+//    }
 }

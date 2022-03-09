@@ -17,6 +17,6 @@ extension MGLocalCache {
     }
 
     @NSManaged public var lastUpdated: Date?
-    @NSManaged public var url: String?
+    @NSManaged public var url: String
 
 }

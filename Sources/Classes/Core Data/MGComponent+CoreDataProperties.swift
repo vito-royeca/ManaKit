@@ -16,7 +16,7 @@ extension MGComponent {
         return NSFetchRequest<MGComponent>(entityName: "MGComponent")
     }
 
-    @NSManaged public var name: String?
+    @NSManaged public var name: String
     @NSManaged public var nameSection: String?
     @NSManaged public var componentParts: NSSet?
 

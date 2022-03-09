@@ -28,14 +28,13 @@ struct SetView: View {
             }
         }
             .listStyle(.plain)
-            .navigationBarTitle(viewModel.set?.name ?? "Set name")
+            .navigationBarTitle(viewModel.set?.name ?? "Loading...")
             .overlay(
                 Group {
                     if viewModel.isBusy {
                         ProgressView()
                             .progressViewStyle(.circular)
-                    }
-                    else {
+                    } else {
                         EmptyView()
                     }
             })

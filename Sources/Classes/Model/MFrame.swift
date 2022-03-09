@@ -13,8 +13,6 @@ public struct MFrame {
     public var description_: String?
     public var name: String?
     public var nameSection: String?
-//    public var cards: [MCard]?
-
 }
 
 

@@ -12,15 +12,23 @@ import Combine
 import SwiftUI
 import ManaKit
 
-class SearchViewModel: ObservableObject {
-    @Published var cards = [MCard]()
-    @State var isBusy = false
+class SearchViewModel: NSObject, ObservableObject {
+    // MARK: - Published Variables
+    @Published var cards = [MGCard]()
+    @Published var isBusy = false
     
+    // MARK: - Variables
     var dataAPI: API
-    var cancellables = Set<AnyCancellable>()
+    private var cancellables = Set<AnyCancellable>()
+    private var frc: NSFetchedResultsController<MGCard>
     
+    // MARK: - Initializers
     init(dataAPI: API = ManaKit.shared) {
         self.dataAPI = dataAPI
+        frc = NSFetchedResultsController(fetchRequest: MGCard.fetchRequest(),
+                                         managedObjectContext: ManaKit.shared.persistentContainer.viewContext,
+                                         sectionNameKeyPath: nil,
+                                         cacheName: nil)
     }
     
     deinit {
@@ -30,6 +38,7 @@ class SearchViewModel: ObservableObject {
         cards.removeAll()
     }
     
+    // MARK: - Methods
     func fetchData(query: String) {
         guard !isBusy else {
             return
@@ -37,29 +46,69 @@ class SearchViewModel: ObservableObject {
         
         isBusy.toggle()
         
-        let sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: false),
-                               NSSortDescriptor(key: "name", ascending: true)]
-
         dataAPI.fetchCards(query: query,
-                           predicate: NSPredicate(format: "newId != nil AND newId != '' AND name CONTAINS[cd] %@", query),
-                           sortDescriptors: sortDescriptors,
+                           predicate: nil,
+                           sortDescriptors: nil,
                            cancellables: &cancellables,
                            completion: { result in
-            self.isBusy.toggle()
-            
-            switch result {
-            case .success(let cards):
-                DispatchQueue.main.async {
-                    self.cards = cards
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self.fetchLocalData(query: query)
+                case .failure(let error):
+                    print(error)
+                    self.cards.removeAll()
                 }
-            case .failure(let error):
-                print(error)
+                
+                self.isBusy.toggle()
             }
         })
     }
     
+    func fetchLocalData(query: String) {
+        frc = NSFetchedResultsController(fetchRequest: defaultFetchRequest(query: query),
+                                         managedObjectContext: ManaKit.shared.persistentContainer.viewContext,
+                                         sectionNameKeyPath: nil,
+                                         cacheName: nil)
+        frc.delegate = self
+        
+        do {
+            try frc.performFetch()
+            cards = frc.fetchedObjects ?? []
+        } catch {
+            print(error)
+            self.cards.removeAll()
+        }
+    }
+
     func clearData() {
         cards.removeAll()
         isBusy = false
+    }
+}
+
+// MARK: - NSFetchedResultsControllerDelegate
+extension SearchViewModel: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        guard let cards = controller.fetchedObjects as? [MGCard] else {
+            return
+        }
+
+        self.cards = cards
+    }
+}
+
+// MARK: - NSFetchRequest
+extension SearchViewModel {
+    func defaultFetchRequest(query: String) -> NSFetchRequest<MGCard> {
+        let sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: false),
+                               NSSortDescriptor(key: "name", ascending: true)]
+        let predicate = NSPredicate(format: "newId != nil AND newId != '' AND name CONTAINS[cd] %@ AND collectorNumber != nil ", query)
+        
+        let request: NSFetchRequest<MGCard> = MGCard.fetchRequest()
+        request.sortDescriptors = sortDescriptors
+        request.predicate = predicate
+
+        return request
     }
 }

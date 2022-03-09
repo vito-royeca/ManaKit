@@ -7,7 +7,7 @@
 
 import CoreData
 
-class MGColor: MGEntity {
+public class MGColor: MGEntity {
     enum CodingKeys: CodingKey {
         case name,
              nameSection,
@@ -43,27 +43,19 @@ class MGColor: MGEntity {
            self.symbol != symbol {
             self.symbol = symbol
         }
-        
-//        cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards) as NSSet?
-//        identities = try container.decodeIfPresent(Set<MGCard>.self, forKey: .identities) as NSSet?
-//        indicators = try container.decodeIfPresent(Set<MGCard>.self, forKey: .indicators) as NSSet?
     }
     
-    override func encode(to encoder: Encoder) throws {
+    public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(name, forKey: .name)
         try container.encode(nameSection, forKey: .nameSection)
         try container.encode(symbol, forKey: .symbol)
-        
-//        try container.encode(cards as! Set<MGCard>, forKey: .cards)
-//        try container.encode(identities as! Set<MGCard>, forKey: .identities)
-//        try container.encode(indicators as! Set<MGCard>, forKey: .indicators)
     }
     
-    func toModel() -> MColor {
-        return MColor(name: name,
-                      nameSection: nameSection,
-                      symbol: symbol)
-    }
+//    func toModel() -> MColor {
+//        return MColor(name: name,
+//                      nameSection: nameSection,
+//                      symbol: symbol)
+//    }
 }

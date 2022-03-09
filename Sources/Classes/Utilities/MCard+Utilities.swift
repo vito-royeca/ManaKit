@@ -6,7 +6,6 @@
 //
 
 import Foundation
-//import SwiftUI
 
 public enum CardImageType: Int, CaseIterable {
     case png
@@ -31,17 +30,7 @@ public enum CardImageType: Int, CaseIterable {
 
 // MARK: - Display data
 
-extension MCard {
-//    public var displayManaCost: Text {
-//        get {
-//            guard let manaCost = manaCost else {
-//                return Text("")
-//            }
-//
-//            return symbols(manaCost)
-//        }
-//    }
-    
+extension MGCard {
     public var displayFlavorText: String {
         get {
             guard let flavorText = flavorText else {
@@ -54,7 +43,7 @@ extension MCard {
     
     public var displayFoilPrice: String {
         get {
-            for price in prices {
+            for price in prices?.allObjects as? [MGCardPrice] ?? [] {
                 if price.isFoil {
                     return price.market > 0 ? String(format: "$%.2f", price.market) : "\u{2014}"
                 }
@@ -88,7 +77,7 @@ extension MCard {
     
     public var displayNormalPrice: String {
         get {
-            for price in prices {
+            for price in prices?.allObjects as? [MGCardPrice] ?? [] {
                 if !price.isFoil {
                     return price.market > 0 ? String(format: "$%.2f", price.market) : "\u{2014}"
                 }
@@ -97,16 +86,6 @@ extension MCard {
             return "\u{2014}"
         }
     }
-    
-//    public var displayOracleText: Text {
-//        get {
-//            guard let oracleText = oracleText else {
-//                return Text("")
-//            }
-//
-//            return symbols(oracleText)
-//        }
-//    }
     
     public var displayPowerToughness: String {
         get {
@@ -117,16 +96,6 @@ extension MCard {
             }
         }
     }
-    
-//    public var displayPrintedText: Text {
-//        get {
-//            guard let printedText = printedText else {
-//                return Text("")
-//            }
-//
-//            return symbols(printedText)
-//        }
-//    }
     
     public var displayTypeLine: String {
         get {
@@ -146,84 +115,12 @@ extension MCard {
             return typeText
         }
     }
-    
-//    func symbols(_ text: String) -> Text {
-//        if text.isEmpty {
-//            return Text("")
-//        }
-//        
-//        let trimmedText = text.trimmingCharacters(in: CharacterSet.whitespaces)
-//        var array = [Any]()
-//        var textFragment = ""
-//        var sentinel = 0
-//        
-//        repeat {
-//            for i in sentinel...trimmedText.count - 1 {
-//                let c = trimmedText[trimmedText.index(trimmedText.startIndex, offsetBy: i)]
-//                
-//                if c == "{" {
-//                    let code = NSMutableString()
-//                    
-//                    for j in i...text.count - 1 {
-//                        let cc = trimmedText[trimmedText.index(trimmedText.startIndex, offsetBy: j)]
-//                        code.append(String(cc))
-//                        
-//                        if cc == "}" {
-//                            sentinel = j + 1
-//                            break
-//                        }
-//                    }
-//                    
-//                    var cleanCode = code.replacingOccurrences(of: "{", with: "")
-//                        .replacingOccurrences(of: "}", with: "")
-//                        .replacingOccurrences(of: "/", with: "")
-//                    
-//                    if cleanCode.lowercased() == "chaos" {
-//                        cleanCode = "Chaos"
-//                    }
-//                    
-//                    guard let image = ManaKit.shared.symbolImage(name: cleanCode as String) else {
-//                        return Text("")
-//                    }
-//                    var width = CGFloat(16)
-//                    let height = CGFloat(16)
-//                    
-//                    if cleanCode == "100" {
-//                        width = 35
-//                    } else if cleanCode == "1000000" {
-//                        width = 60
-//                    }
-//                    
-//                    if let resizedImage = image.copy(newSize: CGSize(width: width, height: height)) {
-//                        let newImage = Image(uiImage: resizedImage)
-//                        if !textFragment.isEmpty {
-//                            array.append(textFragment)
-//                        }
-//                        array.append(newImage)
-//                        textFragment = ""
-//                    }
-//                    break
-//                   
-//                } else {
-//                    textFragment.append(String(c))
-//                    sentinel += 1
-//                }
-//                
-//            }
-//        } while sentinel <= text.count - 1
-//        
-//        var newString = ""
-//        for a in array {
-//            newString.append("\(a)")
-//        }
-//        return Text(newString)
-//    }
 }
 
 
 // MARK: - Methods
 
-extension MCard {
+extension MGCard {
     public func imageURL(for type: CardImageType) -> URL? {
         guard let imageUri = imageUri else {
             return nil
@@ -314,9 +211,9 @@ extension MCard {
     }
     
     public func multiverseIDArray() -> [Int64] {
-        guard let multiverseIds = multiverseIds else {
-            return [Int64]()
-        }
+//        guard let multiverseIds = multiverseIds else {
+//            return [Int64]()
+//        }
         
 //        do {
 //            let array = try NSKeyedUnarchiver.unarchivedObject(ofClass: [Int64].self, from: multiverseIds)

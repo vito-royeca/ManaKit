@@ -4,6 +4,7 @@ def default_pods
     pod 'ManaKit', :path => '../'
     
     #pod 'Kanna'
+    pod 'RealmSwift', '~>10'
 end
 
 target 'ManaKit_Example' do

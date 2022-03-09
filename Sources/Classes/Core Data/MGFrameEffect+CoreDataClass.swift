@@ -7,7 +7,7 @@
 
 import CoreData
 
-class MGFrameEffect: MGEntity {
+public class MGFrameEffect: MGEntity {
     enum CodingKeys: CodingKey {
         case description,
              id,
@@ -48,31 +48,21 @@ class MGFrameEffect: MGEntity {
            self.nameSection != nameSection {
             self.nameSection = nameSection
         }
-        
-//        if let cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards) {
-////            addToCards(cards)
-//            cards.forEach {
-//                $0.frameEffect = self
-//            }
-//        }
     }
     
-    override func encode(to encoder: Encoder) throws {
+    public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(description_, forKey: .description)
         try container.encode(id, forKey: .id)
         try container.encode(name, forKey: .name)
         try container.encode(nameSection, forKey: .nameSection)
-        if let cards = cards as? Set<MGCard> {
-            try container.encode(cards, forKey: .cards)
-        }
     }
     
-    func toModel() -> MFrameEffect {
-        return MFrameEffect(description_: description_,
-                            id: id,
-                            name: name,
-                            nameSection: nameSection)
-    }
+//    func toModel() -> MFrameEffect {
+//        return MFrameEffect(description_: description_,
+//                            id: id,
+//                            name: name,
+//                            nameSection: nameSection)
+//    }
 }

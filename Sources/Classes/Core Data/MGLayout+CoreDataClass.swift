@@ -7,7 +7,7 @@
 
 import CoreData
 
-class MGLayout: MGEntity {
+public class MGLayout: MGEntity {
     enum CodingKeys: CodingKey {
         case description_,
              name,
@@ -41,32 +41,19 @@ class MGLayout: MGEntity {
            self.nameSection != nameSection {
             self.nameSection = nameSection
         }
-        
-//        if let cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards) {
-//            for card in self.cards?.allObjects as? [MGCard] ?? [] {
-//                self.removeFromCards(card)
-//            }
-//            addToCards(cards)
-//            cards.forEach {
-//                $0.layout = self
-//            }
-//        }
     }
     
-    override func encode(to encoder: Encoder) throws {
+    public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(description_, forKey: .description_)
         try container.encode(name, forKey: .name)
         try container.encode(nameSection, forKey: .nameSection)
-        if let cards = cards as? Set<MGCard> {
-            try container.encode(cards, forKey: .cards)
-        }
     }
     
-    func toModel() -> MLayout {
-        return MLayout(description_: description_,
-                       name: name,
-                       nameSection: nameSection)
-    }
+//    func toModel() -> MLayout {
+//        return MLayout(description_: description_,
+//                       name: name,
+//                       nameSection: nameSection)
+//    }
 }

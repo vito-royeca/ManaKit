@@ -43,6 +43,7 @@ A database of Magic: The Gathering cards. Includes prices and images.
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'Combine'
+  s.dependency 'RealmSwift'
 #  s.dependency 'Kanna'
 #  s.dependency 'KeychainAccess'
 #  s.dependency 'SSZipArchive'

@@ -7,7 +7,7 @@
 
 import CoreData
 
-class MGSet: MGEntity {
+public class MGSet: MGEntity {
     enum CodingKeys: CodingKey {
         case cardCount,
              code,
@@ -118,10 +118,10 @@ class MGSet: MGEntity {
         // cards
         if let cards = try container.decodeIfPresent(Set<MGCard>.self, forKey: .cards),
            !cards.isEmpty {
-            for card in self.cards?.allObjects as? [MGCard] ?? [] {
-                self.removeFromCards(card)
-            }
-            addToCards(cards as NSSet)
+//            for card in self.cards?.allObjects as? [MGCard] ?? [] {
+//                self.removeFromCards(card)
+//            }
+//            addToCards(cards as NSSet)
             
             cards.forEach {
                 $0.set = self
@@ -169,7 +169,7 @@ class MGSet: MGEntity {
 //        }
     }
     
-    override func encode(to encoder: Encoder) throws {
+    public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(cardCount, forKey: .cardCount)
@@ -184,44 +184,25 @@ class MGSet: MGEntity {
         try container.encode(name, forKey: .name)
         try container.encode(releaseDate, forKey: .releaseDate)
         try container.encode(tcgPlayerId, forKey: .tcgPlayerId)
-        if let cards = cards as? Set<MGCard> {
-            try container.encode(cards, forKey: .cards)
-        }
-        if let children = children as? Set<MGSet> {
-            try container.encode(children, forKey: .children)
-        }
-        if let languages = languages as? Set<MGLanguage> {
-            try container.encode(languages, forKey: .languages)
-        }
-        if let parent = parent {
-            try container.encode(parent, forKey: .parent)
-        }
-        if let setBlock = setBlock {
-            try container.encode(setBlock, forKey: .setBlock)
-        }
-        if let setType = setType {
-            try container.encode(setType, forKey: .setType)
-        }
     }
     
-    func toModel() -> MSet {
-        return MSet(cardCount: cardCount,
-                    code: code,
-                    isFoilOnly: isFoilOnly,
-                    isOnlineOnly: isOnlineOnly,
-                    keyruneClass: keyruneClass,
-                    keyruneUnicode: keyruneUnicode,
-                    mtgoCode: mtgoCode,
-                    myNameSection: myNameSection,
-                    myYearSection: myYearSection,
-                    name: name,
-                    releaseDate: releaseDate,
-                    tcgPlayerId: tcgPlayerId,
-//                    cards: (cards?.allObjects as? [MGCard] ?? [MGCard]()).map { $0.toModel() },
-                    children: (children?.allObjects as? [MGSet] ?? [MGSet]()).map { $0.toModel() },
-                    languages: (languages?.allObjects as? [MGLanguage] ?? [MGLanguage]()).map { $0.toModel() },
-                    setBlock: setBlock?.toModel(),
-                    setType: setType?.toModel())
-    }
+//    func toModel() -> MSet {
+//        return MSet(cardCount: cardCount,
+//                    code: code,
+//                    isFoilOnly: isFoilOnly,
+//                    isOnlineOnly: isOnlineOnly,
+//                    keyruneClass: keyruneClass,
+//                    keyruneUnicode: keyruneUnicode,
+//                    mtgoCode: mtgoCode,
+//                    myNameSection: myNameSection,
+//                    myYearSection: myYearSection,
+//                    name: name,
+//                    releaseDate: releaseDate,
+//                    tcgPlayerId: tcgPlayerId,
+////                    cards: (cards?.allObjects as? [MGCard] ?? [MGCard]()).map { $0.toModel() },
+//                    children: (children?.allObjects as? [MGSet] ?? [MGSet]()).map { $0.toModel() },
+//                    languages: (languages?.allObjects as? [MGLanguage] ?? [MGLanguage]()).map { $0.toModel() },
+//                    setBlock: setBlock?.toModel(),
+//                    setType: setType?.toModel())
+//    }
 }
-

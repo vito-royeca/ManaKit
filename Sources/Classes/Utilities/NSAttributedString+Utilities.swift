@@ -10,7 +10,6 @@ import UIKit
 
 public extension NSAttributedString {
     convenience init(symbol: String, pointSize: CGFloat) {
-//    convenience init(string symbol: String, attributes: [Key: Any]?, pointSize: CGFloat) {
         let newAttributedString = NSMutableAttributedString()
         let text = symbol.trimmingCharacters(in: CharacterSet.whitespaces)
         var fragmentText = NSMutableString()
@@ -73,9 +72,6 @@ public extension NSAttributedString {
 
                     let attachmentString = NSAttributedString(attachment: imageAttachment)
                     let attributedString = NSMutableAttributedString(string: fragmentText as String)
-//                    if let attributes = attributes {
-//                        attributedString.setAttributes(attributes, range: NSRange(location: 0, length: attributedString.length))
-//                    }
                     attributedString.append(attachmentString)
                     newAttributedString.append(attributedString)
                     

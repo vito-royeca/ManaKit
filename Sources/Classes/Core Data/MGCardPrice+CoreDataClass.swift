@@ -7,7 +7,7 @@
 
 import CoreData
 
-class MGCardPrice: MGEntity {
+public class MGCardPrice: MGEntity {
     enum CodingKeys: CodingKey {
         case condition,
              dateUpdated,
@@ -84,12 +84,9 @@ class MGCardPrice: MGEntity {
            self.median != median {
             self.median = median
         }
-        
-        //card = try container.decodeIfPresent(MGCard.self, forKey: .card)
-//        store = try container.decodeIfPresent(MGStore.self, forKey: .store)
     }
     
-    override func encode(to encoder: Encoder) throws {
+    public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(condition, forKey: .condition)
@@ -101,22 +98,18 @@ class MGCardPrice: MGEntity {
         try container.encode(low, forKey: .low)
         try container.encode(market, forKey: .market)
         try container.encode(median, forKey: .median)
-
-        //try container.encode(card, forKey: .card)
-//        try container.encode(store, forKey: .store)
     }
     
-    func toModel() -> MCardPrice {
-        return MCardPrice(condition: condition,
-                          dateUpdated: dateUpdated,
-                          directLow: directLow,
-                          high: high,
-                          id: id,
-                          isFoil: isFoil,
-                          low: low,
-                          market: market,
-                          median: median,
-//                          card: card?.toModel(),
-                          store: store?.toModel())
-    }
+//    func toModel() -> MCardPrice {
+//        return MCardPrice(condition: condition,
+//                          dateUpdated: dateUpdated,
+//                          directLow: directLow,
+//                          high: high,
+//                          id: id,
+//                          isFoil: isFoil,
+//                          low: low,
+//                          market: market,
+//                          median: median,
+//                          store: store?.toModel())
+//    }
 }

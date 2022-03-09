@@ -7,7 +7,7 @@
 
 import CoreData
 
-class MGRule: MGEntity {
+public class MGRule: MGEntity {
     enum CodingKeys: CodingKey {
         case definition,
              id,
@@ -76,7 +76,7 @@ class MGRule: MGEntity {
 //        }
     }
     
-    override func encode(to encoder: Encoder) throws {
+    public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(definition, forKey: .definition)
@@ -84,18 +84,14 @@ class MGRule: MGEntity {
         try container.encode(order, forKey: .order)
         try container.encode(term, forKey: .term)
         try container.encode(termSection, forKey: .termSection)
-        if let children = children as? Set<MGRule> {
-            try container.encode(children, forKey: .children)
-        }
-        try container.encode(parent, forKey: .parent)
     }
     
-    func toModel() -> MRule {
-        return MRule(definition: definition,
-                     id: id,
-                     order: order,
-                     term: term,
-                     termSection: termSection,
-                     children: (children?.allObjects as? [MGRule] ?? []).map { $0.toModel() })
-    }
+//    func toModel() -> MRule {
+//        return MRule(definition: definition,
+//                     id: id,
+//                     order: order,
+//                     term: term,
+//                     termSection: termSection,
+//                     children: (children?.allObjects as? [MGRule] ?? []).map { $0.toModel() })
+//    }
 }

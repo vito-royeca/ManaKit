@@ -7,7 +7,7 @@
 
 import CoreData
 
-class MGImageURI: MGEntity {
+public class MGImageURI: MGEntity {
     enum CodingKeys: CodingKey {
         case artCrop,
              normal,
@@ -41,27 +41,19 @@ class MGImageURI: MGEntity {
            self.png != png {
             self.png = png
         }
-        
-        // card
-//        if let card = try container.decodeIfPresent(MGCard.self, forKey: .card) {
-//            self.card = card
-//        }
     }
     
-    override func encode(to encoder: Encoder) throws {
+    public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(artCrop, forKey: .artCrop)
         try container.encode(normal, forKey: .normal)
         try container.encode(png, forKey: .png)
-        if let card = card {
-            try container.encode(card, forKey: .card)
-        }
     }
     
-    func toModel() -> MImageURI {
-        return MImageURI(artCrop: artCrop,
-                         normal: normal,
-                         png: png)
-    }
+//    func toModel() -> MImageURI {
+//        return MImageURI(artCrop: artCrop,
+//                         normal: normal,
+//                         png: png)
+//    }
 }

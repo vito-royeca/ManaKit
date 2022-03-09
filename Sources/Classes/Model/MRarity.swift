@@ -12,8 +12,6 @@ public struct MRarity {
 
     public var name: String?
     public var nameSection: String?
-//    public var cards: [MCard]?
-
 }
 
 // MARK: - Identifiable

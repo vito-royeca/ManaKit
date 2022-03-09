@@ -7,11 +7,10 @@
 
 import CoreData
 
-class MGComponent: MGEntity {
+public class MGComponent: MGEntity {
     enum CodingKeys: CodingKey {
         case name,
-             nameSection,
-             componentParts
+             nameSection
     }
 
     required convenience init(from decoder: Decoder) throws {
@@ -34,24 +33,17 @@ class MGComponent: MGEntity {
            self.nameSection != nameSection {
                self.nameSection = nameSection
         }
-        
-        // componentParts
-//        if let componentParts = try container.decodeIfPresent(Set<MGCardComponentPart>.self, forKey: .componentParts) as NSSet? {
-//            self.componentParts = componentParts
-//        }
     }
     
-    override func encode(to encoder: Encoder) throws {
+    public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(name, forKey: .name)
         try container.encode(nameSection, forKey: .nameSection)
-        try container.encode(componentParts as! Set<MGCardComponentPart>, forKey: .componentParts)
     }
     
-    func toModel() -> MComponent {
-        return MComponent(name: name,
-                          nameSection: nameSection,
-                          componentParts: (componentParts?.allObjects as? [MGCardComponentPart] ?? []).map { $0.toModel() })
-    }
+//    func toModel() -> MComponent {
+//        return MComponent(name: name,
+//                          nameSection: nameSection)
+//    }
 }

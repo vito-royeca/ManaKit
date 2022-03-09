@@ -12,7 +12,6 @@ public struct MFormat {
 
     public var name: String?
     public var nameSection: String?
-//    public var cardFormatLegalities: [MCardFormatLegality]?
 }
 
 // MARK: - Identifiable

@@ -11,24 +11,35 @@ import CoreData
 import Combine
 import ManaKit
 
-class SetsViewModel: ObservableObject {
-    @Published var sets = [MSet]()
+class SetsViewModel: NSObject, ObservableObject {
+    
+    // MARK: - Published Variables
+    @Published var sets = [MGSet]()
     @Published var isBusy = false
-    
+
+    // MARK: - Variables
     var dataAPI: API
-    var cancellables = Set<AnyCancellable>()
+    private var cancellables = Set<AnyCancellable>()
+    private var frc: NSFetchedResultsController<MGSet>
     
+    // MARK: - Initializers
     init(dataAPI: API = ManaKit.shared) {
         self.dataAPI = dataAPI
+        frc = NSFetchedResultsController(fetchRequest: MGSet.fetchRequest(),
+                                         managedObjectContext: ManaKit.shared.persistentContainer.viewContext,
+                                         sectionNameKeyPath: nil,
+                                         cacheName: nil)
+        super.init()
     }
     
     deinit {
-        for can in cancellables {
-            can.cancel()
+        cancellables.forEach {
+            $0.cancel()
         }
         sets.removeAll()
     }
     
+    // MARK: - Methods
     func fetchData() {
         guard !isBusy && sets.isEmpty else {
             return
@@ -36,23 +47,61 @@ class SetsViewModel: ObservableObject {
         
         isBusy.toggle()
         
+        dataAPI.fetchSets(predicate: nil,
+                          sortDescriptors: nil,
+                          cancellables: &cancellables,
+                          completion: { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self.fetchLocalData()
+                case .failure(let error):
+                    print(error)
+                    self.sets.removeAll()
+                }
+                
+                self.isBusy.toggle()
+            }
+        })
+    }
+    
+    func fetchLocalData() {
+        frc = NSFetchedResultsController(fetchRequest: defaultFetchRequest(),
+                                         managedObjectContext: ManaKit.shared.persistentContainer.viewContext,
+                                         sectionNameKeyPath: nil,
+                                         cacheName: nil)
+        frc.delegate = self
+        
+        do {
+            try frc.performFetch()
+            sets = frc.fetchedObjects ?? []
+        } catch {
+            print(error)
+            self.sets.removeAll()
+        }
+    }
+}
+
+// MARK: - NSFetchedResultsControllerDelegate
+extension SetsViewModel: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        guard let sets = controller.fetchedObjects as? [MGSet] else {
+            return
+        }
+
+        self.sets = sets
+    }
+}
+
+// MARK: - NSFetchRequest
+extension SetsViewModel {
+    func defaultFetchRequest() -> NSFetchRequest<MGSet> {
         let sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: false),
                                NSSortDescriptor(key: "name", ascending: true)]
 
-        dataAPI.fetchSets(predicate: nil,
-                          sortDescriptors: sortDescriptors,
-                          cancellables: &cancellables,
-                          completion: { result in
-            self.isBusy.toggle()
-            
-            switch result {
-            case .success(let sets):
-                DispatchQueue.main.async {
-                    self.sets = sets
-                }
-            case .failure(let error):
-                print(error)
-            }
-        })
+        let request: NSFetchRequest<MGSet> = MGSet.fetchRequest()
+        request.sortDescriptors = sortDescriptors
+
+        return request
     }
 }

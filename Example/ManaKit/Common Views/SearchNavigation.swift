@@ -119,10 +119,12 @@ struct SearchNavigation<Content: View>: UIViewControllerRepresentable {
         }
         
         func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-            query = searchText
-            if !isBusy {
-                delegate?.search()
-            }
+            NSObject.cancelPreviousPerformRequests(withTarget: self,
+                                                   selector: #selector(self.doSearch(_:)),
+                                                   object: searchBar)
+            perform(#selector(self.doSearch(_:)),
+                    with: searchBar,
+                    afterDelay: 0.75)
         }
         
         func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -142,6 +144,18 @@ struct SearchNavigation<Content: View>: UIViewControllerRepresentable {
             query = nil
             scopeSelection = 0
             delegate?.cancel()
+        }
+        
+        @objc func doSearch(_ searchBar: UISearchBar) {
+            guard let searchText = searchBar.text,
+                searchText.trimmingCharacters(in: .whitespaces) != "" else {
+                return
+            }
+            
+            query = searchText
+            if !isBusy {
+                delegate?.search()
+            }
         }
     }
     

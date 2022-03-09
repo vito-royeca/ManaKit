@@ -13,8 +13,6 @@ public struct MImageURI {
     public var artCrop: String?
     public var normal: String?
     public var png: String?
-//    public var card: MCard?
-
 }
 
 // MARK: - Identifiable

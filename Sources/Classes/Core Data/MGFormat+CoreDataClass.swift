@@ -7,7 +7,7 @@
 
 import CoreData
 
-class MGFormat: MGEntity {
+public class MGFormat: MGEntity {
     enum CodingKeys: CodingKey {
         case name,
              nameSection,
@@ -34,23 +34,17 @@ class MGFormat: MGEntity {
            self.nameSection != nameSection {
             self.nameSection = nameSection
         }
-        
-        // cardFormatLegalities
-//        if let cardFormatLegalities = try container.decodeIfPresent(Set<MGCardFormatLegality>.self, forKey: .cardFormatLegalities) as NSSet? {
-//            self.cardFormatLegalities = cardFormatLegalities
-//        }
     }
     
-    override func encode(to encoder: Encoder) throws {
+    public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(name, forKey: .name)
         try container.encode(nameSection, forKey: .nameSection)
-        try container.encode(cardFormatLegalities as! Set<MGCardFormatLegality>, forKey: .cardFormatLegalities)
     }
     
-    func toModel() -> MFormat {
-        return MFormat(name: name,
-                       nameSection: nameSection)
-    }
+//    func toModel() -> MFormat {
+//        return MFormat(name: name,
+//                       nameSection: nameSection)
+//    }
 }

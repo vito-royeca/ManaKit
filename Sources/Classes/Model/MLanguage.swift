@@ -14,9 +14,6 @@ public struct MLanguage {
     public var displayCode: String?
     public var name: String?
     public var nameSection: String?
-//    public var cards: NSSet?
-//    public var sets: [MSet]?
-
 }
 
 // MARK: - Identifiable

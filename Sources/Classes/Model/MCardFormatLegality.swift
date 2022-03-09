@@ -11,8 +11,6 @@ import Foundation
 public struct MCardFormatLegality: MEntity {
 
     public var id: String?
-//    public var card: MCard?
     public var format: MFormat?
     public var legality: MLegality?
-
 }

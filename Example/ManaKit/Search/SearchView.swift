@@ -71,12 +71,13 @@ extension SearchView: SearchNavigationDelegate {
     }
     
     func search() {
-        viewModel.clearData()
-        
-        if let query = query,
-           query.count >= 3 {
-            viewModel.fetchData(query: query)
+        guard let query = query,
+            query.count >= 3 else {
+            return
         }
+        
+        viewModel.clearData()
+        viewModel.fetchData(query: query)
     }
     
     func scope() {

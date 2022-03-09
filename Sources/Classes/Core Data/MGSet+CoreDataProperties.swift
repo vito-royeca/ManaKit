@@ -13,7 +13,10 @@ import CoreData
 extension MGSet {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<MGSet> {
-        return NSFetchRequest<MGSet>(entityName: "MGSet")
+        let request = NSFetchRequest<MGSet>(entityName: "MGSet")
+        
+        request.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        return request
     }
 
     @NSManaged public var cardCount: Int32

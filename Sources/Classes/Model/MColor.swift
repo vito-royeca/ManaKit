@@ -13,10 +13,6 @@ public struct MColor {
     public var name: String?
     public var nameSection: String?
     public var symbol: String?
-//    public var cards: [MCard]?
-//    public var identities: [MColor]?
-//    public var indicators: [MColor]?
-
 }
 
 // MARK: - Identifiable

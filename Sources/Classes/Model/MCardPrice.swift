@@ -19,7 +19,6 @@ public struct MCardPrice: MEntity {
     public var low: Double
     public var market: Double
     public var median: Double
-//    public var card: MCard?
     public var store: MStore?
 
 }

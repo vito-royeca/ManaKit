@@ -51,11 +51,10 @@ public struct MCard {
     public var toughness: String?
     public var typeLine: String?
     public var artist: MArtist?
-    public var cardComponentParts: [MCardComponentPart]
+    public var componentParts: [MCardComponentPart]
     public var colorIdentities: [MColor]
     public var colorIndicators: [MColor]
     public var colors: [MColor]
-//    public var face: MCard?
     public var faces: [MCard]
     public var formatLegalities: [MCardFormatLegality]
     public var frame: MFrame?
@@ -64,15 +63,12 @@ public struct MCard {
     public var language: MLanguage?
     public var layout: MLayout?
     public var otherLanguages: [MLanguage]
-//    public var otherPrinting: MCard?
     public var otherPrintings: [MCard]
-    public var partComponentParts: [MCardComponentPart]
     public var prices: [MCardPrice]
     public var rarity: MRarity?
     public var set: MSet?
     public var subtypes: [MCardType]
     public var supertypes: [MCardType]
-//    public var variation: MCard?
     public var variations: [MCard]
     public var watermark: MWatermark?
 
