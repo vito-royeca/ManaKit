@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21C52" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21D62" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="MGArtist" representedClassName=".MGArtist" syncable="YES">
         <attribute name="firstName" optional="YES" attributeType="String"/>
         <attribute name="lastName" optional="YES" attributeType="String"/>
@@ -18,14 +18,14 @@
         </uniquenessConstraints>
     </entity>
     <entity name="MGCard" representedClassName=".MGCard" syncable="YES">
-        <attribute name="arenaId" optional="YES" attributeType="String"/>
-        <attribute name="cardBackId" optional="YES" attributeType="String"/>
+        <attribute name="arenaID" optional="YES" attributeType="String"/>
+        <attribute name="cardBackID" optional="YES" attributeType="String"/>
         <attribute name="cmc" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="collectorNumber" optional="YES" attributeType="String"/>
         <attribute name="faceOrder" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="flavorText" optional="YES" attributeType="String"/>
         <attribute name="handModifier" optional="YES" attributeType="String"/>
-        <attribute name="illustrationId" optional="YES" attributeType="String"/>
+        <attribute name="illustrationID" optional="YES" attributeType="String"/>
         <attribute name="isBooster" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isDigital" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isFoil" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
@@ -41,13 +41,13 @@
         <attribute name="lifeModifier" optional="YES" attributeType="String"/>
         <attribute name="loyalty" optional="YES" attributeType="String"/>
         <attribute name="manaCost" optional="YES" attributeType="String"/>
-        <attribute name="mtgoFoilId" optional="YES" attributeType="String"/>
-        <attribute name="mtgoId" optional="YES" attributeType="String"/>
-        <attribute name="multiverseIds" optional="YES" attributeType="Binary"/>
+        <attribute name="mtgoFoilID" optional="YES" attributeType="String"/>
+        <attribute name="mtgoID" optional="YES" attributeType="String"/>
+        <attribute name="multiverseIDs" optional="YES" attributeType="Binary"/>
         <attribute name="myNameSection" optional="YES" attributeType="String"/>
         <attribute name="myNumberOrder" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
-        <attribute name="newId" attributeType="String">
+        <attribute name="newID" attributeType="String">
             <userInfo>
                 <entry key="hyper.isPrimaryKey" value="true"/>
                 <entry key="sync.isPrimaryKey" value="true"/>
@@ -60,7 +60,7 @@
         <attribute name="printedText" optional="YES" attributeType="String"/>
         <attribute name="printedTypeLine" optional="YES" attributeType="String"/>
         <attribute name="releasedAt" optional="YES" attributeType="String"/>
-        <attribute name="tcgPlayerId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="tcgPlayerID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="toughness" optional="YES" attributeType="String"/>
         <attribute name="typeLine" optional="YES" attributeType="String"/>
         <relationship name="artist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGArtist" inverseName="cards" inverseEntity="MGArtist"/>
@@ -73,7 +73,7 @@
         <relationship name="formatLegalities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardFormatLegality" inverseName="card" inverseEntity="MGCardFormatLegality"/>
         <relationship name="frame" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGFrame" inverseName="cards" inverseEntity="MGFrame"/>
         <relationship name="frameEffects" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGFrameEffect" inverseName="cards" inverseEntity="MGFrameEffect"/>
-        <relationship name="imageUri" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGImageURI" inverseName="card" inverseEntity="MGImageURI"/>
+        <relationship name="imageURI" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGImageURI" inverseName="card" inverseEntity="MGImageURI"/>
         <relationship name="language" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGLanguage" inverseName="cards" inverseEntity="MGLanguage"/>
         <relationship name="layout" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGLayout" inverseName="cards" inverseEntity="MGLayout"/>
         <relationship name="otherLanguages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="otherLanguages" inverseEntity="MGCard"/>
@@ -89,7 +89,7 @@
         <relationship name="watermark" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGWatermark" inverseName="cards" inverseEntity="MGWatermark"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
-                <constraint value="newId"/>
+                <constraint value="newID"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
@@ -120,13 +120,12 @@
         <attribute name="dateUpdated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="directLow" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="high" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="isFoil" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="low" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="market" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="median" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGCard" inverseName="prices" inverseEntity="MGCard"/>
-        <relationship name="store" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGStore" inverseName="prices" inverseEntity="MGStore"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="id"/>
@@ -244,7 +243,7 @@
         <attribute name="artCrop" optional="YES" attributeType="String"/>
         <attribute name="normal" optional="YES" attributeType="String"/>
         <attribute name="png" optional="YES" attributeType="String"/>
-        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGCard" inverseName="imageUri" inverseEntity="MGCard"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGCard" inverseName="imageURI" inverseEntity="MGCard"/>
     </entity>
     <entity name="MGLanguage" representedClassName=".MGLanguage" syncable="YES">
         <attribute name="code" optional="YES" attributeType="String">
@@ -365,7 +364,7 @@
         <attribute name="myYearSection" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="releaseDate" optional="YES" attributeType="String"/>
-        <attribute name="tcgPlayerId" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES">
+        <attribute name="tcgPlayerID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES">
             <userInfo>
                 <entry key="sync.remoteKey" value="tcgplayer_id"/>
             </userInfo>
@@ -414,21 +413,6 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
-    <entity name="MGStore" representedClassName=".MGStore" syncable="YES">
-        <attribute name="name" optional="YES" attributeType="String">
-            <userInfo>
-                <entry key="hyper.isPrimaryKey" value="true"/>
-                <entry key="sync.isPrimaryKey" value="true"/>
-            </userInfo>
-        </attribute>
-        <attribute name="nameSection" optional="YES" attributeType="String"/>
-        <relationship name="prices" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardPrice" inverseName="store" inverseEntity="MGCardPrice"/>
-        <uniquenessConstraints>
-            <uniquenessConstraint>
-                <constraint value="name"/>
-            </uniquenessConstraint>
-        </uniquenessConstraints>
-    </entity>
     <entity name="MGWatermark" representedClassName=".MGWatermark" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String">
             <userInfo>
@@ -449,7 +433,7 @@
         <element name="MGCard" positionX="519.582763671875" positionY="-34.71113586425781" width="128" height="989"/>
         <element name="MGCardComponentPart" positionX="0" positionY="144" width="128" height="89"/>
         <element name="MGCardFormatLegality" positionX="-27" positionY="135" width="128" height="89"/>
-        <element name="MGCardPrice" positionX="-9" positionY="135" width="128" height="194"/>
+        <element name="MGCardPrice" positionX="-9" positionY="135" width="128" height="179"/>
         <element name="MGCardType" positionX="27" positionY="189" width="128" height="119"/>
         <element name="MGColor" positionX="18" positionY="180" width="128" height="119"/>
         <element name="MGComponent" positionX="-9" positionY="135" width="128" height="74"/>
@@ -467,7 +451,6 @@
         <element name="MGSet" positionX="-63" positionY="-18" width="128" height="299"/>
         <element name="MGSetBlock" positionX="-18" positionY="144" width="128" height="89"/>
         <element name="MGSetType" positionX="-27" positionY="135" width="128" height="74"/>
-        <element name="MGStore" positionX="-9" positionY="135" width="128" height="74"/>
         <element name="MGWatermark" positionX="-27" positionY="135" width="128" height="74"/>
     </elements>
 </model>

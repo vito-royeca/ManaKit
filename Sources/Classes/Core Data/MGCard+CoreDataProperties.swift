@@ -19,14 +19,14 @@ extension MGCard {
         return request
     }
 
-    @NSManaged public var arenaId: String?
-    @NSManaged public var cardBackId: String?
+    @NSManaged public var arenaID: String?
+    @NSManaged public var cardBackID: String?
     @NSManaged public var cmc: Double
     @NSManaged public var collectorNumber: String?
     @NSManaged public var faceOrder: Int32
     @NSManaged public var flavorText: String?
     @NSManaged public var handModifier: String?
-    @NSManaged public var illustrationId: String?
+    @NSManaged public var illustrationID: String?
     @NSManaged public var isBooster: Bool
     @NSManaged public var isDigital: Bool
     @NSManaged public var isFoil: Bool
@@ -42,21 +42,21 @@ extension MGCard {
     @NSManaged public var lifeModifier: String?
     @NSManaged public var loyalty: String?
     @NSManaged public var manaCost: String?
-    @NSManaged public var mtgoFoilId: String?
-    @NSManaged public var mtgoId: String?
-    @NSManaged public var multiverseIds: Data?
+    @NSManaged public var mtgoFoilID: String?
+    @NSManaged public var mtgoID: String?
+    @NSManaged public var multiverseIDs: Data?
     @NSManaged public var myNameSection: String?
     @NSManaged public var myNumberOrder: Double
     @NSManaged public var name: String?
-    @NSManaged public var newId: String
-    @NSManaged public var oracleId: String?
+    @NSManaged public var newID: String
+    @NSManaged public var oracleID: String?
     @NSManaged public var oracleText: String?
     @NSManaged public var power: String?
     @NSManaged public var printedName: String?
     @NSManaged public var printedText: String?
     @NSManaged public var printedTypeLine: String?
     @NSManaged public var releasedAt: String?
-    @NSManaged public var tcgPlayerId: Int64
+    @NSManaged public var tcgPlayerID: Int64
     @NSManaged public var toughness: String?
     @NSManaged public var typeLine: String?
     @NSManaged public var artist: MGArtist?
@@ -69,7 +69,7 @@ extension MGCard {
     @NSManaged public var formatLegalities: NSSet?
     @NSManaged public var frame: MGFrame?
     @NSManaged public var frameEffects: NSSet?
-    @NSManaged public var imageUri: MGImageURI?
+    @NSManaged public var imageURI: MGImageURI?
     @NSManaged public var language: MGLanguage?
     @NSManaged public var layout: MGLayout?
     @NSManaged public var otherLanguages: NSSet?

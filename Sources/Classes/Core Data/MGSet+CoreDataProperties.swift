@@ -30,7 +30,7 @@ extension MGSet {
     @NSManaged public var myYearSection: String?
     @NSManaged public var name: String?
     @NSManaged public var releaseDate: String?
-    @NSManaged public var tcgPlayerId: Int32
+    @NSManaged public var tcgPlayerID: Int32
     @NSManaged public var cards: NSSet?
     @NSManaged public var children: NSSet?
     @NSManaged public var languages: NSSet?

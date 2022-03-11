@@ -12,11 +12,11 @@ import SDWebImageSwiftUI
 
 struct CardView: View {
     @ObservedObject var viewModel = CardViewModel()
-    var newId: String
+    var newID: String
     
-    init(newId: String) {
-        self.newId = newId
-        viewModel.newId = newId
+    init(newID: String) {
+        self.newID = newID
+        viewModel.newID = newID
     }
     
     var body: some View {
@@ -34,58 +34,58 @@ struct CardView: View {
                            height: geometry.size.height/2,
                            alignment: .center)
 
-//                Group {
-//                    CardTextRowView(title: viewModel.card?.displayName ?? "", subtitle: "Name")
-//                    HStack {
-//                        Text("Mana Cost")
-//                            .font(.headline)
-//                        Spacer()
-//                        AttributedText(
-//                            NSAttributedString(symbol: viewModel.card?.manaCost ?? "", pointSize: 16)
-//                        )
-//                            .multilineTextAlignment(.trailing)
-//                    }
-//                    CardTextRowView(title: viewModel.card?.displayTypeLine ?? "", subtitle: "Type")
-//                    CardTextRowView(title: viewModel.card?.set?.name ?? "", subtitle: "Set")
-//                    HStack {
-//                        Text("Set Symbol")
-//                            .font(.headline)
-//                        Spacer()
-//                        Text(viewModel.card?.displayKeyrune ?? "")
-//                            .scaledToFit()
-//                            .font(Font.custom("Keyrune", size: 30))
-//                            .foregroundColor(Color(viewModel.card?.keyruneColor() ?? .black))
-//                    }
-//
-//                    CardTextRowView(title: viewModel.card?.rarity?.name ?? "", subtitle: "Rarity")
-//                    VStack(alignment: .leading) {
-//                        Text("Oracle Text")
-//                            .font(.headline)
-//                        Spacer()
-//                        AttributedText(
-//                            NSAttributedString(symbol: viewModel.card?.oracleText ?? "", pointSize: 16)
-//                        )
-//                            .font(.subheadline)
-//                    }
-//                    VStack(alignment: .leading) {
-//                        Text("Printed Text")
-//                            .font(.headline)
-//                        Spacer()
-//                        AttributedText(
-//                            NSAttributedString(symbol: viewModel.card?.printedText ?? "", pointSize: 16)
-//                        )
-//                            .font(.subheadline)
-//                    }
-//                    VStack(alignment: .leading) {
-//                        Text("Flavor Text")
-//                            .font(.headline)
-//                        Spacer()
-//                        Text(viewModel.card?.displayFlavorText ?? "")
-//                            .font(.subheadline)
-//                            .italic()
-//                    }
-//                    CardTextRowView(title: viewModel.card?.displayPowerToughness ?? "", subtitle: "Power/Toughness")
-//                }
+                Group {
+                    CardTextRowView(title: viewModel.card?.displayName ?? "", subtitle: "Name")
+                    HStack {
+                        Text("Mana Cost")
+                            .font(.headline)
+                        Spacer()
+                        AttributedText(
+                            NSAttributedString(symbol: viewModel.card?.manaCost ?? "", pointSize: 16)
+                        )
+                            .multilineTextAlignment(.trailing)
+                    }
+                    CardTextRowView(title: viewModel.card?.displayTypeLine ?? "", subtitle: "Type")
+                    CardTextRowView(title: viewModel.card?.set?.name ?? "", subtitle: "Set")
+                    HStack {
+                        Text("Set Symbol")
+                            .font(.headline)
+                        Spacer()
+                        Text(viewModel.card?.displayKeyrune ?? "")
+                            .scaledToFit()
+                            .font(Font.custom("Keyrune", size: 30))
+                            .foregroundColor(Color(viewModel.card?.keyruneColor() ?? .black))
+                    }
+
+                    CardTextRowView(title: viewModel.card?.rarity?.name ?? "", subtitle: "Rarity")
+                    VStack(alignment: .leading) {
+                        Text("Oracle Text")
+                            .font(.headline)
+                        Spacer()
+                        AttributedText(
+                            NSAttributedString(symbol: viewModel.card?.oracleText ?? "", pointSize: 16)
+                        )
+                            .font(.subheadline)
+                    }
+                    VStack(alignment: .leading) {
+                        Text("Printed Text")
+                            .font(.headline)
+                        Spacer()
+                        AttributedText(
+                            NSAttributedString(symbol: viewModel.card?.printedText ?? "", pointSize: 16)
+                        )
+                            .font(.subheadline)
+                    }
+                    VStack(alignment: .leading) {
+                        Text("Flavor Text")
+                            .font(.headline)
+                        Spacer()
+                        Text(viewModel.card?.displayFlavorText ?? "")
+                            .font(.subheadline)
+                            .italic()
+                    }
+                    CardTextRowView(title: viewModel.card?.displayPowerToughness ?? "", subtitle: "Power/Toughness")
+                }
 //                Group {
 //                    CardTextRowView(title: viewModel.card?.loyalty ?? "", subtitle: "Loyalty")
 //                    CardTextRowView(title: viewModel.card?.artist?.name ?? "", subtitle: "Artist")
@@ -127,9 +127,8 @@ struct CardView: View {
                 .overlay(
                     Group {
                         if viewModel.isBusy {
-//                            ProgressView()
-//                                .progressViewStyle(.circular)
-                            Text("Loading...")
+                            ProgressView()
+                                .progressViewStyle(.circular)
                         } else {
                             EmptyView()
                         }
@@ -143,7 +142,7 @@ struct CardView: View {
 
 struct CardView_Previews: PreviewProvider {
     static var previews: some View {
-        let view = CardView(newId: "all_en_116a")
+        let view = CardView(newID: "all_en_116a")
         view.viewModel.dataAPI = MockAPI()
         
         return view

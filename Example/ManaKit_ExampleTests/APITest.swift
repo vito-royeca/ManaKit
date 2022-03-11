@@ -45,14 +45,10 @@ class APITest: XCTestCase {
                                NSSortDescriptor(key: "name", ascending: true)]
         
         var cancellables1 = Set<AnyCancellable>()
-        ManaKit.shared.fetchSets(predicate: nil,
-                                 sortDescriptors: sortDescriptors,
-                                 cancellables: &cancellables1,
+        ManaKit.shared.fetchSets(cancellables: &cancellables1,
                                  completion: { result in
             switch result {
-            case .success(let sets):
-                XCTAssert(!sets.isEmpty)
-        
+            case .success:
                 for code in sets.map({ $0.code}) {
                     var cancellables2 = Set<AnyCancellable>()
                     ManaKit.shared.fetchSet(code: code,
@@ -63,20 +59,20 @@ class APITest: XCTestCase {
                         case .success(let set):
                             XCTAssert(set.code == code)
                             
-                            for newId in (ManaKit.shared.find(MCard.self,
+                            for newID in (ManaKit.shared.find(MCard.self,
                                                              properties: nil,
                                                              predicate: NSPredicate(format: "set.code == %@ AND language.code == %@", code, "en"),
                                                              sortDescriptors: nil,
-                                                              createIfNotFound: false) ?? []).map({ $0.newId})  {
+                                                              createIfNotFound: false) ?? []).map({ $0.newID})  {
                                 
                                 var cancellables3 = Set<AnyCancellable>()
                                 
-                                ManaKit.shared.fetchCard(newId: newId,
+                                ManaKit.shared.fetchCard(newID: newID,
                                                          cancellables: &cancellables3,
                                                          completion: { result in
                                     switch result {
                                     case .success(let card):
-                                        XCTAssert(card.newId == newId)
+                                        XCTAssert(card.newID == newID)
                                         expectation.fulfill()
                                     case .failure(let error):
                                         print(error)
@@ -152,8 +148,8 @@ class APITest: XCTestCase {
         let expectation = XCTestExpectation(description: "testFetchCard")
         var cancellables = Set<AnyCancellable>()
         
-        let newId = "emn_en_15a" // Bruna, the Fading Light - for testing component parts
-        ManaKit.shared.fetchCard(newId: newId,
+        let newID = "emn_en_15a" // Bruna, the Fading Light - for testing component parts
+        ManaKit.shared.fetchCard(newID: newID,
                                  cancellables: &cancellables,
                                  completion: { result in
             switch result {

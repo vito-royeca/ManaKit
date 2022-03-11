@@ -21,7 +21,7 @@ struct SetView: View {
     var body: some View {
         List {
             ForEach(viewModel.cards) { card in
-                let cardView = CardView(newId: card.newId)
+                let cardView = CardView(newID: card.newID)
                 NavigationLink(destination: cardView) {
                     CardRowView(card: card)
                 }

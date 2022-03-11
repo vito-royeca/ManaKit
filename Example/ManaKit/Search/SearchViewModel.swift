@@ -47,8 +47,6 @@ class SearchViewModel: NSObject, ObservableObject {
         isBusy.toggle()
         
         dataAPI.fetchCards(query: query,
-                           predicate: nil,
-                           sortDescriptors: nil,
                            cancellables: &cancellables,
                            completion: { result in
             DispatchQueue.main.async {
@@ -103,7 +101,7 @@ extension SearchViewModel {
     func defaultFetchRequest(query: String) -> NSFetchRequest<MGCard> {
         let sortDescriptors = [NSSortDescriptor(key: "set.releaseDate", ascending: false),
                                NSSortDescriptor(key: "name", ascending: true)]
-        let predicate = NSPredicate(format: "newId != nil AND newId != '' AND name CONTAINS[cd] %@ AND collectorNumber != nil ", query)
+        let predicate = NSPredicate(format: "newID != nil AND newID != '' AND name CONTAINS[cd] %@ AND collectorNumber != nil ", query)
         
         let request: NSFetchRequest<MGCard> = MGCard.fetchRequest()
         request.sortDescriptors = sortDescriptors

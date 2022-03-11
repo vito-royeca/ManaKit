@@ -20,12 +20,11 @@ extension MGCardPrice {
     @NSManaged public var dateUpdated: Date?
     @NSManaged public var directLow: Double
     @NSManaged public var high: Double
-    @NSManaged public var id: String?
+    @NSManaged public var id: Int32
     @NSManaged public var isFoil: Bool
     @NSManaged public var low: Double
     @NSManaged public var market: Double
     @NSManaged public var median: Double
     @NSManaged public var card: MGCard?
-    @NSManaged public var store: MGStore?
 
 }

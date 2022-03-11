@@ -15,12 +15,12 @@ class CardViewModel: ObservableObject {
     @Published var card: MGCard?
     @Published var isBusy = false
     
-    var newId: String
+    var newID: String
     var dataAPI: API
     var cancellables = Set<AnyCancellable>()
     
-    init(newId: String = "emn_en_15a", dataAPI: API = ManaKit.shared) {
-        self.newId = newId
+    init(newID: String = "emn_en_15a", dataAPI: API = ManaKit.shared) {
+        self.newID = newID
         self.dataAPI = dataAPI
     }
     
@@ -38,7 +38,7 @@ class CardViewModel: ObservableObject {
         
         isBusy.toggle()
         
-        dataAPI.fetchCard(newId: newId,
+        dataAPI.fetchCard(newID: newID,
                          cancellables: &cancellables,
                          completion: { result in
             DispatchQueue.main.async {
@@ -49,7 +49,6 @@ class CardViewModel: ObservableObject {
                     print(error)
                     self.card = nil
                 }
-                
                 self.isBusy.toggle()
             }
         })

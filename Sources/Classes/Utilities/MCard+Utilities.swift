@@ -122,17 +122,17 @@ extension MGCard {
 
 extension MGCard {
     public func imageURL(for type: CardImageType) -> URL? {
-        guard let imageUri = imageUri else {
+        guard let imageURI = imageURI else {
             return nil
         }
         
         switch type {
         case .artCrop:
-            return URL(string: "\(ManaKit.shared.apiURL)/\(imageUri.artCrop ?? "")")
+            return URL(string: "\(ManaKit.shared.apiURL)/\(imageURI.artCrop ?? "")")
         case .normal:
-            return URL(string: "\(ManaKit.shared.apiURL)/\(imageUri.normal ?? "")")
+            return URL(string: "\(ManaKit.shared.apiURL)/\(imageURI.normal ?? "")")
         case .png:
-            return URL(string: "\(ManaKit.shared.apiURL)/\(imageUri.png ?? "")")
+            return URL(string: "\(ManaKit.shared.apiURL)/\(imageURI.png ?? "")")
         default:
             return nil
         }

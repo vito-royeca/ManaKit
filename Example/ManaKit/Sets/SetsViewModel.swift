@@ -47,9 +47,7 @@ class SetsViewModel: NSObject, ObservableObject {
         
         isBusy.toggle()
         
-        dataAPI.fetchSets(predicate: nil,
-                          sortDescriptors: nil,
-                          cancellables: &cancellables,
+        dataAPI.fetchSets(cancellables: &cancellables,
                           completion: { result in
             DispatchQueue.main.async {
                 switch result {
