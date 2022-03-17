@@ -104,9 +104,7 @@ class APITest: XCTestCase {
         let sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: false),
                                NSSortDescriptor(key: "name", ascending: true)]
         var cancellables = Set<AnyCancellable>()
-        ManaKit.shared.fetchSets(predicate: nil,
-                                 sortDescriptors: sortDescriptors,
-                                 cancellables: &cancellables,
+        ManaKit.shared.fetchSets(cancellables: &cancellables,
                                  completion: { result in
             switch result {
             case .success(let sets):
@@ -133,7 +131,7 @@ class APITest: XCTestCase {
                                 completion: { result in
             switch result {
             case .success(let set):
-                XCTAssert(set.code == code)
+                XCTAssert(set?.code == code)
                 expectation.fulfill()
             case .failure(let error):
                 print(error)
@@ -154,7 +152,7 @@ class APITest: XCTestCase {
                                  completion: { result in
             switch result {
             case .success(let card):
-                XCTAssert(card.newId == newId)
+                XCTAssert(card.newID == newID)
                 expectation.fulfill()
             case .failure(let error):
                 print(error)

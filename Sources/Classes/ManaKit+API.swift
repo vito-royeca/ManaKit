@@ -107,7 +107,15 @@ extension ManaKit: API {
     public func fetchCards(query: String,
                            cancellables: inout Set<AnyCancellable>,
                            completion: @escaping (Result<Void, Error>) -> Void) {
-        guard let url = URL(string: "\(apiURL)/search?displayAs=&sortedBy=&orderBy=&query=\(query)&json=true") else {
+        
+        var urlComponents = URLComponents(string: apiURL)
+        urlComponents?.path = "/search"
+        urlComponents?.queryItems = [URLQueryItem(name: "sortedBy", value: ""),
+                                     URLQueryItem(name: "orderBy", value: ""),
+                                     URLQueryItem(name: "query", value: query),
+                                     URLQueryItem(name: "json", value: "true")]
+        
+        guard let url = urlComponents?.url else {
             completion(.failure(ManaKitError.badURL))
             return
         }

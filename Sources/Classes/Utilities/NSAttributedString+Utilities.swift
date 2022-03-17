@@ -43,6 +43,10 @@ public extension NSAttributedString {
                     
                     if cleanCode.lowercased() == "chaos" {
                         cleanCode = "Chaos"
+                    } else if cleanCode.lowercased() == "chaos" {
+                        cleanCode = "Chaos"
+                    } else if cleanCode == "∞" {
+                        cleanCode = "Infinity"
                     }
                     
                     guard let image = ManaKit.shared.symbolImage(name: cleanCode as String) else {

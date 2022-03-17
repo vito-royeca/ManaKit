@@ -60,13 +60,14 @@ class SetViewModel: NSObject, ObservableObject {
                          languageCode: languageCode,
                          cancellables: &cancellables,
                          completion: { result in
-//            DispatchQueue.main.async {
-                
-            
+            DispatchQueue.main.async {
                 switch result {
                 case .success(let set):
                     self.set = set
-                    self.fetchLocalData()
+//                    self.fetchLocalData()
+                    if let cards = set?.cards?.allObjects as? [MGCard] {
+                        self.cards = cards
+                    }
                 case .failure(let error):
                     print(error)
                     self.set = nil
@@ -75,7 +76,7 @@ class SetViewModel: NSObject, ObservableObject {
                 
                 self.isBusy.toggle()
                 print("\(self.set?.code ?? ""): \(self.cards.count)")
-//            }
+            }
         })
     }
     

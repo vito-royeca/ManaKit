@@ -104,7 +104,13 @@ extension ManaKit {
             if !objects.isEmpty {
                 objects.forEach {
                     for (key,value) in properties ?? [:] {
-                        $0.setValue(value, forKey: key)
+                        if let oldValue = $0.value(forKey: key) {
+                            if "\(oldValue)" != "\(value)" {
+                                $0.setValue(value, forKey: key)
+                            }
+                        } else {
+                            $0.setValue(value, forKey: key)
+                        }
                     }
                 }
                 return objects
