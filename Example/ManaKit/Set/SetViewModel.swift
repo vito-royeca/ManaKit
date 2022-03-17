@@ -60,7 +60,9 @@ class SetViewModel: NSObject, ObservableObject {
                          languageCode: languageCode,
                          cancellables: &cancellables,
                          completion: { result in
-            DispatchQueue.main.async {
+//            DispatchQueue.main.async {
+                
+            
                 switch result {
                 case .success(let set):
                     self.set = set
@@ -72,16 +74,22 @@ class SetViewModel: NSObject, ObservableObject {
                 }
                 
                 self.isBusy.toggle()
-            }
+                print("\(self.set?.code ?? ""): \(self.cards.count)")
+//            }
         })
     }
     
     func fetchLocalData() {
-        frc = NSFetchedResultsController(fetchRequest: defaultFetchRequest(setCode: setCode, languageCode: languageCode),
+        guard let set = set else {
+            return
+        }
+        
+        frc = NSFetchedResultsController(fetchRequest: defaultFetchRequest(setCode: set.code, languageCode: "en"),
                                          managedObjectContext: ManaKit.shared.persistentContainer.viewContext,
                                          sectionNameKeyPath: nil,
                                          cacheName: nil)
         frc.delegate = self
+        self.objectWillChange.send()
         
         do {
             try frc.performFetch()
@@ -91,6 +99,11 @@ class SetViewModel: NSObject, ObservableObject {
             self.cards.removeAll()
         }
     }
+    
+    func clearData() {
+        set = nil
+        cards.removeAll()
+    }
 }
 
 // MARK: - NSFetchedResultsControllerDelegate
@@ -99,7 +112,8 @@ extension SetViewModel: NSFetchedResultsControllerDelegate {
         guard let cards = controller.fetchedObjects as? [MGCard] else {
             return
         }
-
+        
+        objectWillChange.send()
         self.cards = cards
     }
 }

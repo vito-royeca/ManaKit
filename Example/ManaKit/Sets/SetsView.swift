@@ -31,8 +31,7 @@ struct SetsView: View {
                     } else {
                         EmptyView()
                     }
-                }
-            )
+                })
             .onAppear {
                 viewModel.fetchData()
             }

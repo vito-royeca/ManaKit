@@ -26,25 +26,15 @@ class MockAPI: API {
     func fetchSets(cancellables: inout Set<AnyCancellable>,
                    completion: @escaping (Result<Void, Error>) -> Void) {
         do {
-            let data = try JSONSerialization.data(withJSONObject: [
-                [
-                    "card_count": Int32(199),
-                    "code": "all",
-                    "keyrune_class": "all",
-                    "keyrune_unicode": "e61a",
-                    "name": "Alliances",
-                    "release_date": "1996-06-10"
-                ],
-                [
-                    "card_count": Int32(208),
-                    "code": "emn",
-                    "keyrune_class": "emn",
-                    "keyrune_unicode": "e90b",
-                    "name": "Eldritch Moon",
-                    "release_date": "2016-07-22"
-                ]
-            ], options: [])
-//            let sets = try decoder.decode([MGSet].self, from: data)
+            let bundle = Bundle(for: MockAPI.self)
+            
+            guard let jsonURL = bundle.url(forResource: "data/sets", withExtension: "json") else {
+                fatalError("Can't load file: data/sets.json")
+            }
+            
+            let data = try Data(contentsOf: jsonURL)
+            let sets = try decoder.decode([MSet].self, from: data)
+            ManaKit.shared.syncToCoreData(sets)
             
             completion(.success(()))
         } catch {
@@ -59,14 +49,22 @@ class MockAPI: API {
         do {
             let bundle = Bundle(for: MockAPI.self)
             
-            guard let jsonURL = bundle.url(forResource: "data/\(code)_en", withExtension: "json") else {
-                fatalError("Can't load file: \(code)_en.json")
+            guard let jsonURL = bundle.url(forResource: "data/emn_en", withExtension: "json") else {
+                fatalError("Can't load file: data/emn_en.json")
             }
             
             let data = try Data(contentsOf: jsonURL)
-//            let sets = try decoder.decode([MGSet].self, from: data)
+            let cards = try decoder.decode([MSet].self, from: data)
+            ManaKit.shared.syncToCoreData(cards)
             
-//            completion(.success(sets[0]))
+            let result = ManaKit.shared.find(MGSet.self,
+                                             properties: nil,
+                                             predicate: NSPredicate(format: "code == %@", "emn"),
+                                             sortDescriptors: nil,
+                                             createIfNotFound: false,
+                                             context: ManaKit.shared.persistentContainer.viewContext)
+            
+            completion(.success(result?.first))
         } catch {
             completion(.failure(JSONDataError.unableToParse))
         }
@@ -89,9 +87,17 @@ class MockAPI: API {
             }
             
             let data = try Data(contentsOf: jsonURL)
-//            let cards = try decoder.decode([MGCard].self, from: data)
+            let cards = try decoder.decode([MCard].self, from: data)
+            ManaKit.shared.syncToCoreData(cards)
             
-//            completion(.success(cards[0]))
+            let result = ManaKit.shared.find(MGCard.self,
+                                             properties: nil,
+                                             predicate: NSPredicate(format: "newID == %@", "emn_en_15a"),
+                                             sortDescriptors: nil,
+                                             createIfNotFound: false,
+                                             context: ManaKit.shared.persistentContainer.viewContext)
+            
+            completion(.success(result?.first))
         } catch {
             completion(.failure(JSONDataError.unableToParse))
         }

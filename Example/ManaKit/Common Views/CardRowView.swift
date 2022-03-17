@@ -19,64 +19,91 @@ struct CardRowView: View {
     }
     
     var body: some View {
-        HStack(spacing: 10) {
-//            ZStack(alignment: .bottomTrailing) {
-                WebImage(url: card.imageURL(for: .artCrop))
-                    .resizable()
-//                    .placeholder(Image("cropback-hq", bundle: .main))
-                    .placeholder {
-                        Rectangle().foregroundColor(.gray)
-                    }
-                    .indicator(.activity)
-                    .transition(.fade(duration: 0.5))
-                    .scaledToFit()
-                    .frame(width: 100, height: 100, alignment: .center)
-                
-//                Text(card.displayKeyrune)
-//                    .scaledToFit()
-//                    .font(Font.custom("Keyrune", size: 30))
-//                    .foregroundColor(Color(card.keyruneColor()))
-//                    .background(RoundedRectangle(cornerRadius: 15).fill(Color.white))
-//            }
-            
+        let font = card.nameFont()
+
+        VStack {
             VStack(alignment: .leading) {
-                let font = card.nameFont()
-                Text(card.displayName)
-                    .font(Font.custom(font.name, size: font.size))
-                
-                HStack {
-                    Text(card.displayTypeLine)
-                        .font(.footnote)
+                if let manaCost = card.manaCost {
+                    ZStack(alignment: .leading) {
+                        Text(card.displayName)
+                            .font(Font.custom(font.name, size: font.size))
 
-                    if !card.displayPowerToughness.isEmpty {
-                        Spacer()
-                        Text(card.displayPowerToughness)
-                            .font(.footnote)
-                    }
-                }
-                
-                HStack {
-                    Text(card.displayKeyrune)
-                        .scaledToFit()
-                        .font(Font.custom("Keyrune", size: 30))
-                        .foregroundColor(Color(card.keyruneColor()))
-
-                    if let manaCost = card.manaCost {
                         Spacer()
                         AttributedText(
                             NSAttributedString(symbol: manaCost, pointSize: 16)
                         )
                             .multilineTextAlignment(.trailing)
                     }
+                } else {
+                    Text(card.displayName)
+                        .font(Font.custom(font.name, size: font.size))
                 }
-                
-                HStack {
-                    Text("Normal \(card.displayNormalPrice)")
-                    Spacer()
-                    Text("Foil \(card.displayFoilPrice)")
+
+                HStack(spacing: 10) {
+                    ZStack(alignment: .bottomLeading) {
+                        WebImage(url: card.imageURL(for: .artCrop))
+                            .resizable()
+                            .placeholder(Image("cropback-hq", bundle: .main))
+                            .placeholder {
+                                Rectangle().foregroundColor(.gray)
+                            }
+                            .indicator(.activity)
+                            .transition(.fade(duration: 0.5))
+                            .scaledToFit()
+                            .frame(width: 100, height: 100, alignment: .center)
+                        
+                        if !card.displayPowerToughness.isEmpty {
+                            Text(card.displayPowerToughness)
+                                .font(.body)
+                                .background(RoundedRectangle(cornerRadius: 5).fill(Color.white))
+                        } else {
+                            EmptyView()
+                        }
+                    }
+
+                    VStack(alignment: .leading) {
+                        HStack(alignment: .top) {
+                            Text(card.displayTypeLine)
+                                .font(.body)
+                            Spacer()
+                            Text(card.displayKeyrune)
+                                .font(Font.custom("Keyrune", size: 20))
+                                .foregroundColor(Color(card.keyruneColor()))
+                        }
+
+                        Spacer()
+                        
+                        HStack {
+                            Text("Normal")
+                                .font(.body)
+                                .foregroundColor(Color.blue)
+                            Spacer()
+                            Text(card.displayNormalPrice)
+                                .font(.body)
+                                .foregroundColor(Color.blue)
+                                .multilineTextAlignment(.trailing)
+                        }
+
+                        HStack {
+                            Text("Foil")
+                                .font(.body)
+                                .foregroundColor(Color.green)
+                            Spacer()
+                            Text(card.displayFoilPrice)
+                                .font(.body)
+                                .foregroundColor(Color.green)
+                                .multilineTextAlignment(.trailing)
+                        }
+                    }
                 }
             }
+                .padding()
         }
+            .cornerRadius(10)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.secondary, lineWidth: 1)
+            )
     }
 }
 

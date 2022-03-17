@@ -49,7 +49,7 @@ class SetsViewModel: NSObject, ObservableObject {
         
         dataAPI.fetchSets(cancellables: &cancellables,
                           completion: { result in
-            DispatchQueue.main.async {
+//            DispatchQueue.main.async {
                 switch result {
                 case .success:
                     self.fetchLocalData()
@@ -59,7 +59,7 @@ class SetsViewModel: NSObject, ObservableObject {
                 }
                 
                 self.isBusy.toggle()
-            }
+//            }
         })
     }
     

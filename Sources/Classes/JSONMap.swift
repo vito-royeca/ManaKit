@@ -12,11 +12,11 @@
 
 import Foundation
 
-protocol MEntity: Codable {
+public protocol MEntity: Codable {
     
 }
 
-enum LanguageCode: String, MEntity {
+public enum LanguageCode: String, MEntity {
     case cs = "CS"
     case ct = "CT"
     case de = "DE"
@@ -30,7 +30,7 @@ enum LanguageCode: String, MEntity {
     case ru = "RU"
 }
 
-enum NameSection: String, MEntity {
+public enum NameSection: String, MEntity {
     case empty = "#"
     case a = "A"
     case b = "B"
@@ -60,7 +60,7 @@ enum NameSection: String, MEntity {
 }
 
 // MARK: - WelcomeElement
-struct MCard: MEntity {
+public struct MCard: MEntity {
     let collectorNumber: String?
     let cmc, faceOrder: Int?
     let flavorText: String?
@@ -91,6 +91,7 @@ struct MCard: MEntity {
     let faces: [MCard]?
     let otherLanguages: [MCard]?
     let otherPrintings: [MCard]?
+    let set: MSet?
     let variations: [MCard]?
     let formatLegalities: [MFormatLegality]?
     let frameEffects: [MFrameEffect]?
@@ -137,28 +138,25 @@ struct MCard: MEntity {
         case printedTypeLine = "printed_type_line"
         case typeLine = "type_line"
         case multiverseIDs = "multiverse_ids"
-        case rarity, language, layout, watermark, frame, artist, colors
         case colorIdentities = "color_identities"
         case colorIndicators = "color_indicators"
         case componentParts = "component_parts"
-        case faces
-        case otherLanguages = "other_languages"
-        case otherPrintings = "other_printings"
-        case variations
         case formatLegalities = "format_legalities"
         case frameEffects = "frame_effects"
-        case subtypes, supertypes, prices, rulings
         case imageURIs = "image_uris"
+        case otherLanguages = "other_languages"
+        case otherPrintings = "other_printings"
+        case artist, colors, faces, frame, language, layout, set, subtypes, supertypes, prices, rarity, rulings, variations, watermark
     }
 }
 
 // MARK: - Artist
-struct MArtist: MEntity {
+public struct MArtist: MEntity {
     let name: String
 }
 
 // MARK: - Color
-struct MColor: MEntity {
+public struct MColor: MEntity {
     let name: String
     let nameSection: NameSection?
     let symbol: String?
@@ -171,7 +169,7 @@ struct MColor: MEntity {
 }
 
 // MARK: - Component
-struct MComponent: MEntity {
+public struct MComponent: MEntity {
     let name: String
     let nameSection: NameSection
 
@@ -182,7 +180,7 @@ struct MComponent: MEntity {
 }
 
 // MARK: - ComponentPart
-struct MComponentPart: MEntity {
+public struct MComponentPart: MEntity {
     let component: MComponent
     let card: MCard
 
@@ -193,7 +191,7 @@ struct MComponentPart: MEntity {
 }
 
 // MARK: - Format
-struct MFormat: MEntity {
+public struct MFormat: MEntity {
     let name: String
     let nameSection: NameSection
 
@@ -204,38 +202,40 @@ struct MFormat: MEntity {
 }
 
 // MARK: - FormatLegality
-struct MFormatLegality: MEntity {
+public struct MFormatLegality: MEntity {
     let format: MFormat
     let legality: MLegality
 }
 
 // MARK: - Frame
-struct MFrame: MEntity {
+public struct MFrame: MEntity {
     let description_: String?
     let name: String
     let nameSection: NameSection?
  
     enum CodingKeys: String, CodingKey {
-        case name, description_
+        case name
+        case description_ = "description"
         case nameSection = "name_section"
     }
 }
 
 // MARK: - FrameEffect
-struct MFrameEffect: MEntity {
+public struct MFrameEffect: MEntity {
     let id: String
     let description_: String
     let name: String
     let nameSection: NameSection
  
     enum CodingKeys: String, CodingKey {
-        case id, name, description_
+        case id, name
+        case description_ = "description"
         case nameSection = "name_section"
     }
 }
 
 // MARK: - ImageUris
-struct MImageURI: MEntity {
+public struct MImageURI: MEntity {
     let artCrop, normal, png: String
 
     enum CodingKeys: String, CodingKey {
@@ -245,7 +245,7 @@ struct MImageURI: MEntity {
 }
 
 // MARK: - Language
-struct MLanguage: MEntity {
+public struct MLanguage: MEntity {
     let code: String
     let displayCode: LanguageCode?
     let name: String?
@@ -260,7 +260,7 @@ struct MLanguage: MEntity {
 }
 
 // MARK: - Layout
-struct MLayout: MEntity {
+public struct MLayout: MEntity {
     let name: String
     let nameSection: NameSection?
     let description_: String?
@@ -273,7 +273,7 @@ struct MLayout: MEntity {
 }
 
 // MARK: - Legality
-struct MLegality: MEntity {
+public struct MLegality: MEntity {
     let name: String
     let nameSection: NameSection
 
@@ -284,12 +284,12 @@ struct MLegality: MEntity {
 }
 
 // MARK: - Parent
-struct MParent: MEntity {
+public struct MParent: MEntity {
     let code: String
 }
 
 // MARK: - Price
-struct MPrice: MEntity {
+public struct MPrice: MEntity {
     let id: Int32?
     let low, median, high, market: Double?
     let directLow: Double?
@@ -305,7 +305,7 @@ struct MPrice: MEntity {
 }
 
 // MARK: - Rarity
-struct MRarity: MEntity {
+public struct MRarity: MEntity {
     let name: String
     let nameSection: NameSection?
 
@@ -316,7 +316,7 @@ struct MRarity: MEntity {
 }
 
 // MARK: - Ruling
-struct MRuling: MEntity {
+public struct MRuling: MEntity {
     let id: Int
     let datePublished, text: String
 
@@ -328,7 +328,7 @@ struct MRuling: MEntity {
 }
 
 // MARK: - MSet
-struct MSet: MEntity {
+public struct MSet: MEntity {
     let cardCount: Int?
     let code: String
     let isFoilOnly, isOnlineOnly: Bool?
@@ -365,7 +365,7 @@ struct MSet: MEntity {
 }
 
 // MARK: - SetBlock
-struct MSetBlock: MEntity {
+public struct MSetBlock: MEntity {
     let code: String
     let displayCode: String?
     let name: String
@@ -380,7 +380,7 @@ struct MSetBlock: MEntity {
 }
 
 // MARK: - SetType
-struct MSetType: MEntity {
+public struct MSetType: MEntity {
     let name: String
     let nameSection: NameSection
 
@@ -391,12 +391,12 @@ struct MSetType: MEntity {
 }
 
 // MARK: - Type
-struct MType: MEntity {
+public struct MType: MEntity {
     let name: String
 }
 
 // MARK: - Watermark
-struct MWatermark: MEntity {
+public struct MWatermark: MEntity {
     let name: String
     let nameSection: NameSection
 

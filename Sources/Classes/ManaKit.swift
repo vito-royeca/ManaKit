@@ -25,10 +25,10 @@ public class ManaKit {
     public enum Fonts {
         public static let preEightEdition      = Font(name: "Magic:the Gathering", size: 17.0)
         public static let preEightEditionSmall = Font(name: "Magic:the Gathering", size: 15.0)
-        public static let eightEdition         = Font(name: "Matrix-Bold", size: 17.0)
-        public static let eightEditionSmall    = Font(name: "Matrix-Bold", size: 15.0)
-        public static let magic2015            = Font(name: "Beleren", size: 17.0)
-        public static let magic2015Small       = Font(name: "Beleren", size: 15.0)
+        public static let eightEdition         = Font(name: "Matrix-Bold", size: 18.0)
+        public static let eightEditionSmall    = Font(name: "Matrix-Bold", size: 16.0)
+        public static let magic2015            = Font(name: "Beleren", size: 16.0)
+        public static let magic2015Small       = Font(name: "Beleren", size: 14.0)
     }
 
     public enum Constants {

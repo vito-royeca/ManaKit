@@ -42,8 +42,6 @@ extension ManaKit {
                                 url: URL,
                                 cancellables: inout Set<AnyCancellable>,
                                 completion: @escaping (Result<Void, Error>) -> Void) {
-//        let context = persistentContainer.viewContext
-        
         let success = {
             self.saveCache(forUrl: url)
             completion(.success(()))
@@ -87,12 +85,12 @@ extension ManaKit {
         }
     }
     
-    func find<T: MGEntity>(_ entity: T.Type,
-                           properties: [String: Any]?,
-                           predicate: NSPredicate?,
-                           sortDescriptors: [NSSortDescriptor]?,
-                           createIfNotFound: Bool,
-                           context: NSManagedObjectContext) -> [T]? {
+    public func find<T: MGEntity>(_ entity: T.Type,
+                                  properties: [String: Any]?,
+                                  predicate: NSPredicate?,
+                                  sortDescriptors: [NSSortDescriptor]?,
+                                  createIfNotFound: Bool,
+                                  context: NSManagedObjectContext) -> [T]? {
         
         let entityName = String(describing: entity)
         
@@ -183,24 +181,28 @@ extension ManaKit {
     public func saveContext () {
         let context = persistentContainer.viewContext
 
-        if context.hasChanges {
-            do {
-                try context.performAndWait {
-                    try context.save()
-                }
-            } catch {
-                print(error)
+        guard context.hasChanges else {
+            return
+        }
+        
+        do {
+            try context.performAndWait {
+                try context.save()
             }
+        } catch {
+            print(error)
         }
     }
 
     func save(context: NSManagedObjectContext) {
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                print(error)
-            }
+        guard context.hasChanges else {
+            return
+        }
+        
+        do {
+            try context.save()
+        } catch {
+            print(error)
         }
     }
     

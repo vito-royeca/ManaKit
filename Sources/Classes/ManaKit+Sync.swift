@@ -9,7 +9,7 @@ import Foundation
 import CoreData
 
 extension ManaKit {
-    func syncToCoreData<T: MEntity>(_ entities: [T]) {
+    public func syncToCoreData<T: MEntity>(_ entities: [T]) {
         if let sets = entities as? [MSet] {
             sync(sets)
         } else if let cards = entities as? [MCard] {
@@ -72,12 +72,8 @@ extension ManaKit {
     
     // MARK: - SetType
     func card<T: MGEntity>(from card: MCard, context: NSManagedObjectContext, type: T.Type) -> T? {
-//        if let baseID = baseID,
-//            card.newID == baseID {
-//            return nil
-//        }
-
         var props = [String: Any]()
+
         if let collectorNumber = card.collectorNumber {
             props["collectorNumber"] = collectorNumber
         }
@@ -208,6 +204,14 @@ extension ManaKit {
 //                    newCard.addToFaces(y)
 //                }
 //            }
+            if let x = card.frame {
+                newCard.frame = frame(from: x, context: context, type: MGFrame.self)
+            }
+            for x in card.frameEffects ?? [] {
+                if let y = frameEffect(from: x, context: context, type: MGFrameEffect.self) {
+                    newCard.addToFrameEffects(y)
+                }
+            }
             for x in card.imageURIs ?? [] {
                 newCard.imageURI = imageURI(from: x, context: context, type: MGImageURI.self)
             }
@@ -235,6 +239,9 @@ extension ManaKit {
             if let x = card.rarity {
                 newCard.rarity = rarity(from: x, context: context, type: MGRarity.self)
             }
+            if let x = card.set {
+                newCard.set = set(from: x, context: context, type: MGSet.self)
+            }
 //            for x in card.variations ?? [] {
 //                if let y = self.card(from: x, context: context, type: MGCard.self) {
 //                    newCard.addToVariations(y)
@@ -244,7 +251,6 @@ extension ManaKit {
                 newCard.watermark = watermark(from: x, context: context, type: MGWatermark.self)
             }
             
-//        let frame: MFrame?
 //        let colors, colorIdentities, colorIndicators: [MColor]?
 //        let componentParts: [MComponentPart]?
 //        let faces: [MCard]?
@@ -257,6 +263,45 @@ extension ManaKit {
         } else {
             return nil
         }
+    }
+    
+    // MARK: - Frame
+    func frame<T: MGEntity>(from frame: MFrame, context: NSManagedObjectContext, type: T.Type) -> T? {
+        var props = [String: Any]()
+        props["name"] = frame.name
+        if let description_ = frame.description_ {
+            props["description_"] = description_
+        }
+        if let nameSection = frame.nameSection {
+            props["nameSection"] = nameSection.rawValue
+        }
+        
+        let predicate = NSPredicate(format: "name = %@", frame.name)
+        
+        return find(type,
+                    properties: props,
+                    predicate: predicate,
+                    sortDescriptors: nil,
+                    createIfNotFound: true,
+                    context: context)?.first
+    }
+    
+    // MARK: - FrameEffect
+    func frameEffect<T: MGEntity>(from frameEffect: MFrameEffect, context: NSManagedObjectContext, type: T.Type) -> T? {
+        var props = [String: Any]()
+        props["id"] = frameEffect.id
+        props["description_"] = frameEffect.description_
+        props["name"] = frameEffect.name
+        props["nameSection"] = frameEffect.nameSection.rawValue
+        
+        let predicate = NSPredicate(format: "id = %@", frameEffect.id)
+        
+        return find(type,
+                    properties: props,
+                    predicate: predicate,
+                    sortDescriptors: nil,
+                    createIfNotFound: true,
+                    context: context)?.first
     }
     
     // MARK: - ImageURI

@@ -16,15 +16,18 @@ struct SetView: View {
     init(setCode: String, languageCode: String) {
         viewModel.setCode = setCode
         viewModel.languageCode = languageCode
+        
+        UITableView.appearance().allowsSelection = false
+        UITableViewCell.appearance().selectionStyle = .none
     }
     
     var body: some View {
         List {
             ForEach(viewModel.cards) { card in
                 let cardView = CardView(newID: card.newID)
-                NavigationLink(destination: cardView) {
-                    CardRowView(card: card)
-                }
+                CardRowView(card: card)
+                    .background(NavigationLink("", destination: cardView).opacity(0))
+                    .listRowSeparator(.hidden)
             }
         }
             .listStyle(.plain)
@@ -37,10 +40,13 @@ struct SetView: View {
                     } else {
                         EmptyView()
                     }
-            })
+                })
             .onAppear {
                 viewModel.fetchData()
             }
+//            .onDisappear {
+//                viewModel.clearData()
+//            }
     }
 }
 

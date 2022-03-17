@@ -15,6 +15,11 @@ struct SearchView: View {
     @State var query: String?
     @State var scopeSelection: Int = 0
     
+    init() {
+        UITableView.appearance().allowsSelection = false
+        UITableViewCell.appearance().selectionStyle = .none
+    }
+    
     var body: some View {
         SearchNavigation(query: $query,
                          scopeSelection: $scopeSelection,
@@ -23,9 +28,9 @@ struct SearchView: View {
             List {
                 ForEach(viewModel.cards) { card in
                     let cardView = CardView(newID: card.newID)
-                    NavigationLink(destination: cardView) {
-                        CardRowView(card: card)
-                    }
+                    CardRowView(card: card)
+                        .background(NavigationLink("", destination: cardView).opacity(0))
+                        .listRowSeparator(.hidden)
                 }
             }
                 .listStyle(.plain)
@@ -39,7 +44,7 @@ struct SearchView: View {
                         else {
                             EmptyView()
                         }
-                })
+                    })
         }
     }
 }
