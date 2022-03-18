@@ -13,6 +13,9 @@
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		76A3B7A734A6AACE84F27C9A /* Pods_ManaKit_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0DFAAD42C95E0F12AD65AE0 /* Pods_ManaKit_Example.framework */; };
+		8B17AA2C27E39702009471C5 /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B17AA2B27E39702009471C5 /* LazyView.swift */; };
+		8B17AA2D27E39702009471C5 /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B17AA2B27E39702009471C5 /* LazyView.swift */; };
+		8B17AA2E27E39702009471C5 /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B17AA2B27E39702009471C5 /* LazyView.swift */; };
 		8B379A3C23A57DFE005D0171 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B379A3B23A57DFD005D0171 /* Images.xcassets */; };
 		8B379A8223A58568005D0171 /* (null) in Embed Frameworks */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8B4219F6255A597C00F7B8AE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4219F5255A597C00F7B8AE /* SceneDelegate.swift */; };
@@ -85,6 +88,7 @@
 		607FACDA1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		790E2C95DAEEFCC5990EEE22 /* ManaKit.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = ManaKit.podspec; path = ../ManaKit.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		8B17AA2B27E39702009471C5 /* LazyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyView.swift; sourceTree = "<group>"; };
 		8B379A3B23A57DFD005D0171 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8B379A4C23A58175005D0171 /* ManaKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ManaKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B379A6023A581E8005D0171 /* ManaKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ManaKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -313,6 +317,7 @@
 			children = (
 				8B4EB8E5278B63FC0002922D /* CardRowView.swift */,
 				8B4EB8E7278B66690002922D /* SearchNavigation.swift */,
+				8B17AA2B27E39702009471C5 /* LazyView.swift */,
 			);
 			path = "Common Views";
 			sourceTree = "<group>";
@@ -674,6 +679,7 @@
 				8B426108270FE8A1000DC07D /* SetsViewModel.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				8B4EB8E8278B66690002922D /* SearchNavigation.swift in Sources */,
+				8B17AA2C27E39702009471C5 /* LazyView.swift in Sources */,
 				8BC1A7A4277273F500A2472C /* SetView.swift in Sources */,
 				8BFA8106277BC3D100335176 /* AlignmentGuideView.swift in Sources */,
 				8B4EB8EC278E647A0002922D /* AttributedText.swift in Sources */,
@@ -695,6 +701,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B17AA2D27E39702009471C5 /* LazyView.swift in Sources */,
 				8B70144723B425200097298B /* ManaKit_ExampleUITests.swift in Sources */,
 				8B426109270FE8A1000DC07D /* SetsViewModel.swift in Sources */,
 			);
@@ -704,6 +711,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B17AA2E27E39702009471C5 /* LazyView.swift in Sources */,
 				8B42610A270FE8A1000DC07D /* SetsViewModel.swift in Sources */,
 				8BADF87A27738186004271D7 /* APITest.swift in Sources */,
 			);

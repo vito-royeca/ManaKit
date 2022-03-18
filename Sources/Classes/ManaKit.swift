@@ -37,13 +37,13 @@ public class ManaKit {
     }
     
     public enum ImageName: String {
-        case cardCircles       = "images/Card_Circles",
-        cardBackCropped        = "images/cardback-crop-hq",
-        cardBack               = "images/cardback-hq",
-        collectorsCardBack     = "images/collectorscardback-hq",
-        cropBack               = "images/cropback-hq",
-        grayPatterned          = "images/Gray_Patterned_BG",
-        intlCollectorsCardBack = "images/internationalcollectorscardback-hq"
+        case cardCircles            = "images/Card_Circles",
+             cardBackCropped        = "images/cardback-crop-hq",
+             cardBack               = "images/cardback-hq",
+             collectorsCardBack     = "images/collectorscardback-hq",
+             cropBack               = "images/cropback-hq",
+             grayPatterned          = "images/Gray_Patterned_BG",
+             intlCollectorsCardBack = "images/internationalcollectorscardback-hq"
     }
     
     public enum UserDefaultsKeys {

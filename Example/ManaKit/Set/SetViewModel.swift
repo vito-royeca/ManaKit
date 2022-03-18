@@ -40,12 +40,11 @@ class SetViewModel: NSObject, ObservableObject {
     }
     
     deinit {
+        print("deinit setViewModel \(setCode)")
+        
         cancellables.forEach {
             $0.cancel()
         }
-        
-        set = nil
-        cards.removeAll()
     }
     
     // MARK: - Methods
@@ -64,10 +63,7 @@ class SetViewModel: NSObject, ObservableObject {
                 switch result {
                 case .success(let set):
                     self.set = set
-//                    self.fetchLocalData()
-                    if let cards = set?.cards?.allObjects as? [MGCard] {
-                        self.cards = cards
-                    }
+                    self.fetchLocalData()
                 case .failure(let error):
                     print(error)
                     self.set = nil
@@ -90,7 +86,7 @@ class SetViewModel: NSObject, ObservableObject {
                                          sectionNameKeyPath: nil,
                                          cacheName: nil)
         frc.delegate = self
-        self.objectWillChange.send()
+//        self.objectWillChange.send()
         
         do {
             try frc.performFetch()
@@ -99,11 +95,6 @@ class SetViewModel: NSObject, ObservableObject {
             print(error)
             self.cards.removeAll()
         }
-    }
-    
-    func clearData() {
-        set = nil
-        cards.removeAll()
     }
 }
 
@@ -114,7 +105,7 @@ extension SetViewModel: NSFetchedResultsControllerDelegate {
             return
         }
         
-        objectWillChange.send()
+//        objectWillChange.send()
         self.cards = cards
     }
 }

@@ -27,7 +27,6 @@ struct CardRowView: View {
                     ZStack(alignment: .leading) {
                         Text(card.displayName)
                             .font(Font.custom(font.name, size: font.size))
-
                         Spacer()
                         AttributedText(
                             NSAttributedString(symbol: manaCost, pointSize: 16)
@@ -39,31 +38,19 @@ struct CardRowView: View {
                         .font(Font.custom(font.name, size: font.size))
                 }
 
-                HStack(spacing: 10) {
-                    ZStack(alignment: .bottomLeading) {
-                        WebImage(url: card.imageURL(for: .artCrop))
-                            .resizable()
-                            .placeholder(Image("cropback-hq", bundle: .main))
-                            .placeholder {
-                                Rectangle().foregroundColor(.gray)
-                            }
-                            .indicator(.activity)
-                            .transition(.fade(duration: 0.5))
-                            .scaledToFit()
-                            .frame(width: 100, height: 100, alignment: .center)
-                        
-                        if !card.displayPowerToughness.isEmpty {
-                            Text(card.displayPowerToughness)
-                                .font(.body)
-                                .background(RoundedRectangle(cornerRadius: 5).fill(Color.white))
-                        } else {
-                            EmptyView()
-                        }
-                    }
-
+                HStack(spacing: 20) {
+                    WebImage(url: card.imageURL(for: .artCrop))
+                        .resizable()
+                        .placeholder(Image(uiImage: ManaKit.shared.image(name: .cropBack)!))
+                        .indicator(.activity)
+                        .transition(.fade(duration: 0.5))
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 100, height: 100, alignment: .center)
+                        .clipped()
+                    
                     VStack(alignment: .leading) {
                         HStack(alignment: .top) {
-                            Text(card.displayTypeLine)
+                            Text("\(card.displayTypeLine) \(card.displayPowerToughness)")
                                 .font(.body)
                             Spacer()
                             Text(card.displayKeyrune)

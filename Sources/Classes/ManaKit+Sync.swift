@@ -55,6 +55,19 @@ extension ManaKit {
         save(context: context)
     }
     
+    func nameSection(for name: String) -> String? {
+        if name.count == 0 {
+            return nil
+        } else {
+            let letters = CharacterSet.letters
+            var prefix = String(name.prefix(1))
+            if prefix.rangeOfCharacter(from: letters) == nil {
+                prefix = "#"
+            }
+            return prefix.uppercased().folding(options: .diacriticInsensitive, locale: .current)
+        }
+    }
+    
     // MARK: - Artist
     func artist<T: MGEntity>(from artist: MArtist, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
@@ -115,6 +128,8 @@ extension ManaKit {
         }
         if let myNameSection = card.myNameSection {
             props["myNameSection"] = myNameSection.rawValue
+        } else {
+            props["myNameSection"] = nameSection(for: card.name ?? "")
         }
         if let myNumberOrder = card.myNumberOrder {
             props["myNumberOrder"] = myNumberOrder
@@ -199,11 +214,36 @@ extension ManaKit {
             if let x = card.artist {
                 newCard.artist = artist(from: x, context: context, type: MGArtist.self)
             }
+            for x in card.colors ?? [] {
+                if let y = color(from: x, context: context, type: MGColor.self) {
+                    newCard.addToColors(y)
+                }
+            }
+            for x in card.colorIdentities ?? [] {
+                if let y = color(from: x, context: context, type: MGColor.self) {
+                    newCard.addToColorIdentities(y)
+                }
+            }
+            for x in card.colorIndicators ?? [] {
+                if let y = color(from: x, context: context, type: MGColor.self) {
+                    newCard.addToColorIndicators(y)
+                }
+            }
+            for x in card.componentParts ?? [] {
+                if let y = componentPart(from: x, part: card, context: context, type: MGCardComponentPart.self) {
+                    newCard.addToComponentParts(y)
+                }
+            }
 //            for x in card.faces ?? [] {
 //                if let y = self.card(from: x, context: context, type: MGCard.self) {
 //                    newCard.addToFaces(y)
 //                }
 //            }
+            for x in card.formatLegalities ?? [] {
+                if let y = formatLegality(from: x, part: card, context: context, type: MGCardFormatLegality.self) {
+                    newCard.addToFormatLegalities(y)
+                }
+            }
             if let x = card.frame {
                 newCard.frame = frame(from: x, context: context, type: MGFrame.self)
             }
@@ -221,16 +261,16 @@ extension ManaKit {
             if let x = card.layout {
                 newCard.layout = layout(from: x, context: context, type: MGLayout.self)
             }
-//            for x in card.otherLanguages ?? [] {
-//                if let y = self.card(from: x, context: context, type: MGCard.self) {
-//                    newCard.addToOtherLanguages(y)
-//                }
-//            }
-//                for x in card.otherPrintings ?? [] {
-//                    if let y = self.card(from: x, baseID: card.newID, context: context, type: MGCard.self) {
-//                        newCard.addToOtherPrintings(y)
-//                    }
-//                }
+            for x in card.otherLanguages ?? [] {
+                if let y = self.card(from: x, context: context, type: MGCard.self) {
+                    newCard.addToOtherLanguages(y)
+                }
+            }
+            for x in card.otherPrintings ?? [] {
+                if let y = self.card(from: x, context: context, type: MGCard.self) {
+                    newCard.addToOtherPrintings(y)
+                }
+            }
             for x in card.prices ?? [] {
                 if let y = price(from: x, context: context, type: MGCardPrice.self) {
                     newCard.addToPrices(y)
@@ -239,30 +279,171 @@ extension ManaKit {
             if let x = card.rarity {
                 newCard.rarity = rarity(from: x, context: context, type: MGRarity.self)
             }
+            for x in card.rulings ?? [] {
+                if let y = self.ruling(from: x, context: context, type: MGRuling.self) {
+                    newCard.addToRulings(y)
+                }
+            }
             if let x = card.set {
                 newCard.set = set(from: x, context: context, type: MGSet.self)
             }
-//            for x in card.variations ?? [] {
-//                if let y = self.card(from: x, context: context, type: MGCard.self) {
-//                    newCard.addToVariations(y)
-//                }
-//            }
+            for x in card.subtypes ?? [] {
+                if let y = self.cardType(from: x, context: context, type: MGCardType.self) {
+                    newCard.addToSubtypes(y)
+                }
+            }
+            for x in card.supertypes ?? [] {
+                if let y = self.cardType(from: x, context: context, type: MGCardType.self) {
+                    newCard.addToSupertypes(y)
+                }
+            }
+            for x in card.variations ?? [] {
+                if let y = self.card(from: x, context: context, type: MGCard.self) {
+                    newCard.addToVariations(y)
+                }
+            }
             if let x = card.watermark {
                 newCard.watermark = watermark(from: x, context: context, type: MGWatermark.self)
             }
             
-//        let colors, colorIdentities, colorIndicators: [MColor]?
-//        let componentParts: [MComponentPart]?
 //        let faces: [MCard]?
-//        let formatLegalities: [MFormatLegality]?
-//        let frameEffects: [MFrameEffect]?
-//        let subtypes, supertypes: [MType]?
-//        let rulings: [MRuling]?
 
             return newCard as? T
         } else {
             return nil
         }
+    }
+    
+    // MARK: - CardType
+    func cardType<T: MGEntity>(from cardType: MCardType, context: NSManagedObjectContext, type: T.Type) -> T? {
+        var props = [String: Any]()
+        props["name"] = cardType.name
+        if let nameSection = cardType.nameSection {
+            props["nameSection"] = nameSection.rawValue
+        } else {
+            props["nameSection"] = nameSection(for: cardType.name)
+        }
+        
+        let predicate = NSPredicate(format: "name = %@", cardType.name)
+        
+        return find(type,
+                    properties: props,
+                    predicate: predicate,
+                    sortDescriptors: nil,
+                    createIfNotFound: true,
+                    context: context)?.first
+    }
+    
+    // MARK: - Color
+    func color<T: MGEntity>(from color: MColor, context: NSManagedObjectContext, type: T.Type) -> T? {
+        var props = [String: Any]()
+        props["name"] = color.name
+        if let nameSection = color.nameSection {
+            props["nameSection"] = nameSection.rawValue
+        } else {
+            props["nameSection"] = nameSection(for: color.name)
+        }
+        switch color.name {
+        case "Black":
+            props["symbol"] = "B"
+        case "Blue":
+            props["symbol"] = "U"
+        case "Green":
+            props["symbol"] = "G"
+        case "Red":
+            props["symbol"] = "R"
+        case "White":
+            props["symbol"] = "W"
+        default:
+            ()
+        }
+        
+        let predicate = NSPredicate(format: "name = %@", color.name)
+        
+        return find(type,
+                    properties: props,
+                    predicate: predicate,
+                    sortDescriptors: nil,
+                    createIfNotFound: true,
+                    context: context)?.first
+    }
+    
+    // MARK: - Component
+    func component<T: MGEntity>(from component: MComponent, context: NSManagedObjectContext, type: T.Type) -> T? {
+        var props = [String: Any]()
+        props["name"] = component.name
+        if let nameSection = component.nameSection {
+            props["nameSection"] = nameSection.rawValue
+        } else {
+            props["nameSection"] = nameSection(for: component.name)
+        }
+        
+        let predicate = NSPredicate(format: "name = %@", component.name)
+        
+        return find(type,
+                    properties: props,
+                    predicate: predicate,
+                    sortDescriptors: nil,
+                    createIfNotFound: true,
+                    context: context)?.first
+    }
+    
+    // MARK: - ComponentPart
+    func componentPart<T: MGEntity>(from componentPart: MComponentPart, part: MCard, context: NSManagedObjectContext, type: T.Type) -> T? {
+        var props = [String: Any]()
+        
+        let newID = "\(part.newID)_\(componentPart.card.newID)_\(componentPart.component.name)"
+        props["id"] = newID
+        props["part"] = card(from: componentPart.card, context: context, type: MGCard.self)
+        props["component"] = component(from: componentPart.component, context: context, type: MGComponent.self)
+        
+        let predicate = NSPredicate(format: "id = %@", newID)
+        
+        return find(type,
+                    properties: props,
+                    predicate: predicate,
+                    sortDescriptors: nil,
+                    createIfNotFound: true,
+                    context: context)?.first
+    }
+    
+    // MARK: - Format
+    func format<T: MGEntity>(from format: MFormat, context: NSManagedObjectContext, type: T.Type) -> T? {
+        var props = [String: Any]()
+        props["name"] = format.name
+        if let nameSection = format.nameSection {
+            props["nameSection"] = nameSection.rawValue
+        } else {
+            props["nameSection"] = nameSection(for: format.name)
+        }
+        
+        let predicate = NSPredicate(format: "name = %@", format.name)
+        
+        return find(type,
+                    properties: props,
+                    predicate: predicate,
+                    sortDescriptors: nil,
+                    createIfNotFound: true,
+                    context: context)?.first
+    }
+    
+    // MARK: - FormatLegality
+    func formatLegality<T: MGEntity>(from formatLegality: MFormatLegality, part: MCard, context: NSManagedObjectContext, type: T.Type) -> T? {
+        var props = [String: Any]()
+        
+        let newID = "\(part.newID)_\(formatLegality.format.name)_\(formatLegality.legality.name)"
+        props["id"] = newID
+        props["format"] = format(from: formatLegality.format, context: context, type: MGFormat.self)
+        props["legality"] = legality(from: formatLegality.legality, context: context, type: MGLegality.self)
+        
+        let predicate = NSPredicate(format: "id = %@", newID)
+        
+        return find(type,
+                    properties: props,
+                    predicate: predicate,
+                    sortDescriptors: nil,
+                    createIfNotFound: true,
+                    context: context)?.first
     }
     
     // MARK: - Frame
@@ -274,6 +455,8 @@ extension ManaKit {
         }
         if let nameSection = frame.nameSection {
             props["nameSection"] = nameSection.rawValue
+        } else {
+            props["nameSection"] = nameSection(for: frame.name)
         }
         
         let predicate = NSPredicate(format: "name = %@", frame.name)
@@ -292,7 +475,11 @@ extension ManaKit {
         props["id"] = frameEffect.id
         props["description_"] = frameEffect.description_
         props["name"] = frameEffect.name
-        props["nameSection"] = frameEffect.nameSection.rawValue
+        if let nameSection = frameEffect.nameSection {
+            props["nameSection"] = nameSection.rawValue
+        } else {
+            props["nameSection"] = nameSection(for: frameEffect.name)
+        }
         
         let predicate = NSPredicate(format: "id = %@", frameEffect.id)
         
@@ -333,6 +520,8 @@ extension ManaKit {
         }
         if let nameSection = language.nameSection {
             props["nameSection"] = nameSection.rawValue
+        } else {
+            props["nameSection"] = nameSection(for: language.name ?? "")
         }
         
         let predicate = NSPredicate(format: "code = %@", language.code)
@@ -354,6 +543,8 @@ extension ManaKit {
         }
         if let nameSection = layout.nameSection {
             props["nameSection"] = nameSection.rawValue
+        } else {
+            props["nameSection"] = nameSection(for: layout.name)
         }
         
         let predicate = NSPredicate(format: "name = %@", layout.name)
@@ -366,7 +557,27 @@ extension ManaKit {
                     context: context)?.first
     }
     
-    // MARK: - Layout
+    // MARK: - Legality
+    func legality<T: MGEntity>(from legality: MLegality, context: NSManagedObjectContext, type: T.Type) -> T? {
+        var props = [String: Any]()
+        props["name"] = legality.name
+        if let nameSection = legality.nameSection {
+            props["nameSection"] = nameSection.rawValue
+        } else {
+            props["nameSection"] = nameSection(for: legality.name)
+        }
+        
+        let predicate = NSPredicate(format: "name = %@", legality.name)
+        
+        return find(type,
+                    properties: props,
+                    predicate: predicate,
+                    sortDescriptors: nil,
+                    createIfNotFound: true,
+                    context: context)?.first
+    }
+    
+    // MARK: - Price
     func price<T: MGEntity>(from price: MPrice, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
         if let id = price.id {
@@ -408,9 +619,28 @@ extension ManaKit {
         props["name"] = rarity.name
         if let nameSection = rarity.nameSection {
             props["nameSection"] = nameSection.rawValue
+        } else {
+            props["nameSection"] = nameSection(for: rarity.name)
         }
         
         let predicate = NSPredicate(format: "name = %@", rarity.name)
+        
+        return find(type,
+                    properties: props,
+                    predicate: predicate,
+                    sortDescriptors: nil,
+                    createIfNotFound: true,
+                    context: context)?.first
+    }
+    
+    // MARK: - Ruling
+    func ruling<T: MGEntity>(from ruling: MRuling, context: NSManagedObjectContext, type: T.Type) -> T? {
+        var props = [String: Any]()
+        props["id"] = ruling.id
+        props["datePublished"] = ruling.datePublished
+        props["text"] = ruling.text
+        
+        let predicate = NSPredicate(format: "id = %d", ruling.id)
         
         return find(type,
                     properties: props,
@@ -444,6 +674,8 @@ extension ManaKit {
         }
         if let myNameSection = set.myNameSection {
             props["myNameSection"] = myNameSection.rawValue
+        } else {
+            props["myNameSection"] = nameSection(for: set.name)
         }
         if let myYearSection = set.myYearSection {
             props["myYearSection"] = myYearSection
@@ -521,7 +753,11 @@ extension ManaKit {
     func watermark<T: MGEntity>(from watermark: MWatermark, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
         props["name"] = watermark.name
-        props["nameSection"] = watermark.nameSection.rawValue
+        if let nameSection = watermark.nameSection {
+            props["nameSection"] = nameSection.rawValue
+        } else {
+            props["nameSection"] = nameSection(for: watermark.name)
+        }
         
         let predicate = NSPredicate(format: "name = %@", watermark.name)
         

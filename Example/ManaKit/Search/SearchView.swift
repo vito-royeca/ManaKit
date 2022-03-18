@@ -11,7 +11,7 @@ import ManaKit
 import SDWebImageSwiftUI
 
 struct SearchView: View {
-    @ObservedObject var viewModel = SearchViewModel()
+    @StateObject var viewModel = SearchViewModel()
     @State var query: String?
     @State var scopeSelection: Int = 0
     
@@ -28,8 +28,9 @@ struct SearchView: View {
             List {
                 ForEach(viewModel.cards) { card in
                     let cardView = CardView(newID: card.newID)
+                    let lazyView = LazyView(cardView)
                     CardRowView(card: card)
-                        .background(NavigationLink("", destination: cardView).opacity(0))
+                        .background(NavigationLink("", destination: lazyView).opacity(0))
                         .listRowSeparator(.hidden)
                 }
             }
@@ -81,7 +82,6 @@ extension SearchView: SearchNavigationDelegate {
             return
         }
         
-        viewModel.clearData()
         viewModel.fetchData(query: query)
     }
     
@@ -91,7 +91,6 @@ extension SearchView: SearchNavigationDelegate {
     
     func cancel() {
         query =  nil
-        viewModel.clearData()
     }
 }
 

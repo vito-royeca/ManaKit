@@ -35,7 +35,7 @@ class SearchViewModel: NSObject, ObservableObject {
         for can in cancellables {
             can.cancel()
         }
-        cards.removeAll()
+//        cards.removeAll()
     }
     
     // MARK: - Methods
@@ -77,11 +77,6 @@ class SearchViewModel: NSObject, ObservableObject {
             print(error)
             self.cards.removeAll()
         }
-    }
-
-    func clearData() {
-        cards.removeAll()
-        isBusy = false
     }
 }
 

@@ -28,7 +28,7 @@ class CardViewModel: ObservableObject {
         cancellables.forEach {
             $0.cancel()
         }
-        card = nil
+//        card = nil
     }
     
     func fetchData() {

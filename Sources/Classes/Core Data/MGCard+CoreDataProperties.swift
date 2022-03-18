@@ -77,6 +77,7 @@ extension MGCard {
     @NSManaged public var otherPrintingInverses: NSSet?
     @NSManaged public var prices: NSSet?
     @NSManaged public var rarity: MGRarity?
+    @NSManaged public var rulings: NSSet?
     @NSManaged public var set: MGSet?
     @NSManaged public var subtypes: NSSet?
     @NSManaged public var supertypes: NSSet?
@@ -270,6 +271,23 @@ extension MGCard {
 
     @objc(removePrices:)
     @NSManaged public func removeFromPrices(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for rulings
+extension MGCard {
+
+    @objc(addRulingsObject:)
+    @NSManaged public func addToRulings(_ value: MGRuling)
+
+    @objc(removeRulingsObject:)
+    @NSManaged public func removeFromRulings(_ value: MGRuling)
+
+    @objc(addRulings:)
+    @NSManaged public func addToRulings(_ values: NSSet)
+
+    @objc(removeRulings:)
+    @NSManaged public func removeFromRulings(_ values: NSSet)
 
 }
 

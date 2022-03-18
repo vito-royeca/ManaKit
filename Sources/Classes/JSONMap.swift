@@ -96,57 +96,57 @@ public struct MCard: MEntity {
     let variations: [MCard]?
     let formatLegalities: [MFormatLegality]?
     let frameEffects: [MFrameEffect]?
-    let subtypes, supertypes: [MType]?
+    let subtypes, supertypes: [MCardType]?
     let prices: [MPrice]?
     let rulings: [MRuling]?
     let imageURIs: [MImageURI]?
 
     enum CodingKeys: String, CodingKey {
-        case collectorNumber = "collector_number"
+        case collectorNumber  = "collector_number"
         case cmc
-        case faceOrder = "face_order"
-        case flavorText = "flavor_text"
-        case isFoil = "is_foil"
-        case isFullArt = "is_full_art"
-        case isHighresImage = "is_highres_image"
-        case isNonfoil = "is_nonfoil"
-        case isOversized = "is_oversized"
-        case isReserved = "is_reserved"
+        case faceOrder        = "face_order"
+        case flavorText       = "flavor_text"
+        case isFoil           = "is_foil"
+        case isFullArt        = "is_full_art"
+        case isHighresImage   = "is_highres_image"
+        case isNonfoil        = "is_nonfoil"
+        case isOversized      = "is_oversized"
+        case isReserved       = "is_reserved"
         case isStorySpotlight = "is_story_spotlight"
         case loyalty
-        case manaCost = "mana_cost"
-        case myNameSection = "my_name_section"
-        case myNumberOrder = "my_number_order"
+        case manaCost         = "mana_cost"
+        case myNameSection    = "my_name_section"
+        case myNumberOrder    = "my_number_order"
         case name
-        case oracleText = "oracle_text"
+        case oracleText       = "oracle_text"
         case power
-        case printedName = "printed_name"
-        case printedText = "printed_text"
+        case printedName      = "printed_name"
+        case printedText      = "printed_text"
         case toughness
-        case arenaID = "arena_id"
-        case mtgoID = "mtgo_id"
-        case tcgplayerID = "tcgplayer_id"
-        case handModifier = "hand_modifier"
-        case lifeModifier = "life_modifier"
-        case isBooster = "is_booster"
-        case isDigital = "is_digital"
-        case isPromo = "is_promo"
-        case releasedAt = "released_at"
-        case isTextless = "is_textless"
-        case mtgoFoilID = "mtgo_foil_id"
-        case isReprint = "is_reprint"
-        case newID = "new_id"
-        case printedTypeLine = "printed_type_line"
-        case typeLine = "type_line"
-        case multiverseIDs = "multiverse_ids"
-        case colorIdentities = "color_identities"
-        case colorIndicators = "color_indicators"
-        case componentParts = "component_parts"
+        case arenaID          = "arena_id"
+        case mtgoID           = "mtgo_id"
+        case tcgplayerID      = "tcgplayer_id"
+        case handModifier     = "hand_modifier"
+        case lifeModifier     = "life_modifier"
+        case isBooster        = "is_booster"
+        case isDigital        = "is_digital"
+        case isPromo          = "is_promo"
+        case releasedAt       = "released_at"
+        case isTextless       = "is_textless"
+        case mtgoFoilID       = "mtgo_foil_id"
+        case isReprint        = "is_reprint"
+        case newID            = "new_id"
+        case printedTypeLine  = "printed_type_line"
+        case typeLine         = "type_line"
+        case multiverseIDs    = "multiverse_ids"
+        case colorIdentities  = "color_identities"
+        case colorIndicators  = "color_indicators"
+        case componentParts   = "component_parts"
         case formatLegalities = "format_legalities"
-        case frameEffects = "frame_effects"
-        case imageURIs = "image_uris"
-        case otherLanguages = "other_languages"
-        case otherPrintings = "other_printings"
+        case frameEffects     = "frame_effects"
+        case imageURIs        = "image_uris"
+        case otherLanguages   = "other_languages"
+        case otherPrintings   = "other_printings"
         case artist, colors, faces, frame, language, layout, set, subtypes, supertypes, prices, rarity, rulings, variations, watermark
     }
 }
@@ -154,6 +154,17 @@ public struct MCard: MEntity {
 // MARK: - Artist
 public struct MArtist: MEntity {
     let name: String
+}
+
+// MARK: - CardType
+public struct MCardType: MEntity {
+    let name: String
+    let nameSection: NameSection?
+
+    enum CodingKeys: String, CodingKey {
+        case name
+        case nameSection = "name_section"
+    }
 }
 
 // MARK: - Color
@@ -172,7 +183,7 @@ public struct MColor: MEntity {
 // MARK: - Component
 public struct MComponent: MEntity {
     let name: String
-    let nameSection: NameSection
+    let nameSection: NameSection?
 
     enum CodingKeys: String, CodingKey {
         case name
@@ -194,7 +205,7 @@ public struct MComponentPart: MEntity {
 // MARK: - Format
 public struct MFormat: MEntity {
     let name: String
-    let nameSection: NameSection
+    let nameSection: NameSection?
 
     enum CodingKeys: String, CodingKey {
         case name
@@ -217,21 +228,21 @@ public struct MFrame: MEntity {
     enum CodingKeys: String, CodingKey {
         case name
         case description_ = "description"
-        case nameSection = "name_section"
+        case nameSection  = "name_section"
     }
 }
 
 // MARK: - FrameEffect
 public struct MFrameEffect: MEntity {
     let id: String
-    let description_: String
+    let description_: String?
     let name: String
-    let nameSection: NameSection
+    let nameSection: NameSection?
  
     enum CodingKeys: String, CodingKey {
         case id, name
         case description_ = "description"
-        case nameSection = "name_section"
+        case nameSection  = "name_section"
     }
 }
 
@@ -276,7 +287,7 @@ public struct MLayout: MEntity {
 // MARK: - Legality
 public struct MLegality: MEntity {
     let name: String
-    let nameSection: NameSection
+    let nameSection: NameSection?
 
     enum CodingKeys: String, CodingKey {
         case name
@@ -299,8 +310,8 @@ public struct MPrice: MEntity {
 
     enum CodingKeys: String, CodingKey {
         case id, low, median, high, market
-        case directLow = "direct_low"
-        case isFoil = "is_foil"
+        case directLow   = "direct_low"
+        case isFoil      = "is_foil"
         case dateUpdated = "date_updated"
     }
 }
@@ -318,7 +329,7 @@ public struct MRarity: MEntity {
 
 // MARK: - Ruling
 public struct MRuling: MEntity {
-    let id: Int
+    let id: Int32
     let datePublished, text: String
 
     enum CodingKeys: String, CodingKey {
@@ -345,21 +356,21 @@ public struct MSet: MEntity {
     let cards: [MCard]?
     
     enum CodingKeys: String, CodingKey {
-        case cardCount = "card_count"
+        case cardCount      = "card_count"
         case code
-        case isFoilOnly = "is_foil_only"
-        case isOnlineOnly = "is_online_only"
-        case mtgoCode = "mtgo_code"
+        case isFoilOnly     = "is_foil_only"
+        case isOnlineOnly   = "is_online_only"
+        case mtgoCode       = "mtgo_code"
         case keyruneUnicode = "keyrune_unicode"
-        case keyruneClass = "keyrune_class"
-        case myNameSection = "my_name_section"
-        case myYearSection = "my_year_section"
+        case keyruneClass   = "keyrune_class"
+        case myNameSection  = "my_name_section"
+        case myYearSection  = "my_year_section"
         case name
-        case releaseDate = "release_date"
-        case tcgplayerID = "tcgplayer_id"
+        case releaseDate    = "release_date"
+        case tcgplayerID    = "tcgplayer_id"
         case parent
-        case setBlock = "set_block"
-        case setType = "set_type"
+        case setBlock       = "set_block"
+        case setType        = "set_type"
         case languages
         case cards
     }
@@ -391,15 +402,10 @@ public struct MSetType: MEntity {
     }
 }
 
-// MARK: - Type
-public struct MType: MEntity {
-    let name: String
-}
-
 // MARK: - Watermark
 public struct MWatermark: MEntity {
     let name: String
-    let nameSection: NameSection
+    let nameSection: NameSection?
 
     enum CodingKeys: String, CodingKey {
         case name

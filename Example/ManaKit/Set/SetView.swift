@@ -11,11 +11,13 @@ import ManaKit
 import SDWebImageSwiftUI
 
 struct SetView: View {
-    @ObservedObject var viewModel = SetViewModel()
+    @StateObject var viewModel = SetViewModel()
+    var setCode: String
+    var languageCode: String
     
     init(setCode: String, languageCode: String) {
-        viewModel.setCode = setCode
-        viewModel.languageCode = languageCode
+        self.setCode = setCode
+        self.languageCode = languageCode
         
         UITableView.appearance().allowsSelection = false
         UITableViewCell.appearance().selectionStyle = .none
@@ -25,13 +27,14 @@ struct SetView: View {
         List {
             ForEach(viewModel.cards) { card in
                 let cardView = CardView(newID: card.newID)
+                let lazyView = LazyView(cardView)
                 CardRowView(card: card)
-                    .background(NavigationLink("", destination: cardView).opacity(0))
+                    .background(NavigationLink("", destination: lazyView).opacity(0))
                     .listRowSeparator(.hidden)
             }
         }
             .listStyle(.plain)
-            .navigationBarTitle(viewModel.set?.name ?? "Loading...")
+            .navigationBarTitle(viewModel.isBusy ? "Loading..." : viewModel.set?.name ?? "")
             .overlay(
                 Group {
                     if viewModel.isBusy {
@@ -42,11 +45,10 @@ struct SetView: View {
                     }
                 })
             .onAppear {
+                viewModel.setCode = setCode
+                viewModel.languageCode = languageCode
                 viewModel.fetchData()
             }
-//            .onDisappear {
-//                viewModel.clearData()
-//            }
     }
 }
 

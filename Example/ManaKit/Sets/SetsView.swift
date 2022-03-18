@@ -10,19 +10,20 @@ import SwiftUI
 import ManaKit
 
 struct SetsView: View {
-    @ObservedObject var viewModel = SetsViewModel()
+    @StateObject var viewModel = SetsViewModel()
     
     var body: some View {
         List {
             ForEach(viewModel.sets) { set in
                 let setView = SetView(setCode: set.code, languageCode: "en")
-                NavigationLink(destination: setView) {
+                let lazyView = LazyView(setView)
+                NavigationLink(destination: lazyView) {
                     SetsRowView(set: set)
                 }
             }
         }
             .listStyle(.plain)
-            .navigationBarTitle("Sets")
+            .navigationBarTitle(viewModel.isBusy ? "Loading..." : "Sets")
             .overlay(
                 Group {
                     if viewModel.isBusy {
