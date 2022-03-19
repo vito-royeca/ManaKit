@@ -123,17 +123,19 @@ extension MGCard {
 extension MGCard {
     public func imageURL(for type: CardImageType, faceOrder: Int = 0) -> URL? {
         guard let imageURIs = imageURIs,
-            let array = imageURIs.allObjects as? [MGImageURI]  else {
+            let array = imageURIs.allObjects as? [MGImageURI],
+            !array.isEmpty else {
             return nil
         }
+        let sortedArray = array.sorted(by: { ($0.artCrop ?? "") < ($1.artCrop ?? "") })
         
         switch type {
         case .artCrop:
-            return URL(string: "\(ManaKit.shared.apiURL)/\(array[faceOrder].artCrop ?? "")")
+            return URL(string: "\(ManaKit.shared.apiURL)/\(sortedArray[faceOrder].artCrop ?? "")")
         case .normal:
-            return URL(string: "\(ManaKit.shared.apiURL)/\(array[faceOrder].normal ?? "")")
+            return URL(string: "\(ManaKit.shared.apiURL)/\(sortedArray[faceOrder].normal ?? "")")
         case .png:
-            return URL(string: "\(ManaKit.shared.apiURL)/\(array[faceOrder].png ?? "")")
+            return URL(string: "\(ManaKit.shared.apiURL)/\(sortedArray[faceOrder].png ?? "")")
         default:
             return nil
         }

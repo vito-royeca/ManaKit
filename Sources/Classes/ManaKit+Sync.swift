@@ -308,8 +308,6 @@ extension ManaKit {
                 newCard.watermark = watermark(from: x, context: context, type: MGWatermark.self)
             }
             
-//        let faces: [MCard]?
-
             return newCard as? T
         } else {
             return nil

@@ -46,7 +46,7 @@ class SetViewModel: NSObject, ObservableObject {
             $0.cancel()
         }
 
-//        clearData()
+        clearData()
     }
     
     // MARK: - Methods
@@ -73,7 +73,6 @@ class SetViewModel: NSObject, ObservableObject {
                 }
                 
                 self.isBusy.toggle()
-                print("\(self.set?.code ?? ""): \(self.cards.count)")
             }
         })
     }
@@ -102,7 +101,6 @@ class SetViewModel: NSObject, ObservableObject {
     func clearData() {
         set = nil
         cards.removeAll()
-        
     }
 }
 
@@ -122,7 +120,7 @@ extension SetViewModel: NSFetchedResultsControllerDelegate {
 extension SetViewModel {
     func defaultFetchRequest(setCode: String, languageCode: String) -> NSFetchRequest<MGCard> {
         let sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
-        let predicate = NSPredicate(format: "set.code == %@ AND language.code == %@", setCode, languageCode)
+        let predicate = NSPredicate(format: "set.code == %@ AND language.code == %@ AND collectorNumber != null ", setCode, languageCode)
         
         let request: NSFetchRequest<MGCard> = MGCard.fetchRequest()
         request.predicate = predicate
