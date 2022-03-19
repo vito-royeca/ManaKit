@@ -44,7 +44,7 @@ struct CardRowView: View {
                         .placeholder(Image(uiImage: ManaKit.shared.image(name: .cropBack)!))
                         .indicator(.activity)
                         .transition(.fade(duration: 0.5))
-                        .aspectRatio(contentMode: .fit)
+                        .aspectRatio(contentMode: .fill)
                         .frame(width: 100, height: 100, alignment: .center)
                         .clipped()
                     

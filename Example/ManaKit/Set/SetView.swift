@@ -49,13 +49,17 @@ struct SetView: View {
                 viewModel.languageCode = languageCode
                 viewModel.fetchData()
             }
+//            .onDisappear {
+//                viewModel.clearData()
+//            }
     }
 }
 
 struct SetView_Previews: PreviewProvider {
     static var previews: some View {
-        let view = SetView(setCode: "all", languageCode: "en")
-        view.viewModel.dataAPI = MockAPI()
+        let api = MockAPI()
+        let view = SetView(setCode: api.setCode, languageCode: "en")
+        view.viewModel.dataAPI = api
         
         return view
     }

@@ -12,13 +12,15 @@ import ManaKit
 
 class MockAPI: API {
     let decoder = JSONDecoder()
-    
+    let setFile = "unf_en"
+    let setCode = "unf"
+    let newID   = "unf_en_279"
+
     init() {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSZ"
         formatter.locale = Locale(identifier: "en_US_POSIX")
         
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
         decoder.dateDecodingStrategy = .formatted(formatter)
         decoder.userInfo[CodingUserInfoKey.managedObjectContext] = ManaKit.shared.persistentContainer.viewContext
     }
@@ -49,17 +51,17 @@ class MockAPI: API {
         do {
             let bundle = Bundle(for: MockAPI.self)
             
-            guard let jsonURL = bundle.url(forResource: "data/emn_en", withExtension: "json") else {
-                fatalError("Can't load file: data/emn_en.json")
+            guard let jsonURL = bundle.url(forResource: "data/\(setFile)", withExtension: "json") else {
+                fatalError("Can't load file: data/\(setFile).json")
             }
             
             let data = try Data(contentsOf: jsonURL)
-            let cards = try decoder.decode([MSet].self, from: data)
-            ManaKit.shared.syncToCoreData(cards)
+            let set = try decoder.decode([MSet].self, from: data)
+            ManaKit.shared.syncToCoreData(set)
             
             let result = ManaKit.shared.find(MGSet.self,
                                              properties: nil,
-                                             predicate: NSPredicate(format: "code == %@", "emn"),
+                                             predicate: NSPredicate(format: "code == %@", setCode),
                                              sortDescriptors: nil,
                                              createIfNotFound: false,
                                              context: ManaKit.shared.persistentContainer.viewContext)
@@ -82,8 +84,8 @@ class MockAPI: API {
         do {
             let bundle = Bundle(for: MockAPI.self)
             
-            guard let jsonURL = bundle.url(forResource: "data/emn_en_15a", withExtension: "json") else {
-                fatalError("Can't load file: data/emn_en_15a.json")
+            guard let jsonURL = bundle.url(forResource: "data/\(newID)", withExtension: "json") else {
+                fatalError("Can't load file: data/\(newID).json")
             }
             
             let data = try Data(contentsOf: jsonURL)
@@ -92,7 +94,7 @@ class MockAPI: API {
             
             let result = ManaKit.shared.find(MGCard.self,
                                              properties: nil,
-                                             predicate: NSPredicate(format: "newID == %@", "emn_en_15a"),
+                                             predicate: NSPredicate(format: "newID == %@", newID),
                                              sortDescriptors: nil,
                                              createIfNotFound: false,
                                              context: ManaKit.shared.persistentContainer.viewContext)

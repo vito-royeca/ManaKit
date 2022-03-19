@@ -234,11 +234,11 @@ extension ManaKit {
                     newCard.addToComponentParts(y)
                 }
             }
-//            for x in card.faces ?? [] {
-//                if let y = self.card(from: x, context: context, type: MGCard.self) {
-//                    newCard.addToFaces(y)
-//                }
-//            }
+            for x in card.faces ?? [] {
+                if let y = self.card(from: x, context: context, type: MGCard.self) {
+                    newCard.addToFaces(y)
+                }
+            }
             for x in card.formatLegalities ?? [] {
                 if let y = formatLegality(from: x, part: card, context: context, type: MGCardFormatLegality.self) {
                     newCard.addToFormatLegalities(y)
@@ -253,7 +253,9 @@ extension ManaKit {
                 }
             }
             for x in card.imageURIs ?? [] {
-                newCard.imageURI = imageURI(from: x, context: context, type: MGImageURI.self)
+                if let y = imageURI(from: x, context: context, type: MGImageURI.self) {
+                    newCard.addToImageURIs(y)
+                }
             }
             if let x = card.language {
                 newCard.language = language(from: x, context: context, type: MGLanguage.self)

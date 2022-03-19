@@ -49,6 +49,16 @@ public class MGCard: MGEntity {
         return sortedArray
     }
     
+    public var sortedFaces: [MGCard]? {
+        guard let set = faces,
+            let array = set.allObjects as? [MGCard] else {
+            return nil
+        }
+        
+        let sortedArray = array.sorted { $0.faceOrder < $1.faceOrder}
+        return sortedArray
+    }
+    
     public var sortedFormatLegalities: [MGCardFormatLegality]? {
         guard let set = formatLegalities,
             let array = set.allObjects as? [MGCardFormatLegality] else {

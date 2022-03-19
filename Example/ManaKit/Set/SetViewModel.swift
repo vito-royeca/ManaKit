@@ -45,6 +45,8 @@ class SetViewModel: NSObject, ObservableObject {
         cancellables.forEach {
             $0.cancel()
         }
+
+//        clearData()
     }
     
     // MARK: - Methods
@@ -95,6 +97,12 @@ class SetViewModel: NSObject, ObservableObject {
             print(error)
             self.cards.removeAll()
         }
+    }
+    
+    func clearData() {
+        set = nil
+        cards.removeAll()
+        
     }
 }
 

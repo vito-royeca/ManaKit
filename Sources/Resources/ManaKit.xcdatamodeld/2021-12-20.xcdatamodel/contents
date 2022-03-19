@@ -73,7 +73,7 @@
         <relationship name="formatLegalities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardFormatLegality" inverseName="card" inverseEntity="MGCardFormatLegality"/>
         <relationship name="frame" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGFrame" inverseName="cards" inverseEntity="MGFrame"/>
         <relationship name="frameEffects" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGFrameEffect" inverseName="cards" inverseEntity="MGFrameEffect"/>
-        <relationship name="imageURI" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGImageURI" inverseName="card" inverseEntity="MGImageURI"/>
+        <relationship name="imageURIs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGImageURI" inverseName="card" inverseEntity="MGImageURI"/>
         <relationship name="language" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGLanguage" inverseName="cards" inverseEntity="MGLanguage"/>
         <relationship name="layout" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGLayout" inverseName="cards" inverseEntity="MGLayout"/>
         <relationship name="otherLanguages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="otherLanguages" inverseEntity="MGCard"/>
@@ -244,7 +244,7 @@
         <attribute name="artCrop" optional="YES" attributeType="String"/>
         <attribute name="normal" optional="YES" attributeType="String"/>
         <attribute name="png" optional="YES" attributeType="String"/>
-        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGCard" inverseName="imageURI" inverseEntity="MGCard"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGCard" inverseName="imageURIs" inverseEntity="MGCard"/>
     </entity>
     <entity name="MGLanguage" representedClassName=".MGLanguage" syncable="YES">
         <attribute name="code" optional="YES" attributeType="String">

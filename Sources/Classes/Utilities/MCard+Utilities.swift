@@ -121,22 +121,22 @@ extension MGCard {
 // MARK: - Methods
 
 extension MGCard {
-    public func imageURL(for type: CardImageType) -> URL? {
-        guard let imageURI = imageURI else {
+    public func imageURL(for type: CardImageType, faceOrder: Int = 0) -> URL? {
+        guard let imageURIs = imageURIs,
+            let array = imageURIs.allObjects as? [MGImageURI]  else {
             return nil
         }
         
         switch type {
         case .artCrop:
-            return URL(string: "\(ManaKit.shared.apiURL)/\(imageURI.artCrop ?? "")")
+            return URL(string: "\(ManaKit.shared.apiURL)/\(array[faceOrder].artCrop ?? "")")
         case .normal:
-            return URL(string: "\(ManaKit.shared.apiURL)/\(imageURI.normal ?? "")")
+            return URL(string: "\(ManaKit.shared.apiURL)/\(array[faceOrder].normal ?? "")")
         case .png:
-            return URL(string: "\(ManaKit.shared.apiURL)/\(imageURI.png ?? "")")
+            return URL(string: "\(ManaKit.shared.apiURL)/\(array[faceOrder].png ?? "")")
         default:
             return nil
         }
-        
     }
     
     public func isModern() -> Bool {

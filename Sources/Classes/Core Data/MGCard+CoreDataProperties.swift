@@ -69,7 +69,7 @@ extension MGCard {
     @NSManaged public var formatLegalities: NSSet?
     @NSManaged public var frame: MGFrame?
     @NSManaged public var frameEffects: NSSet?
-    @NSManaged public var imageURI: MGImageURI?
+    @NSManaged public var imageURIs: NSSet?
     @NSManaged public var language: MGLanguage?
     @NSManaged public var layout: MGLayout?
     @NSManaged public var otherLanguages: NSSet?
@@ -203,6 +203,23 @@ extension MGCard {
 
     @objc(removeFrameEffects:)
     @NSManaged public func removeFromFrameEffects(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for imageURIs
+extension MGCard {
+
+    @objc(addImageURIsObject:)
+    @NSManaged public func addToImageURIs(_ value: MGImageURI)
+
+    @objc(removeImageURIsObject:)
+    @NSManaged public func removeFromImageURIs(_ value: MGImageURI)
+
+    @objc(addImageURIs:)
+    @NSManaged public func addToImageURIs(_ values: NSSet)
+
+    @objc(removeImageURIs:)
+    @NSManaged public func removeFromImageURIs(_ values: NSSet)
 
 }
 
