@@ -42,11 +42,11 @@ class SetViewModel: NSObject, ObservableObject {
     deinit {
         print("deinit setViewModel \(setCode)")
         
-        cancellables.forEach {
-            $0.cancel()
-        }
-
-        clearData()
+//        cancellables.forEach {
+//            $0.cancel()
+//        }
+//
+//        clearData()
     }
     
     // MARK: - Methods

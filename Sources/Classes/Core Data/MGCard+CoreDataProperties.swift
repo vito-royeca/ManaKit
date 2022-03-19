@@ -45,8 +45,8 @@ extension MGCard {
     @NSManaged public var mtgoFoilID: String?
     @NSManaged public var mtgoID: String?
     @NSManaged public var multiverseIDs: Data?
-    @NSManaged public var myNameSection: String?
-    @NSManaged public var myNumberOrder: Double
+    @NSManaged public var nameSection: String?
+    @NSManaged public var numberOrder: Double
     @NSManaged public var name: String?
     @NSManaged public var newID: String
     @NSManaged public var oracleID: String?

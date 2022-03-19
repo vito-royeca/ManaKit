@@ -117,6 +117,7 @@ struct CardView: View {
                         }
                     }
                 }
+                
                 Group {
                     Section(header: Text("Frame Effects: \(viewModel.card?.sortedFrameEffects?.count ?? 0)")) {
                         if let frameEffects = viewModel.card?.sortedFrameEffects {
@@ -178,6 +179,7 @@ struct CardView: View {
                         }
                     }
                 }
+                
                 Group {
                     Section(header: Text("Supertypes: \(viewModel.card?.sortedSupertypes?.count ?? 0)")) {
                         if let supertypes = viewModel.card?.sortedSupertypes {

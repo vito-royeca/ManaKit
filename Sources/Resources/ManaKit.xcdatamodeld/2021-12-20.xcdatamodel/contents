@@ -44,15 +44,15 @@
         <attribute name="mtgoFoilID" optional="YES" attributeType="String"/>
         <attribute name="mtgoID" optional="YES" attributeType="String"/>
         <attribute name="multiverseIDs" optional="YES" attributeType="Binary"/>
-        <attribute name="myNameSection" optional="YES" attributeType="String"/>
-        <attribute name="myNumberOrder" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="nameSection" optional="YES" attributeType="String"/>
         <attribute name="newID" attributeType="String">
             <userInfo>
                 <entry key="hyper.isPrimaryKey" value="true"/>
                 <entry key="sync.isPrimaryKey" value="true"/>
             </userInfo>
         </attribute>
+        <attribute name="numberOrder" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="oracleId" optional="YES" attributeType="String"/>
         <attribute name="oracleText" optional="YES" attributeType="String"/>
         <attribute name="power" optional="YES" attributeType="String"/>
@@ -362,15 +362,15 @@
         <attribute name="keyruneClass" optional="YES" attributeType="String"/>
         <attribute name="keyruneUnicode" optional="YES" attributeType="String"/>
         <attribute name="mtgoCode" optional="YES" attributeType="String"/>
-        <attribute name="myNameSection" optional="YES" attributeType="String"/>
-        <attribute name="myYearSection" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="nameSection" optional="YES" attributeType="String"/>
         <attribute name="releaseDate" optional="YES" attributeType="String"/>
         <attribute name="tcgPlayerID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES">
             <userInfo>
                 <entry key="sync.remoteKey" value="tcgplayer_id"/>
             </userInfo>
         </attribute>
+        <attribute name="yearSection" optional="YES" attributeType="String"/>
         <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="set" inverseEntity="MGCard"/>
         <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGSet" inverseName="parent" inverseEntity="MGSet"/>
         <relationship name="languages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGLanguage" inverseName="sets" inverseEntity="MGLanguage"/>

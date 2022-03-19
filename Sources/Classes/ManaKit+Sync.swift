@@ -126,13 +126,13 @@ extension ManaKit {
         if let manaCost = card.manaCost {
             props["manaCost"] = manaCost
         }
-        if let myNameSection = card.myNameSection {
-            props["myNameSection"] = myNameSection.rawValue
+        if let nameSection = card.nameSection {
+            props["nameSection"] = nameSection.rawValue
         } else {
-            props["myNameSection"] = nameSection(for: card.name ?? "")
+            props["nameSection"] = nameSection(for: card.name ?? "")
         }
-        if let myNumberOrder = card.myNumberOrder {
-            props["myNumberOrder"] = myNumberOrder
+        if let numberOrder = card.numberOrder {
+            props["numberOrder"] = numberOrder
         }
         if let name = card.name {
             props["name"] = name
@@ -672,13 +672,13 @@ extension ManaKit {
         if let keyruneClass = set.keyruneClass {
             props["keyruneClass"] = keyruneClass
         }
-        if let myNameSection = set.myNameSection {
-            props["myNameSection"] = myNameSection.rawValue
+        if let nameSection = set.nameSection {
+            props["nameSection"] = nameSection.rawValue
         } else {
-            props["myNameSection"] = nameSection(for: set.name)
+            props["nameSection"] = nameSection(for: set.name)
         }
-        if let myYearSection = set.myYearSection {
-            props["myYearSection"] = myYearSection
+        if let yearSection = set.yearSection {
+            props["yearSection"] = yearSection
         }
         if let releaseDate = set.releaseDate {
             props["releaseDate"] = releaseDate
@@ -721,7 +721,11 @@ extension ManaKit {
             props["displayCode"] = displayCode
         }
         props["name"] = setBlock.name
-        props["nameSection"] = setBlock.nameSection.rawValue
+        if let nameSection = setBlock.nameSection {
+            props["nameSection"] = nameSection.rawValue
+        } else {
+            props["nameSection"] = nameSection(for: setBlock.name)
+        }
         
         let predicate = NSPredicate(format: "code = %@", setBlock.code)
         
@@ -737,7 +741,11 @@ extension ManaKit {
     func setType<T: MGEntity>(from setType: MSetType, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
         props["name"] = setType.name
-        props["nameSection"] = setType.nameSection.rawValue
+        if let nameSection = setType.nameSection {
+            props["nameSection"] = nameSection.rawValue
+        } else {
+            props["nameSection"] = nameSection(for: setType.name)
+        }
         
         let predicate = NSPredicate(format: "name = %@", setType.name)
         

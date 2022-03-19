@@ -67,8 +67,8 @@ public struct MCard: MEntity {
     let flavorText: String?
     let isFoil, isFullArt, isHighresImage, isNonfoil, isOversized, isReserved, isStorySpotlight: Bool?
     let loyalty, manaCost: String?
-    let myNameSection: NameSection?
-    let myNumberOrder: Double?
+    let nameSection: NameSection?
+    let numberOrder: Double?
     let name: String?
     let oracleText, power, printedName, printedText, toughness, arenaID, mtgoID: String?
     let tcgplayerID: Int?
@@ -115,8 +115,8 @@ public struct MCard: MEntity {
         case isStorySpotlight = "is_story_spotlight"
         case loyalty
         case manaCost         = "mana_cost"
-        case myNameSection    = "my_name_section"
-        case myNumberOrder    = "my_number_order"
+        case nameSection      = "name_section"
+        case numberOrder      = "number_order"
         case name
         case oracleText       = "oracle_text"
         case power
@@ -345,8 +345,8 @@ public struct MSet: MEntity {
     let code: String
     let isFoilOnly, isOnlineOnly: Bool?
     let mtgoCode, keyruneUnicode, keyruneClass: String?
-    let myNameSection: NameSection?
-    let myYearSection, releaseDate: String?
+    let nameSection: NameSection?
+    let yearSection, releaseDate: String?
     let name: String
     let tcgplayerID: Int?
     let parent: MParent?
@@ -363,8 +363,8 @@ public struct MSet: MEntity {
         case mtgoCode       = "mtgo_code"
         case keyruneUnicode = "keyrune_unicode"
         case keyruneClass   = "keyrune_class"
-        case myNameSection  = "my_name_section"
-        case myYearSection  = "my_year_section"
+        case nameSection    = "name_section"
+        case yearSection    = "year_section"
         case name
         case releaseDate    = "release_date"
         case tcgplayerID    = "tcgplayer_id"
@@ -381,7 +381,7 @@ public struct MSetBlock: MEntity {
     let code: String
     let displayCode: String?
     let name: String
-    let nameSection: NameSection
+    let nameSection: NameSection?
 
     enum CodingKeys: String, CodingKey {
         case code
@@ -394,7 +394,7 @@ public struct MSetBlock: MEntity {
 // MARK: - SetType
 public struct MSetType: MEntity {
     let name: String
-    let nameSection: NameSection
+    let nameSection: NameSection?
 
     enum CodingKeys: String, CodingKey {
         case name

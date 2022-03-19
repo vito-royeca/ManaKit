@@ -26,8 +26,8 @@ extension MGSet {
     @NSManaged public var keyruneClass: String?
     @NSManaged public var keyruneUnicode: String?
     @NSManaged public var mtgoCode: String?
-    @NSManaged public var myNameSection: String?
-    @NSManaged public var myYearSection: String?
+    @NSManaged public var nameSection: String?
+    @NSManaged public var yearSection: String?
     @NSManaged public var name: String?
     @NSManaged public var releaseDate: String?
     @NSManaged public var tcgPlayerID: Int32
