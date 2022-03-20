@@ -1,11 +1,11 @@
 //
-//  MCard+Utilities.swift
+//  MGCard+Utilities.swift
 //  
 //
 //  Created by Vito Royeca on 12/27/21.
 //
 
-import Foundation
+import UIKit
 
 public enum CardImageType: Int, CaseIterable {
     case png

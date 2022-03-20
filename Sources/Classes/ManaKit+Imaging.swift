@@ -5,7 +5,7 @@
 //  Created by Vito Royeca on 11/27/19.
 //
 
-import Foundation
+import UIKit
 
 extension ManaKit {
     public func image(name: ImageName) -> UIImage? {
