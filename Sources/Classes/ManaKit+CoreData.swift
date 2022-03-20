@@ -335,8 +335,11 @@ extension ManaKit {
 ////        }
 //    }
     
-    
-    
+    // MARK: - Other methods
+    func object<T: MGEntity>(_ entity: T.Type,
+                             with id: NSManagedObjectID) -> T {
+        return persistentContainer.viewContext.object(with: id) as! T
+    }    
 }
 
 
