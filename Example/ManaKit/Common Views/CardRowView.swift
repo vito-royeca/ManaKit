@@ -49,39 +49,49 @@ struct CardRowView: View {
                         .clipped()
                     
                     VStack(alignment: .leading) {
-                        HStack(alignment: .top) {
-                            Text("\(card.displayTypeLine) \(card.displayPowerToughness)")
-                                .font(.body)
-                            Spacer()
-                            Text(card.displayKeyrune)
-                                .font(Font.custom("Keyrune", size: 20))
-                                .foregroundColor(Color(card.keyruneColor()))
-                        }
+                        Text(card.displayTypeLine)
+                            .font(.footnote)
 
                         Spacer()
                         
                         HStack {
                             Text("Normal")
-                                .font(.body)
+                                .font(.footnote)
                                 .foregroundColor(Color.blue)
                             Spacer()
                             Text(card.displayNormalPrice)
-                                .font(.body)
+                                .font(.footnote)
                                 .foregroundColor(Color.blue)
                                 .multilineTextAlignment(.trailing)
                         }
 
                         HStack {
                             Text("Foil")
-                                .font(.body)
+                                .font(.footnote)
                                 .foregroundColor(Color.green)
                             Spacer()
                             Text(card.displayFoilPrice)
-                                .font(.body)
+                                .font(.footnote)
                                 .foregroundColor(Color.green)
                                 .multilineTextAlignment(.trailing)
                         }
                     }
+                }
+                
+                Divider()
+                    .background(Color.secondary)
+                
+                HStack() {
+                    Text(card.displayKeyrune)
+                        .font(Font.custom("Keyrune", size: 20))
+                        .foregroundColor(Color(card.keyruneColor()))
+                    Text("\u{2022} #\(card.collectorNumber ?? "") \u{2022}")
+                        .font(.footnote)
+                    Text(card.rarity?.name ?? "")
+                        .font(.footnote)
+                    Spacer()
+                    Text(card.displayPowerToughness)
+                        .font(.footnote)
                 }
             }
                 .padding()

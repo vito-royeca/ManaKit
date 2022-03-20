@@ -273,8 +273,11 @@ extension ManaKit {
                     newCard.addToOtherPrintings(y)
                 }
             }
+            for x in newCard.prices?.allObjects as? [MGCardPrice] ?? [] {
+                newCard.removeFromPrices(x)
+            }
             for x in card.prices ?? [] {
-                if let y = price(from: x, context: context, type: MGCardPrice.self) {
+                if let y = self.price(from: x, context: context, type: MGCardPrice.self) {
                     newCard.addToPrices(y)
                 }
             }

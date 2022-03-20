@@ -28,9 +28,9 @@ struct SearchView: View {
             List {
                 ForEach(viewModel.cards) { card in
                     let cardView = CardView(newID: card.newID)
-                    let lazyView = LazyView(cardView)
+//                    let lazyView = LazyView(cardView)
                     CardRowView(card: card)
-                        .background(NavigationLink("", destination: lazyView).opacity(0))
+                        .background(NavigationLink("", destination: cardView).opacity(0))
                         .listRowSeparator(.hidden)
                 }
             }
