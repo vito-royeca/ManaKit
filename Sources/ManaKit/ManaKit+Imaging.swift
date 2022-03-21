@@ -9,7 +9,7 @@ import UIKit
 
 extension ManaKit {
     public func image(name: ImageName) -> UIImage? {
-        if let path = Bundle.module.path(forResource: name.rawValue, ofType: "ttf") {
+        if let path = Bundle.module.path(forResource: name.rawValue, ofType: "png") {
             return UIImage(contentsOfFile: path)
         } else {
             return nil
@@ -25,7 +25,7 @@ extension ManaKit {
 //        }
 //
 //        return UIImage(named: name, in: resourceBundle, compatibleWith: nil)
-        if let path = Bundle.module.path(forResource: name, ofType: "ttf") {
+        if let path = Bundle.module.path(forResource: name, ofType: "png") {
             return UIImage(contentsOfFile: path)
         } else {
             return nil
