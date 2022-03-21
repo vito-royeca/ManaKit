@@ -29,8 +29,7 @@ let package = Package(
         .target(
             name: "ManaKit",
             dependencies: [],
-            path: "Sources/Classes",
-            resources: [.process("../Resources")]
+            resources: [.process("Resources")]
         ),
         .testTarget(
             name: "ManaKitTests",
