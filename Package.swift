@@ -32,7 +32,7 @@ let package = Package(
                 "ZipArchive"
             ],
             resources: [
-                .copy("Resources")
+                .process("Resources")
             ]
         ),
         .testTarget(
