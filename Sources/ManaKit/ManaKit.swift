@@ -37,13 +37,13 @@ public final class ManaKit: NSPersistentContainer {
     }
     
     public enum ImageName: String {
-        case cardCircles                       = "images/Card_Circles",
-             cardBackCropped                   = "images/cardback-crop-hq",
-             cardBack                          = "images/cardback-hq",
-             collectorsCardBack                = "images/collectorscardback-hq",
-             cropBack                          = "images/cropback-hq",
-             grayPatterned                     = "images/Gray_Patterned_BG",
-             intlCollectorsCardBack            = "images/internationalcollectorscardback-hq"
+        case cardCircles                       = "Card_Circles",
+             cardBackCropped                   = "cardback-crop-hq",
+             cardBack                          = "cardback-hq",
+             collectorsCardBack                = "collectorscardback-hq",
+             cropBack                          = "cropback-hq",
+             grayPatterned                     = "Gray_Patterned_BG",
+             intlCollectorsCardBack            = "internationalcollectorscardback-hq"
     }
     
     public enum UserDefaultsKeys {
