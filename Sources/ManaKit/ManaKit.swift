@@ -33,7 +33,7 @@ public final class ManaKit: NSPersistentContainer {
         public static let eightEditionRelease  = "2003-07-28"
         public static let cacheAge             = 5 // 5 mins
         public static let keyruneURL           = "https://github.com/andrewgioia/Keyrune/archive/master.zip"
-        public static let keyruneCacheAge      = 60 * 24 // 1 day
+        public static let keyruneCacheAge      = 1 // 1 day
     }
     
     public enum ImageName: String {
@@ -119,9 +119,9 @@ public final class ManaKit: NSPersistentContainer {
                 let attributes = try FileManager.default.attributesOfItem(atPath: keyrunePath)
                 
                 if let creationDate = attributes[FileAttributeKey.creationDate] as? Date,
-                    let diff = Calendar.current.dateComponents([.minute],
+                    let diff = Calendar.current.dateComponents([.day],
                                                               from: creationDate,
-                                                              to: Date()).minute {
+                                                              to: Date()).day {
                     willDownload = diff >= Constants.keyruneCacheAge
                 }
             } else {
@@ -162,18 +162,41 @@ public final class ManaKit: NSPersistentContainer {
         }
     }
 
-    func loadCustomFonts(and url: URL) {
-        let bundle = Bundle(for: ManaKit.self)
-        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
-            let resourceBundle = Bundle(url: bundleURL),
-            let fontUrls = resourceBundle.urls(forResourcesWithExtension: "ttf", subdirectory: "fonts") else {
-            return
+    func registerFont(bundle: Bundle, fontName: String, fontExtension: String) {
+        guard let fontURL = bundle.url(forResource: fontName, withExtension: fontExtension),
+            let fontDataProvider = CGDataProvider(url: fontURL as CFURL),
+            let font = CGFont(fontDataProvider) else {
+                fatalError("Couldn't create font from filename: \(fontName) with extension \(fontExtension)")
         }
+    }
+    
+    func loadCustomFonts(and url: URL) {
+        let fonts = ["beleren-bold-webfont.ttf",
+                     "belerensmallcaps-bold-webfont.ttf",
+                     "Goudy Medieval.ttf",
+                     "Matrix Bold.ttf",
+                     "MPlantin.ttf"]
+        var urls = [URL]()
         
-        var newUrls = [URL](fontUrls)
-        newUrls.append(url)
+        for font in fonts {
+            if let path = Bundle.module.path(forResource: font, ofType: nil) {
+                urls.append(URL(fileURLWithPath: path))
+            }
+        }
+        urls.append(url)
         
-        for url in newUrls {
+//        let bundle = Bundle(for: ManaKit.self)
+//
+//        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
+//            let resourceBundle = Bundle(url: bundleURL),
+//            let fontUrls = resourceBundle.urls(forResourcesWithExtension: "ttf", subdirectory: "fonts") else {
+//            return
+//        }
+//
+//        var newUrls = [URL](fontUrls)
+//        newUrls.append(url)
+        
+        for url in urls {
             let data = try! Data(contentsOf: url)
             let error: UnsafeMutablePointer<Unmanaged<CFError>?>? = nil
 
