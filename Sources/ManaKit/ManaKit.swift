@@ -56,11 +56,11 @@ public final class ManaKit: NSPersistentContainer {
         public static let fontsLoaded          = "fontsLoaded"
     }
 
-    let fontFiles = ["beleren-bold-webfont.ttf",
-                     "belerensmallcaps-bold-webfont.ttf",
-                     "Goudy Medieval.ttf",
-                     "Matrix Bold.ttf",
-                     "MPlantin.ttf"]
+    let fontFiles = ["beleren-bold-webfont",
+                     "belerensmallcaps-bold-webfont",
+                     "Goudy Medieval",
+                     "Matrix Bold",
+                     "MPlantin"]
 
     // MARK: - Variables
 
@@ -172,7 +172,7 @@ public final class ManaKit: NSPersistentContainer {
         var urls = [URL]()
         
         for font in fontFiles {
-            if let path = Bundle.module.path(forResource: font, ofType: nil) {
+            if let path = Bundle.module.path(forResource: font, ofType: "ttf") {
                 urls.append(URL(fileURLWithPath: path))
             }
         }
