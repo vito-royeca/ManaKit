@@ -9,6 +9,7 @@
 import Combine
 import CoreData
 import CoreText
+import ZipArchive
 
 public final class ManaKit: NSPersistentContainer {
     
@@ -31,6 +32,8 @@ public final class ManaKit: NSPersistentContainer {
     public enum Constants {
         public static let eightEditionRelease  = "2003-07-28"
         public static let cacheAge             = 5 // 5 mins
+        public static let keyruneURL           = "https://github.com/andrewgioia/Keyrune/archive/master.zip"
+        public static let keyruneCacheAge      = 60 * 24 // 1 day
     }
     
     public enum ImageName: String {
@@ -95,16 +98,69 @@ public final class ManaKit: NSPersistentContainer {
     public func setupResources() {
 //        copyModelFile()
 //        copyDatabaseFile()
-        loadCustomFonts()
+//        loadCustomFonts()
+        downloadKeyruneFont()
     }
     
-    func loadCustomFonts() {
-        let bundle = Bundle(for: ManaKit.self)
-        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
-            let resourceBundle = Bundle(url: bundleURL),
-            let urls = resourceBundle.urls(forResourcesWithExtension: "ttf", subdirectory: "fonts") else {
+    func downloadKeyruneFont() {
+        guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
             return
         }
+        
+        let keyrunePath = "\(cachePath)/keyrune-master"
+        var willDownload = false
+        
+        do {
+            if FileManager.default.fileExists(atPath: keyrunePath) {
+                let attributes = try FileManager.default.attributesOfItem(atPath: keyrunePath)
+                
+                if let creationDate = attributes[FileAttributeKey.creationDate] as? Date,
+                    let diff = Calendar.current.dateComponents([.minute],
+                                                              from: creationDate,
+                                                              to: Date()).minute {
+                    willDownload = diff >= Constants.keyruneCacheAge
+                }
+            } else {
+                willDownload = true
+            }
+            
+            guard let url = URL(string: Constants.keyruneURL),
+                let fontURL = URL(string: "\(keyrunePath)/fonts/keyrune.ttf") else {
+                return
+            }
+            
+            if willDownload {
+                // Remove the old files
+                for file in try FileManager.default.contentsOfDirectory(atPath: keyrunePath) {
+                    let path = "\(keyrunePath)/\(file)"
+                    try FileManager.default.removeItem(atPath: path)
+                }
+                try FileManager.default.removeItem(atPath: keyrunePath)
+                
+                let task = URLSession.shared.downloadTask(with: url) { localURL, urlResponse, error in
+                    if let localURL = localURL {
+                        SSZipArchive.unzipFile(atPath: localURL.path, toDestination: cachePath)
+                        self.loadCustomFonts(urls: [fontURL])
+                    }
+                }
+
+                task.resume()
+            } else {
+                loadCustomFonts(urls: [fontURL])
+            }
+        } catch {
+            print(error)
+            return
+        }
+    }
+
+    func loadCustomFonts(urls: [URL]) {
+//        let bundle = Bundle(for: ManaKit.self)
+//        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
+//            let resourceBundle = Bundle(url: bundleURL),
+//            let urls = resourceBundle.urls(forResourcesWithExtension: "ttf", subdirectory: "fonts") else {
+//            return
+//        }
         
         for url in urls {
             let data = try! Data(contentsOf: url)

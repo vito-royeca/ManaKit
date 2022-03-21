@@ -230,7 +230,7 @@ extension ManaKit {
                 if let diff = Calendar.current.dateComponents([.minute],
                                                               from: lastUpdated,
                                                               to: Date()).minute {
-                    willFetch = diff >= ManaKit.Constants.cacheAge
+                    willFetch = diff >= Constants.cacheAge
                 }
             }
         }
