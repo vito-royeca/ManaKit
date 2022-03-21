@@ -52,6 +52,10 @@ public final class ManaKit: NSPersistentContainer {
         public static let MTGJSONVersion       = "kMTGJSONVersion"
     }
     
+    public enum Notifications {
+        public static let fontsLoaded          = "fontsLoaded"
+    }
+    
     // MARK: - Variables
 
     var apiURL = ""
@@ -185,6 +189,8 @@ public final class ManaKit: NSPersistentContainer {
                 }
             }
         }
+        
+        NotificationCenter.default.post(name: Notification.Name(Notifications.fontsLoaded), object: nil)
     }
     
     // MARK: - Firebase

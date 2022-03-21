@@ -29,10 +29,11 @@ let package = Package(
         .target(
             name: "ManaKit",
             dependencies: [
-//                .product(name: "Ziparchive", package: "swift-argument-parser"),
                 "ZipArchive"
             ],
-            resources: [.process("Resources")]
+            resources: [
+                .copy("Resources")
+            ]
         ),
         .testTarget(
             name: "ManaKitTests",
