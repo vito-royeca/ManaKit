@@ -26,7 +26,7 @@ class SetsViewModel: NSObject, ObservableObject {
     init(dataAPI: API = ManaKit.shared) {
         self.dataAPI = dataAPI
         frc = NSFetchedResultsController(fetchRequest: MGSet.fetchRequest(),
-                                         managedObjectContext: ManaKit.shared.persistentContainer.viewContext,
+                                         managedObjectContext: ManaKit.shared.viewContext,
                                          sectionNameKeyPath: nil,
                                          cacheName: nil)
         super.init()
@@ -65,7 +65,7 @@ class SetsViewModel: NSObject, ObservableObject {
     
     func fetchLocalData() {
         frc = NSFetchedResultsController(fetchRequest: defaultFetchRequest(),
-                                         managedObjectContext: ManaKit.shared.persistentContainer.viewContext,
+                                         managedObjectContext: ManaKit.shared.viewContext,
                                          sectionNameKeyPath: nil,
                                          cacheName: nil)
         frc.delegate = self

@@ -15,7 +15,7 @@ class SetViewModel: NSObject, ObservableObject {
     
     // MARK: - Published Variables
     @Published var set: MGSet?
-    @Published var cards = [MGCard]()
+    @Published var cardIDs = [NSManagedObjectID]()
     @Published var isBusy = false
     
     // MARK: - Variables
@@ -32,7 +32,7 @@ class SetViewModel: NSObject, ObservableObject {
         self.dataAPI = dataAPI
         
         frc = NSFetchedResultsController(fetchRequest: MGCard.fetchRequest(),
-                                         managedObjectContext: ManaKit.shared.persistentContainer.viewContext,
+                                         managedObjectContext: ManaKit.shared.viewContext,
                                          sectionNameKeyPath: nil,
                                          cacheName: nil)
         
@@ -51,7 +51,7 @@ class SetViewModel: NSObject, ObservableObject {
     
     // MARK: - Methods
     func fetchData() {
-        guard !isBusy && set == nil && cards.isEmpty else {
+        guard !isBusy && set == nil && cardIDs.isEmpty else {
             return
         }
         
@@ -69,7 +69,7 @@ class SetViewModel: NSObject, ObservableObject {
                 case .failure(let error):
                     print(error)
                     self.set = nil
-                    self.cards.removeAll()
+                    self.cardIDs.removeAll()
                 }
                 
                 self.isBusy.toggle()
@@ -83,7 +83,7 @@ class SetViewModel: NSObject, ObservableObject {
         }
         
         frc = NSFetchedResultsController(fetchRequest: defaultFetchRequest(setCode: set.code, languageCode: "en"),
-                                         managedObjectContext: ManaKit.shared.persistentContainer.viewContext,
+                                         managedObjectContext: ManaKit.shared.viewContext,
                                          sectionNameKeyPath: nil,
                                          cacheName: nil)
         frc.delegate = self
@@ -91,16 +91,22 @@ class SetViewModel: NSObject, ObservableObject {
         
         do {
             try frc.performFetch()
-            cards = frc.fetchedObjects ?? []
+            if let cards = frc.fetchedObjects {
+                cardIDs = cards.map { $0.objectID }
+            }
         } catch {
             print(error)
-            self.cards.removeAll()
+            self.cardIDs.removeAll()
         }
     }
     
     func clearData() {
         set = nil
-        cards.removeAll()
+        cardIDs.removeAll()
+    }
+    
+    func card(with id: NSManagedObjectID) -> MGCard {
+        return ManaKit.shared.viewContext.object(with: id) as! MGCard
     }
 }
 
@@ -112,7 +118,7 @@ extension SetViewModel: NSFetchedResultsControllerDelegate {
         }
         
 //        objectWillChange.send()
-        self.cards = cards
+        self.cardIDs = cards.map { $0.objectID }
     }
 }
 

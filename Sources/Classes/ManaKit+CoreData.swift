@@ -148,7 +148,7 @@ extension ManaKit {
     func delete<T: MGEntity>(_ entity: T.Type,
                              predicate: NSPredicate,
                              completion: (() -> Void)?) {
-        let context = persistentContainer.viewContext
+        let context = viewContext
         let entityName = String(describing: entity)
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         fetchRequest.predicate =  predicate
@@ -185,7 +185,7 @@ extension ManaKit {
 //    }
     
     public func saveContext () {
-        let context = persistentContainer.viewContext
+        let context = viewContext
 
         guard context.hasChanges else {
             return
@@ -215,7 +215,7 @@ extension ManaKit {
     // MARK: - Caching
 
     func willFetchCache(forUrl url: URL) -> Bool {
-        let context = persistentContainer.viewContext //persistentContainer.newBackgroundContext()
+        let context = viewContext //persistentContainer.newBackgroundContext()
         var willFetch = true
 
         if let cache = find(MGLocalCache.self,
@@ -242,7 +242,7 @@ extension ManaKit {
     }
 
     func saveCache(forUrl url: URL) {
-        let context = persistentContainer.viewContext //newBackgroundContext()
+        let context = viewContext
         
         if let cache = find(MGLocalCache.self,
                             properties: ["url": url.absoluteString],
@@ -259,7 +259,7 @@ extension ManaKit {
         delete(MGLocalCache.self,
                predicate: NSPredicate(format: "url == %@", url.absoluteString),
                completion: nil)
-        save(context: persistentContainer.viewContext)
+        save(context: viewContext)
     }
     
 //    func copyModelFile() {
@@ -338,7 +338,7 @@ extension ManaKit {
     // MARK: - Other methods
     func object<T: MGEntity>(_ entity: T.Type,
                              with id: NSManagedObjectID) -> T {
-        return persistentContainer.viewContext.object(with: id) as! T
+        return viewContext.object(with: id) as! T
     }    
 }
 

@@ -25,7 +25,8 @@ struct SetView: View {
     
     var body: some View {
         List {
-            ForEach(viewModel.cards) { card in
+            ForEach(viewModel.cardIDs) { cardID in
+                let card = viewModel.card(with: cardID)
                 let cardView = CardView(newID: card.newID)
 //                let lazyView = LazyView(cardView)
                 CardRowView(card: card)

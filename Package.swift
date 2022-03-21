@@ -30,9 +30,7 @@ let package = Package(
             name: "ManaKit",
             dependencies: [],
             path: "Sources/Classes",
-            exclude: ["../../Example/Manakit/data"],
-            resources: [.copy("../Resources"),
-                        .process("../Resources/images")]
+            resources: [.process("../Resources")]
         ),
         .testTarget(
             name: "ManaKitTests",

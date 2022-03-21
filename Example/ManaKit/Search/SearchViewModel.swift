@@ -26,7 +26,7 @@ class SearchViewModel: NSObject, ObservableObject {
     init(dataAPI: API = ManaKit.shared) {
         self.dataAPI = dataAPI
         frc = NSFetchedResultsController(fetchRequest: MGCard.fetchRequest(),
-                                         managedObjectContext: ManaKit.shared.persistentContainer.viewContext,
+                                         managedObjectContext: ManaKit.shared.viewContext,
                                          sectionNameKeyPath: nil,
                                          cacheName: nil)
     }
@@ -65,7 +65,7 @@ class SearchViewModel: NSObject, ObservableObject {
     
     func fetchLocalData(query: String) {
         frc = NSFetchedResultsController(fetchRequest: defaultFetchRequest(query: query),
-                                         managedObjectContext: ManaKit.shared.persistentContainer.viewContext,
+                                         managedObjectContext: ManaKit.shared.viewContext,
                                          sectionNameKeyPath: nil,
                                          cacheName: nil)
         frc.delegate = self

@@ -47,7 +47,7 @@ extension ManaKit: API {
                                        predicate: NSPredicate(format: "code == %@", code),
                                        sortDescriptors: nil,
                                        createIfNotFound: false,
-                                       context: self.persistentContainer.viewContext)
+                                       context: self.viewContext)
 
                 completion(.success(result?.first))
             case .failure(let error):
@@ -95,7 +95,7 @@ extension ManaKit: API {
                                        predicate: NSPredicate(format: "newID == %@", newID),
                                        sortDescriptors: nil,
                                        createIfNotFound: false,
-                                       context: self.persistentContainer.viewContext)
+                                       context: self.viewContext)
                 
                 completion(.success(result?.first))
             case .failure(let error):

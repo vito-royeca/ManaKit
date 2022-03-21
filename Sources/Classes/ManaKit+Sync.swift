@@ -18,7 +18,7 @@ extension ManaKit {
     }
     
     func sync(_ sets: [MSet]) {
-        let context = persistentContainer.viewContext
+        let context = viewContext
         
         for set in sets {
             if let newSet = self.set(from: set, context: context, type: MGSet.self) {
@@ -47,7 +47,7 @@ extension ManaKit {
     }
     
     func sync(_ cards: [MCard]) {
-        let context = persistentContainer.viewContext
+        let context = viewContext
         
         for card in cards {
             let _ = self.card(from: card, context: context, type: MGCard.self)

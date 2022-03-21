@@ -22,7 +22,7 @@ class MockAPI: API {
         formatter.locale = Locale(identifier: "en_US_POSIX")
         
         decoder.dateDecodingStrategy = .formatted(formatter)
-        decoder.userInfo[CodingUserInfoKey.managedObjectContext] = ManaKit.shared.persistentContainer.viewContext
+        decoder.userInfo[CodingUserInfoKey.managedObjectContext] = ManaKit.shared.viewContext
     }
     
     func fetchSets(cancellables: inout Set<AnyCancellable>,
@@ -64,7 +64,7 @@ class MockAPI: API {
                                              predicate: NSPredicate(format: "code == %@", setCode),
                                              sortDescriptors: nil,
                                              createIfNotFound: false,
-                                             context: ManaKit.shared.persistentContainer.viewContext)
+                                             context: ManaKit.shared.viewContext)
             
             completion(.success(result?.first))
         } catch {
@@ -97,7 +97,7 @@ class MockAPI: API {
                                              predicate: NSPredicate(format: "newID == %@", newID),
                                              sortDescriptors: nil,
                                              createIfNotFound: false,
-                                             context: ManaKit.shared.persistentContainer.viewContext)
+                                             context: ManaKit.shared.viewContext)
             
             completion(.success(result?.first))
         } catch {

@@ -5,16 +5,13 @@
 //  Created by Jovito Royeca on 11/04/2017.
 //  Copyright © 2017 Jovito Royeca. All rights reserved.
 //
-//@available(iOS 10, *)
-//import UIKit
-//@available(OSX 10, *)
-//import NSKit
 
 import Combine
 import CoreData
 import CoreText
 
-public class ManaKit {
+public final class ManaKit: NSPersistentContainer {
+    
     // MARK: - Constants
     
     public struct Font {
@@ -32,29 +29,30 @@ public class ManaKit {
     }
 
     public enum Constants {
-        public static let eightEditionRelease = "2003-07-28"
-        public static let cacheAge            = 5 // 5 mins
+        public static let eightEditionRelease  = "2003-07-28"
+        public static let cacheAge             = 5 // 5 mins
     }
     
     public enum ImageName: String {
-        case cardCircles            = "images/Card_Circles",
-             cardBackCropped        = "images/cardback-crop-hq",
-             cardBack               = "images/cardback-hq",
-             collectorsCardBack     = "images/collectorscardback-hq",
-             cropBack               = "images/cropback-hq",
-             grayPatterned          = "images/Gray_Patterned_BG",
-             intlCollectorsCardBack = "images/internationalcollectorscardback-hq"
+        case cardCircles                       = "images/Card_Circles",
+             cardBackCropped                   = "images/cardback-crop-hq",
+             cardBack                          = "images/cardback-hq",
+             collectorsCardBack                = "images/collectorscardback-hq",
+             cropBack                          = "images/cropback-hq",
+             grayPatterned                     = "images/Gray_Patterned_BG",
+             intlCollectorsCardBack            = "images/internationalcollectorscardback-hq"
     }
     
     public enum UserDefaultsKeys {
-        public static let ScryfallDate          = "ScryfallDate"
-        public static let KeyruneVersion        = "KeyruneVersion"
-        public static let MTGJSONVersion        = "kMTGJSONVersion"
+        public static let ScryfallDate         = "ScryfallDate"
+        public static let KeyruneVersion       = "KeyruneVersion"
+        public static let MTGJSONVersion       = "kMTGJSONVersion"
     }
     
     // MARK: - Variables
 
     var apiURL = ""
+//    var isMemory = false
     let sessionProcessingQueue = DispatchQueue(label: "SessionProcessingQueue")
 
     // MARK: - Shared Instance
@@ -63,7 +61,19 @@ public class ManaKit {
     
     // MARK: - Initializers
     
-    private init() { }
+    private init() {
+        guard let modelURL = Bundle.module.url(forResource:"ManaKit", withExtension: "momd"),
+              let model = NSManagedObjectModel(contentsOf: modelURL) else {
+            fatalError("Can't load persistent container")
+        }
+        super.init(name: "ManaKit", managedObjectModel: model)
+        
+        loadPersistentStores(completionHandler: { (storeDescription, error) in
+            if let error = error as NSError? {
+                print("Unresolved error \(error), \(error.userInfo)")
+            }
+        })
+    }
 
     
     // MARK: - Resource methods
@@ -154,43 +164,43 @@ public class ManaKit {
     
     // MARK: - Core Data
     
-    public lazy var persistentContainer: NSPersistentContainer = {
-        let bundle = Bundle(for: ManaKit.self)
-
-        guard let momURL = bundle.url(forResource: "ManaKit", withExtension: "momd"),
-           let managedObjectModel = NSManagedObjectModel(contentsOf: momURL) else {
-            fatalError("Can't load persistent container")
-        }
-
-        let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "ManaKit"
-        let container = NSPersistentContainer(name: bundleName, managedObjectModel: managedObjectModel)
-
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        })
-        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-
-        return container
-        
-//        guard let modelURL = Bundle.module.url(forResource:"ManaKit", withExtension: "momd"),
-//              let model = NSManagedObjectModel(contentsOf: modelURL) else {
+    /*public lazy var persistentContainer: NSPersistentContainer = {
+//        let bundle = Bundle(for: ManaKit.self)
+//
+//        guard let momURL = bundle.url(forResource: "ManaKit", withExtension: "momd"),
+//           let managedObjectModel = NSManagedObjectModel(contentsOf: momURL) else {
 //            fatalError("Can't load persistent container")
 //        }
 //
 //        let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "ManaKit"
-//        let container = NSPersistentContainer(name: bundleName, managedObjectModel: model)
+//        let container = NSPersistentContainer(name: bundleName, managedObjectModel: managedObjectModel)
 //
 //        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
 //            if let error = error as NSError? {
-//                print("Unresolved error \(error), \(error.userInfo)")
+//                fatalError("Unresolved error \(error), \(error.userInfo)")
 //            }
 //        })
 //        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 //
 //        return container
-    }()
+        
+        guard let modelURL = Bundle.module.url(forResource:"ManaKit", withExtension: "momd"),
+              let model = NSManagedObjectModel(contentsOf: modelURL) else {
+            fatalError("Can't load persistent container")
+        }
+
+        let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "ManaKit"
+        let container = NSPersistentContainer(name: bundleName, managedObjectModel: model)
+
+        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+            if let error = error as NSError? {
+                print("Unresolved error \(error), \(error.userInfo)")
+            }
+        })
+        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+
+        return container
+    }()*/
     
     
 }
