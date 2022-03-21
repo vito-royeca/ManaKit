@@ -10,6 +10,6 @@ import Foundation
 import CoreData
 
 
-class MGLocalCache: MGEntity {
+public class MGLocalCache: MGEntity {
 
 }
