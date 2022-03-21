@@ -55,7 +55,13 @@ public final class ManaKit: NSPersistentContainer {
     public enum Notifications {
         public static let fontsLoaded          = "fontsLoaded"
     }
-    
+
+    let fontFiles = ["beleren-bold-webfont.ttf",
+                     "belerensmallcaps-bold-webfont.ttf",
+                     "Goudy Medieval.ttf",
+                     "Matrix Bold.ttf",
+                     "MPlantin.ttf"]
+
     // MARK: - Variables
 
     var apiURL = ""
@@ -162,39 +168,15 @@ public final class ManaKit: NSPersistentContainer {
         }
     }
 
-    func registerFont(bundle: Bundle, fontName: String, fontExtension: String) {
-        guard let fontURL = bundle.url(forResource: fontName, withExtension: fontExtension),
-            let fontDataProvider = CGDataProvider(url: fontURL as CFURL),
-            let font = CGFont(fontDataProvider) else {
-                fatalError("Couldn't create font from filename: \(fontName) with extension \(fontExtension)")
-        }
-    }
-    
     func loadCustomFonts(and url: URL) {
-        let fonts = ["beleren-bold-webfont.ttf",
-                     "belerensmallcaps-bold-webfont.ttf",
-                     "Goudy Medieval.ttf",
-                     "Matrix Bold.ttf",
-                     "MPlantin.ttf"]
         var urls = [URL]()
         
-        for font in fonts {
+        for font in fontFiles {
             if let path = Bundle.module.path(forResource: font, ofType: nil) {
                 urls.append(URL(fileURLWithPath: path))
             }
         }
         urls.append(url)
-        
-//        let bundle = Bundle(for: ManaKit.self)
-//
-//        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
-//            let resourceBundle = Bundle(url: bundleURL),
-//            let fontUrls = resourceBundle.urls(forResourcesWithExtension: "ttf", subdirectory: "fonts") else {
-//            return
-//        }
-//
-//        var newUrls = [URL](fontUrls)
-//        newUrls.append(url)
         
         for url in urls {
             let data = try! Data(contentsOf: url)

@@ -9,24 +9,27 @@ import UIKit
 
 extension ManaKit {
     public func image(name: ImageName) -> UIImage? {
-        let bundle = Bundle(for: ManaKit.self)
-        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
-            let resourceBundle = Bundle(url: bundleURL) else {
+        if let path = Bundle.module.path(forResource: name.rawValue, ofType: "ttf") {
+            return UIImage(contentsOfFile: path)
+        } else {
             return nil
         }
-
-        return UIImage(named: name.rawValue, in: resourceBundle, compatibleWith: nil)
     }
 
     public func symbolImage(name: String) -> UIImage? {
-        let bundle = Bundle(for: ManaKit.self)
-
-        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
-            let resourceBundle = Bundle(url: bundleURL) else {
+//        let bundle = Bundle(for: ManaKit.self)
+//
+//        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
+//            let resourceBundle = Bundle(url: bundleURL) else {
+//            return nil
+//        }
+//
+//        return UIImage(named: name, in: resourceBundle, compatibleWith: nil)
+        if let path = Bundle.module.path(forResource: name, ofType: "ttf") {
+            return UIImage(contentsOfFile: path)
+        } else {
             return nil
         }
-
-        return UIImage(named: name, in: resourceBundle, compatibleWith: nil)
     }
     
 //    public func downloadImage(ofCard card: MGCard, type: CardImageType, faceOrder: Int) -> Promise<Void> {
