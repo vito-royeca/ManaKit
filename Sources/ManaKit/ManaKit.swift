@@ -131,12 +131,14 @@ public final class ManaKit: NSPersistentContainer {
             
             if willDownload {
                 // Remove the old files
-                for file in try FileManager.default.contentsOfDirectory(atPath: keyrunePath) {
-                    let path = "\(keyrunePath)/\(file)"
-                    try FileManager.default.removeItem(atPath: path)
+                if FileManager.default.fileExists(atPath: keyrunePath) {
+                    for file in try FileManager.default.contentsOfDirectory(atPath: keyrunePath) {
+                        let path = "\(keyrunePath)/\(file)"
+                        try FileManager.default.removeItem(atPath: path)
+                    }
+                    try FileManager.default.removeItem(atPath: keyrunePath)
                 }
-                try FileManager.default.removeItem(atPath: keyrunePath)
-                
+
                 let task = URLSession.shared.downloadTask(with: url) { localURL, urlResponse, error in
                     if let localURL = localURL {
                         SSZipArchive.unzipFile(atPath: localURL.path, toDestination: cachePath)
