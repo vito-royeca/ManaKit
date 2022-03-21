@@ -142,17 +142,15 @@ public final class ManaKit: NSPersistentContainer {
                     if let localURL = localURL {
                         SSZipArchive.unzipFile(atPath: localURL.path, toDestination: cachePath)
                         
-                        if let fontURL = URL(string: "\(keyrunePath)/fonts/keyrune.ttf") {
-                            self.loadCustomFonts(urls: [fontURL])
-                        }
+                        let fontURL = URL(fileURLWithPath: "\(keyrunePath)/fonts/keyrune.ttf")
+                        self.loadCustomFonts(and: fontURL)
                     }
                 }
 
                 task.resume()
             } else {
-                if let fontURL = URL(string: "\(keyrunePath)/fonts/keyrune.ttf") {
-                    loadCustomFonts(urls: [fontURL])
-                }
+                let fontURL = URL(fileURLWithPath: "\(keyrunePath)/fonts/keyrune.ttf")
+                loadCustomFonts(and: fontURL)
             }
         } catch {
             print(error)
@@ -160,15 +158,18 @@ public final class ManaKit: NSPersistentContainer {
         }
     }
 
-    func loadCustomFonts(urls: [URL]) {
-//        let bundle = Bundle(for: ManaKit.self)
-//        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
-//            let resourceBundle = Bundle(url: bundleURL),
-//            let urls = resourceBundle.urls(forResourcesWithExtension: "ttf", subdirectory: "fonts") else {
-//            return
-//        }
+    func loadCustomFonts(and url: URL) {
+        let bundle = Bundle(for: ManaKit.self)
+        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
+            let resourceBundle = Bundle(url: bundleURL),
+            let fontUrls = resourceBundle.urls(forResourcesWithExtension: "ttf", subdirectory: "fonts") else {
+            return
+        }
         
-        for url in urls {
+        var newUrls = [URL](fontUrls)
+        newUrls.append(url)
+        
+        for url in newUrls {
             let data = try! Data(contentsOf: url)
             let error: UnsafeMutablePointer<Unmanaged<CFError>?>? = nil
 
