@@ -124,8 +124,7 @@ public final class ManaKit: NSPersistentContainer {
                 willDownload = true
             }
             
-            guard let url = URL(string: Constants.keyruneURL),
-                let fontURL = URL(string: "\(keyrunePath)/fonts/keyrune.ttf") else {
+            guard let url = URL(string: Constants.keyruneURL) else {
                 return
             }
             
@@ -142,13 +141,18 @@ public final class ManaKit: NSPersistentContainer {
                 let task = URLSession.shared.downloadTask(with: url) { localURL, urlResponse, error in
                     if let localURL = localURL {
                         SSZipArchive.unzipFile(atPath: localURL.path, toDestination: cachePath)
-                        self.loadCustomFonts(urls: [fontURL])
+                        
+                        if let fontURL = URL(string: "\(keyrunePath)/fonts/keyrune.ttf") {
+                            self.loadCustomFonts(urls: [fontURL])
+                        }
                     }
                 }
 
                 task.resume()
             } else {
-                loadCustomFonts(urls: [fontURL])
+                if let fontURL = URL(string: "\(keyrunePath)/fonts/keyrune.ttf") {
+                    loadCustomFonts(urls: [fontURL])
+                }
             }
         } catch {
             print(error)
