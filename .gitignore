@@ -35,4 +35,5 @@ Carthage
 Pods/
 .idea
 .swiftpm
+Package.resolved
 tmp
