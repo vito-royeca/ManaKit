@@ -19,7 +19,6 @@ class SetsViewModel: NSObject, ObservableObject {
 
     // MARK: - Variables
     var dataAPI: API
-    private var cancellables = Set<AnyCancellable>()
     private var frc: NSFetchedResultsController<MGSet>
     
     // MARK: - Initializers
@@ -47,8 +46,7 @@ class SetsViewModel: NSObject, ObservableObject {
         
         isBusy.toggle()
         
-        dataAPI.fetchSets(cancellables: &cancellables,
-                          completion: { result in
+        dataAPI.fetchSets(completion: { result in
 //            DispatchQueue.main.async {
                 switch result {
                 case .success:

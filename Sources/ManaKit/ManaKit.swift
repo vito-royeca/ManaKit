@@ -33,7 +33,7 @@ public final class ManaKit: NSPersistentContainer {
         public static let eightEditionRelease  = "2003-07-28"
         public static let cacheAge             = 5 // 5 mins
         public static let keyruneURL           = "https://github.com/andrewgioia/Keyrune/archive/master.zip"
-        public static let keyruneCacheAge      = 1 // 1 day
+        public static let keyruneCacheAge      = 30 // 30 days
     }
     
     public enum ImageName: String {
@@ -64,9 +64,9 @@ public final class ManaKit: NSPersistentContainer {
 
     // MARK: - Variables
 
-    var apiURL = ""
-//    var isMemory = false
     let sessionProcessingQueue = DispatchQueue(label: "SessionProcessingQueue")
+    var apiURL = ""
+    var cancellables = Set<AnyCancellable>()
 
     // MARK: - Shared Instance
     

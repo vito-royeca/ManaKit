@@ -32,18 +32,17 @@ A database of Magic: The Gathering cards. Includes prices and images.
   s.ios.deployment_target = '15.0'
 #  s.osx.deployment_target = '10.13'
 
-  s.source_files = 'Sources/Classes/**/*'
+  s.source_files = 'Sources/ManaKit/**/*'
   
   s.resource_bundles = {
-   'ManaKit' => ['Sources/Resources/**/*']
+   'ManaKit' => ['Sources/ManaKit/Resources/**/*']
   }
-  s.resources = 'Sources/Resources/ManaKit.xcdatamodeld'
+  s.resources = 'Sources/ManaKit/Resources/ManaKit.xcdatamodeld'
   
   s.pod_target_xcconfig = { 'HEADER_SEARCH_PATHS' => "$(SDKROOT)/usr/include/libxml2" }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'Combine'
-  s.dependency 'RealmSwift'
 #  s.dependency 'Kanna'
 #  s.dependency 'KeychainAccess'
 #  s.dependency 'SSZipArchive'

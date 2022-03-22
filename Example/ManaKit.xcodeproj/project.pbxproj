@@ -17,7 +17,7 @@
 		8B17AA2D27E39702009471C5 /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B17AA2B27E39702009471C5 /* LazyView.swift */; };
 		8B17AA2E27E39702009471C5 /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B17AA2B27E39702009471C5 /* LazyView.swift */; };
 		8B379A3C23A57DFE005D0171 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B379A3B23A57DFD005D0171 /* Images.xcassets */; };
-		8B379A8223A58568005D0171 /* (null) in Embed Frameworks */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8B379A8223A58568005D0171 /* BuildFile in Embed Frameworks */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8B4219F6255A597C00F7B8AE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4219F5255A597C00F7B8AE /* SceneDelegate.swift */; };
 		8B4219FE255A5A0800F7B8AE /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4219FD255A5A0800F7B8AE /* MainView.swift */; };
 		8B421A04255A5BD800F7B8AE /* SetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B421A03255A5BD800F7B8AE /* SetsView.swift */; };
@@ -69,7 +69,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				8B379A8223A58568005D0171 /* (null) in Embed Frameworks */,
+				8B379A8223A58568005D0171 /* BuildFile in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -378,6 +378,7 @@
 				607FACCE1AFB9204008FA782 /* Resources */,
 				8B379A8323A58568005D0171 /* Embed Frameworks */,
 				C1A921B91DE73701C59F8E60 /* [CP] Embed Pods Frameworks */,
+				06C27A9D063B8F3C9C5DF1F2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -397,6 +398,7 @@
 				8B70144123B425200097298B /* Frameworks */,
 				8B70144223B425200097298B /* Resources */,
 				C2D4EE83A888957A6D21588B /* [CP] Embed Pods Frameworks */,
+				7FEF5D31EE2ACF0B5682A472 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -417,6 +419,7 @@
 				8B70144F23B4252D0097298B /* Frameworks */,
 				8B70145023B4252D0097298B /* Resources */,
 				6434837158DA0DA34D94C861 /* [CP] Embed Pods Frameworks */,
+				C1BA90BFADB2E5532A0C574F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -504,6 +507,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		06C27A9D063B8F3C9C5DF1F2 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_Example/Pods-ManaKit_Example-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/ManaKit/ManaKit.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ManaKit.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ManaKit_Example/Pods-ManaKit_Example-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		096135BA3D2CB47B0EC3DBF7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -577,7 +598,6 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_ExampleTests/Pods-ManaKit_ExampleTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/ManaKit/ManaKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
@@ -585,7 +605,6 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ManaKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
@@ -594,6 +613,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ManaKit_ExampleTests/Pods-ManaKit_ExampleTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7FEF5D31EE2ACF0B5682A472 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_ExampleUITests/Pods-ManaKit_ExampleUITests-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/ManaKit/ManaKit.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ManaKit.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ManaKit_ExampleUITests/Pods-ManaKit_ExampleUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		B3EBF6D20CD9784219F30988 /* [Amimono] Create filelist per architecture */ = {
@@ -621,7 +658,6 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_Example/Pods-ManaKit_Example-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/ManaKit/ManaKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
@@ -629,7 +665,6 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ManaKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
@@ -640,6 +675,24 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ManaKit_Example/Pods-ManaKit_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		C1BA90BFADB2E5532A0C574F /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_ExampleTests/Pods-ManaKit_ExampleTests-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/ManaKit/ManaKit.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ManaKit.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ManaKit_ExampleTests/Pods-ManaKit_ExampleTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		C2D4EE83A888957A6D21588B /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -647,7 +700,6 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ManaKit_ExampleUITests/Pods-ManaKit_ExampleUITests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/ManaKit/ManaKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
@@ -655,7 +707,6 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ManaKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",

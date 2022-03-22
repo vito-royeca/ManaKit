@@ -19,7 +19,6 @@ class SearchViewModel: NSObject, ObservableObject {
     
     // MARK: - Variables
     var dataAPI: API
-    private var cancellables = Set<AnyCancellable>()
     private var frc: NSFetchedResultsController<MGCard>
     
     // MARK: - Initializers
@@ -47,7 +46,6 @@ class SearchViewModel: NSObject, ObservableObject {
         isBusy.toggle()
         
         dataAPI.fetchCards(query: query,
-                           cancellables: &cancellables,
                            completion: { result in
 //            DispatchQueue.main.async {
                 switch result {

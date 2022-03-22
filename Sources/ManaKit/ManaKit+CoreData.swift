@@ -22,13 +22,6 @@ public extension CodingUserInfoKey {
 // MARK: - Base class
 
 public class MGEntity: NSManagedObject, Identifiable {
-//    public required convenience init(from decoder: Decoder) throws {
-//        guard let context = decoder.userInfo[CodingUserInfoKey.managedObjectContext] as? NSManagedObjectContext else {
-//          throw DecoderConfigurationError.missingManagedObjectContext
-//        }
-//
-//        self.init(context: context)
-//    }
     convenience init(from entity: MEntity, context: NSManagedObjectContext) {
         self.init(context: context)
     }
@@ -40,7 +33,6 @@ extension ManaKit {
     
     func fetchData<T: MEntity>(_ entity: T.Type,
                                 url: URL,
-                                cancellables: inout Set<AnyCancellable>,
                                 completion: @escaping (Result<Void, Error>) -> Void) {
         let success = {
             self.saveCache(forUrl: url)

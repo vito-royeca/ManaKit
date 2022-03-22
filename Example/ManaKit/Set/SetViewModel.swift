@@ -22,7 +22,6 @@ class SetViewModel: NSObject, ObservableObject {
     var setCode: String
     var languageCode: String
     var dataAPI: API
-    private var cancellables = Set<AnyCancellable>()
     private var frc: NSFetchedResultsController<MGCard>
     
     // MARK: - Initializers
@@ -59,7 +58,6 @@ class SetViewModel: NSObject, ObservableObject {
         
         dataAPI.fetchSet(code: setCode,
                          languageCode: languageCode,
-                         cancellables: &cancellables,
                          completion: { result in
             DispatchQueue.main.async {
                 switch result {
@@ -87,7 +85,6 @@ class SetViewModel: NSObject, ObservableObject {
                                          sectionNameKeyPath: nil,
                                          cacheName: nil)
         frc.delegate = self
-//        self.objectWillChange.send()
         
         do {
             try frc.performFetch()
@@ -117,7 +114,6 @@ extension SetViewModel: NSFetchedResultsControllerDelegate {
             return
         }
         
-//        objectWillChange.send()
         self.cardIDs = cards.map { $0.objectID }
     }
 }
