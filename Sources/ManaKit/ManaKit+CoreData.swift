@@ -94,17 +94,17 @@ extension ManaKit {
             let objects = try context.fetch(request)
             
             if !objects.isEmpty {
-                objects.forEach {
-                    for (key,value) in properties ?? [:] {
-                        if let oldValue = $0.value(forKey: key) {
-                            if "\(oldValue)" != "\(value)" {
-                                $0.setValue(value, forKey: key)
-                            }
-                        } else {
-                            $0.setValue(value, forKey: key)
-                        }
-                    }
-                }
+//                objects.forEach {
+//                    for (key,value) in properties ?? [:] {
+//                        if let oldValue = $0.value(forKey: key) {
+//                            if "\(oldValue)" != "\(value)" {
+//                                $0.setValue(value, forKey: key)
+//                            }
+//                        } else {
+//                            $0.setValue(value, forKey: key)
+//                        }
+//                    }
+//                }
                 return objects
             } else {
                 if createIfNotFound {
