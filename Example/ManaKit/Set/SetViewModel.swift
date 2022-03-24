@@ -15,7 +15,7 @@ class SetViewModel: NSObject, ObservableObject {
     
     // MARK: - Published Variables
     @Published var set: MGSet?
-    @Published var cardIDs = [NSManagedObjectID]()
+    @Published var cards = [MGCard]()
     @Published var isBusy = false
     
     // MARK: - Variables
@@ -25,32 +25,23 @@ class SetViewModel: NSObject, ObservableObject {
     private var frc: NSFetchedResultsController<MGCard>
     
     // MARK: - Initializers
-    init(setCode: String = "emn", languageCode: String = "en", dataAPI: API = ManaKit.shared) {
+    init(setCode: String, languageCode: String, dataAPI: API = ManaKit.shared) {
         self.setCode = setCode
         self.languageCode = languageCode
         self.dataAPI = dataAPI
         
-        frc = NSFetchedResultsController(fetchRequest: MGCard.fetchRequest(),
+        frc = NSFetchedResultsController(fetchRequest: SetViewModel.defaultFetchRequest(setCode: setCode, languageCode: languageCOde),
                                          managedObjectContext: ManaKit.shared.viewContext,
                                          sectionNameKeyPath: nil,
                                          cacheName: nil)
         
         super.init()
-    }
-    
-    deinit {
-        print("deinit setViewModel \(setCode)")
-        
-//        cancellables.forEach {
-//            $0.cancel()
-//        }
-//
-//        clearData()
+        frc.delegate = self
     }
     
     // MARK: - Methods
     func fetchData() {
-        guard !isBusy && set == nil && cardIDs.isEmpty else {
+        guard !isBusy && set == nil && cards.isEmpty else {
             return
         }
         
@@ -67,7 +58,7 @@ class SetViewModel: NSObject, ObservableObject {
                 case .failure(let error):
                     print(error)
                     self.set = nil
-                    self.cardIDs.removeAll()
+                    self.cards.removeAll()
                 }
                 
                 self.isBusy.toggle()
@@ -80,17 +71,9 @@ class SetViewModel: NSObject, ObservableObject {
             return
         }
         
-        frc = NSFetchedResultsController(fetchRequest: defaultFetchRequest(setCode: set.code, languageCode: "en"),
-                                         managedObjectContext: ManaKit.shared.viewContext,
-                                         sectionNameKeyPath: nil,
-                                         cacheName: nil)
-        frc.delegate = self
-        
         do {
             try frc.performFetch()
-            if let cards = frc.fetchedObjects {
-                cardIDs = cards.map { $0.objectID }
-            }
+            self.cards = frc.fetchedObjects  ?? []
         } catch {
             print(error)
             self.cardIDs.removeAll()
@@ -99,11 +82,7 @@ class SetViewModel: NSObject, ObservableObject {
     
     func clearData() {
         set = nil
-        cardIDs.removeAll()
-    }
-    
-    func card(with id: NSManagedObjectID) -> MGCard {
-        return ManaKit.shared.viewContext.object(with: id) as! MGCard
+        cards.removeAll()
     }
 }
 
@@ -114,13 +93,13 @@ extension SetViewModel: NSFetchedResultsControllerDelegate {
             return
         }
         
-        self.cardIDs = cards.map { $0.objectID }
+        self.cards = cards
     }
 }
 
 // MARK: - NSFetchRequest
 extension SetViewModel {
-    func defaultFetchRequest(setCode: String, languageCode: String) -> NSFetchRequest<MGCard> {
+    static func defaultFetchRequest(setCode: String, languageCode: String) -> NSFetchRequest<MGCard> {
         let sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         let predicate = NSPredicate(format: "set.code == %@ AND language.code == %@ AND collectorNumber != null ", setCode, languageCode)
         

@@ -27,9 +27,8 @@ struct SearchView: View {
                          delegate: self) {
             List {
                 ForEach(viewModel.cards) { card in
-                    let cardView = CardView(newID: card.newID)
-//                    let lazyView = LazyView(cardView)
-                    CardRowView(card: card)
+                    let newID = "\(card.set?.code ?? "")_\(card.language?.code ?? "")_\(card.collectorNumber ?? "")"
+                    CardRowView(card: CardView(newID: newID))
                         .background(NavigationLink("", destination: cardView).opacity(0))
                         .listRowSeparator(.hidden)
                 }

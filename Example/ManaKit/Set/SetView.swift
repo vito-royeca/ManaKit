@@ -26,10 +26,8 @@ struct SetView: View {
     var body: some View {
         List {
             ForEach(viewModel.cardIDs) { cardID in
-                let card = viewModel.card(with: cardID)
-                let cardView = CardView(newID: card.newID)
-//                let lazyView = LazyView(cardView)
-                CardRowView(card: card)
+                let newID = "\(card.set?.code ?? "")_\(card.language?.code ?? "")_\(card.collectorNumber ?? "")"
+                CardRowView(card: CardView(newID: newID))
                     .background(NavigationLink("", destination: cardView).opacity(0))
                     .listRowSeparator(.hidden)
             }
