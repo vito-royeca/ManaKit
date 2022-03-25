@@ -63,7 +63,8 @@ public enum NameSection: String, MEntity {
 // MARK: - WelcomeElement
 public struct MCard: MEntity {
     let collectorNumber: String?
-    let cmc, faceOrder: Int?
+    let cmc: Double?
+    let faceOrder: Int?
     let flavorText: String?
     let isFoil, isFullArt, isHighresImage, isNonfoil, isOversized, isReserved, isStorySpotlight: Bool?
     let loyalty, manaCost: String?
