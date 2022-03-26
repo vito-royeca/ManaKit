@@ -139,4 +139,14 @@ public class MGCard: MGEntity {
         let sortedArray = array.sorted { ($0.collectorNumber ?? "") > ($1.collectorNumber ?? "")}
         return sortedArray
     }
+    
+    public var typeLineSectionKeyPath: String {
+        guard let set = supertypes,
+            let array = set.allObjects as? [MGCardType] else {
+            return ""
+        }
+        
+        let sortedArray = array.sorted { ($0.name ?? "") > ($1.name ?? "")}
+        return sortedArray.first ?? ""
+    }
 }
