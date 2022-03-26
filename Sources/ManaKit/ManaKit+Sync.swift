@@ -302,7 +302,7 @@ extension ManaKit {
                     newCard.addToSupertypes(y)
                 }
             }
-            if let x = (card.supertypes ?? []).sorted(by: { $0.name < $1.name }).filter({ $0.name != "Legendary" || $0.name != "Basic" }).first  {
+            if let x = (card.supertypes ?? []).sorted(by: { $0.name < $1.name }).filter({ $0.name != "Legendary" && $0.name != "Basic" }).first  {
                 if let y = self.cardType(from: x, context: context, type: MGCardType.self) {
                     newCard.type = y
                 }
