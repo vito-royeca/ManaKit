@@ -140,14 +140,43 @@ public class MGCard: MGEntity {
         return sortedArray
     }
     
-    public var typeLineSectionKeyPath: String? //{
-//        guard let set = supertypes,
-//            let array = set.allObjects as? [MGCardType] else {
-//            return nil
-//        }
-//        
-//        let sortedArray = array.sorted { ($0.name ?? "") < ($1.name ?? "")}
-//        print("type: \(sortedArray.first?.name ?? "")")
-//        return sortedArray.first?.name
-//    }
+    public var typeSection: String? {
+        guard let typeLine = typeLine else {
+            return nil
+        }
+        
+        let emdash = "\u{2014}"
+        var types = Set<String>()
+        
+        if typeLine.contains("//") {
+            for type in typeLine.components(separatedBy: "//") {
+                let s = type.components(separatedBy: emdash)
+                
+                if let first = s.first {
+                    for f in first.components(separatedBy: " ") {
+                        if !f.isEmpty && f != emdash {
+                            let trimmed = f.trimmingCharacters(in: .whitespacesAndNewlines)
+                            types.insert(trimmed)
+                        }
+                    }
+                }
+            }
+        } else if typeLine.contains(emdash) {
+            let s = typeLine.components(separatedBy: emdash)
+            
+            if let first = s.first {
+                for f in first.components(separatedBy: " ") {
+                    if !f.isEmpty && f != emdash {
+                        let trimmed = f.trimmingCharacters(in: .whitespacesAndNewlines)
+                        types.insert(trimmed)
+                    }
+                }
+            }
+        } else {
+            types.insert(typeLine)
+        }
+        
+        return types.sorted{ $0 < $1}.first
+        
+    }
 }
