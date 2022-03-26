@@ -116,7 +116,7 @@ public class MGCard: MGEntity {
             return nil
         }
         
-        let sortedArray = array.sorted { ($0.name ?? "") > ($1.name ?? "")}
+        let sortedArray = array.sorted { ($0.name ?? "") < ($1.name ?? "")}
         return sortedArray
     }
     
@@ -126,7 +126,7 @@ public class MGCard: MGEntity {
             return nil
         }
         
-        let sortedArray = array.sorted { ($0.name ?? "") > ($1.name ?? "")}
+        let sortedArray = array.sorted { ($0.name ?? "") < ($1.name ?? "")}
         return sortedArray
     }
     
@@ -136,17 +136,17 @@ public class MGCard: MGEntity {
             return nil
         }
         
-        let sortedArray = array.sorted { ($0.collectorNumber ?? "") > ($1.collectorNumber ?? "")}
+        let sortedArray = array.sorted { ($0.collectorNumber ?? "") < ($1.collectorNumber ?? "")}
         return sortedArray
     }
     
-    public var typeLineSectionKeyPath: String {
+    public var typeLineSectionKeyPath: String? {
         guard let set = supertypes,
             let array = set.allObjects as? [MGCardType] else {
-            return ""
+            return nil
         }
         
-        let sortedArray = array.sorted { ($0.name ?? "") > ($1.name ?? "")}
-        return sortedArray.first?.name ?? ""
+        let sortedArray = array.sorted { ($0.name ?? "") < ($1.name ?? "")}
+        return sortedArray.first?.name
     }
 }
