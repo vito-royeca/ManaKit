@@ -147,6 +147,6 @@ public class MGCard: MGEntity {
         }
         
         let sortedArray = array.sorted { ($0.name ?? "") > ($1.name ?? "")}
-        return sortedArray.first ?? ""
+        return sortedArray.first?.name ?? ""
     }
 }
