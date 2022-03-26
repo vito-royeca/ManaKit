@@ -325,7 +325,9 @@ extension ManaKit {
     // MARK: - CardType
     func cardType<T: MGEntity>(from cardType: MCardType, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
-        props["name"] = cardType.name
+        props["name"] = cardType.name.replacingOccurrences(of: "Legendary ", with: "")
+            .replacingOccurrences(of: "Basic ", with: "")
+            
         if let nameSection = cardType.nameSection {
             props["nameSection"] = nameSection.rawValue
         } else {
