@@ -18,6 +18,7 @@ extension MGCardType {
 
     @NSManaged public var name: String?
     @NSManaged public var nameSection: String?
+    @NSManaged public var cards: NSSet?
     @NSManaged public var children: NSSet?
     @NSManaged public var parent: MGCardType?
     @NSManaged public var subtypes: NSSet?
@@ -73,5 +74,22 @@ extension MGCardType {
 
     @objc(removeSupertypes:)
     @NSManaged public func removeFromSupertypes(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for cards
+extension MGCardType {
+
+    @objc(addCardsObject:)
+    @NSManaged public func addToCards(_ value: MGCard)
+
+    @objc(removeCardsObject:)
+    @NSManaged public func removeFromCards(_ value: MGCard)
+
+    @objc(addCards:)
+    @NSManaged public func addToCards(_ values: NSSet)
+
+    @objc(removeCards:)
+    @NSManaged public func removeFromCards(_ values: NSSet)
 
 }

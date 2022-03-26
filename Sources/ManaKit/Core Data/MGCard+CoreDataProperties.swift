@@ -81,6 +81,7 @@ extension MGCard {
     @NSManaged public var set: MGSet?
     @NSManaged public var subtypes: NSSet?
     @NSManaged public var supertypes: NSSet?
+    @NSManaged public var type: MGCardType?
     @NSManaged public var variation: MGCard?
     @NSManaged public var variations: NSSet?
     @NSManaged public var watermark: MGWatermark?

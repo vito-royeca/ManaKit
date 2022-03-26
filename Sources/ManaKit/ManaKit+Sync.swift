@@ -302,6 +302,11 @@ extension ManaKit {
                     newCard.addToSupertypes(y)
                 }
             }
+            if let x = (card.supertypes ?? []).sorted(by: { $0.name < $1.name }).first {
+                if let y = self.cardType(from: x, context: context, type: MGCardType.self) {
+                    newCard.type = y
+                }
+            }
             for x in card.variations ?? [] {
                 if let y = self.card(from: x, context: context, type: MGCard.self) {
                     newCard.addToVariations(y)

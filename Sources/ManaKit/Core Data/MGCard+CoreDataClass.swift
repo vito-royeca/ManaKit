@@ -139,44 +139,4 @@ public class MGCard: MGEntity {
         let sortedArray = array.sorted { ($0.collectorNumber ?? "") < ($1.collectorNumber ?? "")}
         return sortedArray
     }
-    
-    public var typeSection: String? {
-        guard let typeLine = typeLine else {
-            return nil
-        }
-        
-        let emdash = "\u{2014}"
-        var types = Set<String>()
-        
-        if typeLine.contains("//") {
-            for type in typeLine.components(separatedBy: "//") {
-                let s = type.components(separatedBy: emdash)
-                
-                if let first = s.first {
-                    for f in first.components(separatedBy: " ") {
-                        if !f.isEmpty && f != emdash {
-                            let trimmed = f.trimmingCharacters(in: .whitespacesAndNewlines)
-                            types.insert(trimmed)
-                        }
-                    }
-                }
-            }
-        } else if typeLine.contains(emdash) {
-            let s = typeLine.components(separatedBy: emdash)
-            
-            if let first = s.first {
-                for f in first.components(separatedBy: " ") {
-                    if !f.isEmpty && f != emdash {
-                        let trimmed = f.trimmingCharacters(in: .whitespacesAndNewlines)
-                        types.insert(trimmed)
-                    }
-                }
-            }
-        } else {
-            types.insert(typeLine)
-        }
-        
-        return types.sorted{ $0 < $1}.first
-        
-    }
 }
