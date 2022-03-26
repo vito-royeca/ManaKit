@@ -31,16 +31,6 @@ public enum CardImageType: Int, CaseIterable {
 // MARK: - Display data
 
 extension MGCard {
-    public var displayFlavorText: String {
-        get {
-            guard let flavorText = flavorText else {
-                return ""
-            }
-            
-            return flavorText
-        }
-    }
-    
     public var displayFoilPrice: String {
         get {
             for price in prices?.allObjects as? [MGCardPrice] ?? [] {
@@ -87,12 +77,12 @@ extension MGCard {
         }
     }
     
-    public var displayPowerToughness: String {
+    public var displayPowerToughness: String? {
         get {
             if !(power ?? "").isEmpty || !(toughness ?? "").isEmpty {
                 return "\(power ?? "")/\(toughness ?? "")"
             } else {
-                return ""
+                return nil
             }
         }
     }

@@ -303,7 +303,7 @@ extension ManaKit {
                 }
             }
             if let x = (card.supertypes ?? []).sorted(by: { $0.name < $1.name }).filter({ $0.name != "Legendary" && $0.name != "Basic" }).first  {
-                if let y = self.cardType(from: x, context: context, type: MGCardType.self) {
+                if let y = self.type(from: x, context: context, type: MGCardType.self) {
                     newCard.type = y
                 }
             }
@@ -325,11 +325,8 @@ extension ManaKit {
     // MARK: - CardType
     func cardType<T: MGEntity>(from cardType: MCardType, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
-        let name = cardType.name.replacingOccurrences(of: "Legendary", with: "")
-            .replacingOccurrences(of: "Basic", with: "")
-            .trimmingCharacters(in: .whitespacesAndNewlines)
         
-        props["name"] = name
+        props["name"] = cardType.name
         if let nameSection = cardType.nameSection {
             props["nameSection"] = nameSection.rawValue
         } else {
@@ -769,7 +766,31 @@ extension ManaKit {
                     context: context)?.first
     }
     
-    // MARK: - Layout
+    // MARK: - Type
+    func type<T: MGEntity>(from cardType: MCardType, context: NSManagedObjectContext, type: T.Type) -> T? {
+        var props = [String: Any]()
+        let name = cardType.name.replacingOccurrences(of: "Legendary", with: "")
+            .replacingOccurrences(of: "Basic", with: "")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        props["name"] = name
+        if let nameSection = cardType.nameSection {
+            props["nameSection"] = nameSection.rawValue
+        } else {
+            props["nameSection"] = nameSection(for: name)
+        }
+        
+        let predicate = NSPredicate(format: "name = %@", name)
+        
+        return find(type,
+                    properties: props,
+                    predicate: predicate,
+                    sortDescriptors: nil,
+                    createIfNotFound: true,
+                    context: context)?.first
+    }
+    
+    // MARK: - Watermark
     func watermark<T: MGEntity>(from watermark: MWatermark, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
         props["name"] = watermark.name
