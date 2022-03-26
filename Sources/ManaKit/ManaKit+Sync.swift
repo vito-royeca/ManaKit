@@ -330,10 +330,10 @@ extension ManaKit {
         if let nameSection = cardType.nameSection {
             props["nameSection"] = nameSection.rawValue
         } else {
-            props["nameSection"] = nameSection(for: name)
+            props["nameSection"] = nameSection(for: cardType.name)
         }
         
-        let predicate = NSPredicate(format: "name = %@", name)
+        let predicate = NSPredicate(format: "name = %@", cardType.name)
         
         return find(type,
                     properties: props,
