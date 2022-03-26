@@ -140,14 +140,14 @@ public class MGCard: MGEntity {
         return sortedArray
     }
     
-    public var typeLineSectionKeyPath: String? {
-        guard let set = supertypes,
-            let array = set.allObjects as? [MGCardType] else {
-            return nil
-        }
-        
-        let sortedArray = array.sorted { ($0.name ?? "") < ($1.name ?? "")}
-        print("type: \(sortedArray.first?.name ?? "")")
-        return sortedArray.first?.name
-    }
+//    public var typeLineSectionKeyPath: String? {
+//        guard let set = supertypes,
+//            let array = set.allObjects as? [MGCardType] else {
+//            return nil
+//        }
+//        
+//        let sortedArray = array.sorted { ($0.name ?? "") < ($1.name ?? "")}
+//        print("type: \(sortedArray.first?.name ?? "")")
+//        return sortedArray.first?.name
+//    }
 }
