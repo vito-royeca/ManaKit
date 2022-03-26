@@ -140,7 +140,7 @@ public class MGCard: MGEntity {
         return sortedArray
     }
     
-//    public var typeLineSectionKeyPath: String? {
+    public var typeLineSectionKeyPath: String? //{
 //        guard let set = supertypes,
 //            let array = set.allObjects as? [MGCardType] else {
 //            return nil
