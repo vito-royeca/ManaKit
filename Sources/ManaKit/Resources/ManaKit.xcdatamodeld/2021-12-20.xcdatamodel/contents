@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21E230" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21E230" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="MGArtist" representedClassName="ManaKit.MGArtist" syncable="YES">
         <attribute name="firstName" optional="YES" attributeType="String"/>
         <attribute name="lastName" optional="YES" attributeType="String"/>
@@ -63,6 +63,7 @@
         <attribute name="tcgPlayerID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="toughness" optional="YES" attributeType="String"/>
         <attribute name="typeLine" optional="YES" attributeType="String"/>
+        <attribute name="typeLineSectionKeyPath" optional="YES" transient="YES" attributeType="String"/>
         <relationship name="artist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGArtist" inverseName="cards" inverseEntity="MGArtist"/>
         <relationship name="colorIdentities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGColor" inverseName="identities" inverseEntity="MGColor"/>
         <relationship name="colorIndicators" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGColor" inverseName="indicators" inverseEntity="MGColor"/>
@@ -432,7 +433,7 @@
     </entity>
     <elements>
         <element name="MGArtist" positionX="-45" positionY="153" width="128" height="104"/>
-        <element name="MGCard" positionX="519.582763671875" positionY="-34.71113586425781" width="128" height="1004"/>
+        <element name="MGCard" positionX="519.582763671875" positionY="-34.71113586425781" width="128" height="1019"/>
         <element name="MGCardComponentPart" positionX="0" positionY="144" width="128" height="89"/>
         <element name="MGCardFormatLegality" positionX="-27" positionY="135" width="128" height="89"/>
         <element name="MGCardPrice" positionX="-9" positionY="135" width="128" height="179"/>
