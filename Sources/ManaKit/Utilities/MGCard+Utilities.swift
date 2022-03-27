@@ -59,7 +59,19 @@ extension MGCard {
             
             if let language = language,
                 let code = language.code {
-                text = code == "en" ? name : printedName
+
+                if code == "en" {
+                    text = name
+                } else {
+                    text = printedName
+                    
+                    if text == nil,
+                        let sortedFaces = sortedFaces {
+                        let printedNames = sortedFaces.map { $0.printedName ?? "" }
+
+                        text = printedNames.joined(separator: " // ")
+                    }
+                }
             } else {
                 text = printedName
             }
