@@ -53,15 +53,18 @@ extension MGCard {
         }
     }
     
-    public var displayName: String {
+    public var displayName: String? {
         get {
-            var dName = name
+            var text: String?
             
             if let language = language,
                 let code = language.code {
-                dName = (code == "en" ? name : printedName) ?? name
+                text = code == "en" ? name : printedName
+            } else {
+                text = printedName
             }
-            return dName ?? ""
+            
+            return text
         }
     }
     
@@ -87,22 +90,19 @@ extension MGCard {
         }
     }
     
-    public var displayTypeLine: String {
+    public var displayTypeLine: String? {
         get {
-            var typeText = ""
+            var text: String?
             
             if let language = language,
                 let code = language.code {
                 
-                typeText = code == "en" ? typeLine ?? "" : printedTypeLine ?? ""
-                
-                // fallback to default typeLine
-                if typeText.isEmpty {
-                    typeText = typeLine ?? ""
-                }
+                text = code == "en" ? typeLine : printedTypeLine
+            } else {
+                text = printedTypeLine
             }
             
-            return typeText
+            return text
         }
     }
 }
