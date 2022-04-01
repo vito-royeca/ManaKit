@@ -21,27 +21,7 @@ extension ManaKit {
         let context = viewContext
         
         for set in sets {
-            if let newSet = self.set(from: set, context: context, type: MGSet.self) {
-                if let x = set.parent {
-                    newSet.parent = setParent(from: x, context: context, type: MGSet.self)
-                }
-                if let x = set.setBlock {
-                    newSet.setBlock = setBlock(from: x, context: context, type: MGSetBlock.self)
-                }
-                if let x = set.setType {
-                    newSet.setType = setType(from: x, context: context, type: MGSetType.self)
-                }
-                for x in set.languages ?? [] {
-                    if let y = language(from: x, context: context, type: MGLanguage.self) {
-                        newSet.addToLanguages(y)
-                    }
-                }
-                for x in set.cards ?? [] {
-                    if let y = card(from: x, context: context, type: MGCard.self) {
-                        newSet.addToCards(y)
-                    }
-                }
-            }
+            let _ = self.set(from: set, context: context, type: MGSet.self)
         }
         save(context: context)
     }
@@ -699,12 +679,37 @@ extension ManaKit {
         
         let predicate = NSPredicate(format: "code = %@", set.code)
         
-        return find(type,
-                    properties: props,
-                    predicate: predicate,
-                    sortDescriptors: nil,
-                    createIfNotFound: true,
-                    context: context)?.first
+        if let newSet = find(type,
+                             properties: props,
+                             predicate: predicate,
+                             sortDescriptors: nil,
+                             createIfNotFound: true,
+                             context: context)?.first as? MGSet {
+            
+            if let x = set.parent {
+                newSet.parent = setParent(from: x, context: context, type: MGSet.self)
+            }
+            if let x = set.setBlock {
+                newSet.setBlock = setBlock(from: x, context: context, type: MGSetBlock.self)
+            }
+            if let x = set.setType {
+                newSet.setType = setType(from: x, context: context, type: MGSetType.self)
+            }
+            for x in set.languages ?? [] {
+                if let y = language(from: x, context: context, type: MGLanguage.self) {
+                    newSet.addToLanguages(y)
+                }
+            }
+            for x in set.cards ?? [] {
+                if let y = card(from: x, context: context, type: MGCard.self) {
+                    newSet.addToCards(y)
+                }
+            }
+            
+            return newSet as? T
+        } else {
+            return nil
+        }
     }
     
     // MARK: - SetParent
