@@ -120,8 +120,11 @@ extension MGCard {
     
     public var newIDCopy: String {
         get {
-//            "\(set?.code ?? "")_\(language?.code ?? "")_\(collectorNumber ?? "")"
-            "\(newID)"
+            let cleanCollectorNumber = (collectorNumber ?? "")
+                .replacingOccurrences(of: "★", with: "star")
+                .replacingOccurrences(of: "†", with: "cross")
+            
+            return "\(set?.code ?? "")_\(language?.code ?? "")_\(cleanCollectorNumber)"
         }
     }
 }
