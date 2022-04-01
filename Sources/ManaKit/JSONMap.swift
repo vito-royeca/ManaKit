@@ -296,11 +296,6 @@ public struct MLegality: MEntity {
     }
 }
 
-// MARK: - Parent
-public struct MParent: MEntity {
-    let code: String
-}
-
 // MARK: - Price
 public struct MPrice: MEntity {
     let id: Int32?
@@ -348,9 +343,9 @@ public struct MSet: MEntity {
     let mtgoCode, keyruneUnicode, keyruneClass: String?
     let nameSection: NameSection?
     let yearSection, releaseDate: String?
-    let name: String
+    let name: String?
     let tcgplayerID: Int?
-    let parent: MParent?
+    let parent: String?
     let setBlock: MSetBlock?
     let setType: MSetType?
     let languages: [MLanguage]?

@@ -663,8 +663,6 @@ extension ManaKit {
         }
         if let nameSection = set.nameSection {
             props["nameSection"] = nameSection.rawValue
-        } else {
-            props["nameSection"] = nameSection(for: set.name)
         }
         if let yearSection = set.yearSection {
             props["yearSection"] = yearSection
@@ -672,7 +670,10 @@ extension ManaKit {
         if let releaseDate = set.releaseDate {
             props["releaseDate"] = releaseDate
         }
-        props["name"] = set.name
+        if let name = set.name {
+            props["name"] = name
+            props["nameSection"] = nameSection(for: name)
+        }
         if let tcgplayerID = set.tcgplayerID {
             props["tcgPlayerID"] = tcgplayerID
         }
@@ -687,7 +688,8 @@ extension ManaKit {
                              context: context)?.first as? MGSet {
             
             if let x = set.parent {
-                newSet.parent = setParent(from: x, context: context, type: MGSet.self)
+                let parent = MSet(cardCount: nil, code: x, isFoilOnly: nil, isOnlineOnly: nil, mtgoCode: nil, keyruneUnicode: nil, keyruneClass: nil, nameSection: nil, yearSection: nil, releaseDate: nil, name: nil, tcgplayerID: nil, parent: nil, setBlock: nil, setType: nil, languages: nil, cards: nil)
+                newSet.parent = self.set(from: parent, context: context, type: MGSet.self)
             }
             if let x = set.setBlock {
                 newSet.setBlock = setBlock(from: x, context: context, type: MGSetBlock.self)
@@ -710,21 +712,6 @@ extension ManaKit {
         } else {
             return nil
         }
-    }
-    
-    // MARK: - SetParent
-    func setParent<T: MGEntity>(from setParent: MParent, context: NSManagedObjectContext, type: T.Type) -> T? {
-        var props = [String: Any]()
-        props["code"] = setParent.code
-        
-        let predicate = NSPredicate(format: "code = %@", setParent.code)
-        
-        return find(type,
-                    properties: props,
-                    predicate: predicate,
-                    sortDescriptors: nil,
-                    createIfNotFound: true,
-                    context: context)?.first
     }
     
     // MARK: - SetBlock
