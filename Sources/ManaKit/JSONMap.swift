@@ -369,7 +369,7 @@ public struct MSet: MEntity {
         case name
         case releaseDate    = "release_date"
         case tcgplayerID    = "tcgplayer_id"
-        case parent
+        case parent         = "cmset_parent"
         case setBlock       = "set_block"
         case setType        = "set_type"
         case languages
