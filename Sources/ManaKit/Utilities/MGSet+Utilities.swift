@@ -19,21 +19,4 @@ extension MGSet {
         
         return unicode
     }
-    
-    public var logoURL: URL? {
-        var code = code
-        if code == "pw22" ||
-           code == "pw21" {
-            code = "wpnPromos"
-        } else if code == "p22" ||
-           code == "p22"{
-            code = "judgePromos"
-        } else {
-            if let parent = parent {
-                code = parent.code
-            }
-        }
-        
-        return URL(string: "http://managuideapp.com/images/sets/\(code).png")
-    }
 }
