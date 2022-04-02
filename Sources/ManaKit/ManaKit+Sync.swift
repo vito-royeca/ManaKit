@@ -652,6 +652,9 @@ extension ManaKit {
         if let isOnlineOnly = set.isOnlineOnly {
             props["isOnlineOnly"] = isOnlineOnly
         }
+        if let logoCode = set.logoCode {
+            props["logoCode"] = logoCode
+        }
         if let mtgoCode = set.mtgoCode {
             props["mtgoCode"] = mtgoCode
         }
@@ -688,7 +691,7 @@ extension ManaKit {
                              context: context)?.first as? MGSet {
             
             if let x = set.parent {
-                let parent = MSet(cardCount: nil, code: x, isFoilOnly: nil, isOnlineOnly: nil, mtgoCode: nil, keyruneUnicode: nil, keyruneClass: nil, nameSection: nil, yearSection: nil, releaseDate: nil, name: nil, tcgplayerID: nil, parent: nil, setBlock: nil, setType: nil, languages: nil, cards: nil)
+                let parent = MSet(cardCount: nil, code: x, isFoilOnly: nil, isOnlineOnly: nil, logoCode: nil, mtgoCode: nil, keyruneUnicode: nil, keyruneClass: nil, nameSection: nil, yearSection: nil, releaseDate: nil, name: nil, tcgplayerID: nil, parent: nil, setBlock: nil, setType: nil, languages: nil, cards: nil)
                 newSet.parent = self.set(from: parent, context: context, type: MGSet.self)
             }
             if let x = set.setBlock {

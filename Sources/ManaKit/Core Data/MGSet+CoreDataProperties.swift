@@ -25,6 +25,7 @@ extension MGSet {
     @NSManaged public var isOnlineOnly: Bool
     @NSManaged public var keyruneClass: String?
     @NSManaged public var keyruneUnicode: String?
+    @NSManaged public var logoCode: String?
     @NSManaged public var mtgoCode: String?
     @NSManaged public var nameSection: String?
     @NSManaged public var yearSection: String?

@@ -340,7 +340,7 @@ public struct MSet: MEntity {
     let cardCount: Int?
     let code: String
     let isFoilOnly, isOnlineOnly: Bool?
-    let mtgoCode, keyruneUnicode, keyruneClass: String?
+    let logoCode, mtgoCode, keyruneUnicode, keyruneClass: String?
     let nameSection: NameSection?
     let yearSection, releaseDate: String?
     let name: String?
@@ -356,6 +356,7 @@ public struct MSet: MEntity {
         case code
         case isFoilOnly     = "is_foil_only"
         case isOnlineOnly   = "is_online_only"
+        case logoCode       = "logo_code"
         case mtgoCode       = "mtgo_code"
         case keyruneUnicode = "keyrune_unicode"
         case keyruneClass   = "keyrune_class"
