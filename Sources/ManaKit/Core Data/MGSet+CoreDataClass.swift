@@ -56,7 +56,7 @@ public class MGSet: MGEntity {
     
     public var logoURL: URL? {
         guard let logoCode = logoCode,
-            let url = URL(string: "\(ManaKit.shared.apiURL)/images/\(logoCode).png") else {
+            let url = URL(string: "\(ManaKit.shared.apiURL)/images/sets/\(logoCode).png") else {
             return nil
         }
         
