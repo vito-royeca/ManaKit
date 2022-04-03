@@ -57,11 +57,11 @@ extension MGCard {
         get {
             var text: String?
             
-            if let language = language,
-                let code = language.code {
-                
-                if let sortedFaces = sortedFaces,
-                   let face = sortedFaces.first {
+            if let sortedFaces = sortedFaces,
+               let face = sortedFaces.first {
+
+                if let language = language,
+                   let code = language.code {
 
                     if code == "en" {
                         text = face.name
@@ -69,11 +69,19 @@ extension MGCard {
                         text = face.printedName
                     }
                 } else {
+                    text = face.name
+                }
+            } else {
+                if let language = language,
+                   let code = language.code {
+                    
                     if code == "en" {
                         text = name
                     } else {
                         text = printedName
                     }
+                } else {
+                    text = name
                 }
             }
             
@@ -107,11 +115,11 @@ extension MGCard {
         get {
             var text: String?
             
-            if let language = language,
-                let code = language.code {
-                
-                if let sortedFaces = sortedFaces,
-                   let face = sortedFaces.first {
+            if let sortedFaces = sortedFaces,
+               let face = sortedFaces.first {
+
+                if let language = language,
+                   let code = language.code {
 
                     if code == "en" {
                         text = face.typeLine
@@ -119,11 +127,19 @@ extension MGCard {
                         text = face.printedTypeLine
                     }
                 } else {
+                    text = face.typeLine
+                }
+            } else {
+                if let language = language,
+                   let code = language.code {
+                    
                     if code == "en" {
                         text = typeLine
                     } else {
                         text = printedTypeLine
                     }
+                } else {
+                    text = typeLine
                 }
             }
             
