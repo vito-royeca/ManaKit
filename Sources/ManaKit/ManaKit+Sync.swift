@@ -107,7 +107,7 @@ extension ManaKit {
             props["manaCost"] = manaCost
         }
         if let nameSection = card.nameSection {
-            props["nameSection"] = nameSection.rawValue
+            props["nameSection"] = nameSection
         }
         if let numberOrder = card.numberOrder {
             props["numberOrder"] = numberOrder
@@ -306,7 +306,7 @@ extension ManaKit {
         
         props["name"] = cardType.name
         if let nameSection = cardType.nameSection {
-            props["nameSection"] = nameSection.rawValue
+            props["nameSection"] = nameSection
         } else {
             props["nameSection"] = nameSection(for: cardType.name)
         }
@@ -327,7 +327,7 @@ extension ManaKit {
         
         props["name"] = color.name
         if let nameSection = color.nameSection {
-            props["nameSection"] = nameSection.rawValue
+            props["nameSection"] = nameSection
         } else {
             props["nameSection"] = nameSection(for: color.name)
         }
@@ -363,7 +363,7 @@ extension ManaKit {
         
         props["name"] = component.name
         if let nameSection = component.nameSection {
-            props["nameSection"] = nameSection.rawValue
+            props["nameSection"] = nameSection
         } else {
             props["nameSection"] = nameSection(for: component.name)
         }
@@ -403,7 +403,7 @@ extension ManaKit {
 
         props["name"] = format.name
         if let nameSection = format.nameSection {
-            props["nameSection"] = nameSection.rawValue
+            props["nameSection"] = nameSection
         } else {
             props["nameSection"] = nameSection(for: format.name)
         }
@@ -446,7 +446,7 @@ extension ManaKit {
             props["description_"] = description_
         }
         if let nameSection = frame.nameSection {
-            props["nameSection"] = nameSection.rawValue
+            props["nameSection"] = nameSection
         } else {
             props["nameSection"] = nameSection(for: frame.name)
         }
@@ -469,7 +469,7 @@ extension ManaKit {
         props["description_"] = frameEffect.description_
         props["name"] = frameEffect.name
         if let nameSection = frameEffect.nameSection {
-            props["nameSection"] = nameSection.rawValue
+            props["nameSection"] = nameSection
         } else {
             props["nameSection"] = nameSection(for: frameEffect.name)
         }
@@ -505,15 +505,29 @@ extension ManaKit {
     // MARK: - Language
     func language<T: MGEntity>(from language: MLanguage, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
+        
         props["code"] = language.code
         if let displayCode = language.displayCode {
-            props["displayCode"] = displayCode.rawValue
+            props["displayCode"] = displayCode
+        } else {
+            var newDisplayCode: String?
+            
+            switch language.code {
+            case "zhs":
+                newDisplayCode = "汉语"
+            case "zht":
+                newDisplayCode = "漢語"
+            default:
+                newDisplayCode = language.code.uppercased()
+            }
+            props["displayCode"] = newDisplayCode
         }
+
         if let name = language.name {
             props["name"] = name
         }
         if let nameSection = language.nameSection {
-            props["nameSection"] = nameSection.rawValue
+            props["nameSection"] = nameSection
         } else {
             props["nameSection"] = nameSection(for: language.name ?? "")
         }
@@ -536,7 +550,7 @@ extension ManaKit {
             props["description_"] = description_
         }
         if let nameSection = layout.nameSection {
-            props["nameSection"] = nameSection.rawValue
+            props["nameSection"] = nameSection
         } else {
             props["nameSection"] = nameSection(for: layout.name)
         }
@@ -556,7 +570,7 @@ extension ManaKit {
         var props = [String: Any]()
         props["name"] = legality.name
         if let nameSection = legality.nameSection {
-            props["nameSection"] = nameSection.rawValue
+            props["nameSection"] = nameSection
         } else {
             props["nameSection"] = nameSection(for: legality.name)
         }
@@ -612,7 +626,7 @@ extension ManaKit {
         var props = [String: Any]()
         props["name"] = rarity.name
         if let nameSection = rarity.nameSection {
-            props["nameSection"] = nameSection.rawValue
+            props["nameSection"] = nameSection
         } else {
             props["nameSection"] = nameSection(for: rarity.name)
         }
@@ -670,7 +684,7 @@ extension ManaKit {
             props["keyruneClass"] = keyruneClass
         }
         if let nameSection = set.nameSection {
-            props["nameSection"] = nameSection.rawValue
+            props["nameSection"] = nameSection
         }
         if let yearSection = set.yearSection {
             props["yearSection"] = yearSection
@@ -731,7 +745,7 @@ extension ManaKit {
         }
         props["name"] = setBlock.name
         if let nameSection = setBlock.nameSection {
-            props["nameSection"] = nameSection.rawValue
+            props["nameSection"] = nameSection
         } else {
             props["nameSection"] = nameSection(for: setBlock.name)
         }
@@ -751,7 +765,7 @@ extension ManaKit {
         var props = [String: Any]()
         props["name"] = setType.name
         if let nameSection = setType.nameSection {
-            props["nameSection"] = nameSection.rawValue
+            props["nameSection"] = nameSection
         } else {
             props["nameSection"] = nameSection(for: setType.name)
         }
@@ -775,7 +789,7 @@ extension ManaKit {
         
         props["name"] = name
         if let nameSection = cardType.nameSection {
-            props["nameSection"] = nameSection.rawValue
+            props["nameSection"] = nameSection
         } else {
             props["nameSection"] = nameSection(for: name)
         }
@@ -795,7 +809,7 @@ extension ManaKit {
         var props = [String: Any]()
         props["name"] = watermark.name
         if let nameSection = watermark.nameSection {
-            props["nameSection"] = nameSection.rawValue
+            props["nameSection"] = nameSection
         } else {
             props["nameSection"] = nameSection(for: watermark.name)
         }

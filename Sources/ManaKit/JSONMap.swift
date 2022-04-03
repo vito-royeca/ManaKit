@@ -16,50 +16,6 @@ public protocol MEntity: Codable {
     
 }
 
-public enum LanguageCode: String, MEntity {
-    case cs = "CS"
-    case ct = "CT"
-    case de = "DE"
-    case en = "EN"
-    case es = "ES"
-    case fr = "FR"
-    case it = "IT"
-    case jp = "JP"
-    case kr = "KR"
-    case pt = "PT"
-    case ru = "RU"
-}
-
-public enum NameSection: String, MEntity {
-    case empty = "#"
-    case a = "A"
-    case b = "B"
-    case c = "C"
-    case d = "D"
-    case e = "E"
-    case f = "F"
-    case g = "G"
-    case h = "H"
-    case i = "I"
-    case j = "J"
-    case k = "K"
-    case l = "L"
-    case m = "M"
-    case n = "N"
-    case o = "O"
-    case p = "P"
-    case q = "Q"
-    case r = "R"
-    case s = "S"
-    case t = "T"
-    case u = "U"
-    case v = "V"
-    case w = "W"
-    case x = "X"
-    case y = "Y"
-    case z = "Z"
-}
-
 // MARK: - WelcomeElement
 public struct MCard: MEntity {
     let collectorNumber: String?
@@ -68,7 +24,7 @@ public struct MCard: MEntity {
     let flavorText: String?
     let isFoil, isFullArt, isHighresImage, isNonfoil, isOversized, isReserved, isStorySpotlight: Bool?
     let loyalty, manaCost: String?
-    let nameSection: NameSection?
+    let nameSection: String?
     let numberOrder: Double?
     let name: String?
     let oracleText, power, printedName, printedText, toughness, arenaID, mtgoID: String?
@@ -160,7 +116,7 @@ public struct MArtist: MEntity {
 // MARK: - CardType
 public struct MCardType: MEntity {
     let name: String
-    let nameSection: NameSection?
+    let nameSection: String?
 
     enum CodingKeys: String, CodingKey {
         case name
@@ -171,7 +127,7 @@ public struct MCardType: MEntity {
 // MARK: - Color
 public struct MColor: MEntity {
     let name: String
-    let nameSection: NameSection?
+    let nameSection: String?
     let symbol: String?
 
     enum CodingKeys: String, CodingKey {
@@ -184,7 +140,7 @@ public struct MColor: MEntity {
 // MARK: - Component
 public struct MComponent: MEntity {
     let name: String
-    let nameSection: NameSection?
+    let nameSection: String?
 
     enum CodingKeys: String, CodingKey {
         case name
@@ -206,7 +162,7 @@ public struct MComponentPart: MEntity {
 // MARK: - Format
 public struct MFormat: MEntity {
     let name: String
-    let nameSection: NameSection?
+    let nameSection: String?
 
     enum CodingKeys: String, CodingKey {
         case name
@@ -224,7 +180,7 @@ public struct MFormatLegality: MEntity {
 public struct MFrame: MEntity {
     let description_: String?
     let name: String
-    let nameSection: NameSection?
+    let nameSection: String?
  
     enum CodingKeys: String, CodingKey {
         case name
@@ -238,7 +194,7 @@ public struct MFrameEffect: MEntity {
     let id: String
     let description_: String?
     let name: String
-    let nameSection: NameSection?
+    let nameSection: String?
  
     enum CodingKeys: String, CodingKey {
         case id, name
@@ -260,9 +216,9 @@ public struct MImageURI: MEntity {
 // MARK: - Language
 public struct MLanguage: MEntity {
     let code: String
-    let displayCode: LanguageCode?
+    let displayCode: String?
     let name: String?
-    let nameSection: NameSection?
+    let nameSection: String?
 
     enum CodingKeys: String, CodingKey {
         case code
@@ -275,7 +231,7 @@ public struct MLanguage: MEntity {
 // MARK: - Layout
 public struct MLayout: MEntity {
     let name: String
-    let nameSection: NameSection?
+    let nameSection: String?
     let description_: String?
 
     enum CodingKeys: String, CodingKey {
@@ -288,7 +244,7 @@ public struct MLayout: MEntity {
 // MARK: - Legality
 public struct MLegality: MEntity {
     let name: String
-    let nameSection: NameSection?
+    let nameSection: String?
 
     enum CodingKeys: String, CodingKey {
         case name
@@ -315,7 +271,7 @@ public struct MPrice: MEntity {
 // MARK: - Rarity
 public struct MRarity: MEntity {
     let name: String
-    let nameSection: NameSection?
+    let nameSection: String?
 
     enum CodingKeys: String, CodingKey {
         case name
@@ -341,7 +297,7 @@ public struct MSet: MEntity {
     let code: String
     let isFoilOnly, isOnlineOnly: Bool?
     let logoCode, mtgoCode, keyruneUnicode, keyruneClass: String?
-    let nameSection: NameSection?
+    let nameSection: String?
     let yearSection, releaseDate: String?
     let name: String?
     let tcgplayerID: Int?
@@ -378,7 +334,7 @@ public struct MSetBlock: MEntity {
     let code: String
     let displayCode: String?
     let name: String
-    let nameSection: NameSection?
+    let nameSection: String?
 
     enum CodingKeys: String, CodingKey {
         case code
@@ -391,7 +347,7 @@ public struct MSetBlock: MEntity {
 // MARK: - SetType
 public struct MSetType: MEntity {
     let name: String
-    let nameSection: NameSection?
+    let nameSection: String?
 
     enum CodingKeys: String, CodingKey {
         case name
@@ -402,7 +358,7 @@ public struct MSetType: MEntity {
 // MARK: - Watermark
 public struct MWatermark: MEntity {
     let name: String
-    let nameSection: NameSection?
+    let nameSection: String?
 
     enum CodingKeys: String, CodingKey {
         case name
