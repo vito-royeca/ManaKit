@@ -61,12 +61,12 @@ extension MGCard {
                 let code = language.code {
                 
                 if let sortedFaces = sortedFaces,
-                   !sortedFaces.isEmpty {
+                   let face = sortedFaces.first {
 
                     if code == "en" {
-                        text = sortedFaces.first?.name
+                        text = face.name
                     } else {
-                        text = sortedFaces.first?.printedName
+                        text = face.printedName
                     }
                 } else {
                     if code == "en" {
@@ -111,12 +111,12 @@ extension MGCard {
                 let code = language.code {
                 
                 if let sortedFaces = sortedFaces,
-                   !sortedFaces.isEmpty {
+                   let face = sortedFaces.first {
 
                     if code == "en" {
-                        text = sortedFaces.first?.typeLine
+                        text = face.typeLine
                     } else {
-                        text = sortedFaces.first?.printedTypeLine
+                        text = face.printedTypeLine
                     }
                 } else {
                     if code == "en" {
