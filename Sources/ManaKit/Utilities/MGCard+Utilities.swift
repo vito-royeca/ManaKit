@@ -81,7 +81,7 @@ extension MGCard {
                         text = printedName
                     }
                 } else {
-                    text = name
+                    text = printedName ?? name
                 }
             }
             
@@ -139,7 +139,7 @@ extension MGCard {
                         text = printedTypeLine
                     }
                 } else {
-                    text = typeLine
+                    text = printedTypeLine ?? typeLine
                 }
             }
             
