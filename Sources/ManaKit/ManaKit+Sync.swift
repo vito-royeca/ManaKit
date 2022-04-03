@@ -108,8 +108,6 @@ extension ManaKit {
         }
         if let nameSection = card.nameSection {
             props["nameSection"] = nameSection.rawValue
-        } else {
-            props["nameSection"] = nameSection(for: card.name ?? "")
         }
         if let numberOrder = card.numberOrder {
             props["numberOrder"] = numberOrder
@@ -326,12 +324,14 @@ extension ManaKit {
     // MARK: - Color
     func color<T: MGEntity>(from color: MColor, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
+        
         props["name"] = color.name
         if let nameSection = color.nameSection {
             props["nameSection"] = nameSection.rawValue
         } else {
             props["nameSection"] = nameSection(for: color.name)
         }
+        
         switch color.name {
         case "Black":
             props["symbol"] = "B"
@@ -360,6 +360,7 @@ extension ManaKit {
     // MARK: - Component
     func component<T: MGEntity>(from component: MComponent, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
+        
         props["name"] = component.name
         if let nameSection = component.nameSection {
             props["nameSection"] = nameSection.rawValue
@@ -399,6 +400,7 @@ extension ManaKit {
     // MARK: - Format
     func format<T: MGEntity>(from format: MFormat, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
+
         props["name"] = format.name
         if let nameSection = format.nameSection {
             props["nameSection"] = nameSection.rawValue
@@ -438,6 +440,7 @@ extension ManaKit {
     // MARK: - Frame
     func frame<T: MGEntity>(from frame: MFrame, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
+
         props["name"] = frame.name
         if let description_ = frame.description_ {
             props["description_"] = description_
@@ -461,6 +464,7 @@ extension ManaKit {
     // MARK: - FrameEffect
     func frameEffect<T: MGEntity>(from frameEffect: MFrameEffect, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
+
         props["id"] = frameEffect.id
         props["description_"] = frameEffect.description_
         props["name"] = frameEffect.name
@@ -483,6 +487,7 @@ extension ManaKit {
     // MARK: - ImageURI
     func imageURI<T: MGEntity>(from imageURI: MImageURI, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
+
         props["artCrop"] = imageURI.artCrop
         props["normal"] = imageURI.normal
         props["png"] = imageURI.png
