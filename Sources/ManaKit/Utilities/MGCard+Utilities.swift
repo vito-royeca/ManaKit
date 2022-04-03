@@ -60,7 +60,9 @@ extension MGCard {
             if let language = language,
                 let code = language.code {
                 
-                if let sortedFaces = sortedFaces {
+                if let sortedFaces = sortedFaces,
+                   !sortedFaces.isEmpty {
+
                     if code == "en" {
                         text = sortedFaces.first?.name
                     } else {
@@ -108,7 +110,9 @@ extension MGCard {
             if let language = language,
                 let code = language.code {
                 
-                if let sortedFaces = sortedFaces {
+                if let sortedFaces = sortedFaces,
+                   !sortedFaces.isEmpty {
+
                     if code == "en" {
                         text = sortedFaces.first?.typeLine
                     } else {
