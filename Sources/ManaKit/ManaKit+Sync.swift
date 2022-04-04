@@ -508,8 +508,6 @@ extension ManaKit {
         
         props["code"] = language.code
         if let displayCode = language.displayCode {
-            props["displayCode"] = displayCode
-        } else {
             var newDisplayCode: String?
             
             switch language.code {
@@ -518,11 +516,10 @@ extension ManaKit {
             case "zht":
                 newDisplayCode = "漢語"
             default:
-                newDisplayCode = language.code.uppercased()
+                newDisplayCode = displayCode
             }
             props["displayCode"] = newDisplayCode
         }
-
         if let name = language.name {
             props["name"] = name
         }
