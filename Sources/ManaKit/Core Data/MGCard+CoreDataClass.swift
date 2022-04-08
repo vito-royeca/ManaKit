@@ -45,8 +45,7 @@ public class MGCard: MGEntity {
             return nil
         }
         
-        let sortedArray = array.filter( {$0.card?.newID != newID } )
-            .sorted { ($0.component?.name ?? "") < ($1.component?.name ?? "")}
+        let sortedArray = array.sorted { ($0.component?.name ?? "") < ($1.component?.name ?? "")}
         return sortedArray
     }
     

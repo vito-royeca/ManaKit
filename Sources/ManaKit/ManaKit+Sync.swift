@@ -208,7 +208,8 @@ extension ManaKit {
                 }
             }
             for x in card.componentParts ?? [] {
-                if let y = componentPart(from: x, part: card, context: context, type: MGCardComponentPart.self) {
+                if let y = componentPart(from: x, part: card, context: context, type: MGCardComponentPart.self),
+                   y.part?.newID != newCard.newID {
                     newCard.addToComponentParts(y)
                 }
             }
