@@ -155,7 +155,11 @@ extension ManaKit {
             props["isPromo"] = isPromo
         }
         if let releaseDate = card.releaseDate {
-            props["releaseDate"] = releaseDate
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSZ"
+            formatter.locale = Locale(identifier: "en_US_POSIX")
+            
+            props["releaseDate"] = formatter.date(from: releaseDate)
         }
         if let isTextless = card.isTextless {
             props["isTextless"] = isTextless
@@ -542,6 +546,7 @@ extension ManaKit {
     // MARK: - Layout
     func layout<T: MGEntity>(from layout: MLayout, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
+
         props["name"] = layout.name
         if let description_ = layout.description_ {
             props["description_"] = description_
@@ -565,6 +570,7 @@ extension ManaKit {
     // MARK: - Legality
     func legality<T: MGEntity>(from legality: MLegality, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
+        
         props["name"] = legality.name
         if let nameSection = legality.nameSection {
             props["nameSection"] = nameSection
@@ -585,6 +591,7 @@ extension ManaKit {
     // MARK: - Price
     func price<T: MGEntity>(from price: MPrice, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
+        
         if let id = price.id {
             props["id"] = id
         }
@@ -621,6 +628,7 @@ extension ManaKit {
     // MARK: - Rarity
     func rarity<T: MGEntity>(from rarity: MRarity, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
+        
         props["name"] = rarity.name
         if let nameSection = rarity.nameSection {
             props["nameSection"] = nameSection
@@ -641,8 +649,11 @@ extension ManaKit {
     // MARK: - Ruling
     func ruling<T: MGEntity>(from ruling: MRuling, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        
         props["id"] = ruling.id
-        props["datePublished"] = ruling.datePublished
+        props["datePublished"] = formatter.date(from: ruling.datePublished)
         props["text"] = ruling.text
         
         let predicate = NSPredicate(format: "id = %d", ruling.id)
@@ -658,6 +669,7 @@ extension ManaKit {
     // MARK: - Set
     func set<T: MGEntity>(from set: MSet, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
+
         if let cardCount = set.cardCount {
             props["cardCount"] = cardCount
         }
@@ -687,7 +699,10 @@ extension ManaKit {
             props["yearSection"] = yearSection
         }
         if let releaseDate = set.releaseDate {
-            props["releaseDate"] = releaseDate
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            
+            props["releaseDate"] = formatter.date(from: releaseDate)
         }
         if let name = set.name {
             props["name"] = name
@@ -736,6 +751,7 @@ extension ManaKit {
     // MARK: - SetBlock
     func setBlock<T: MGEntity>(from setBlock: MSetBlock, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
+
         props["code"] = setBlock.code
         if let displayCode = setBlock.displayCode {
             props["displayCode"] = displayCode
@@ -760,6 +776,7 @@ extension ManaKit {
     // MARK: - SetType
     func setType<T: MGEntity>(from setType: MSetType, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
+
         props["name"] = setType.name
         if let nameSection = setType.nameSection {
             props["nameSection"] = nameSection
@@ -780,6 +797,7 @@ extension ManaKit {
     // MARK: - Type
     func type<T: MGEntity>(from cardType: MCardType, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
+
         let name = cardType.name.replacingOccurrences(of: "Legendary", with: "")
             .replacingOccurrences(of: "Basic", with: "")
             .trimmingCharacters(in: .whitespacesAndNewlines)
@@ -804,6 +822,7 @@ extension ManaKit {
     // MARK: - Watermark
     func watermark<T: MGEntity>(from watermark: MWatermark, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
+
         props["name"] = watermark.name
         if let nameSection = watermark.nameSection {
             props["nameSection"] = nameSection

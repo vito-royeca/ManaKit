@@ -30,7 +30,7 @@ public struct MCard: MEntity {
     let oracleText, power, printedName, printedText, toughness, arenaID, mtgoID: String?
     let tcgplayerID: Int?
     let handModifier, lifeModifier, isBooster, isDigital, isPromo: Bool?
-    let releaseDate: Date?
+    let releaseDate: String?
     let isTextless: Bool?
     let mtgoFoilID: String?
     let isReprint: Bool?
@@ -282,7 +282,7 @@ public struct MRarity: MEntity {
 // MARK: - Ruling
 public struct MRuling: MEntity {
     let id: Int32
-    let datePublished: Date
+    let datePublished: String
     let text: String
 
     enum CodingKeys: String, CodingKey {
@@ -300,7 +300,7 @@ public struct MSet: MEntity {
     let logoCode, mtgoCode, keyruneUnicode, keyruneClass: String?
     let nameSection: String?
     let yearSection: String?
-    let releaseDate: Date?
+    let releaseDate: String?
     let name: String?
     let tcgplayerID: Int?
     let parent: String?
