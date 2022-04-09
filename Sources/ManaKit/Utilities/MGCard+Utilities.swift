@@ -49,7 +49,7 @@ extension MGCard {
                 return ""
             }
             
-            return set.keyrune2Unicode()
+            return set.keyrune2Unicode
         }
     }
     
@@ -108,6 +108,19 @@ extension MGCard {
             } else {
                 return nil
             }
+        }
+    }
+    
+    public var displayReleaseDate: String? {
+        get {
+            guard let releaseDate = releaseDate else {
+                return nil
+            }
+            
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            
+            return formatter.string(from: releaseDate)
         }
     }
     
@@ -182,78 +195,81 @@ extension MGCard {
         }
     }
     
-    public func isModern() -> Bool {
-        guard let set = set,
-            let releaseDate = set.releaseDate else {
-            return false
-        }
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        
-        if let eightEditionDate = formatter.date(from: ManaKit.Constants.eightEditionRelease),
-            let setReleaseDate = formatter.date(from: releaseDate) {
-            return setReleaseDate.compare(eightEditionDate) == .orderedDescending ||
-                setReleaseDate.compare(eightEditionDate) == .orderedSame
-        }
-        
-        return false
-    }
-    
-    public func keyruneColor() -> UIColor {
-        guard let set = set,
-            let rarity = rarity else {
-            return .black
-        }
-
-        var color: UIColor?
-
-        if set.code == "tsb" {
-            color = UIColor(hex: "652978") // purple
-        } else {
-            if rarity.name == "Common" {
-                color = UIColor(hex: "1A1718")
-            } else if rarity.name == "Uncommon" {
-                color = UIColor(hex: "707883")
-            } else if rarity.name == "Rare" {
-                color = UIColor(hex: "A58E4A")
-            } else if rarity.name == "Mythic" {
-                color = UIColor(hex: "BF4427")
-            } else if rarity.name == "Special" {
-                color = UIColor(hex: "BF4427")
-            } else if rarity.name == "Timeshifted" {
-                color = UIColor(hex: "652978")
-            } else if rarity.name == "Basic Land" {
-                color = UIColor(hex: "000000")
+    public var isModern: Bool {
+        get {
+            guard let set = set,
+                let releaseDate = set.releaseDate else {
+                return false
             }
-        }
-
-        return color ?? .black
-    }
-    
-    public func nameFont() -> ManaKit.Font {
-        if let releaseDate = set?.releaseDate {
-            let isModern = isModern()
+            
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd"
             
-            if let m15Date = formatter.date(from: "2014-07-18"),
-                let setReleaseDate = formatter.date(from: releaseDate) {
-                
-                if setReleaseDate.compare(m15Date) == .orderedSame ||
-                    setReleaseDate.compare(m15Date) == .orderedDescending {
-                    return ManaKit.Fonts.magic2015
-                    
-                } else {
-                    return isModern ? ManaKit.Fonts.eightEdition : ManaKit.Fonts.preEightEdition
-                }
+            if let eightEditionDate = formatter.date(from: ManaKit.Constants.eightEditionRelease) {
+                return releaseDate.compare(eightEditionDate) == .orderedDescending ||
+                    releaseDate.compare(eightEditionDate) == .orderedSame
             }
+            
+            return false
         }
-        
-        return ManaKit.Fonts.magic2015
     }
     
-    public func multiverseIDArray() -> [Int64] {
+    public var keyruneColor: UIColor {
+        get {
+            guard let set = set,
+                let rarity = rarity else {
+                return .black
+            }
+
+            var color: UIColor?
+
+            if set.code == "tsb" {
+                color = UIColor(hex: "652978") // purple
+            } else {
+                if rarity.name == "Common" {
+                    color = UIColor(hex: "1A1718")
+                } else if rarity.name == "Uncommon" {
+                    color = UIColor(hex: "707883")
+                } else if rarity.name == "Rare" {
+                    color = UIColor(hex: "A58E4A")
+                } else if rarity.name == "Mythic" {
+                    color = UIColor(hex: "BF4427")
+                } else if rarity.name == "Special" {
+                    color = UIColor(hex: "BF4427")
+                } else if rarity.name == "Timeshifted" {
+                    color = UIColor(hex: "652978")
+                } else if rarity.name == "Basic Land" {
+                    color = UIColor(hex: "000000")
+                }
+            }
+
+            return color ?? .black
+        }
+    }
+    
+    public var nameFont: ManaKit.Font {
+        get {
+            if let releaseDate = set?.releaseDate {
+                let isModern = isModern
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy-MM-dd"
+                
+                if let m15Date = formatter.date(from: "2014-07-18") {
+                    
+                    if releaseDate.compare(m15Date) == .orderedSame ||
+                        releaseDate.compare(m15Date) == .orderedDescending {
+                        return ManaKit.Fonts.magic2015
+                    } else {
+                        return isModern ? ManaKit.Fonts.eightEdition : ManaKit.Fonts.preEightEdition
+                    }
+                }
+            }
+            
+            return ManaKit.Fonts.magic2015
+        }
+    }
+    
+//    public func multiverseIDArray() -> [Int64] {
 //        guard let multiverseIds = multiverseIds else {
 //            return [Int64]()
 //        }
@@ -262,8 +278,7 @@ extension MGCard {
 //            let array = try NSKeyedUnarchiver.unarchivedObject(ofClass: [Int64].self, from: multiverseIds)
 //            return array
 //        } catch {
-            return [Int64]()
+//            return [Int64]()
 //        }
-        
-    }
+//    }
 }

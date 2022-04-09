@@ -16,7 +16,7 @@ extension MGRuling {
         return NSFetchRequest<MGRuling>(entityName: "MGRuling")
     }
 
-    @NSManaged public var datePublished: String?
+    @NSManaged public var datePublished: Date?
     @NSManaged public var id: String?
     @NSManaged public var oracleId: String?
     @NSManaged public var text: String?

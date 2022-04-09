@@ -59,7 +59,7 @@
         <attribute name="printedName" optional="YES" attributeType="String"/>
         <attribute name="printedText" optional="YES" attributeType="String"/>
         <attribute name="printedTypeLine" optional="YES" attributeType="String"/>
-        <attribute name="releasedAt" optional="YES" attributeType="String"/>
+        <attribute name="releaseDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="tcgPlayerID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="toughness" optional="YES" attributeType="String"/>
         <attribute name="typeLine" optional="YES" attributeType="String"/>
@@ -340,7 +340,7 @@
         </uniquenessConstraints>
     </entity>
     <entity name="MGRuling" representedClassName="ManaKit.MGRuling" syncable="YES">
-        <attribute name="datePublished" optional="YES" attributeType="String"/>
+        <attribute name="datePublished" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="oracleId" optional="YES" attributeType="String"/>
         <attribute name="text" optional="YES" attributeType="String"/>
@@ -367,7 +367,7 @@
         <attribute name="mtgoCode" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="nameSection" optional="YES" attributeType="String"/>
-        <attribute name="releaseDate" optional="YES" attributeType="String"/>
+        <attribute name="releaseDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="tcgPlayerID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES">
             <userInfo>
                 <entry key="sync.remoteKey" value="tcgplayer_id"/>

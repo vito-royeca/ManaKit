@@ -154,8 +154,8 @@ extension ManaKit {
         if let isPromo = card.isPromo {
             props["isPromo"] = isPromo
         }
-        if let releasedAt = card.releasedAt {
-            props["releasedAt"] = releasedAt
+        if let releaseDate = card.releaseDate {
+            props["releaseDate"] = releaseDate
         }
         if let isTextless = card.isTextless {
             props["isTextless"] = isTextless

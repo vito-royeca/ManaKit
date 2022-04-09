@@ -96,7 +96,8 @@ public class MGCard: MGEntity {
             return nil
         }
         
-        let sortedArray = array.sorted { ($0.set?.releaseDate ?? "") > ($1.set?.releaseDate ?? "")}
+        let date = Date()
+        let sortedArray = array.sorted { ($0.set?.releaseDate ?? date) > ($1.set?.releaseDate ?? date) }
         return sortedArray
     }
     
@@ -106,7 +107,8 @@ public class MGCard: MGEntity {
             return nil
         }
         
-        let sortedArray = array.sorted { ($0.datePublished ?? "") > ($1.datePublished ?? "")}
+        let date = Date()
+        let sortedArray = array.sorted { ($0.datePublished ?? date) > ($1.datePublished ?? date) }
         return sortedArray
     }
     

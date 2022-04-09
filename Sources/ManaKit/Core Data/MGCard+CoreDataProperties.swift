@@ -55,7 +55,7 @@ extension MGCard {
     @NSManaged public var printedName: String?
     @NSManaged public var printedText: String?
     @NSManaged public var printedTypeLine: String?
-    @NSManaged public var releasedAt: String?
+    @NSManaged public var releaseDate: Date?
     @NSManaged public var tcgPlayerID: Int64
     @NSManaged public var toughness: String?
     @NSManaged public var typeLine: String?

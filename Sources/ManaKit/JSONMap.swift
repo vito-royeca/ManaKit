@@ -30,7 +30,7 @@ public struct MCard: MEntity {
     let oracleText, power, printedName, printedText, toughness, arenaID, mtgoID: String?
     let tcgplayerID: Int?
     let handModifier, lifeModifier, isBooster, isDigital, isPromo: Bool?
-    let releasedAt: String?
+    let releaseDate: Date?
     let isTextless: Bool?
     let mtgoFoilID: String?
     let isReprint: Bool?
@@ -88,7 +88,7 @@ public struct MCard: MEntity {
         case isBooster        = "is_booster"
         case isDigital        = "is_digital"
         case isPromo          = "is_promo"
-        case releasedAt       = "released_at"
+        case releaseDate       = "released_at"
         case isTextless       = "is_textless"
         case mtgoFoilID       = "mtgo_foil_id"
         case isReprint        = "is_reprint"
@@ -282,7 +282,8 @@ public struct MRarity: MEntity {
 // MARK: - Ruling
 public struct MRuling: MEntity {
     let id: Int32
-    let datePublished, text: String
+    let datePublished: Date
+    let text: String
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -298,7 +299,8 @@ public struct MSet: MEntity {
     let isFoilOnly, isOnlineOnly: Bool?
     let logoCode, mtgoCode, keyruneUnicode, keyruneClass: String?
     let nameSection: String?
-    let yearSection, releaseDate: String?
+    let yearSection: String?
+    let releaseDate: Date?
     let name: String?
     let tcgplayerID: Int?
     let parent: String?
