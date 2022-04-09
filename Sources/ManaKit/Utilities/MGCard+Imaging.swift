@@ -1,5 +1,5 @@
 //
-//  MCard+Imaging.swift
+//  MGCard+Imaging.swift
 //  ManaKit-iOS
 //
 //  Created by Vito Royeca on 12/24/19.
