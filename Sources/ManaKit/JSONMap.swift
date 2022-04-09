@@ -258,7 +258,7 @@ public struct MPrice: MEntity {
     let low, median, high, market: Double?
     let directLow: Double?
     let isFoil: Bool
-    let dateUpdated: Date?
+    let dateUpdated: String?
 
     enum CodingKeys: String, CodingKey {
         case id, low, median, high, market

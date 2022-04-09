@@ -157,7 +157,6 @@ extension ManaKit {
         if let releaseDate = card.releaseDate {
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSZ"
-            formatter.locale = Locale(identifier: "en_US_POSIX")
             
             props["releaseDate"] = formatter.date(from: releaseDate)
         }
@@ -612,7 +611,10 @@ extension ManaKit {
         }
         props["isFoil"] = price.isFoil
         if let dateUpdated = price.dateUpdated {
-            props["dateUpdated"] = dateUpdated
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSZ"
+            
+            props["dateUpdated"] = formatter.date(from: dateUpdated)
         }
         
         let predicate = NSPredicate(format: "id = %d", price.id ?? "")
