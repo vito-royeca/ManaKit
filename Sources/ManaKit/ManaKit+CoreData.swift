@@ -46,12 +46,12 @@ extension ManaKit {
         }
         
         if willFetchCache(forUrl: url) {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSZ"
-            formatter.locale = Locale(identifier: "en_US_POSIX")
+//            let formatter = DateFormatter()
+//            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSZ"
+//            formatter.locale = Locale(identifier: "en_US_POSIX")
             
             let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .formatted(formatter)
+//            decoder.dateDecodingStrategy = .formatted(formatter)
             
             URLSession.shared.dataTaskPublisher(for: url)
                 .subscribe(on: sessionProcessingQueue)
