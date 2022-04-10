@@ -359,6 +359,7 @@
                 <entry key="sync.isPrimaryKey" value="true"/>
             </userInfo>
         </attribute>
+        <attribute name="displayReleaseDate" optional="YES" transient="YES" attributeType="String"/>
         <attribute name="isFoilOnly" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isOnlineOnly" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="keyruneClass" optional="YES" attributeType="String"/>
@@ -453,7 +454,7 @@
         <element name="MGRarity" positionX="-27" positionY="135" width="128" height="74"/>
         <element name="MGRule" positionX="0" positionY="162" width="128" height="134"/>
         <element name="MGRuling" positionX="-27" positionY="135" width="128" height="104"/>
-        <element name="MGSet" positionX="-63" positionY="-18" width="128" height="314"/>
+        <element name="MGSet" positionX="-63" positionY="-18" width="128" height="329"/>
         <element name="MGSetBlock" positionX="-18" positionY="144" width="128" height="89"/>
         <element name="MGSetType" positionX="-27" positionY="135" width="128" height="74"/>
         <element name="MGWatermark" positionX="-27" positionY="135" width="128" height="74"/>
