@@ -280,6 +280,9 @@ extension ManaKit {
             }
             for x in card.supertypes ?? [] {
                 if let y = self.cardType(from: x, context: context, type: MGCardType.self) {
+                    for subtype in newCard.subtypes?.allObjects as? [MGCardType] ?? [] {
+                        y.addToChildren(subtype)
+                    }
                     newCard.addToSupertypes(y)
                 }
             }
