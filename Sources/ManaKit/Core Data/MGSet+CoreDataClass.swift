@@ -8,6 +8,18 @@
 import CoreData
 
 public class MGSet: MGEntity {
+    public var sortedChildren: [MGSet]? {
+        guard let set = children,
+            let array = set.allObjects as? [MGSet] else {
+            return nil
+        }
+        
+        let now = Date()
+        let sortedArray = array.sorted { ($0.releaseDate ?? now) > ($1.releaseDate ?? now)}
+
+        return sortedArray.isEmpty ? nil : sortedArray
+    }
+
     public var sortedLanguages: [MGLanguage]? {
         guard let set = languages,
             let array = set.allObjects as? [MGLanguage] else {
@@ -51,6 +63,6 @@ public class MGSet: MGEntity {
             sortedArray.append(contentsOf: array.filter({ $0.code == "zht"}))
         }
         
-        return sortedArray
+        return sortedArray.isEmpty ? nil : sortedArray
     }
 }

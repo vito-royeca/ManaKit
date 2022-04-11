@@ -16,7 +16,7 @@ public class MGCard: MGEntity {
         }
         
         let sortedArray = array.sorted { ($0.name ?? "") < ($1.name ?? "")}
-        return sortedArray
+        return sortedArray.isEmpty ? nil : sortedArray
     }
     
     public var sortedColorIdentities: [MGColor]? {
@@ -26,7 +26,7 @@ public class MGCard: MGEntity {
         }
         
         let sortedArray = array.sorted { ($0.name ?? "") < ($1.name ?? "")}
-        return sortedArray
+        return sortedArray.isEmpty ? nil : sortedArray
     }
     
     public var sortedColorIndicators: [MGColor]? {
@@ -36,7 +36,7 @@ public class MGCard: MGEntity {
         }
         
         let sortedArray = array.sorted { ($0.name ?? "") < ($1.name ?? "")}
-        return sortedArray
+        return sortedArray.isEmpty ? nil : sortedArray
     }
     
     public var sortedComponentParts: [MGCardComponentPart]? {
@@ -46,7 +46,7 @@ public class MGCard: MGEntity {
         }
         
         let sortedArray = array.sorted { ($0.component?.name ?? "") < ($1.component?.name ?? "")}
-        return sortedArray
+        return sortedArray.isEmpty ? nil : sortedArray
     }
     
     public var sortedFaces: [MGCard]? {
@@ -56,7 +56,7 @@ public class MGCard: MGEntity {
         }
         
         let sortedArray = array.sorted { $0.faceOrder < $1.faceOrder}
-        return sortedArray
+        return sortedArray.isEmpty ? nil : sortedArray
     }
     
     public var sortedFormatLegalities: [MGCardFormatLegality]? {
@@ -67,7 +67,7 @@ public class MGCard: MGEntity {
         
         let sortedArray = array.sorted { ($0.legality?.name ?? "") < ($1.legality?.name ?? "") }
 //                               .sorted { ($0.format?.name ?? "") < ($1.format?.name ?? "") }
-        return sortedArray
+        return sortedArray.isEmpty ? nil : sortedArray
     }
     
     public var sortedFrameEffects: [MGFrameEffect]? {
@@ -77,7 +77,7 @@ public class MGCard: MGEntity {
         }
         
         let sortedArray = array.sorted { ($0.name ?? "") < ($1.name ?? "")}
-        return sortedArray
+        return sortedArray.isEmpty ? nil : sortedArray
     }
     
     public var sortedOtherLanguages: [MGCard]? {
@@ -87,7 +87,7 @@ public class MGCard: MGEntity {
         }
         
         let sortedArray = array.sorted { ($0.language?.name ?? "") < ($1.language?.name ?? "")}
-        return sortedArray
+        return sortedArray.isEmpty ? nil : sortedArray
     }
     
     public var sortedOtherPrintings: [MGCard]? {
@@ -98,7 +98,7 @@ public class MGCard: MGEntity {
         
         let date = Date()
         let sortedArray = array.sorted { ($0.set?.releaseDate ?? date) > ($1.set?.releaseDate ?? date) }
-        return sortedArray
+        return sortedArray.isEmpty ? nil : sortedArray
     }
     
     public var sortedRulings: [MGRuling]? {
@@ -109,7 +109,7 @@ public class MGCard: MGEntity {
         
         let date = Date()
         let sortedArray = array.sorted { ($0.datePublished ?? date) > ($1.datePublished ?? date) }
-        return sortedArray
+        return sortedArray.isEmpty ? nil : sortedArray
     }
     
     public var sortedSubtypes: [MGCardType]? {
@@ -119,7 +119,7 @@ public class MGCard: MGEntity {
         }
         
         let sortedArray = array.sorted { ($0.name ?? "") < ($1.name ?? "")}
-        return sortedArray
+        return sortedArray.isEmpty ? nil : sortedArray
     }
     
     public var sortedSupertypes: [MGCardType]? {
@@ -129,7 +129,7 @@ public class MGCard: MGEntity {
         }
         
         let sortedArray = array.sorted { ($0.name ?? "") < ($1.name ?? "")}
-        return sortedArray
+        return sortedArray.isEmpty ? nil : sortedArray
     }
     
     public var sortedVariations: [MGCard]? {
@@ -139,6 +139,6 @@ public class MGCard: MGEntity {
         }
         
         let sortedArray = array.sorted { ($0.collectorNumber ?? "") < ($1.collectorNumber ?? "")}
-        return sortedArray
+        return sortedArray.isEmpty ? nil : sortedArray
     }
 }
