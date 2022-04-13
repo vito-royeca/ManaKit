@@ -72,9 +72,6 @@ final class ManaKitTests: XCTestCase {
     func testFetchSets() {
         let expectation = XCTestExpectation(description: "testFetchSets")
 
-        let sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: false),
-                               NSSortDescriptor(key: "name", ascending: true)]
-        
         ManaKit.shared.fetchSets(completion: { result in
             switch result {
             case .success:
