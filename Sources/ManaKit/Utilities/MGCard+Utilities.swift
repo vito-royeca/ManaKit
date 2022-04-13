@@ -5,7 +5,11 @@
 //  Created by Vito Royeca on 12/27/21.
 //
 
+import Foundation
+
+#if !os(macOS)
 import UIKit
+#endif
 
 public enum CardImageType: Int, CaseIterable {
     case png
@@ -214,6 +218,7 @@ extension MGCard {
         }
     }
     
+    #if !os(macOS)
     public var keyruneColor: UIColor {
         get {
             guard let set = set,
@@ -246,7 +251,8 @@ extension MGCard {
             return color ?? .black
         }
     }
-    
+    #endif
+
     public var nameFont: ManaKit.Font {
         get {
             if let releaseDate = set?.releaseDate {

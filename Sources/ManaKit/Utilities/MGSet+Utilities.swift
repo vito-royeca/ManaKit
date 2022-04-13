@@ -5,7 +5,11 @@
 //  Created by Vito Royeca on 12/27/21.
 //
 
+import Foundation
+
+#if !os(macOS)
 import UIKit
+#endif
 
 extension MGSet {
     public var keyrune2Unicode: String {
@@ -31,6 +35,7 @@ extension MGSet {
         return url
     }
     
+    #if !os(macOS)
     public var logoImage: UIImage? {
         get {
             guard let logoCode = logoCode else {
@@ -39,7 +44,8 @@ extension MGSet {
             return UIImage(named: logoCode, in: Bundle.module, compatibleWith: nil)
         }
     }
-    
+    #endif
+
     public var displayReleaseDate: String? {
         get {
             guard let releaseDate = releaseDate else {

@@ -106,7 +106,7 @@ extension ManaKit {
             } else {
                 if createIfNotFound {
                     if let desc = NSEntityDescription.entity(forEntityName: entityName, in: context) {
-                        try context.performAndWait {
+//                        try context.performAndWait {
                             let object = NSManagedObject(entity: desc, insertInto: context)
                             
                             for (key,value) in properties ?? [:] {
@@ -114,7 +114,7 @@ extension ManaKit {
                             }
                             
                             try context.save()
-                        }
+//                        }
                         return find(entity,
                                     properties: properties,
                                     predicate: predicate,
@@ -181,9 +181,9 @@ extension ManaKit {
         }
         
         do {
-            try context.performAndWait {
+//            try context.performAndWait {
                 try context.save()
-            }
+//            }
         } catch {
             print(error)
         }

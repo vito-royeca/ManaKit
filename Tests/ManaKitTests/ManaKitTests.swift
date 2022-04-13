@@ -1,72 +1,127 @@
 import XCTest
+import CoreData
 @testable import ManaKit
 
 final class ManaKitTests: XCTestCase {
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        
+    override func setUp() {
+        ManaKit.shared.configure(apiURL: "http://managuideapp.com")
+        ManaKit.shared.setupResources()
     }
 
-    static var allTests = [
-        ("testExample", testExample),
-    ]
-    
     func testFetchAll() {
-        let expectation = XCTestExpectation(description: "testFetchSets")
+        let expectation = XCTestExpectation(description: "testFetchAll")
+        let group = DispatchGroup()
+        
+        // 1) start fetch sets
+        group.enter()
+        ManaKit.shared.fetchSets(completion: { result in
+            switch result {
+            case .success:
+                
+                for set in self.fetchLocalSets() {
+                    for language in set.sortedLanguages ?? [] {
+                        
+                        // 2) start fetch set/language
+                        group.enter()
+                        ManaKit.shared.fetchSet(code: set.code, languageCode: language.code ?? "", completion: { result in
+                            switch result {
+                            case .success(let set):
+                                if let set = set {
+                                    for card in self.fetchLocalCards(setCode: set.code, languageCode: language.code ?? "") {
+                                        
+                                        // 3) start fetch card
+                                        group.enter()
+                                        ManaKit.shared.fetchCard(newID: card.newIDCopy, completion: { result in
+                                            switch result {
+                                            case .success(let card):
+                                                if let card = card {
+                                                    print("fetched \(card.newIDCopy)")
+                                                } else {
+                                                    print("fail!!!")
+                                                }
+                                                // 3) end fetch card
+                                                group.leave()
+                                                
+                                            case .failure(let error):
+                                                print(error)
+                                                XCTFail()
+                                            }
+                                        })
+                                    }
+                                }
+                                
+                                // 2) end fetch set/language
+                                group.leave()
+                                
+                            case .failure(let error):
+                                print(error)
+                                XCTFail()
+                            }
+                        })
+                    }
+                }
+                
+                // 1) end fetch sets
+                group.leave()
+                
+            case .failure(let error):
+                print(error)
+                XCTFail()
+            }
+        })
 
+        group.notify(queue: DispatchQueue.global()) {
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 3600.0)
+    }
+    
+    func fetchLocalSets() -> [MGSet] {
+        let request: NSFetchRequest<MGSet> = MGSet.fetchRequest()
         let sortDescriptors = [NSSortDescriptor(key: "releaseDate", ascending: false),
                                NSSortDescriptor(key: "name", ascending: true)]
         
-//        ManaKit.shared.fetchSets(completion: { result in
-//            switch result {
-//            case .success:
-//                for code in sets.map({ $0.code}) {
-//                    ManaKit.shared.fetchSet(code: code,
-//                                            languageCode: "en",
-//                                            completion: { result in
-//                        switch result {
-//                        case .success(let set):
-//                            XCTAssert(set.code == code)
-//                            
-//                            for newID in (ManaKit.shared.find(MCard.self,
-//                                                             properties: nil,
-//                                                             predicate: NSPredicate(format: "set.code == %@ AND language.code == %@", code, "en"),
-//                                                             sortDescriptors: nil,
-//                                                              createIfNotFound: false) ?? []).map({ $0.newID})  {
-//                                
-//                                var cancellables3 = Set<AnyCancellable>()
-//                                
-//                                ManaKit.shared.fetchCard(newID: newID,
-//                                                         cancellables: &cancellables3,
-//                                                         completion: { result in
-//                                    switch result {
-//                                    case .success(let card):
-//                                        XCTAssert(card.newID == newID)
-//                                        expectation.fulfill()
-//                                    case .failure(let error):
-//                                        print(error)
-//                                        XCTFail()
-//                                        expectation.fulfill()
-//                                    }
-//                                })
-//                            }
-//
-//                        case .failure(let error):
-//                            print(error)
-//                            XCTFail()
-//                        }
-//                    })
-//                }
-//                
-//            case .failure(let error):
-//                print(error)
-//                XCTFail()
-//            }
-//        })
-
-        wait(for: [expectation], timeout: 3600.0)
+        request.sortDescriptors = sortDescriptors
+        
+        let frc = NSFetchedResultsController(fetchRequest: request,
+                                             managedObjectContext: ManaKit.shared.viewContext,
+                                             sectionNameKeyPath: nil,
+                                             cacheName: nil)
+        var sets = [MGSet]()
+        
+        do {
+            try frc.performFetch()
+            sets = frc.fetchedObjects ?? []
+        } catch {
+            print(error)
+        }
+        
+        return sets
+    }
+    
+    func fetchLocalCards(setCode: String, languageCode: String) -> [MGCard] {
+        let request: NSFetchRequest<MGCard> = MGCard.fetchRequest()
+        let predicate = NSPredicate(format: "set.code == %@ AND language.code == %@ AND collectorNumber != null ", setCode, languageCode)
+        let sortDescriptors = [NSSortDescriptor(key: "collectorNumber", ascending: true)]
+        
+        request.predicate = predicate
+        request.sortDescriptors = sortDescriptors
+        
+        let frc = NSFetchedResultsController(fetchRequest: request,
+                                             managedObjectContext: ManaKit.shared.viewContext,
+                                             sectionNameKeyPath: nil,
+                                             cacheName: nil)
+        var cards = [MGCard]()
+        
+        do {
+            try frc.performFetch()
+            cards = frc.fetchedObjects ?? []
+        } catch {
+            print(error)
+        }
+        
+        return cards
     }
     
     func testFetchSets() {
