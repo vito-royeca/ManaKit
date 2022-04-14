@@ -50,6 +50,10 @@ extension ManaKit {
                                     }
                                 }
                                 
+                                
+                                print("Sleeping...")
+                                sleep(10)
+                                
                                 // 2) end fetch set/language
                                 group.leave()
                                 
