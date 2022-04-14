@@ -9,20 +9,14 @@ end
 target 'ManaKit_Example' do
     default_pods
     platform :ios, "15.0"
-
-    pod 'SDWebImageSwiftUI'
 end
 
 target 'ManaKit_ExampleTests' do
     default_pods
     platform :ios, "15.0"
-
-    pod 'SDWebImageSwiftUI'
 end
 
 target 'ManaKit_ExampleUITests' do
     default_pods
     platform :ios, "15.0"
-
-    pod 'SDWebImageSwiftUI'
 end

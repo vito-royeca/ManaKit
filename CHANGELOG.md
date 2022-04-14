@@ -1,3 +1,8 @@
+**Version 8.0.0** @ 13.04.2022
+- Lots of code changes.
+- Removed Example code.
+- Now using ManaGuide REST API.
+
 **Version 7.1.0** @ 28.12.2021
 - Streamlined code. lots of refactoring
 - Support for SPM (Swift Package Manager)
