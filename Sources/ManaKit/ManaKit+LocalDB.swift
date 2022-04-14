@@ -18,8 +18,11 @@ extension ManaKit {
         ManaKit.shared.fetchSets(completion: { result in
             switch result {
             case .success:
+                let sets = self.fetchLocalSets()
+                let setsCount = sets.count
+                var index = 0
                 
-                for set in self.fetchLocalSets() {
+                for set in sets {
                     for language in set.sortedLanguages ?? [] {
                         
                         // 2) start fetch set/language
@@ -40,26 +43,26 @@ extension ManaKit {
                                                 } else {
                                                     print("fail!!!")
                                                 }
-                                                // 3) end fetch card
-                                                group.leave()
-                                                
                                             case .failure(let error):
                                                 print(error)
                                             }
+                                            
+                                            // 3) end fetch card
+                                            group.leave()
                                         })
                                     }
                                 }
                                 
                                 
-                                print("Sleeping...")
-                                sleep(10)
-                                
-                                // 2) end fetch set/language
-                                group.leave()
-                                
+                                print("Sleeping... \(index)/\(setsCount)")
+                                index += 1
+                                sleep(3)
                             case .failure(let error):
                                 print(error)
                             }
+                            
+                            // 2) end fetch set/language
+                            group.leave()
                         })
                     }
                 }
