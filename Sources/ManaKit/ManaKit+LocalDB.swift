@@ -57,13 +57,13 @@ extension ManaKit {
                             case .failure(let error):
                                 print(error)
                             }
+                            
+                            print("Sleeping... \(index)/\(setsCount)")
+                            index += 1
+                            sleep(1)
+                            // 2) end fetch set/language
+                            group.leave()
                         })
-                        
-                        print("Sleeping... \(index)/\(setsCount)")
-                        index += 1
-                        sleep(1)
-                        // 2) end fetch set/language
-                        group.leave()
                     }
                 }
             case .failure(let error):
