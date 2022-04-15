@@ -10,7 +10,7 @@ import CoreData
 import SQLite3
 
 extension ManaKit {
-    public func createLocalDB() {
+    func createLocalDB() {
         let group = DispatchGroup()
         
         // 1) start fetch sets
