@@ -61,7 +61,7 @@ extension ManaKit {
                         
                         print("Sleeping... \(index)/\(setsCount)")
                         index += 1
-                        sleep(3)
+                        sleep(1)
                         // 2) end fetch set/language
                         group.leave()
                     }
