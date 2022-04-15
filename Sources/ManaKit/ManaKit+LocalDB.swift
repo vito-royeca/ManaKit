@@ -48,19 +48,19 @@ extension ManaKit {
                                             }
                                             
                                             // 3) end fetch card
+                                            sleep(1)
                                             group.leave()
                                         })
                                     }
                                 }
                                 
-                                
-                                print("Sleeping... \(index)/\(setsCount)")
-                                index += 1
-                                sleep(3)
                             case .failure(let error):
                                 print(error)
                             }
-                            
+
+                            print("Sleeping... \(index)/\(setsCount)")
+                            index += 1
+                            sleep(3)
                             // 2) end fetch set/language
                             group.leave()
                         })
@@ -129,7 +129,8 @@ extension ManaKit {
     
     func vacuumLocalDB() {
         var url: URL?
-        for store in ManaKit.shared.persistentStoreCoordinator.persistentStores {
+        
+        for store in persistentStoreCoordinator.persistentStores {
             url = store.url
         }
         
