@@ -26,7 +26,7 @@ extension ManaKit: API {
     public func fetchSet(code: String,
                          languageCode: String,
                          completion: @escaping (Result<MGSet?, Error>) -> Void) {
-        guard let url = URL(string: "\(apiURL)/set/\(code)/\(languageCode)?json=true") else {
+        guard let url = URL(string: "\(apiURL)/set/\(code)/\(languageCode)?json=true&mobile=true") else {
             completion(.failure(ManaKitError.badURL))
             return
         }
@@ -51,7 +51,7 @@ extension ManaKit: API {
     }
 
     public func fetchSets(completion: @escaping (Result<Void, Error>) -> Void) {
-        guard let url = URL(string: "\(apiURL)/sets?json=true") else {
+        guard let url = URL(string: "\(apiURL)/sets?json=true&mobile=true") else {
             completion(.failure(ManaKitError.badURL))
             return
         }
@@ -70,7 +70,7 @@ extension ManaKit: API {
 
     public func fetchCard(newID: String,
                           completion: @escaping (Result<MGCard?, Error>) -> Void) {
-        guard let url = URL(string: "\(apiURL)/card/\(newID)?json=true") else {
+        guard let url = URL(string: "\(apiURL)/card/\(newID)?json=true&mobile=true") else {
             completion(.failure(ManaKitError.badURL))
             return
         }
@@ -98,7 +98,7 @@ extension ManaKit: API {
                            completion: @escaping (Result<Void, Error>) -> Void) {
         
         var urlComponents = URLComponents(string: apiURL)
-        urlComponents?.path = "/search"
+        urlComponents?.path = "/search?json=true&mobile=true"
         urlComponents?.queryItems = [URLQueryItem(name: "sortedBy", value: ""),
                                      URLQueryItem(name: "orderBy", value: ""),
                                      URLQueryItem(name: "query", value: query),
