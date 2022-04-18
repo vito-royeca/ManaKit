@@ -67,6 +67,9 @@ extension ManaKit {
     func card<T: MGEntity>(from card: MCard, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
 
+        if let artCropURL = card.artCropURL {
+            props["artCropURL"] = artCropURL
+        }
         if let collectorNumber = card.collectorNumber {
             props["collectorNumber"] = collectorNumber
         }
@@ -109,6 +112,9 @@ extension ManaKit {
         if let nameSection = card.nameSection {
             props["nameSection"] = nameSection
         }
+        if let normalURL = card.normalURL {
+            props["normalURL"] = normalURL
+        }
         if let numberOrder = card.numberOrder {
             props["numberOrder"] = numberOrder
         }
@@ -117,6 +123,9 @@ extension ManaKit {
         }
         if let oracleText = card.oracleText {
             props["oracleText"] = oracleText
+        }
+        if let pngURL = card.pngURL {
+            props["pngURL"] = pngURL
         }
         if let power = card.power {
             props["power"] = power
@@ -231,11 +240,6 @@ extension ManaKit {
             for x in card.frameEffects ?? [] {
                 if let y = frameEffect(from: x, context: context, type: MGFrameEffect.self) {
                     newCard.addToFrameEffects(y)
-                }
-            }
-            for x in card.imageURIs ?? [] {
-                if let y = imageURI(from: x, context: context, type: MGImageURI.self) {
-                    newCard.addToImageURIs(y)
                 }
             }
             if let x = card.language {
@@ -481,24 +485,6 @@ extension ManaKit {
         }
         
         let predicate = NSPredicate(format: "id = %@", frameEffect.id)
-        
-        return find(type,
-                    properties: props,
-                    predicate: predicate,
-                    sortDescriptors: nil,
-                    createIfNotFound: true,
-                    context: context)?.first
-    }
-    
-    // MARK: - ImageURI
-    func imageURI<T: MGEntity>(from imageURI: MImageURI, context: NSManagedObjectContext, type: T.Type) -> T? {
-        var props = [String: Any]()
-
-        props["artCrop"] = imageURI.artCrop
-        props["normal"] = imageURI.normal
-        props["png"] = imageURI.png
-        
-        let predicate = NSPredicate(format: "artCrop = %@ AND normal = %@ AND png = %@", imageURI.artCrop, imageURI.normal, imageURI.png)
         
         return find(type,
                     properties: props,

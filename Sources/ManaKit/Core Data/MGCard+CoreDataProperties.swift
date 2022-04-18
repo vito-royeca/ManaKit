@@ -19,6 +19,7 @@ extension MGCard {
         return request
     }
 
+    @NSManaged public var artCropURL: String?
     @NSManaged public var arenaID: String?
     @NSManaged public var cardBackID: String?
     @NSManaged public var cmc: Double
@@ -46,11 +47,13 @@ extension MGCard {
     @NSManaged public var mtgoID: String?
     @NSManaged public var multiverseIDs: Data?
     @NSManaged public var nameSection: String?
+    @NSManaged public var normalURL: String?
     @NSManaged public var numberOrder: Double
     @NSManaged public var name: String?
     @NSManaged public var newID: String
     @NSManaged public var oracleID: String?
     @NSManaged public var oracleText: String?
+    @NSManaged public var pngURL: String?
     @NSManaged public var power: String?
     @NSManaged public var printedName: String?
     @NSManaged public var printedText: String?
@@ -69,7 +72,6 @@ extension MGCard {
     @NSManaged public var formatLegalities: NSSet?
     @NSManaged public var frame: MGFrame?
     @NSManaged public var frameEffects: NSSet?
-    @NSManaged public var imageURIs: NSSet?
     @NSManaged public var language: MGLanguage?
     @NSManaged public var layout: MGLayout?
     @NSManaged public var otherLanguages: NSSet?
@@ -204,23 +206,6 @@ extension MGCard {
 
     @objc(removeFrameEffects:)
     @NSManaged public func removeFromFrameEffects(_ values: NSSet)
-
-}
-
-// MARK: Generated accessors for imageURIs
-extension MGCard {
-
-    @objc(addImageURIsObject:)
-    @NSManaged public func addToImageURIs(_ value: MGImageURI)
-
-    @objc(removeImageURIsObject:)
-    @NSManaged public func removeFromImageURIs(_ value: MGImageURI)
-
-    @objc(addImageURIs:)
-    @NSManaged public func addToImageURIs(_ values: NSSet)
-
-    @objc(removeImageURIs:)
-    @NSManaged public func removeFromImageURIs(_ values: NSSet)
 
 }
 

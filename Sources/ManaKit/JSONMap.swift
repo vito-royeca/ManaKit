@@ -18,7 +18,7 @@ public protocol MEntity: Codable {
 
 // MARK: - WelcomeElement
 public struct MCard: MEntity {
-    let collectorNumber: String?
+    let artCropURL, collectorNumber: String?
     let cmc: Double?
     let faceOrder: Int?
     let flavorText: String?
@@ -26,8 +26,7 @@ public struct MCard: MEntity {
     let loyalty, manaCost: String?
     let nameSection: String?
     let numberOrder: Double?
-    let name: String?
-    let oracleText, power, printedName, printedText, toughness, arenaID, mtgoID: String?
+    let name, normalURL, oracleText, power, printedName, printedText, toughness, arenaID, mtgoID, pngURL: String?
     let tcgplayerID: Int?
     let handModifier, lifeModifier, isBooster, isDigital, isPromo: Bool?
     let releaseDate: String?
@@ -56,55 +55,51 @@ public struct MCard: MEntity {
     let subtypes, supertypes: [MCardType]?
     let prices: [MPrice]?
     let rulings: [MRuling]?
-    let imageURIs: [MImageURI]?
 
     enum CodingKeys: String, CodingKey {
+        case arenaID          = "arena_id"
+        case artCropURL       = "art_crop_url"
         case collectorNumber  = "collector_number"
-        case cmc
+        case colorIdentities  = "color_identities"
+        case colorIndicators  = "color_indicators"
+        case componentParts   = "component_parts"
         case faceOrder        = "face_order"
         case flavorText       = "flavor_text"
+        case frameEffects     = "frame_effects"
+        case formatLegalities = "format_legalities"
+        case handModifier     = "hand_modifier"
+        case isBooster        = "is_booster"
+        case isDigital        = "is_digital"
         case isFoil           = "is_foil"
         case isFullArt        = "is_full_art"
         case isHighresImage   = "is_highres_image"
         case isNonfoil        = "is_nonfoil"
         case isOversized      = "is_oversized"
+        case isPromo          = "is_promo"
+        case isReprint        = "is_reprint"
         case isReserved       = "is_reserved"
         case isStorySpotlight = "is_story_spotlight"
-        case loyalty
-        case manaCost         = "mana_cost"
-        case nameSection      = "name_section"
-        case numberOrder      = "number_order"
-        case name
-        case oracleText       = "oracle_text"
-        case power
-        case printedName      = "printed_name"
-        case printedText      = "printed_text"
-        case toughness
-        case arenaID          = "arena_id"
-        case mtgoID           = "mtgo_id"
-        case tcgplayerID      = "tcgplayer_id"
-        case handModifier     = "hand_modifier"
-        case lifeModifier     = "life_modifier"
-        case isBooster        = "is_booster"
-        case isDigital        = "is_digital"
-        case isPromo          = "is_promo"
-        case releaseDate       = "released_at"
         case isTextless       = "is_textless"
+        case lifeModifier     = "life_modifier"
+        case manaCost         = "mana_cost"
         case mtgoFoilID       = "mtgo_foil_id"
-        case isReprint        = "is_reprint"
-        case newID            = "new_id"
-        case printedTypeLine  = "printed_type_line"
-        case typeLine         = "type_line"
+        case mtgoID           = "mtgo_id"
         case multiverseIDs    = "multiverse_ids"
-        case colorIdentities  = "color_identities"
-        case colorIndicators  = "color_indicators"
-        case componentParts   = "component_parts"
-        case formatLegalities = "format_legalities"
-        case frameEffects     = "frame_effects"
-        case imageURIs        = "image_uris"
+        case nameSection      = "name_section"
+        case newID            = "new_id"
+        case normalURL        = "normal_url"
+        case numberOrder      = "number_order"
+        case oracleText       = "oracle_text"
         case otherLanguages   = "other_languages"
         case otherPrintings   = "other_printings"
-        case artist, colors, faces, frame, language, layout, set, subtypes, supertypes, prices, rarity, rulings, variations, watermark
+        case pngURL           = "png_url"
+        case printedName      = "printed_name"
+        case printedText      = "printed_text"
+        case printedTypeLine  = "printed_type_line"
+        case releaseDate      = "released_at"
+        case tcgplayerID      = "tcgplayer_id"
+        case typeLine         = "type_line"
+        case artist, colors, cmc, faces, frame, language, layout, loyalty, name, power, set, subtypes, supertypes, prices, rarity, rulings, toughness, variations, watermark
     }
 }
 
@@ -200,16 +195,6 @@ public struct MFrameEffect: MEntity {
         case id, name
         case description_ = "description"
         case nameSection  = "name_section"
-    }
-}
-
-// MARK: - ImageUris
-public struct MImageURI: MEntity {
-    let artCrop, normal, png: String
-
-    enum CodingKeys: String, CodingKey {
-        case artCrop = "art_crop"
-        case normal, png
     }
 }
 
