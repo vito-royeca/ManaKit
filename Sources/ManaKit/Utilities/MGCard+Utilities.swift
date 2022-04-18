@@ -180,45 +180,32 @@ extension MGCard {
 
 extension MGCard {
     public func imageURL(for type: CardImageType, faceOrder: Int = 0) -> URL? {
-        switch type {
-        case .artCrop:
-            if faceOrder == 0 {
-                return URL(string: artCropURL ?? "")
+        if let faces = sortedFaces {
+            switch type {
+            case .artCrop:
+                return URL(string: faces[faceOrder].artCropURL ?? "")
+            case .normal:
+                return URL(string: faces[faceOrder].normalURL ?? "")
+            case .png:
+                return URL(string: faces[faceOrder].pngURL ?? "")
+            default:
+                return nil
+            }
+        } else {
+            if faceOrder != 0 {
+                return nil
             } else {
-                guard let faces = sortedFaces,
-                   faces.count == faceOrder - 1 else {
+                switch type {
+                case .artCrop:
+                    return URL(string: artCropURL ?? "")
+                case .normal:
+                    return URL(string: normalURL ?? "")
+                case .png:
+                    return URL(string: pngURL ?? "")
+                default:
                     return nil
                 }
-
-                let face = faces[faceOrder]
-                return URL(string: face.artCropURL ?? "")
             }
-        case .normal:
-            if faceOrder == 0 {
-                return URL(string: normalURL ?? "")
-            } else {
-                guard let faces = sortedFaces,
-                   faces.count == faceOrder - 1 else {
-                    return nil
-                }
-
-                let face = faces[faceOrder]
-                return URL(string: face.normalURL ?? "")
-            }
-        case .png:
-            if faceOrder == 0 {
-                return URL(string: pngURL ?? "")
-            } else {
-                guard let faces = sortedFaces,
-                   faces.count == faceOrder - 1 else {
-                    return nil
-                }
-
-                let face = faces[faceOrder]
-                return URL(string: face.pngURL ?? "")
-            }
-        default:
-            return nil
         }
     }
     
