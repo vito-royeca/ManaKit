@@ -9,44 +9,44 @@
 
 //import UIKit
 
-public enum CardType: Int, CaseIterable {
-    case artifact
-    case chaos
-    case conspiracy
-    case creature
-    case enchantment
-    case instant
-    case land
-    case phenomenon
-    case plane
-    case planesWalker
-    case scheme
-    case sorcery
-    case tribal
-    case vanguard
-    case multiple
-    
-    public var description : String {
-        switch self {
-            
-        case .artifact: return "Artifact"
-        case .chaos: return "Chaos"
-        case .conspiracy: return "Conspiracy"
-        case .creature: return "Creature"
-        case .enchantment: return "Enchantment"
-        case .instant: return "Instant"
-        case .land: return "Land"
-        case .phenomenon: return "Phenomenon"
-        case .plane: return "Plane"
-        case .planesWalker: return "Planeswalker"
-        case .scheme: return "Scheme"
-        case .sorcery: return "Sorcery"
-        case .tribal: return "Tribal"
-        case .vanguard: return "Vanguard"
-        case .multiple: return "Multiple"
-        }
-    }
-}
+//public enum CardType: Int, CaseIterable {
+//    case artifact
+//    case chaos
+//    case conspiracy
+//    case creature
+//    case enchantment
+//    case instant
+//    case land
+//    case phenomenon
+//    case plane
+//    case planesWalker
+//    case scheme
+//    case sorcery
+//    case tribal
+//    case vanguard
+//    case multiple
+//    
+//    public var description : String {
+//        switch self {
+//            
+//        case .artifact: return "Artifact"
+//        case .chaos: return "Chaos"
+//        case .conspiracy: return "Conspiracy"
+//        case .creature: return "Creature"
+//        case .enchantment: return "Enchantment"
+//        case .instant: return "Instant"
+//        case .land: return "Land"
+//        case .phenomenon: return "Phenomenon"
+//        case .plane: return "Plane"
+//        case .planesWalker: return "Planeswalker"
+//        case .scheme: return "Scheme"
+//        case .sorcery: return "Sorcery"
+//        case .tribal: return "Tribal"
+//        case .vanguard: return "Vanguard"
+//        case .multiple: return "Multiple"
+//        }
+//    }
+//}
 
 //extension MCard {
 //    public func typeImage() -> UIImage? {
@@ -79,40 +79,6 @@ public enum CardType: Int, CaseIterable {
 //        }
 //
 //        return nil
-//    }
-        
-//    public func imageURL(type: CardImageType, faceOrder: Int) -> URL? {
-//        var url:URL?
-//        var urlString: String?
-//
-//
-//        if let imageUris = imageUris,
-//            let dict = NSKeyedUnarchiver.unarchiveObject(with: imageUris as Data) as? [String: String] {
-//            urlString = dict[type.description]
-//        } else {
-//            if let faces = faces {
-//                let orderedFaces = faces.sorted(by: {(a, b) -> Bool in
-//                    if let a = a as? MGCard,
-//                        let b = b as? MGCard {
-//                        return a.faceOrder < b.faceOrder
-//                    } else {
-//                        return false
-//                    }
-//                })
-//
-//                if let face = orderedFaces[faceOrder] as? MGCard,
-//                    let imageURIs = face.imageUris,
-//                    let dict = NSKeyedUnarchiver.unarchiveObject(with: imageURIs as Data) as? [String: String] {
-//                    urlString = dict[type.description]
-//                }
-//            }
-//        }
-//
-//        if let urlString = urlString {
-//            url = URL(string: urlString)
-//        }
-//
-//        return url
 //    }
         
 //    public func backImage() -> UIImage? {
