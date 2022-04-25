@@ -114,7 +114,6 @@ extension ManaKit: API {
         var urlComponents = URLComponents(string: apiURL)
         urlComponents?.path = "/search"
         urlComponents?.queryItems = [URLQueryItem(name: "sortedBy", value: ""),
-                                     URLQueryItem(name: "sortedBy", value: ""),
                                      URLQueryItem(name: "orderBy", value: ""),
                                      URLQueryItem(name: "query", value: query),
                                      URLQueryItem(name: "json", value: "true"),
