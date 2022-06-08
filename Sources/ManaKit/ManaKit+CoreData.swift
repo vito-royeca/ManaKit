@@ -215,7 +215,6 @@ extension ManaKit {
                             context: context)?.first {
             
             if let lastUpdated = cache.lastUpdated {
-                // 5 minutes
                 if let diff = Calendar.current.dateComponents([.minute],
                                                               from: lastUpdated,
                                                               to: Date()).minute {

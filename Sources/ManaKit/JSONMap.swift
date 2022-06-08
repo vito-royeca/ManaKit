@@ -21,14 +21,14 @@ public struct MCard: MEntity {
     let artCropURL, collectorNumber: String?
     let cmc: Double?
     let faceOrder: Int?
-    let flavorText: String?
+    let flavorText, handModifier, lifeModifier: String?
     let isFoil, isFullArt, isHighresImage, isNonfoil, isOversized, isReserved, isStorySpotlight: Bool?
     let loyalty, manaCost: String?
     let nameSection: String?
     let numberOrder: Double?
     let name, normalURL, oracleText, power, printedName, printedText, toughness, arenaID, mtgoID, pngURL: String?
     let tcgplayerID: Int?
-    let handModifier, lifeModifier, isBooster, isDigital, isPromo: Bool?
+    let isBooster, isDigital, isPromo: Bool?
     let releaseDate: String?
     let isTextless: Bool?
     let mtgoFoilID: String?
