@@ -9,20 +9,39 @@ import Combine
 import CoreData
 
 public protocol API {
+    func willFetchSet(code: String,
+                      languageCode: String) -> Bool
     func fetchSet(code: String,
                   languageCode: String,
                   completion: @escaping (Result<MGSet?, Error>) -> Void)
     
+    func willFetchSets() -> Bool
     func fetchSets(completion: @escaping (Result<Void, Error>) -> Void)
 
+    func willFetchCard(newID: String) -> Bool
     func fetchCard(newID: String,
                    completion: @escaping (Result<MGCard?, Error>) -> Void)
 
+    func willFetchCards(query: String) -> Bool
     func fetchCards(query: String,
                     completion: @escaping (Result<Void, Error>) -> Void)
 }
 
 extension ManaKit: API {
+    public func willFetchSet(code: String,
+                      languageCode: String) -> Bool {
+        var urlComponents = URLComponents(string: apiURL)
+        urlComponents?.path = "/set/\(code)/\(languageCode)"
+        urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
+                                     URLQueryItem(name: "mobile", value: "true")]
+        
+        guard let url = urlComponents?.url else {
+            return false
+        }
+        
+        return willFetchCache(forUrl: url)
+    }
+    
     public func fetchSet(code: String,
                          languageCode: String,
                          completion: @escaping (Result<MGSet?, Error>) -> Void) {
@@ -55,6 +74,19 @@ extension ManaKit: API {
         })
     }
 
+    public func willFetchSets() -> Bool {
+        var urlComponents = URLComponents(string: apiURL)
+        urlComponents?.path = "/sets"
+        urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
+                                     URLQueryItem(name: "mobile", value: "true")]
+        
+        guard let url = urlComponents?.url else {
+            return false
+        }
+        
+        return willFetchCache(forUrl: url)
+    }
+    
     public func fetchSets(completion: @escaping (Result<Void, Error>) -> Void) {
         var urlComponents = URLComponents(string: apiURL)
         urlComponents?.path = "/sets"
@@ -78,6 +110,19 @@ extension ManaKit: API {
         })
     }
 
+    public func willFetchCard(newID: String) -> Bool {
+        var urlComponents = URLComponents(string: apiURL)
+        urlComponents?.path = "/card/\(newID)"
+        urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
+                                     URLQueryItem(name: "mobile", value: "true")]
+        
+        guard let url = urlComponents?.url else {
+            return false
+        }
+        
+        return willFetchCache(forUrl: url)
+    }
+    
     public func fetchCard(newID: String,
                           completion: @escaping (Result<MGCard?, Error>) -> Void) {
         var urlComponents = URLComponents(string: apiURL)
@@ -109,6 +154,22 @@ extension ManaKit: API {
         })
     }
 
+    public func willFetchCards(query: String) -> Bool {
+        var urlComponents = URLComponents(string: apiURL)
+        urlComponents?.path = "/search"
+        urlComponents?.queryItems = [URLQueryItem(name: "sortedBy", value: ""),
+                                     URLQueryItem(name: "orderBy", value: ""),
+                                     URLQueryItem(name: "query", value: query),
+                                     URLQueryItem(name: "json", value: "true"),
+                                     URLQueryItem(name: "mobile", value: "true")]
+        
+        guard let url = urlComponents?.url else {
+            return false
+        }
+        
+        return willFetchCache(forUrl: url)
+    }
+    
     public func fetchCards(query: String,
                            completion: @escaping (Result<Void, Error>) -> Void) {
         var urlComponents = URLComponents(string: apiURL)
