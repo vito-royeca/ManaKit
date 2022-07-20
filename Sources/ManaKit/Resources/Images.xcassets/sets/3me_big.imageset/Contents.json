@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "3me_big.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

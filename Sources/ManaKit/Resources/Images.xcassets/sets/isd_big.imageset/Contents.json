@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "isd_big.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

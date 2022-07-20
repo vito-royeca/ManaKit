@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "40k_big.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

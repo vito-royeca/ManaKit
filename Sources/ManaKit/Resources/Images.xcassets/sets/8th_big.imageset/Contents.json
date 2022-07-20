@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "8th_big.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

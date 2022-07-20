@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "fre_small.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

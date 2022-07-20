@@ -41,7 +41,16 @@ extension MGSet {
             guard let logoCode = logoCode else {
                 return nil
             }
-            return UIImage(named: logoCode, in: Bundle.module, compatibleWith: nil)
+            return UIImage(named: "\(logoCode)_small", in: Bundle.module, compatibleWith: nil)
+        }
+    }
+    
+    public var bigLogoImage: UIImage? {
+        get {
+            guard let logoCode = logoCode else {
+                return nil
+            }
+            return UIImage(named: "\(logoCode)_big", in: Bundle.module, compatibleWith: nil)
         }
     }
     #endif
