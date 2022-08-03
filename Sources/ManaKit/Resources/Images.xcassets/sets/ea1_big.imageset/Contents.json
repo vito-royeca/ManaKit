@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "ea1_big.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
