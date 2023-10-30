@@ -26,34 +26,23 @@ extension MGSet {
         }
     }
     
-    public var logoURL: URL? {
+    public var smallLogoURL: URL? {
         guard let logoCode = logoCode,
-            let url = URL(string: "\(ManaKit.shared.apiURL)/images/sets/\(logoCode).png") else {
+            let url = URL(string: "\(ManaKit.shared.apiURL)/images/sets/\(logoCode)_small.png") else {
             return nil
         }
         
         return url
     }
     
-    #if !os(macOS)
-    public var logoImage: UIImage? {
-        get {
-            guard let logoCode = logoCode else {
-                return nil
-            }
-            return UIImage(named: "\(logoCode)_small", in: Bundle.module, compatibleWith: nil)
+    public var bigLogoURL: URL? {
+        guard let logoCode = logoCode,
+            let url = URL(string: "\(ManaKit.shared.apiURL)/images/sets/\(logoCode)_big.png") else {
+            return nil
         }
+        
+        return url
     }
-    
-    public var bigLogoImage: UIImage? {
-        get {
-            guard let logoCode = logoCode else {
-                return nil
-            }
-            return UIImage(named: "\(logoCode)_big", in: Bundle.module, compatibleWith: nil)
-        }
-    }
-    #endif
 
     public var displayReleaseDate: String? {
         get {
