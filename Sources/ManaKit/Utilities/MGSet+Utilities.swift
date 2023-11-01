@@ -14,7 +14,10 @@ import UIKit
 extension MGSet {
     public var keyrune2Unicode: String {
         get {
-            let keyruneUnicode = keyruneUnicode ?? "e684"
+            var keyruneUnicode = keyruneUnicode ?? "e684"
+            if keyruneUnicode.isEmpty {
+                keyruneUnicode = "e684"
+            }
             
             guard let charAsInt = Int(keyruneUnicode, radix: 16),
                let uScalar = UnicodeScalar(charAsInt) else {
