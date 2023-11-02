@@ -93,6 +93,21 @@ extension MGCard {
         }
     }
     
+    public var displayManaCost: String {
+        get {
+            var text: String?
+            
+            if let sortedFaces = sortedFaces,
+               let face = sortedFaces.first {
+                text = face.manaCost
+            } else {
+                text = manaCost
+            }
+            
+            return text ?? " "
+        }
+    }
+
     public var displayNormalPrice: String {
         get {
             for price in prices?.allObjects as? [MGCardPrice] ?? [] {
