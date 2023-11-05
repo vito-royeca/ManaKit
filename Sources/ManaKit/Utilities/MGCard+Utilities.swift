@@ -61,34 +61,18 @@ extension MGCard {
         get {
             var text: String?
             
-//            if let sortedFaces = sortedFaces,
-//               let face = sortedFaces.first {
-//
-//                if let language = language,
-//                   let code = language.code {
-//
-//                    if code == "en" {
-//                        text = face.name
-//                    } else {
-//                        text = face.printedName
-//                    }
-//                } else {
-//                    text = face.name
-//                }
-//            } else {
-                if let language = language,
-                   let code = language.code {
-                    
-                    if code == "en" {
-                        text = name
-                    } else {
-                        text = printedName
-                    }
+            if let language = language,
+               let code = language.code {
+                
+                if code == "en" {
+                    text = name
                 } else {
-                    text = printedName ?? name
+                    text = printedName
                 }
-//            }
-            
+            } else {
+                text = printedName ?? name
+            }
+
             return text
         }
     }
@@ -97,8 +81,8 @@ extension MGCard {
         get {
             var text: String?
             
-            if let _ = sortedFaces {
-                text = " "
+            if let sortedFaces = sortedFaces {
+                text = sortedFaces.map { $0.manaCost ?? " " }.joined(separator: "//")
             } else {
                 text = manaCost
             }
