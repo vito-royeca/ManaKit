@@ -83,7 +83,7 @@ extension MGCard {
             
             if let sortedFaces = sortedFaces {
                 text = sortedFaces.map { $0.manaCost ?? " " }
-                    .joined(separator: (sortedFaces.last?.manaCost?.isEmpty ?? false) ? "" : "//")
+                    .joined(separator: (sortedFaces.last?.manaCost?.isEmpty ?? false) ? "" : " // ")
             } else {
                 text = manaCost
             }
