@@ -14,17 +14,27 @@ public protocol API {
     func fetchSet(code: String,
                   languageCode: String,
                   completion: @escaping (Result<MGSet?, Error>) -> Void)
+    func fetchSet(code: String,
+                  languageCode: String) async throws -> MGSet?
     
     func willFetchSets() -> Bool
     func fetchSets(completion: @escaping (Result<Void, Error>) -> Void)
+    func fetchSets() async throws
 
     func willFetchCard(newID: String) -> Bool
     func fetchCard(newID: String,
                    completion: @escaping (Result<MGCard?, Error>) -> Void)
+    func fetchCard(newID: String) async throws -> MGCard?
 
     func willFetchCards(query: String) -> Bool
     func fetchCards(query: String,
                     completion: @escaping (Result<Void, Error>) -> Void)
+    func fetchCards(query: String) async throws
+    
+    func willFetchCardOtherPrintings(newID: String, languageCode: String) -> Bool
+    func fetchCardOtherPrintings(newID: String, languageCode: String,
+                    completion: @escaping (Result<[MGCard], Error>) -> Void)
+    func fetchCardOtherPrintings(newID: String, languageCode: String) async throws -> [MGCard]
 }
 
 extension ManaKit: API {
@@ -191,6 +201,50 @@ extension ManaKit: API {
             switch result {
             case .success:
                 completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        })
+    }
+    
+    public func willFetchCardOtherPrintings(newID: String, languageCode: String) -> Bool {
+        var urlComponents = URLComponents(string: apiURL)
+        urlComponents?.path = "/printings/\(newID)/\(languageCode)"
+        urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
+                                     URLQueryItem(name: "mobile", value: "true")]
+        
+        guard let url = urlComponents?.url else {
+            return false
+        }
+        
+        return willFetchCache(forUrl: url)
+    }
+
+    public func fetchCardOtherPrintings(newID: String, languageCode: String,
+                                        completion: @escaping (Result<[MGCard], Error>) -> Void) {
+        var urlComponents = URLComponents(string: apiURL)
+        urlComponents?.path = "/printings/\(newID)/\(languageCode)"
+        urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
+                                     URLQueryItem(name: "mobile", value: "true")]
+        
+        guard let url = urlComponents?.url else {
+            completion(.failure(ManaKitError.badURL))
+            return
+        }
+        
+        fetchData(MCard.self,
+                  url: url,
+                  completion: { result in
+            switch result {
+            case .success:
+                let result = self.find(MGCard.self,
+                                       properties: nil,
+                                       predicate: NSPredicate(format: "newID == %@", newID),
+                                       sortDescriptors: nil,
+                                       createIfNotFound: false,
+                                       context: self.viewContext)
+                
+                completion(.success(result?.first?.otherPrintings?.allObjects as? [MGCard] ?? []))
             case .failure(let error):
                 completion(.failure(error))
             }

@@ -136,7 +136,7 @@ extension ManaKit {
     
     func delete<T: MGEntity>(_ entity: T.Type,
                              predicate: NSPredicate,
-                             completion: (() -> Void)?) {
+                             completion: ((Result<Void, Error>) -> Void)?) {
         let context = viewContext
         let entityName = String(describing: entity)
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
@@ -149,13 +149,13 @@ extension ManaKit {
             if let result = try context.execute(deleteRequest) as? NSBatchDeleteResult,
                let objectIDArray = result.result as? [NSManagedObjectID] {
                 let changes = [NSDeletedObjectsKey : objectIDArray]
-
+                
                 NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
             }
-            completion?()
+            completion?(.success(()))
         } catch {
             print("Failed to perform batch update: \(error)")
-            completion?()
+            completion?(.failure(error))
         }
     }
 
@@ -173,7 +173,7 @@ extension ManaKit {
 //        }
 //    }
     
-    public func saveContext () {
+    public func saveContext() {
         let context = viewContext
 
         guard context.hasChanges else {

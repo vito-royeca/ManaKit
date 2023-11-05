@@ -97,7 +97,7 @@ extension MGCard {
         get {
             var text: String?
             
-            if let sortedFaces = sortedFaces {
+            if let _ = sortedFaces {
                 text = " "
             } else {
                 text = manaCost
