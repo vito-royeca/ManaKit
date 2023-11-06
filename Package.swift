@@ -7,7 +7,7 @@ let package = Package(
     name: "ManaKit",
     platforms: [
         .macOS(.v11),
-        .iOS("15.0")
+        .iOS("15.5")
     ],
     products: [
         // Products define the executables and libraries produced by a package, and make them visible to other packages.
@@ -20,7 +20,6 @@ let package = Package(
         //.package(url: /* package url */, from: "1.0.0"),
 //        .package(url: "https://github.com/tid-kijyun/Kanna.git", from: "5.2.2"),
         //.package(url: "https://github.com/kishikawakatsumi/KeychainAccess.git", from: "4.1.0"),
-        //.package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.4.0"),
         .package(url: "https://github.com/ZipArchive/ZipArchive.git", from: "2.4.2"),
     ],
     targets: [
