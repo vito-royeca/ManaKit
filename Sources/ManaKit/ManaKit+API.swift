@@ -33,8 +33,8 @@ public protocol API {
     
     func willFetchCardOtherPrintings(newID: String, languageCode: String) -> Bool
     func fetchCardOtherPrintings(newID: String, languageCode: String,
-                    completion: @escaping (Result<[MGCard], Error>) -> Void)
-    func fetchCardOtherPrintings(newID: String, languageCode: String) async throws -> [MGCard]
+                    completion: @escaping (Result<Void, Error>) -> Void)
+    func fetchCardOtherPrintings(newID: String, languageCode: String) async throws
 }
 
 extension ManaKit: API {
@@ -221,7 +221,7 @@ extension ManaKit: API {
     }
 
     public func fetchCardOtherPrintings(newID: String, languageCode: String,
-                                        completion: @escaping (Result<[MGCard], Error>) -> Void) {
+                                        completion: @escaping (Result<Void, Error>) -> Void) {
         var urlComponents = URLComponents(string: apiURL)
         urlComponents?.path = "/printings/\(newID)/\(languageCode)"
         urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
@@ -234,17 +234,10 @@ extension ManaKit: API {
         
         fetchData(MCard.self,
                   url: url,
-                  completion: { result in
+                  completion:  { result in
             switch result {
             case .success:
-                let result = self.find(MGCard.self,
-                                       properties: nil,
-                                       predicate: NSPredicate(format: "newID == %@", newID),
-                                       sortDescriptors: nil,
-                                       createIfNotFound: false,
-                                       context: self.viewContext)
-                
-                completion(.success(result?.first?.otherPrintings?.allObjects as? [MGCard] ?? []))
+                completion(.success(()))
             case .failure(let error):
                 completion(.failure(error))
             }

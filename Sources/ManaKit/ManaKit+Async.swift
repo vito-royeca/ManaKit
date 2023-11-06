@@ -59,7 +59,7 @@ extension ManaKit {
         }
     }
     
-    public func fetchCardOtherPrintings(newID: String, languageCode: String) async throws -> [MGCard] {
+    public func fetchCardOtherPrintings(newID: String, languageCode: String) async throws {
         return try await withCheckedThrowingContinuation { continuation in
             fetchCardOtherPrintings(newID: newID, languageCode: languageCode) { result in
                 continuation.resume(with: result)
