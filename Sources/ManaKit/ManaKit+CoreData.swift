@@ -35,15 +35,7 @@ extension ManaKit {
                                             coreDataType: U.Type,
                                             predicate: NSPredicate?,
                                             sortDescriptors: [NSSortDescriptor]?) async throws -> [U] {
-        if !willFetchCache(forUrl: url) {
-            let entities = find(coreDataType,
-                                properties: nil,
-                                predicate: predicate,
-                                sortDescriptors: sortDescriptors,
-                                createIfNotFound: true,
-                                context: viewContext)
-            return entities ?? []
-        } else {
+        if willFetchCache(forUrl: url) {
             do {
                 let (data, response) = try await URLSession.shared.data(from: url)
                 
@@ -65,6 +57,15 @@ extension ManaKit {
                 deleteCache(forUrl: url)
                 throw error
             }
+            
+        } else {
+            let entities = find(coreDataType,
+                                properties: nil,
+                                predicate: predicate,
+                                sortDescriptors: sortDescriptors,
+                                createIfNotFound: true,
+                                context: viewContext)
+            return entities ?? []
         }
     }
     
