@@ -32,7 +32,7 @@ extension ManaKit {
                     properties: nil,
                     predicate: predicate,
                     sortDescriptors: sortDescriptors,
-                    createIfNotFound: true,
+                    createIfNotFound: false,
                     context: context)
     }
     
