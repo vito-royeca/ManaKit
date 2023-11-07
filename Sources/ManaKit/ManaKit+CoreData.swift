@@ -30,52 +30,14 @@ extension ManaKit {
     
     // MARK: - CRUD
     
-    func fetchData<T: MEntity, U: MGEntity>(url: URL,
-                                            jsonType: T.Type,
-                                            coreDataType: U.Type,
-                                            predicate: NSPredicate?,
-                                            sortDescriptors: [NSSortDescriptor]?) async throws -> [U] {
-        if willFetchCache(forUrl: url) {
-            do {
-                let (data, response) = try await URLSession.shared.data(from: url)
-                
-                guard let response = response as? HTTPURLResponse,
-                      response.statusCode == 200 else {
-                    throw ManaKitError.invalidHttpResponse
-                }
-                
-                let decoder = JSONDecoder()
-                let jsonData = try decoder.decode([T].self, from: data)
-                let entities = syncToCoreData(jsonData,
-                                              jsonType: jsonType,
-                                              coreDataType: coreDataType,
-                                              predicate: predicate,
-                                              sortDescriptors: sortDescriptors)
-                saveCache(forUrl: url)
-                return entities ?? []
-            } catch {
-                deleteCache(forUrl: url)
-                throw error
-            }
-            
-        } else {
-            let entities = find(coreDataType,
-                                properties: nil,
-                                predicate: predicate,
-                                sortDescriptors: sortDescriptors,
-                                createIfNotFound: true,
-                                context: viewContext)
-            return entities ?? []
-        }
-    }
-    
     public func find<T: MGEntity>(_ entity: T.Type,
                                   properties: [String: Any]?,
                                   predicate: NSPredicate?,
                                   sortDescriptors: [NSSortDescriptor]?,
                                   createIfNotFound: Bool,
-                                  context: NSManagedObjectContext) -> [T]? {
+                                  context: NSManagedObjectContext? = nil) -> [T]? {
         
+        let context = context ?? viewContext
         let entityName = String(describing: entity)
         
         let request = NSFetchRequest<T>(entityName: entityName)
@@ -219,10 +181,11 @@ extension ManaKit {
                 }
             }
         }
-        
+#if DEBUG
         if willFetch {
             print(url)
         }
+#endif
         return willFetch
     }
 

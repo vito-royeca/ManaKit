@@ -86,6 +86,7 @@ public final class ManaKit: NSPersistentContainer {
                 print("Unresolved error \(error), \(error.userInfo)")
             }
         })
+        viewContext.automaticallyMergesChangesFromParent = true
     }
 
     

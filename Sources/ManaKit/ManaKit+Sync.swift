@@ -14,15 +14,49 @@ extension ManaKit {
                                                         coreDataType: U.Type,
                                                         predicate: NSPredicate?,
                                                         sortDescriptors: [NSSortDescriptor]?) -> [U]? {
-        let context = viewContext
+        let context = newBackgroundContext()
 
-        if let sets = jsonData as? [MSet] {
-            for set in sets {
-                let _ = self.set(from: set, context: context, type: MGSet.self)
-            }
-        } else if let cards = jsonData as? [MCard] {
-            for card in cards {
-                let _ = self.card(from: card, context: context, type: MGCard.self)
+        for json in jsonData {
+            if let json = json as? MArtist {
+                _ = self.artist(from: json, context: context, type: MGArtist.self)
+            } else if let json = json as? MCard {
+                _ = self.card(from: json, context: context, type: MGCard.self)
+            } else if let json = json as? MColor {
+                _ = self.color(from: json, context: context, type: MGColor.self)
+            } else if let json = json as? MComponent {
+                _ = self.component(from: json, context: context, type: MGComponent.self)
+            }/* else if let json = json as? MComponentPart {
+              func componentPart<T: MGEntity>(from componentPart: MComponentPart, part: MCard, context: NSManagedObjectContext, type: T.Type)
+            }*/ else if let json = json as? MFormat {
+                _ = self.format(from: json, context: context, type: MGFormat.self)
+            }/* else if let json = json as? MFormatLegality {
+              func formatLegality<T: MGEntity>(from formatLegality: MFormatLegality, part: MCard, context: NSManagedObjectContext, type: T.Type) -> T?
+            }*/ else if let json = json as? MFrame {
+                _ = self.frame(from: json, context: context, type: MGFrame.self)
+            } else if let json = json as? MFrameEffect {
+                _ = self.frameEffect(from: json, context: context, type: MGFrameEffect.self)
+            } else if let json = json as? MLanguage {
+                _ = self.language(from: json, context: context, type: MGLanguage.self)
+            } else if let json = json as? MLayout {
+                _ = self.layout(from: json, context: context, type: MGLayout.self)
+            } else if let json = json as? MLegality {
+                _ = self.legality(from: json, context: context, type: MGLegality.self)
+            } else if let json = json as? MPrice {
+                _ = self.price(from: json, context: context, type: MGCardPrice.self)
+            } else if let json = json as? MRarity {
+                _ = self.rarity(from: json, context: context, type: MGRarity.self)
+            } else if let json = json as? MRuling {
+                _ = self.ruling(from: json, context: context, type: MGRuling.self)
+            } else if let json = json as? MSet {
+                _ = self.set(from: json, context: context, type: MGSet.self)
+            } else if let json = json as? MSetBlock {
+                _ = self.setBlock(from: json, context: context, type: MGSetBlock.self)
+            } else if let json = json as? MSetType {
+                _ = self.setType(from: json, context: context, type: MGSetType.self)
+            } else if let json = json as? MCardType {
+                _ = self.type(from: json, context: context, type: MGCardType.self)
+            } else if let json = json as? MWatermark {
+                _ = self.watermark(from: json, context: context, type: MGWatermark.self)
             }
         }
         
