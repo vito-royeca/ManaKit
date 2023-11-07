@@ -9,179 +9,78 @@ import Combine
 import CoreData
 
 public protocol API {
-    func willFetchSet(code: String,
-                      languageCode: String) -> Bool
-    func fetchSet(code: String,
-                  languageCode: String,
-                  completion: @escaping (Result<MGSet?, Error>) -> Void)
     func fetchSet(code: String,
                   languageCode: String) async throws -> MGSet?
+    func fetchSets(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGSet]
     
-    func willFetchSets() -> Bool
-    func fetchSets(completion: @escaping (Result<Void, Error>) -> Void)
-    func fetchSets() async throws
-
-    func willFetchCard(newID: String) -> Bool
-    func fetchCard(newID: String,
-                   completion: @escaping (Result<MGCard?, Error>) -> Void)
     func fetchCard(newID: String) async throws -> MGCard?
-
-    func willFetchCards(query: String) -> Bool
     func fetchCards(query: String,
-                    completion: @escaping (Result<Void, Error>) -> Void)
-    func fetchCards(query: String) async throws
-    
-    func willFetchCardOtherPrintings(newID: String, languageCode: String) -> Bool
-    func fetchCardOtherPrintings(newID: String, languageCode: String,
-                    completion: @escaping (Result<Void, Error>) -> Void)
-    func fetchCardOtherPrintings(newID: String, languageCode: String) async throws
+                    sortDescriptors: [NSSortDescriptor]?) async throws -> [MGCard]
+
+    func fetchCardOtherPrintings(newID: String,
+                                 languageCode: String,
+                                 sortDescriptors: [NSSortDescriptor]?) async throws -> [MGCard]
 }
 
 extension ManaKit: API {
-    public func willFetchSet(code: String,
-                      languageCode: String) -> Bool {
-        var urlComponents = URLComponents(string: apiURL)
-        urlComponents?.path = "/set/\(code)/\(languageCode)"
-        urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
-                                     URLQueryItem(name: "mobile", value: "true")]
-        
-        guard let url = urlComponents?.url else {
-            return false
-        }
-        
-        return willFetchCache(forUrl: url)
-    }
-    
     public func fetchSet(code: String,
-                         languageCode: String,
-                         completion: @escaping (Result<MGSet?, Error>) -> Void) {
+                         languageCode: String) async throws -> MGSet? {
         var urlComponents = URLComponents(string: apiURL)
         urlComponents?.path = "/set/\(code)/\(languageCode)"
         urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
                                      URLQueryItem(name: "mobile", value: "true")]
         
         guard let url = urlComponents?.url else {
-            completion(.failure(ManaKitError.badURL))
-            return
+            throw ManaKitError.badURL
         }
         
-        fetchData(MSet.self,
-                  url: url,
-                  completion: { result in
-            switch result {
-            case .success:
-                let result = self.find(MGSet.self,
-                                       properties: nil,
-                                       predicate: NSPredicate(format: "code == %@", code),
-                                       sortDescriptors: nil,
-                                       createIfNotFound: false,
-                                       context: self.viewContext)
-
-                completion(.success(result?.first))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        })
+        let predicate = NSPredicate(format: "code == %@", code)
+        let results = try await fetchData(url: url,
+                                          jsonType: MSet.self,
+                                          coreDataType: MGSet.self,
+                                          predicate: predicate,
+                                          sortDescriptors: nil)
+        return results.first
     }
-
-    public func willFetchSets() -> Bool {
+    
+    public func fetchSets(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGSet] {
         var urlComponents = URLComponents(string: apiURL)
         urlComponents?.path = "/sets"
         urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
                                      URLQueryItem(name: "mobile", value: "true")]
         
         guard let url = urlComponents?.url else {
-            return false
+            throw ManaKitError.badURL
         }
         
-        return willFetchCache(forUrl: url)
-    }
-    
-    public func fetchSets(completion: @escaping (Result<Void, Error>) -> Void) {
-        var urlComponents = URLComponents(string: apiURL)
-        urlComponents?.path = "/sets"
-        urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
-                                     URLQueryItem(name: "mobile", value: "true")]
-        
-        guard let url = urlComponents?.url else {
-            completion(.failure(ManaKitError.badURL))
-            return
-        }
-        
-        fetchData(MSet.self,
-                  url: url,
-                  completion: { result in
-            switch result {
-            case .success:
-                completion(.success(()))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        })
+        return try await fetchData(url: url,
+                                   jsonType: MSet.self,
+                                   coreDataType: MGSet.self,
+                                   predicate: nil,
+                                   sortDescriptors: sortDescriptors)
     }
 
-    public func willFetchCard(newID: String) -> Bool {
+    public func fetchCard(newID: String) async throws -> MGCard? {
         var urlComponents = URLComponents(string: apiURL)
         urlComponents?.path = "/card/\(newID)"
         urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
                                      URLQueryItem(name: "mobile", value: "true")]
         
         guard let url = urlComponents?.url else {
-            return false
+            throw ManaKitError.badURL
         }
         
-        return willFetchCache(forUrl: url)
-    }
-    
-    public func fetchCard(newID: String,
-                          completion: @escaping (Result<MGCard?, Error>) -> Void) {
-        var urlComponents = URLComponents(string: apiURL)
-        urlComponents?.path = "/card/\(newID)"
-        urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
-                                     URLQueryItem(name: "mobile", value: "true")]
-        
-        guard let url = urlComponents?.url else {
-            completion(.failure(ManaKitError.badURL))
-            return
-        }
-        
-        fetchData(MCard.self,
-                  url: url,
-                  completion: { result in
-            switch result {
-            case .success:
-                let result = self.find(MGCard.self,
-                                       properties: nil,
-                                       predicate: NSPredicate(format: "newID == %@", newID),
-                                       sortDescriptors: nil,
-                                       createIfNotFound: false,
-                                       context: self.viewContext)
-                
-                completion(.success(result?.first))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        })
+        let predicate = NSPredicate(format: "newID == %@", newID)
+        let results = try await fetchData(url: url,
+                                          jsonType: MCard.self,
+                                          coreDataType: MGCard.self,
+                                          predicate: predicate,
+                                          sortDescriptors: nil)
+        return results.first
     }
 
-    public func willFetchCards(query: String) -> Bool {
-        var urlComponents = URLComponents(string: apiURL)
-        urlComponents?.path = "/search"
-        urlComponents?.queryItems = [URLQueryItem(name: "sortedBy", value: ""),
-                                     URLQueryItem(name: "orderBy", value: ""),
-                                     URLQueryItem(name: "query", value: query),
-                                     URLQueryItem(name: "json", value: "true"),
-                                     URLQueryItem(name: "mobile", value: "true")]
-        
-        guard let url = urlComponents?.url else {
-            return false
-        }
-        
-        return willFetchCache(forUrl: url)
-    }
-    
     public func fetchCards(query: String,
-                           completion: @escaping (Result<Void, Error>) -> Void) {
+                           sortDescriptors: [NSSortDescriptor]?) async throws -> [MGCard] {
         var urlComponents = URLComponents(string: apiURL)
         urlComponents?.path = "/search"
         urlComponents?.queryItems = [URLQueryItem(name: "sortedBy", value: ""),
@@ -191,56 +90,38 @@ extension ManaKit: API {
                                      URLQueryItem(name: "mobile", value: "true")]
         
         guard let url = urlComponents?.url else {
-            completion(.failure(ManaKitError.badURL))
-            return
+            throw ManaKitError.badURL
         }
         
-        fetchData(MCard.self,
-                  url: url,
-                  completion:  { result in
-            switch result {
-            case .success:
-                completion(.success(()))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        })
+        let predicate = NSPredicate(format: "newID != nil AND newID != '' AND collectorNumber != nil AND language.code = %@ AND name CONTAINS[cd] %@",
+                                    "en",
+                                    query)
+        let results = try await fetchData(url: url,
+                                          jsonType: MCard.self,
+                                          coreDataType: MGCard.self,
+                                          predicate: predicate,
+                                          sortDescriptors: nil)
+        return results
     }
     
-    public func willFetchCardOtherPrintings(newID: String, languageCode: String) -> Bool {
+    public func fetchCardOtherPrintings(newID: String,
+                                        languageCode: String,
+                                        sortDescriptors: [NSSortDescriptor]?) async throws -> [MGCard] {
         var urlComponents = URLComponents(string: apiURL)
         urlComponents?.path = "/printings/\(newID)/\(languageCode)"
         urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
                                      URLQueryItem(name: "mobile", value: "true")]
         
         guard let url = urlComponents?.url else {
-            return false
+            throw ManaKitError.badURL
         }
         
-        return willFetchCache(forUrl: url)
-    }
-
-    public func fetchCardOtherPrintings(newID: String, languageCode: String,
-                                        completion: @escaping (Result<Void, Error>) -> Void) {
-        var urlComponents = URLComponents(string: apiURL)
-        urlComponents?.path = "/printings/\(newID)/\(languageCode)"
-        urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
-                                     URLQueryItem(name: "mobile", value: "true")]
-        
-        guard let url = urlComponents?.url else {
-            completion(.failure(ManaKitError.badURL))
-            return
-        }
-        
-        fetchData(MCard.self,
-                  url: url,
-                  completion:  { result in
-            switch result {
-            case .success:
-                completion(.success(()))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        })
+        let predicate = NSPredicate(format: "newID == %@", newID)
+        let results = try await fetchData(url: url,
+                                          jsonType: MCard.self,
+                                          coreDataType: MGCard.self,
+                                          predicate: predicate,
+                                          sortDescriptors: nil)
+        return results
     }
 }

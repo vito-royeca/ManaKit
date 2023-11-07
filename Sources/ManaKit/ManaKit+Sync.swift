@@ -9,30 +9,31 @@ import Foundation
 import CoreData
 
 extension ManaKit {
-    public func syncToCoreData<T: MEntity>(_ entities: [T]) {
-        if let sets = entities as? [MSet] {
-            sync(sets)
-        } else if let cards = entities as? [MCard] {
-            sync(cards)
-        }
-    }
-    
-    func sync(_ sets: [MSet]) {
+    public func syncToCoreData<T: MEntity, U: MGEntity>(_ jsonData: [T],
+                                                        jsonType: T.Type,
+                                                        coreDataType: U.Type,
+                                                        predicate: NSPredicate?,
+                                                        sortDescriptors: [NSSortDescriptor]?) -> [U]? {
         let context = viewContext
-        
-        for set in sets {
-            let _ = self.set(from: set, context: context, type: MGSet.self)
+
+        if let sets = jsonData as? [MSet] {
+            for set in sets {
+                let _ = self.set(from: set, context: context, type: MGSet.self)
+            }
+        } else if let cards = jsonData as? [MCard] {
+            for card in cards {
+                let _ = self.card(from: card, context: context, type: MGCard.self)
+            }
         }
-        save(context: context)
-    }
-    
-    func sync(_ cards: [MCard]) {
-        let context = viewContext
         
-        for card in cards {
-            let _ = self.card(from: card, context: context, type: MGCard.self)
-        }
         save(context: context)
+
+        return find(coreDataType,
+                    properties: nil,
+                    predicate: predicate,
+                    sortDescriptors: sortDescriptors,
+                    createIfNotFound: true,
+                    context: context)
     }
     
     func nameSection(for name: String) -> String? {

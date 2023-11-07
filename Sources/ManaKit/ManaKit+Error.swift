@@ -9,9 +9,10 @@
 import Foundation
 
 public enum ManaKitError: Error {
-  case missingManagedObjectContext
-  case missingPersistentContainer
-  case badURL
+    case missingManagedObjectContext
+    case missingPersistentContainer
+    case badURL
+    case invalidHttpResponse
 }
 
 public enum DecoderConfigurationError: Error {

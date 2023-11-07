@@ -7,7 +7,6 @@
 
 import Foundation
 import CoreData
-import Combine
 
 extension NSManagedObjectID : Identifiable {
     
@@ -31,44 +30,41 @@ extension ManaKit {
     
     // MARK: - CRUD
     
-    func fetchData<T: MEntity>(_ entity: T.Type,
-                                url: URL,
-                                completion: @escaping (Result<Void, Error>) -> Void) {
-        let success = {
-            self.saveCache(forUrl: url)
-            completion(.success(()))
-        }
-        
-        let failure = { (error: Error) in
-            print(error)
-            self.deleteCache(forUrl: url)
-            completion(.failure(error))
-        }
-        
-        if willFetchCache(forUrl: url) {
-            let decoder = JSONDecoder()
-            
-            URLSession.shared.dataTaskPublisher(for: url)
-                .subscribe(on: sessionProcessingQueue)
-                .map({
-                    return $0.data
-                })
-                .decode(type: [T].self, decoder: decoder)
-                .receive(on: DispatchQueue.main)
-                .sink(receiveCompletion: { (suscriberCompletion) in
-                    switch suscriberCompletion {
-                    case .finished:
-                        success()
-                    case .failure(let error):
-                        failure(error)
-                    }
-                    
-                }, receiveValue: { entities in
-                    self.syncToCoreData(entities)
-                })
-                .store(in: &cancellables)
+    func fetchData<T: MEntity, U: MGEntity>(url: URL,
+                                            jsonType: T.Type,
+                                            coreDataType: U.Type,
+                                            predicate: NSPredicate?,
+                                            sortDescriptors: [NSSortDescriptor]?) async throws -> [U] {
+        if !willFetchCache(forUrl: url) {
+            let entities = find(coreDataType,
+                                properties: nil,
+                                predicate: predicate,
+                                sortDescriptors: sortDescriptors,
+                                createIfNotFound: true,
+                                context: viewContext)
+            return entities ?? []
         } else {
-            success()
+            do {
+                let (data, response) = try await URLSession.shared.data(from: url)
+                
+                guard let response = response as? HTTPURLResponse,
+                      response.statusCode == 200 else {
+                    throw ManaKitError.invalidHttpResponse
+                }
+                
+                let decoder = JSONDecoder()
+                let jsonData = try decoder.decode([T].self, from: data)
+                let entities = syncToCoreData(jsonData,
+                                              jsonType: jsonType,
+                                              coreDataType: coreDataType,
+                                              predicate: predicate,
+                                              sortDescriptors: sortDescriptors)
+                saveCache(forUrl: url)
+                return entities ?? []
+            } catch {
+                deleteCache(forUrl: url)
+                throw error
+            }
         }
     }
     
