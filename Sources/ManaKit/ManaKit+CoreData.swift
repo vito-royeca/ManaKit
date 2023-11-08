@@ -190,7 +190,7 @@ extension ManaKit {
     }
 
     func saveCache(forUrl url: URL) {
-        let context = viewContext
+        let context = newBackgroundContext()
         
         if let cache = find(MGLocalCache.self,
                             properties: ["url": url.absoluteString],
@@ -207,7 +207,7 @@ extension ManaKit {
         delete(MGLocalCache.self,
                predicate: NSPredicate(format: "url == %@", url.absoluteString),
                completion: nil)
-        save(context: viewContext)
+        save(context: newBackgroundContext())
     }
     
 //    func copyModelFile() {

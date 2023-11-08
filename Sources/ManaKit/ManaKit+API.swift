@@ -224,12 +224,44 @@ extension ManaKit: API {
             throw ManaKitError.badURL
         }
         
-        let predicate = NSPredicate(format: "newID == %@", newID)
-        let results = try await fetchData(url: url,
-                                          jsonType: MCard.self,
-                                          coreDataType: MGCard.self,
-                                          predicate: predicate,
-                                          sortDescriptors: nil)
-        return results
+        do {
+            let (data, response) = try await URLSession.shared.data(from: url)
+            
+            guard let response = response as? HTTPURLResponse,
+                  response.statusCode == 200 else {
+                throw ManaKitError.invalidHttpResponse
+            }
+            
+            let decoder = JSONDecoder()
+            let jsonData = try decoder.decode([MCard].self, from: data)
+            let newIDs = jsonData.map{ $0.newID }
+            let predicate = NSPredicate(format: "newID == %@", newID)
+            let predicate2 = NSPredicate(format: "newID IN %@", newIDs)
+            let context = newBackgroundContext()
+            if let card = find(MGCard.self,
+                               properties: nil,
+                               predicate: predicate,
+                               sortDescriptors: nil,
+                               createIfNotFound: true,
+                               context: context)?.first,
+               let otherPrintings = syncToCoreData(jsonData,
+                                                   jsonType: MCard.self,
+                                                   coreDataType: MGCard.self,
+                                                   predicate: predicate2,
+                                                   sortDescriptors: sortDescriptors) {
+                for otherPrinting in otherPrintings {
+                    card.addToOtherPrintings(otherPrinting)
+                }
+                save(context: context)
+                
+                saveCache(forUrl: url)
+                return otherPrintings
+            } else {
+                return []
+            }
+        } catch {
+            deleteCache(forUrl: url)
+            throw error
+        }
     }
 }

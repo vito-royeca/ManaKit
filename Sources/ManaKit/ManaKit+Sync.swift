@@ -15,6 +15,7 @@ extension ManaKit {
                                                         predicate: NSPredicate?,
                                                         sortDescriptors: [NSSortDescriptor]?) -> [U]? {
         let context = newBackgroundContext()
+        var predicate = predicate
 
         for json in jsonData {
             if let json = json as? MArtist {
