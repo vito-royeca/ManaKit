@@ -43,7 +43,8 @@ public final class ManaKit: NSPersistentContainer {
              collectorsCardBack                = "collectorscardback-hq",
              cropBack                          = "cropback-hq",
              grayPatterned                     = "Gray_Patterned_BG",
-             intlCollectorsCardBack            = "internationalcollectorscardback-hq"
+             intlCollectorsCardBack            = "internationalcollectorscardback-hq",
+             mtgLogo                           = "mtg-logo"
     }
     
     public enum UserDefaultsKeys {
