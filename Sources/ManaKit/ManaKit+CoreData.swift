@@ -163,7 +163,7 @@ extension ManaKit {
     // MARK: - Caching
 
     func willFetchCache(forUrl url: URL) -> Bool {
-        let context = viewContext
+        let context = newBackgroundContext()
         var willFetch = true
 
         if let cache = find(MGLocalCache.self,
