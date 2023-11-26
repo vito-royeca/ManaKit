@@ -112,10 +112,12 @@ public struct MArtist: MEntity {
 public struct MCardType: MEntity {
     let name: String
     let nameSection: String?
+    let parent: String?
 
     enum CodingKeys: String, CodingKey {
         case name
         case nameSection = "name_section"
+        case parent = "cmcardtype_parent"
     }
 }
 

@@ -63,26 +63,24 @@ extension ManaKit {
                 return objects
 
             } else {
-                if createIfNotFound {
-                    if let desc = NSEntityDescription.entity(forEntityName: entityName, in: context) {
-//                        try context.performAndWait {
-                            let object = NSManagedObject(entity: desc, insertInto: context)
-                            
-                            for (key,value) in properties ?? [:] {
-                                object.setValue(value, forKey: key)
-                            }
-                            
-                            try context.save()
-//                        }
-                        return find(entity,
-                                    properties: properties,
-                                    predicate: predicate,
-                                    sortDescriptors: sortDescriptors,
-                                    createIfNotFound: createIfNotFound,
-                                    context: context)
-                    } else {
-                        return nil
+                if createIfNotFound,
+                   let predicate = predicate,
+                   let desc = NSEntityDescription.entity(forEntityName: entityName,
+                                                         in: context) {
+                    let object = NSManagedObject(entity: desc, insertInto: context)
+                    
+                    for (key,value) in properties ?? [:] {
+                        object.setValue(value, forKey: key)
                     }
+                    
+                    try context.save()
+                    
+                    return find(entity,
+                                properties: properties,
+                                predicate: predicate,
+                                sortDescriptors: sortDescriptors,
+                                createIfNotFound: createIfNotFound,
+                                context: context)
                 } else {
                     return nil
                 }

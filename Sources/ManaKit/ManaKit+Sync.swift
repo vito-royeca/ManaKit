@@ -55,7 +55,7 @@ extension ManaKit {
             } else if let json = json as? MSetType {
                 _ = self.setType(from: json, context: context, type: MGSetType.self)
             } else if let json = json as? MCardType {
-                _ = self.type(from: json, context: context, type: MGCardType.self)
+                _ = self.cardType(from: json, context: context, type: MGCardType.self)
             } else if let json = json as? MWatermark {
                 _ = self.watermark(from: json, context: context, type: MGWatermark.self)
             }
@@ -359,14 +359,36 @@ extension ManaKit {
             props["nameSection"] = nameSection(for: cardType.name)
         }
         
-        let predicate = NSPredicate(format: "name = %@", cardType.name)
+        var predicate = NSPredicate(format: "name = %@", cardType.name)
         
-        return find(type,
-                    properties: props,
-                    predicate: predicate,
-                    sortDescriptors: nil,
-                    createIfNotFound: true,
-                    context: context)?.first
+        let result = find(type,
+                          properties: props,
+                          predicate: predicate,
+                          sortDescriptors: nil,
+                          createIfNotFound: true,
+                          context: context)?.first
+        
+        if let parent = cardType.parent,
+            let newCardType = result as? MGCardType {
+            props = [String: Any]()
+            predicate = NSPredicate(format: "name = %@", parent)
+            
+            props["name"] = parent
+            props["nameSection"] = nameSection(for: parent)
+            
+            if let newParent = find(type,
+                                    properties: props,
+                                    predicate: predicate,
+                                    sortDescriptors: nil,
+                                    createIfNotFound: true,
+                                    context: context)?.first as? MGCardType {
+                newCardType.parent = newParent
+            }
+            
+            return newCardType as? T
+        }
+        
+        return result
     }
     
     // MARK: - Color
@@ -827,9 +849,9 @@ extension ManaKit {
     func type<T: MGEntity>(from cardType: MCardType, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
 
-        let name = cardType.name.replacingOccurrences(of: "Legendary", with: "")
+        let name = cardType.name/*.replacingOccurrences(of: "Legendary", with: "")
             .replacingOccurrences(of: "Basic", with: "")
-            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .trimmingCharacters(in: .whitespacesAndNewlines)*/
         
         props["name"] = name
         if let nameSection = cardType.nameSection {
