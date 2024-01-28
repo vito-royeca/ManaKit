@@ -9,6 +9,16 @@ import CoreData
 
 // MARK: - MGCard
 public class MGCard: MGEntity {
+    public var sortedArtists: [MGArtist]? {
+        guard let set = artists,
+            let array = set.allObjects as? [MGArtist] else {
+            return nil
+        }
+        
+        let sortedArray = array.sorted { ($0.name ?? "") < ($1.name ?? "")}
+        return sortedArray.isEmpty ? nil : sortedArray
+    }
+
     public var sortedColors: [MGColor]? {
         guard let set = colors,
             let array = set.allObjects as? [MGColor] else {
@@ -80,6 +90,26 @@ public class MGCard: MGEntity {
         return sortedArray.isEmpty ? nil : sortedArray
     }
     
+    public var sortedGames: [MGGame]? {
+        guard let set = games,
+            let array = set.allObjects as? [MGGame] else {
+            return nil
+        }
+        
+        let sortedArray = array.sorted { ($0.name ?? "") < ($1.name ?? "")}
+        return sortedArray.isEmpty ? nil : sortedArray
+    }
+    
+    public var sortedKeywords: [MGKeyword]? {
+        guard let set = keywords,
+            let array = set.allObjects as? [MGKeyword] else {
+            return nil
+        }
+        
+        let sortedArray = array.sorted { ($0.name ?? "") < ($1.name ?? "")}
+        return sortedArray.isEmpty ? nil : sortedArray
+    }
+
     public var sortedOtherLanguages: [MGCard]? {
         guard let set = otherLanguages,
             let array = set.allObjects as? [MGCard] else {

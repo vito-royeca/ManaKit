@@ -67,7 +67,7 @@ extension MGCard {
                 if code == "en" {
                     text = name
                 } else {
-                    text = printedName
+                    text = printedName ?? name
                 }
             } else {
                 text = printedName ?? name

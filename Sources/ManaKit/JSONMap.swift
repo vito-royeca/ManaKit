@@ -42,10 +42,12 @@ public struct MCard: MEntity {
     let layout: MLayout?
     let watermark: MWatermark?
     let frame: MFrame?
-    let artist: MArtist?
+    let artists: [MArtist]?
     let colors, colorIdentities, colorIndicators: [MColor]?
     let componentParts: [MComponentPart]?
     let faces: [MCard]?
+    let games: [MGame]?
+    let keywords: [MKeyword]?
     let otherLanguages: [MCard]?
     let otherPrintings: [MCard]?
     let set: MSet?
@@ -99,13 +101,25 @@ public struct MCard: MEntity {
         case releaseDate      = "released_at"
         case tcgplayerID      = "tcgplayer_id"
         case typeLine         = "type_line"
-        case artist, colors, cmc, faces, frame, language, layout, loyalty, name, power, set, subtypes, supertypes, prices, rarity, rulings, toughness, variations, watermark
+        case artists, colors, cmc, faces, frame, games, keywords, language, layout, loyalty, name, power, set, subtypes, supertypes, prices, rarity, rulings, toughness, variations, watermark
     }
 }
 
 // MARK: - Artist
 public struct MArtist: MEntity {
     let name: String
+    let firstName: String?
+    let lastName: String?
+    let nameSection: String?
+    let info: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case name
+        case firstName = "first_name"
+        case lastName = "last_name"
+        case nameSection = "name_section"
+        case info
+    }
 }
 
 // MARK: - CardType
@@ -197,6 +211,28 @@ public struct MFrameEffect: MEntity {
         case id, name
         case description_ = "description"
         case nameSection  = "name_section"
+    }
+}
+
+// MARK: - Game
+public struct MGame: MEntity {
+    let name: String
+    let nameSection: String?
+
+    enum CodingKeys: String, CodingKey {
+        case name
+        case nameSection = "name_section"
+    }
+}
+
+// MARK: - Keyword
+public struct MKeyword: MEntity {
+    let name: String
+    let nameSection: String?
+
+    enum CodingKeys: String, CodingKey {
+        case name
+        case nameSection = "name_section"
     }
 }
 

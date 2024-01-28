@@ -1,13 +1,13 @@
 //
-//  MGRarity+CoreDataClass.swift
-//  ManaKit
+//  MGGame+CoreDataClass.swift
+//  
 //
-//  Created by Vito Royeca on 12/17/21.
+//  Created by Vito Royeca on 12/13/23.
 //
 
 import CoreData
 
-public class MGRarity: MGEntity {
+public class MGGame: MGEntity {
     public override var description: String {
         get {
             name ?? ""

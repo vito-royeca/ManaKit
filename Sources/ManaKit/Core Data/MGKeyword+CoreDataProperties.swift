@@ -1,32 +1,28 @@
 //
-//  MGArtist+CoreDataProperties.swift
-//  
+//  MGKeyword+CoreDataProperties.swift
 //
-//  Created by Vito Royeca on 12/27/21.
 //
+//  Created by Vito Royeca on 12/13/23.
 //
 
 import Foundation
 import CoreData
 
 
-extension MGArtist {
+extension MGKeyword {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<MGArtist> {
-        return NSFetchRequest<MGArtist>(entityName: "MGArtist")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<MGKeyword> {
+        return NSFetchRequest<MGKeyword>(entityName: "MGKeyword")
     }
 
-    @NSManaged public var firstName: String?
-    @NSManaged public var lastName: String?
     @NSManaged public var name: String?
     @NSManaged public var nameSection: String?
-    @NSManaged public var info: String?
     @NSManaged public var cards: NSSet?
 
 }
 
 // MARK: Generated accessors for cards
-extension MGArtist {
+extension MGKeyword {
 
     @objc(addCardsObject:)
     @NSManaged public func addToCards(_ value: MGCard)

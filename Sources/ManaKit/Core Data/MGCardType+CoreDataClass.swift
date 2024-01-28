@@ -17,4 +17,10 @@ public class MGCardType: MGEntity {
         let sortedArray = array.sorted { ($0.name ?? "") < ($1.name ?? "")}
         return sortedArray.isEmpty ? nil : sortedArray
     }
+    
+    public override var description: String {
+        get {
+            name ?? ""
+        }
+    }
 }

@@ -62,7 +62,7 @@ extension MGCard {
     @NSManaged public var tcgPlayerID: Int64
     @NSManaged public var toughness: String?
     @NSManaged public var typeLine: String?
-    @NSManaged public var artist: MGArtist?
+    @NSManaged public var artists: NSSet?
     @NSManaged public var componentParts: NSSet?
     @NSManaged public var colorIdentities: NSSet?
     @NSManaged public var colorIndicators: NSSet?
@@ -72,6 +72,8 @@ extension MGCard {
     @NSManaged public var formatLegalities: NSSet?
     @NSManaged public var frame: MGFrame?
     @NSManaged public var frameEffects: NSSet?
+    @NSManaged public var games: NSSet?
+    @NSManaged public var keywords: NSSet?
     @NSManaged public var language: MGLanguage?
     @NSManaged public var layout: MGLayout?
     @NSManaged public var otherLanguages: NSSet?
@@ -87,6 +89,23 @@ extension MGCard {
     @NSManaged public var variation: MGCard?
     @NSManaged public var variations: NSSet?
     @NSManaged public var watermark: MGWatermark?
+
+}
+
+// MARK: Generated accessors for artists
+extension MGCard {
+
+    @objc(addArtistsObject:)
+    @NSManaged public func addToArtists(_ value: MGArtist)
+
+    @objc(removeArtistsObject:)
+    @NSManaged public func removeFromArtists(_ value: MGArtist)
+
+    @objc(addArtists:)
+    @NSManaged public func addToArtists(_ values: NSSet)
+
+    @objc(removeArtists:)
+    @NSManaged public func removeFromArtists(_ values: NSSet)
 
 }
 
@@ -206,6 +225,40 @@ extension MGCard {
 
     @objc(removeFrameEffects:)
     @NSManaged public func removeFromFrameEffects(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for games
+extension MGCard {
+
+    @objc(addGamesObject:)
+    @NSManaged public func addToGames(_ value: MGGame)
+
+    @objc(removeGamesObject:)
+    @NSManaged public func removeFromGames(_ value: MGGame)
+
+    @objc(addGames:)
+    @NSManaged public func addToGames(_ values: NSSet)
+
+    @objc(removeGames:)
+    @NSManaged public func removeFromGames(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for keywords
+extension MGCard {
+
+    @objc(addKeywordsObject:)
+    @NSManaged public func addToKeywords(_ value: MGKeyword)
+
+    @objc(removeKeywordsObject:)
+    @NSManaged public func removeFromKeywords(_ value: MGKeyword)
+
+    @objc(addKeywords:)
+    @NSManaged public func addToKeywords(_ values: NSSet)
+
+    @objc(removeKeywords:)
+    @NSManaged public func removeFromKeywords(_ values: NSSet)
 
 }
 

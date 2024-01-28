@@ -23,11 +23,13 @@ public protocol API {
     func willFetchCards(name: String,
                         colors: [String],
                         rarities: [String],
-                        types: [String]) throws -> Bool
+                        types: [String],
+                        keywords: [String]) throws -> Bool
     func fetchCards(name: String,
                     colors: [String],
                     rarities: [String],
                     types: [String],
+                    keywords: [String],
                     sortDescriptors: [NSSortDescriptor]?) async throws -> [MGCard]
 
     func willFetchCardOtherPrintings(newID: String,
@@ -36,9 +38,18 @@ public protocol API {
                                  languageCode: String,
                                  sortDescriptors: [NSSortDescriptor]?) async throws -> [MGCard]
     
+    func willFetchArtists() throws -> Bool
+    func fetchArtists(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGArtist]
+
     func willFetchColors() throws -> Bool
     func fetchColors(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGColor]
     
+    func willFetchGames() throws -> Bool
+    func fetchGames(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGGame]
+
+    func willFetchKeywords() throws -> Bool
+    func fetchKeywords(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGKeyword]
+
     func willFetchRarities() throws -> Bool
     func fetchRarities(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGRarity]
     
@@ -60,13 +71,12 @@ extension ManaKit: API {
                   response.statusCode == 200 else {
                 throw ManaKitError.invalidHttpResponse
             }
-            
+
             let decoder = JSONDecoder()
             let jsonData = try decoder.decode([T].self, from: data)
             let entities = syncToCoreData(jsonData,
                                           jsonType: jsonType,
                                           coreDataType: coreDataType,
-                                          predicate: predicate,
                                           sortDescriptors: sortDescriptors)
             saveCache(forUrl: url)
             return entities ?? []
@@ -181,11 +191,13 @@ extension ManaKit: API {
     public func willFetchCards(name: String,
                                colors: [String],
                                rarities: [String],
-                               types: [String]) throws -> Bool {
+                               types: [String],
+                               keywords: [String]) throws -> Bool {
         let url = try fetchCardsURL(name: name,
                                     colors: colors,
                                     rarities: rarities,
-                                    types: types)
+                                    types: types,
+                                    keywords: keywords)
         
         return willFetchCache(forUrl: url)
     }
@@ -194,11 +206,13 @@ extension ManaKit: API {
                            colors: [String],
                            rarities: [String],
                            types: [String],
+                           keywords: [String],
                            sortDescriptors: [NSSortDescriptor]?) async throws -> [MGCard] {
         let url = try fetchCardsURL(name: name,
                                     colors: colors,
                                     rarities: rarities,
-                                    types: types)
+                                    types: types,
+                                    keywords: keywords)
         let format = "newID != nil AND newID != '' AND collectorNumber != nil AND language.code = %@"
         var predicate = NSPredicate(format: format,
                                     "en")
@@ -227,6 +241,12 @@ extension ManaKit: API {
                                                                                         types)
             ])
         }
+        if !keywords.isEmpty {
+            predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate,
+                                                                            NSPredicate(format: "ANY keywords.name IN %@",
+                                                                                        keywords)
+            ])
+        }
         
         return try await fetchData(url: url,
                                    jsonType: MCard.self,
@@ -238,7 +258,8 @@ extension ManaKit: API {
     private func fetchCardsURL(name: String,
                                colors: [String],
                                rarities: [String],
-                               types: [String]) throws -> URL {
+                               types: [String],
+                               keywords: [String]) throws -> URL {
         var queryItems = [URLQueryItem(name: "sortedBy", value: ""),
                           URLQueryItem(name: "orderBy", value: ""),
                           URLQueryItem(name: "name", value: name),
@@ -247,6 +268,7 @@ extension ManaKit: API {
         queryItems.append(contentsOf: colors.map { URLQueryItem(name: "colors[]", value: $0) })
         queryItems.append(contentsOf: rarities.map { URLQueryItem(name: "rarities[]", value: $0) })
         queryItems.append(contentsOf: types.map { URLQueryItem(name: "types[]", value: $0) })
+        queryItems.append(contentsOf: keywords.map { URLQueryItem(name: "keywords[]", value: $0) })
         
         var urlComponents = URLComponents(string: apiURL)
         urlComponents?.path = "/advancesearch"
@@ -288,7 +310,6 @@ extension ManaKit: API {
             let jsonData = try decoder.decode([MCard].self, from: data)
             let newIDs = jsonData.map{ $0.newID }
             let predicate = NSPredicate(format: "newID == %@", newID)
-            let predicate2 = NSPredicate(format: "newID IN %@", newIDs)
             let context = newBackgroundContext()
             if let card = find(MGCard.self,
                                properties: nil,
@@ -299,7 +320,6 @@ extension ManaKit: API {
                let otherPrintings = syncToCoreData(jsonData,
                                                    jsonType: MCard.self,
                                                    coreDataType: MGCard.self,
-                                                   predicate: predicate2,
                                                    sortDescriptors: sortDescriptors) {
                 for otherPrinting in otherPrintings {
                     card.addToOtherPrintings(otherPrinting)
@@ -321,6 +341,38 @@ extension ManaKit: API {
                                          languageCode: String) throws -> URL {
         var urlComponents = URLComponents(string: apiURL)
         urlComponents?.path = "/printings/\(newID)/\(languageCode)"
+        urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
+                                     URLQueryItem(name: "mobile", value: "true")]
+        
+        guard let url = urlComponents?.url else {
+            throw ManaKitError.badURL
+        }
+        
+        return url
+    }
+
+    // MARK: - fetchArtists()
+
+    public func willFetchArtists() throws -> Bool {
+        let url = try fetchArtistsURL()
+        
+        return willFetchCache(forUrl: url)
+    }
+
+    public func fetchArtists(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGArtist] {
+        let url = try fetchArtistsURL()
+        let predicate = NSPredicate(format: "name != nil")
+
+        return try await fetchData(url: url,
+                                   jsonType: MArtist.self,
+                                   coreDataType: MGArtist.self,
+                                   predicate: predicate,
+                                   sortDescriptors: sortDescriptors)
+    }
+    
+    private func fetchArtistsURL() throws -> URL {
+        var urlComponents = URLComponents(string: apiURL)
+        urlComponents?.path = "/artists"
         urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
                                      URLQueryItem(name: "mobile", value: "true")]
         
@@ -353,6 +405,70 @@ extension ManaKit: API {
     private func fetchColorsURL() throws -> URL {
         var urlComponents = URLComponents(string: apiURL)
         urlComponents?.path = "/colors"
+        urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
+                                     URLQueryItem(name: "mobile", value: "true")]
+        
+        guard let url = urlComponents?.url else {
+            throw ManaKitError.badURL
+        }
+        
+        return url
+    }
+
+    // MARK: - fetchGames()
+
+    public func willFetchGames() throws -> Bool {
+        let url = try fetchGamesURL()
+        
+        return willFetchCache(forUrl: url)
+    }
+
+    public func fetchGames(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGGame] {
+        let url = try fetchGamesURL()
+        let predicate = NSPredicate(format: "name != nil")
+
+        return try await fetchData(url: url,
+                                   jsonType: MGame.self,
+                                   coreDataType: MGGame.self,
+                                   predicate: predicate,
+                                   sortDescriptors: sortDescriptors)
+    }
+    
+    private func fetchGamesURL() throws -> URL {
+        var urlComponents = URLComponents(string: apiURL)
+        urlComponents?.path = "/games"
+        urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
+                                     URLQueryItem(name: "mobile", value: "true")]
+        
+        guard let url = urlComponents?.url else {
+            throw ManaKitError.badURL
+        }
+        
+        return url
+    }
+
+    // MARK: - fetchKeywords()
+
+    public func willFetchKeywords() throws -> Bool {
+        let url = try fetchKeywordsURL()
+        
+        return willFetchCache(forUrl: url)
+    }
+
+    public func fetchKeywords(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGKeyword] {
+        let url = try fetchKeywordsURL()
+        let predicate = NSPredicate(format: "name != nil")
+
+        return try await fetchData(url: url,
+                                   jsonType: MKeyword.self,
+                                   coreDataType: MGKeyword.self,
+                                   predicate: predicate,
+                                   sortDescriptors: sortDescriptors)
+    }
+    
+    private func fetchKeywordsURL() throws -> URL {
+        var urlComponents = URLComponents(string: apiURL)
+        urlComponents?.path = "/keywords"
         urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
                                      URLQueryItem(name: "mobile", value: "true")]
         

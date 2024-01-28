@@ -12,63 +12,121 @@ extension ManaKit {
     public func syncToCoreData<T: MEntity, U: MGEntity>(_ jsonData: [T],
                                                         jsonType: T.Type,
                                                         coreDataType: U.Type,
-                                                        predicate: NSPredicate?,
                                                         sortDescriptors: [NSSortDescriptor]?) -> [U]? {
         let context = newBackgroundContext()
-        var predicate = predicate
+        var results = [U]()
 
         for json in jsonData {
             if let json = json as? MArtist {
-                _ = self.artist(from: json, context: context, type: MGArtist.self)
+                if let entity = self.artist(from: json, context: context, type: MGArtist.self),
+                    let result = entity as? U {
+                    results.append(result)
+                }
             } else if let json = json as? MCard {
-                _ = self.card(from: json, context: context, type: MGCard.self)
+                if let entity = self.card(from: json, context: context, type: MGCard.self),
+                   let result = entity as? U {
+                   results.append(result)
+               }
             } else if let json = json as? MColor {
-                _ = self.color(from: json, context: context, type: MGColor.self)
+                if let entity = self.color(from: json, context: context, type: MGColor.self),
+                   let result = entity as? U {
+                   results.append(result)
+               }
             } else if let json = json as? MComponent {
-                _ = self.component(from: json, context: context, type: MGComponent.self)
+                if let entity = self.component(from: json, context: context, type: MGComponent.self),
+                   let result = entity as? U {
+                   results.append(result)
+               }
             }/* else if let json = json as? MComponentPart {
               func componentPart<T: MGEntity>(from componentPart: MComponentPart, part: MCard, context: NSManagedObjectContext, type: T.Type)
             }*/ else if let json = json as? MFormat {
-                _ = self.format(from: json, context: context, type: MGFormat.self)
+                if let entity = self.format(from: json, context: context, type: MGFormat.self),
+                   let result = entity as? U {
+                   results.append(result)
+               }
             }/* else if let json = json as? MFormatLegality {
               func formatLegality<T: MGEntity>(from formatLegality: MFormatLegality, part: MCard, context: NSManagedObjectContext, type: T.Type) -> T?
             }*/ else if let json = json as? MFrame {
-                _ = self.frame(from: json, context: context, type: MGFrame.self)
+                if let entity = self.frame(from: json, context: context, type: MGFrame.self),
+                   let result = entity as? U {
+                   results.append(result)
+               }
             } else if let json = json as? MFrameEffect {
-                _ = self.frameEffect(from: json, context: context, type: MGFrameEffect.self)
+                if let entity = self.frameEffect(from: json, context: context, type: MGFrameEffect.self),
+                   let result = entity as? U {
+                   results.append(result)
+               }
+            } else if let json = json as? MGame {
+                if let entity = self.game(from: json, context: context, type: MGGame.self),
+                   let result = entity as? U {
+                   results.append(result)
+               }
+            } else if let json = json as? MKeyword {
+                if let entity = self.keyword(from: json, context: context, type: MGKeyword.self),
+                   let result = entity as? U {
+                   results.append(result)
+               }
             } else if let json = json as? MLanguage {
-                _ = self.language(from: json, context: context, type: MGLanguage.self)
+                if let entity = self.language(from: json, context: context, type: MGLanguage.self),
+                   let result = entity as? U {
+                   results.append(result)
+               }
             } else if let json = json as? MLayout {
-                _ = self.layout(from: json, context: context, type: MGLayout.self)
+                if let entity = self.layout(from: json, context: context, type: MGLayout.self),
+                   let result = entity as? U {
+                   results.append(result)
+               }
             } else if let json = json as? MLegality {
-                _ = self.legality(from: json, context: context, type: MGLegality.self)
+                if let entity = self.legality(from: json, context: context, type: MGLegality.self),
+                   let result = entity as? U {
+                   results.append(result)
+               }
             } else if let json = json as? MPrice {
-                _ = self.price(from: json, context: context, type: MGCardPrice.self)
+                if let entity = self.price(from: json, context: context, type: MGCardPrice.self),
+                   let result = entity as? U {
+                   results.append(result)
+               }
             } else if let json = json as? MRarity {
-                _ = self.rarity(from: json, context: context, type: MGRarity.self)
+                if let entity = self.rarity(from: json, context: context, type: MGRarity.self),
+                   let result = entity as? U {
+                   results.append(result)
+               }
             } else if let json = json as? MRuling {
-                _ = self.ruling(from: json, context: context, type: MGRuling.self)
+                if let entity = self.ruling(from: json, context: context, type: MGRuling.self),
+                   let result = entity as? U {
+                   results.append(result)
+               }
             } else if let json = json as? MSet {
-                _ = self.set(from: json, context: context, type: MGSet.self)
+                if let entity = self.set(from: json, context: context, type: MGSet.self),
+                   let result = entity as? U {
+                   results.append(result)
+               }
             } else if let json = json as? MSetBlock {
-                _ = self.setBlock(from: json, context: context, type: MGSetBlock.self)
+                if let entity = self.setBlock(from: json, context: context, type: MGSetBlock.self),
+                   let result = entity as? U {
+                   results.append(result)
+               }
             } else if let json = json as? MSetType {
-                _ = self.setType(from: json, context: context, type: MGSetType.self)
+                if let entity = self.setType(from: json, context: context, type: MGSetType.self),
+                   let result = entity as? U {
+                   results.append(result)
+               }
             } else if let json = json as? MCardType {
-                _ = self.cardType(from: json, context: context, type: MGCardType.self)
+                if let entity = self.cardType(from: json, context: context, type: MGCardType.self),
+                   let result = entity as? U {
+                   results.append(result)
+               }
             } else if let json = json as? MWatermark {
-                _ = self.watermark(from: json, context: context, type: MGWatermark.self)
+                if let entity = self.watermark(from: json, context: context, type: MGWatermark.self),
+                   let result = entity as? U {
+                   results.append(result)
+               }
             }
         }
         
         save(context: context)
 
-        return find(coreDataType,
-                    properties: nil,
-                    predicate: predicate,
-                    sortDescriptors: sortDescriptors,
-                    createIfNotFound: false,
-                    context: context)
+        return results
     }
     
     func nameSection(for name: String) -> String? {
@@ -88,7 +146,11 @@ extension ManaKit {
     func artist<T: MGEntity>(from artist: MArtist, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
         props["name"] = artist.name
-        
+        props["firstName"] = artist.firstName
+        props["lastName"] = artist.lastName
+        props["nameSection"] = artist.nameSection
+        props["info"] = artist.info
+
         let predicate = NSPredicate(format: "name = %@", artist.name)
         
         return find(type,
@@ -237,8 +299,10 @@ extension ManaKit {
                               sortDescriptors: nil,
                               createIfNotFound: true,
                               context: context)?.first as? MGCard {
-            if let x = card.artist {
-                newCard.artist = artist(from: x, context: context, type: MGArtist.self)
+            for x in card.artists ?? [] {
+                if let y = artist(from: x, context: context, type: MGArtist.self) {
+                    newCard.addToArtists(y)
+                }
             }
             for x in card.colors ?? [] {
                 if let y = color(from: x, context: context, type: MGColor.self) {
@@ -276,6 +340,16 @@ extension ManaKit {
             for x in card.frameEffects ?? [] {
                 if let y = frameEffect(from: x, context: context, type: MGFrameEffect.self) {
                     newCard.addToFrameEffects(y)
+                }
+            }
+            for x in card.games ?? [] {
+                if let y = game(from: x, context: context, type: MGGame.self) {
+                    newCard.addToGames(y)
+                }
+            }
+            for x in card.keywords ?? [] {
+                if let y = keyword(from: x, context: context, type: MGKeyword.self) {
+                    newCard.addToKeywords(y)
                 }
             }
             if let x = card.language {
@@ -554,6 +628,48 @@ extension ManaKit {
                     context: context)?.first
     }
     
+    // MARK: - Game
+    func game<T: MGEntity>(from game: MGame, context: NSManagedObjectContext, type: T.Type) -> T? {
+        var props = [String: Any]()
+
+        props["name"] = game.name
+        if let nameSection = game.nameSection {
+            props["nameSection"] = nameSection
+        } else {
+            props["nameSection"] = nameSection(for: game.name)
+        }
+        
+        let predicate = NSPredicate(format: "name = %@", game.name)
+        
+        return find(type,
+                    properties: props,
+                    predicate: predicate,
+                    sortDescriptors: nil,
+                    createIfNotFound: true,
+                    context: context)?.first
+    }
+    
+    // MARK: - Keyword
+    func keyword<T: MGEntity>(from keyword: MKeyword, context: NSManagedObjectContext, type: T.Type) -> T? {
+        var props = [String: Any]()
+
+        props["name"] = keyword.name
+        if let nameSection = keyword.nameSection {
+            props["nameSection"] = nameSection
+        } else {
+            props["nameSection"] = nameSection(for: keyword.name)
+        }
+        
+        let predicate = NSPredicate(format: "name = %@", keyword.name)
+        
+        return find(type,
+                    properties: props,
+                    predicate: predicate,
+                    sortDescriptors: nil,
+                    createIfNotFound: true,
+                    context: context)?.first
+    }
+
     // MARK: - Language
     func language<T: MGEntity>(from language: MLanguage, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
