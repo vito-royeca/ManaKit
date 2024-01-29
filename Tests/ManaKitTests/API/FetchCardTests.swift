@@ -58,7 +58,7 @@ final class FetchCardTests: XCTestCase {
     func testFetchCards() async throws {
         do {
             let pageSize = 20
-            var pageOffSet = 0
+            let pageOffSet = 0
 
             let cards = try await ManaKit.shared.fetchCards(name: "angel",
                                                             rarities: [],
