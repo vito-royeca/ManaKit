@@ -1,0 +1,57 @@
+//
+//  FetchCardOtherPrintingsTests.swift
+//  
+//
+//  Created by Vito Royeca on 1/29/24.
+//
+
+import XCTest
+import ManaKit
+
+final class FetchCardOtherPrintingsTests: XCTestCase {
+    let newID = "isd_en_51" // Delver of Secrets
+    let languageCode = "en"
+
+    override func setUpWithError() throws {
+        ManaKit.shared.configure(apiURL: "https://managuideapp.com")
+        Task {
+            await ManaKit.shared.setupResources()
+        }
+    }
+
+    override func tearDownWithError() throws {
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    }
+
+    func testWillFetchCardOtherPrintingsTest() throws {
+        do {
+            let _ = try ManaKit.shared.willFetchCardOtherPrintings(newID: newID,
+                                                                   languageCode: languageCode)
+        } catch {
+            XCTFail("willFetchCardOtherPrintings(::) error")
+            print(error)
+        }
+    }
+
+    func testFetchCardOtherPrintings() async throws {
+        do {
+            let card = try await ManaKit.shared.fetchCard(newID: newID)
+            XCTAssert(card != nil)
+
+            let language = card!.language
+            XCTAssert(language != nil)
+            
+            let code = language!.code
+            XCTAssert(code != nil)
+            
+            let cards = try await ManaKit.shared.fetchCardOtherPrintings(newID: card!.newID,
+                                                                         languageCode: code!,
+                                                                         sortDescriptors: nil)
+            XCTAssert(!cards.isEmpty)
+        } catch {
+            XCTFail("fetchCardOtherPrintings(:::) error")
+            print(error)
+        }
+    }
+
+}
