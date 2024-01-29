@@ -107,14 +107,14 @@ public final class ManaKit: NSPersistentContainer {
 //        return UINib(nibName: name, bundle: resourceBundle)
 //    }
     
-    public func setupResources() {
+    public func setupResources() async {
 //        copyModelFile()
 //        copyDatabaseFile()
 //        loadCustomFonts()
-        downloadKeyruneFont()
+        await downloadKeyruneFont()
     }
     
-    func downloadKeyruneFont() {
+    func downloadKeyruneFont() async {
         guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
             return
         }
@@ -150,16 +150,12 @@ public final class ManaKit: NSPersistentContainer {
                     try FileManager.default.removeItem(atPath: keyrunePath)
                 }
 
-                let task = URLSession.shared.downloadTask(with: url) { localURL, urlResponse, error in
-                    if let localURL = localURL {
-                        SSZipArchive.unzipFile(atPath: localURL.path, toDestination: cachePath)
-                        
-                        let fontURL = URL(fileURLWithPath: "\(keyrunePath)/fonts/keyrune.ttf")
-                        self.loadCustomFonts(and: fontURL)
-                    }
-                }
+                let (localURL, _) = try await URLSession.shared.download(from: url)
+                SSZipArchive.unzipFile(atPath: localURL.path, toDestination: cachePath)
+                
+                let fontURL = URL(fileURLWithPath: "\(keyrunePath)/fonts/keyrune.ttf")
+                self.loadCustomFonts(and: fontURL)
 
-                task.resume()
             } else {
                 let fontURL = URL(fileURLWithPath: "\(keyrunePath)/fonts/keyrune.ttf")
                 loadCustomFonts(and: fontURL)

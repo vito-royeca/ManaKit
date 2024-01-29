@@ -21,16 +21,18 @@ public protocol API {
     func fetchCard(newID: String) async throws -> MGCard?
 
     func willFetchCards(name: String,
-                        colors: [String],
                         rarities: [String],
                         types: [String],
-                        keywords: [String]) throws -> Bool
+                        keywords: [String],
+                        pageSize: Int,
+                        pageOffset: Int) throws -> Bool
     func fetchCards(name: String,
-                    colors: [String],
                     rarities: [String],
                     types: [String],
                     keywords: [String],
-                    sortDescriptors: [NSSortDescriptor]?) async throws -> [MGCard]
+                    sortDescriptors: [NSSortDescriptor]?,
+                    pageSize: Int,
+                    pageOffset: Int) async throws -> [MGCard]
 
     func willFetchCardOtherPrintings(newID: String,
                                      languageCode: String) throws -> Bool
@@ -189,30 +191,34 @@ extension ManaKit: API {
     // MARK: - fetchCards(::::)
 
     public func willFetchCards(name: String,
-                               colors: [String],
                                rarities: [String],
                                types: [String],
-                               keywords: [String]) throws -> Bool {
+                               keywords: [String],
+                               pageSize: Int,
+                               pageOffset: Int) throws -> Bool {
         let url = try fetchCardsURL(name: name,
-                                    colors: colors,
                                     rarities: rarities,
                                     types: types,
-                                    keywords: keywords)
+                                    keywords: keywords,
+                                    pageSize: pageSize,
+                                    pageOffset: pageOffset)
         
         return willFetchCache(forUrl: url)
     }
     
     public func fetchCards(name: String,
-                           colors: [String],
                            rarities: [String],
                            types: [String],
                            keywords: [String],
-                           sortDescriptors: [NSSortDescriptor]?) async throws -> [MGCard] {
+                           sortDescriptors: [NSSortDescriptor]?,
+                           pageSize: Int,
+                           pageOffset: Int) async throws -> [MGCard] {
         let url = try fetchCardsURL(name: name,
-                                    colors: colors,
                                     rarities: rarities,
                                     types: types,
-                                    keywords: keywords)
+                                    keywords: keywords,
+                                    pageSize: pageSize,
+                                    pageOffset: pageOffset)
         let format = "newID != nil AND newID != '' AND collectorNumber != nil AND language.code = %@"
         var predicate = NSPredicate(format: format,
                                     "en")
@@ -221,12 +227,6 @@ extension ManaKit: API {
             predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate,
                                                                             NSPredicate(format: "name CONTAINS[cd] %@",
                                                                                         name)
-            ])
-        }
-        if !colors.isEmpty {
-            predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate,
-                                                                            NSPredicate(format: "ANY colors.symbol IN %@",
-                                                                                        colors)
             ])
         }
         if !rarities.isEmpty {
@@ -256,20 +256,22 @@ extension ManaKit: API {
     }
     
     private func fetchCardsURL(name: String,
-                               colors: [String],
                                rarities: [String],
                                types: [String],
-                               keywords: [String]) throws -> URL {
+                               keywords: [String],
+                               pageSize: Int,
+                               pageOffset: Int) throws -> URL {
         var queryItems = [URLQueryItem(name: "sortedBy", value: ""),
                           URLQueryItem(name: "orderBy", value: ""),
                           URLQueryItem(name: "name", value: name),
                           URLQueryItem(name: "json", value: "true"),
                           URLQueryItem(name: "mobile", value: "true")]
-        queryItems.append(contentsOf: colors.map { URLQueryItem(name: "colors[]", value: $0) })
         queryItems.append(contentsOf: rarities.map { URLQueryItem(name: "rarities[]", value: $0) })
         queryItems.append(contentsOf: types.map { URLQueryItem(name: "types[]", value: $0) })
         queryItems.append(contentsOf: keywords.map { URLQueryItem(name: "keywords[]", value: $0) })
-        
+        queryItems.append(URLQueryItem(name: "pageSize", value: "\(pageSize)"))
+        queryItems.append(URLQueryItem(name: "pageOffset", value: "\(pageOffset)"))
+
         var urlComponents = URLComponents(string: apiURL)
         urlComponents?.path = "/advancesearch"
         urlComponents?.queryItems = queryItems
@@ -308,7 +310,6 @@ extension ManaKit: API {
             
             let decoder = JSONDecoder()
             let jsonData = try decoder.decode([MCard].self, from: data)
-            let newIDs = jsonData.map{ $0.newID }
             let predicate = NSPredicate(format: "newID == %@", newID)
             let context = newBackgroundContext()
             if let card = find(MGCard.self,

@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "ManaKit",
     platforms: [
-        .macOS(.v11),
+        .macOS(.v12),
         .iOS("15.5")
     ],
     products: [
