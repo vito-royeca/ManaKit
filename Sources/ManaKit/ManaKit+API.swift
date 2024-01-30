@@ -30,7 +30,6 @@ public protocol API {
                     rarities: [String],
                     types: [String],
                     keywords: [String],
-                    sortDescriptors: [NSSortDescriptor]?,
                     pageSize: Int,
                     pageOffset: Int) async throws -> [MGCard]
 
@@ -210,7 +209,6 @@ extension ManaKit: API {
                            rarities: [String],
                            types: [String],
                            keywords: [String],
-                           sortDescriptors: [NSSortDescriptor]?,
                            pageSize: Int,
                            pageOffset: Int) async throws -> [MGCard] {
         let url = try fetchCardsURL(name: name,
@@ -224,7 +222,7 @@ extension ManaKit: API {
                                         jsonType: MCard.self,
                                         coreDataType: MGCard.self,
                                         predicate: nil,
-                                        sortDescriptors: sortDescriptors)
+                                        sortDescriptors: nil)
 
         // delete old searchResults
         Task {
@@ -237,7 +235,6 @@ extension ManaKit: API {
         }
         
         // add cards to searchResults
-        let context = viewContext
         for card in cards {
             var props = [String: Any]()
             props["pageOffset"] = pageOffset
@@ -246,19 +243,17 @@ extension ManaKit: API {
             let predicate = NSPredicate(format: "pageOffset == %i AND newID == %@",
                                         pageOffset,
                                         card.newIDCopy)
-            if let searchResult = find(SearchResult.self,
+            if let context = card.managedObjectContext,
+                let searchResult = find(SearchResult.self,
                                        properties: props,
                                        predicate: predicate,
                                        sortDescriptors: nil,
                                        createIfNotFound: true,
-                                       context: context)?.first,
-               let managedObjectContext = card.managedObjectContext {
-//                searchResult.card = card
-//                [[owner mutableSetValueForKey:@"books"] addObject:[owner.managedObjectContext objectWithID:[book objectID]]];
-                card.mutableSetValue(forKey: "searchResults").add(managedObjectContext.object(with: searchResult.objectID))
+                                       context: context)?.first {
+                searchResult.card = card
+                save(context: context)
             }
         }
-        save(context: context)
 
         return cards
     }
