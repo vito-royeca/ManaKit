@@ -92,8 +92,7 @@ extension ManaKit {
     }
     
     func delete<T: MGEntity>(_ entity: T.Type,
-                             predicate: NSPredicate,
-                             completion: ((Result<Void, Error>) -> Void)?) {
+                             predicate: NSPredicate) async throws {
         let context = viewContext
         let entityName = String(describing: entity)
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
@@ -109,10 +108,9 @@ extension ManaKit {
                 
                 NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
             }
-            completion?(.success(()))
         } catch {
             print("Failed to perform batch update: \(error)")
-            completion?(.failure(error))
+            throw error
         }
     }
 
@@ -164,7 +162,7 @@ extension ManaKit {
         let context = newBackgroundContext()
         var willFetch = true
 
-        if let cache = find(MGLocalCache.self,
+        if let cache = find(LocalCache.self,
                             properties: ["url": url.absoluteString],
                             predicate: NSPredicate(format: "url == %@", url.absoluteString),
                             sortDescriptors: nil,
@@ -190,7 +188,7 @@ extension ManaKit {
     func saveCache(forUrl url: URL) {
         let context = newBackgroundContext()
         
-        if let cache = find(MGLocalCache.self,
+        if let cache = find(LocalCache.self,
                             properties: ["url": url.absoluteString],
                             predicate: NSPredicate(format: "url == %@", url.absoluteString),
                             sortDescriptors: nil,
@@ -202,10 +200,15 @@ extension ManaKit {
     }
 
     func deleteCache(forUrl url: URL) {
-        delete(MGLocalCache.self,
-               predicate: NSPredicate(format: "url == %@", url.absoluteString),
-               completion: nil)
-        save(context: newBackgroundContext())
+        Task {
+            do {
+                try await delete(LocalCache.self,
+                                 predicate: NSPredicate(format: "url == %@", url.absoluteString))
+                save(context: newBackgroundContext())
+            } catch {
+                print(error)
+            }
+        }
     }
     
 //    func copyModelFile() {

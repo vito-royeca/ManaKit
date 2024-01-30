@@ -219,40 +219,48 @@ extension ManaKit: API {
                                     keywords: keywords,
                                     pageSize: pageSize,
                                     pageOffset: pageOffset)
-        let format = "newID != nil AND newID != '' AND collectorNumber != nil AND language.code = %@"
-        var predicate = NSPredicate(format: format,
-                                    "en")
         
-        if !name.isEmpty {
-            predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate,
-                                                                            NSPredicate(format: "name CONTAINS[cd] %@",
-                                                                                        name)
-            ])
-        }
-        if !rarities.isEmpty {
-            predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate,
-                                                                            NSPredicate(format: "rarity.name IN %@",
-                                                                                        rarities)
-            ])
-        }
-        if !types.isEmpty {
-            predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate,
-                                                                            NSPredicate(format: "ANY supertypes.name IN %@",
-                                                                                        types)
-            ])
-        }
-        if !keywords.isEmpty {
-            predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate,
-                                                                            NSPredicate(format: "ANY keywords.name IN %@",
-                                                                                        keywords)
-            ])
+        let cards = try await fetchData(url: url,
+                                        jsonType: MCard.self,
+                                        coreDataType: MGCard.self,
+                                        predicate: nil,
+                                        sortDescriptors: sortDescriptors)
+
+        // delete old searchResults
+        Task {
+            do {
+                try await delete(SearchResult.self,
+                                 predicate: NSPredicate(format: "pageOffset == %i", pageOffset))
+            } catch {
+                print(error)
+            }
         }
         
-        return try await fetchData(url: url,
-                                   jsonType: MCard.self,
-                                   coreDataType: MGCard.self,
-                                   predicate: predicate,
-                                   sortDescriptors: sortDescriptors)
+        // add cards to searchResults
+        let context = viewContext
+        for card in cards {
+            var props = [String: Any]()
+            props["pageOffset"] = pageOffset
+            props["newID"] = card.newIDCopy
+
+            let predicate = NSPredicate(format: "pageOffset == %i AND newID == %@",
+                                        pageOffset,
+                                        card.newIDCopy)
+            if let searchResult = find(SearchResult.self,
+                                       properties: props,
+                                       predicate: predicate,
+                                       sortDescriptors: nil,
+                                       createIfNotFound: true,
+                                       context: context)?.first,
+               let managedObjectContext = card.managedObjectContext {
+//                searchResult.card = card
+//                [[owner mutableSetValueForKey:@"books"] addObject:[owner.managedObjectContext objectWithID:[book objectID]]];
+                card.mutableSetValue(forKey: "searchResults").add(managedObjectContext.object(with: searchResult.objectID))
+            }
+        }
+        save(context: context)
+
+        return cards
     }
     
     private func fetchCardsURL(name: String,
