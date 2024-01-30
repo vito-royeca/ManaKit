@@ -17,6 +17,5 @@ extension SearchResult {
 
     @NSManaged public var newID: String
     @NSManaged public var pageOffset: Int64
-    @NSManaged public var card: MGCard?
 
 }

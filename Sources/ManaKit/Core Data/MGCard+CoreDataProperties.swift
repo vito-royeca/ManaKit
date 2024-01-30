@@ -89,7 +89,6 @@ extension MGCard {
     @NSManaged public var variation: MGCard?
     @NSManaged public var variations: NSSet?
     @NSManaged public var watermark: MGWatermark?
-    @NSManaged public var searchResults: NSSet?
 
 }
 
@@ -396,22 +395,5 @@ extension MGCard {
 
     @objc(removeVariations:)
     @NSManaged public func removeFromVariations(_ values: NSSet)
-
-}
-
-// MARK: Generated accessors for searchResults
-extension MGCard {
-
-    @objc(addSearchResultsObject:)
-    @NSManaged public func addToSearchResults(_ value: SearchResult)
-
-    @objc(removeSearchResultsObject:)
-    @NSManaged public func removeFromSearchResults(_ value: SearchResult)
-
-    @objc(addSearchResults:)
-    @NSManaged public func addToSearchResults(_ values: NSSet)
-
-    @objc(removeSearchResults:)
-    @NSManaged public func removeFromSearchResults(_ values: NSSet)
 
 }

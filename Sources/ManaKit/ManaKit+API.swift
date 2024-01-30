@@ -225,35 +225,28 @@ extension ManaKit: API {
                                         sortDescriptors: nil)
 
         // delete old searchResults
-        Task {
-            do {
-                try await delete(SearchResult.self,
-                                 predicate: NSPredicate(format: "pageOffset == %i", pageOffset))
-            } catch {
-                print(error)
-            }
-        }
+        try await delete(SearchResult.self,
+                         predicate: NSPredicate(format: "pageOffset == %i", pageOffset))
         
         // add cards to searchResults
+        let context = newBackgroundContext()
         for card in cards {
+            let predicate = NSPredicate(format: "pageOffset == %i AND newID == %@",
+                                        pageOffset,
+                                        card.newIDCopy)
+
             var props = [String: Any]()
             props["pageOffset"] = pageOffset
             props["newID"] = card.newIDCopy
 
-            let predicate = NSPredicate(format: "pageOffset == %i AND newID == %@",
-                                        pageOffset,
-                                        card.newIDCopy)
-            if let context = card.managedObjectContext,
-                let searchResult = find(SearchResult.self,
-                                       properties: props,
-                                       predicate: predicate,
-                                       sortDescriptors: nil,
-                                       createIfNotFound: true,
-                                       context: context)?.first {
-                searchResult.card = card
-                save(context: context)
-            }
+            let _ = find(SearchResult.self,
+                         properties: props,
+                         predicate: predicate,
+                         sortDescriptors: nil,
+                         createIfNotFound: true,
+                         context: context)
         }
+        save(context: context)
 
         return cards
     }

@@ -97,7 +97,6 @@
         <relationship name="prices" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardPrice" inverseName="card" inverseEntity="MGCardPrice"/>
         <relationship name="rarity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGRarity" inverseName="cards" inverseEntity="MGRarity"/>
         <relationship name="rulings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGRuling" inverseName="card" inverseEntity="MGRuling"/>
-        <relationship name="searchResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SearchResult" inverseName="card" inverseEntity="SearchResult"/>
         <relationship name="set" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGSet" inverseName="cards" inverseEntity="MGSet"/>
         <relationship name="subtypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardType" inverseName="subtypes" inverseEntity="MGCardType"/>
         <relationship name="supertypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardType" inverseName="supertypes" inverseEntity="MGCardType"/>
@@ -458,6 +457,5 @@
     <entity name="SearchResult" representedClassName="ManaKit.SearchResult" syncable="YES">
         <attribute name="newID" attributeType="String"/>
         <attribute name="pageOffset" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGCard" inverseName="searchResults" inverseEntity="MGCard"/>
     </entity>
 </model>
