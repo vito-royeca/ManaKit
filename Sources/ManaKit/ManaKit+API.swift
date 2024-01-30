@@ -218,15 +218,17 @@ extension ManaKit: API {
                                     pageSize: pageSize,
                                     pageOffset: pageOffset)
         
+        // delete old searchResults
+        try await delete(SearchResult.self,
+                         predicate: NSPredicate(format: "pageOffset == %i", pageOffset))
+        try await delete(LocalCache.self,
+                         predicate: NSPredicate(format: "url CONTAINS[cd] %@", "/advancesearch"))
+
         let cards = try await fetchData(url: url,
                                         jsonType: MCard.self,
                                         coreDataType: MGCard.self,
                                         predicate: nil,
                                         sortDescriptors: nil)
-
-        // delete old searchResults
-        try await delete(SearchResult.self,
-                         predicate: NSPredicate(format: "pageOffset == %i", pageOffset))
         
         // add cards to searchResults
         let context = newBackgroundContext()
