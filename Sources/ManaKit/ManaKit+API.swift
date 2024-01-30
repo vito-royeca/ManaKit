@@ -227,7 +227,6 @@ extension ManaKit: API {
         // delete old searchResults
         try await delete(SearchResult.self,
                          predicate: NSPredicate(format: "pageOffset == %i", pageOffset))
-        deleteCache(forUrl: url)
         
         // add cards to searchResults
         let context = newBackgroundContext()
