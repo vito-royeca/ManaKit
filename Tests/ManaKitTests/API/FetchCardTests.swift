@@ -64,12 +64,11 @@ final class FetchCardTests: XCTestCase {
                                                             rarities: [],
                                                             types: [],
                                                             keywords: [],
-                                                            sortDescriptors: nil,
                                                             pageSize: pageSize,
                                                             pageOffset: pageOffSet)
             XCTAssert(!cards.isEmpty)
         } catch {
-            XCTFail("fetchCards(:::::::) error")
+            XCTFail("fetchCards(::::::) error")
             print(error)
         }
     }
@@ -83,7 +82,6 @@ final class FetchCardTests: XCTestCase {
                                                             rarities: [],
                                                             types: [],
                                                             keywords: [],
-                                                            sortDescriptors: nil,
                                                             pageSize: pageSize,
                                                             pageOffset: pageOffSet)
             XCTAssert(!cards.isEmpty)
@@ -95,7 +93,6 @@ final class FetchCardTests: XCTestCase {
                                                             rarities: [],
                                                             types: [],
                                                             keywords: [],
-                                                            sortDescriptors: nil,
                                                             pageSize: pageSize,
                                                             pageOffset: pageOffSet)
                 XCTAssert(!cards.isEmpty)
@@ -103,7 +100,7 @@ final class FetchCardTests: XCTestCase {
             } while cards.count >= pageSize
 
         } catch {
-            XCTFail("fetchCards(:::::::) error")
+            XCTFail("fetchCards(::::::) error")
             print(error)
         }
     }
