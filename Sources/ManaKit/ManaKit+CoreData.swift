@@ -159,7 +159,7 @@ extension ManaKit {
     // MARK: - Caching
 
     func willFetchCache(forUrl url: URL) -> Bool {
-        let context = newBackgroundContext()
+        let context = persistentContainer.newBackgroundContext()
         var willFetch = true
 
         if let cache = find(LocalCache.self,
@@ -186,7 +186,7 @@ extension ManaKit {
     }
 
     func saveCache(forUrl url: URL) {
-        let context = newBackgroundContext()
+        let context = persistentContainer.newBackgroundContext()
         
         if let cache = find(LocalCache.self,
                             properties: ["url": url.absoluteString],
@@ -204,7 +204,7 @@ extension ManaKit {
             do {
                 try await delete(LocalCache.self,
                                  predicate: NSPredicate(format: "url == %@", url.absoluteString))
-                save(context: newBackgroundContext())
+                save(context: persistentContainer.newBackgroundContext())
             } catch {
                 print(error)
             }

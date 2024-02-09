@@ -11,9 +11,9 @@ import ManaKit
 final class FetchColorsTests: XCTestCase {
 
     override func setUpWithError() throws {
-        ManaKit.shared.configure(apiURL: "https://managuideapp.com")
+        ManaKit.sharedCoreData.configure(apiURL: "https://managuideapp.com")
         Task {
-            await ManaKit.shared.setupResources()
+            await ManaKit.sharedCoreData.setupResources()
         }
     }
 
@@ -23,7 +23,7 @@ final class FetchColorsTests: XCTestCase {
 
     func testWillFetchColors() throws {
         do {
-            let _ = try ManaKit.shared.willFetchColors()
+            let _ = try ManaKit.sharedCoreData.willFetchColors()
         } catch {
             XCTFail("willFetchColors() error")
             print(error)
@@ -32,7 +32,7 @@ final class FetchColorsTests: XCTestCase {
 
     func testFetchColors() async throws {
         do {
-            let colors = try await ManaKit.shared.fetchColors(sortDescriptors: nil)
+            let colors = try await ManaKit.sharedCoreData.fetchColors(sortDescriptors: nil)
             XCTAssert(!colors.isEmpty)
         } catch {
             XCTFail("fetchColors(:) error")

@@ -47,7 +47,7 @@ public extension NSAttributedString {
                         cleanCode = "Infinity"
                     }
                     
-                    guard let image = ManaKit.shared.symbolImage(name: cleanCode as String) else {
+                    guard let image = ManaKit.sharedCoreData.symbolImage(name: cleanCode as String) else {
                         self.init(string: symbol)
                         return
                     }

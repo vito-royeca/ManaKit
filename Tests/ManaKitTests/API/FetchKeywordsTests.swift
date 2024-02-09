@@ -11,9 +11,9 @@ import ManaKit
 final class FetchKeywordsTests: XCTestCase {
 
     override func setUpWithError() throws {
-        ManaKit.shared.configure(apiURL: "https://managuideapp.com")
+        ManaKit.sharedCoreData.configure(apiURL: "https://managuideapp.com")
         Task {
-            await ManaKit.shared.setupResources()
+            await ManaKit.sharedCoreData.setupResources()
         }
     }
 
@@ -23,7 +23,7 @@ final class FetchKeywordsTests: XCTestCase {
 
     func testWillFetchKeywords() throws {
         do {
-            let _ = try ManaKit.shared.willFetchKeywords()
+            let _ = try ManaKit.sharedCoreData.willFetchKeywords()
         } catch {
             XCTFail("willFetchKeywords() error")
             print(error)
@@ -32,7 +32,7 @@ final class FetchKeywordsTests: XCTestCase {
 
     func testFetchKeywords() async throws {
         do {
-            let keywords = try await ManaKit.shared.fetchKeywords(sortDescriptors: nil)
+            let keywords = try await ManaKit.sharedCoreData.fetchKeywords(sortDescriptors: nil)
             XCTAssert(!keywords.isEmpty)
         } catch {
             XCTFail("fetchKeywords(:) error")

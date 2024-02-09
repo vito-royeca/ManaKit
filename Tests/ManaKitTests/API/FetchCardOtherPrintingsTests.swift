@@ -13,9 +13,9 @@ final class FetchCardOtherPrintingsTests: XCTestCase {
     let languageCode = "en"
 
     override func setUpWithError() throws {
-        ManaKit.shared.configure(apiURL: "https://managuideapp.com")
+        ManaKit.sharedCoreData.configure(apiURL: "https://managuideapp.com")
         Task {
-            await ManaKit.shared.setupResources()
+            await ManaKit.sharedCoreData.setupResources()
         }
     }
 
@@ -25,7 +25,7 @@ final class FetchCardOtherPrintingsTests: XCTestCase {
 
     func testWillFetchCardOtherPrintingsTest() throws {
         do {
-            let _ = try ManaKit.shared.willFetchCardOtherPrintings(newID: newID,
+            let _ = try ManaKit.sharedCoreData.willFetchCardOtherPrintings(newID: newID,
                                                                    languageCode: languageCode)
         } catch {
             XCTFail("willFetchCardOtherPrintings(::) error")
@@ -35,7 +35,7 @@ final class FetchCardOtherPrintingsTests: XCTestCase {
 
     func testFetchCardOtherPrintings() async throws {
         do {
-            let card = try await ManaKit.shared.fetchCard(newID: newID)
+            let card = try await ManaKit.sharedCoreData.fetchCard(newID: newID)
             XCTAssert(card != nil)
 
             let language = card!.language
@@ -44,7 +44,7 @@ final class FetchCardOtherPrintingsTests: XCTestCase {
             let code = language!.code
             XCTAssert(code != nil)
             
-            let cards = try await ManaKit.shared.fetchCardOtherPrintings(newID: card!.newID,
+            let cards = try await ManaKit.sharedCoreData.fetchCardOtherPrintings(newID: card!.newID,
                                                                          languageCode: code!,
                                                                          sortDescriptors: nil)
             XCTAssert(!cards.isEmpty)

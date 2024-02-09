@@ -13,9 +13,9 @@ final class FetchSetTests: XCTestCase {
     let languageCode = "en"
 
     override func setUpWithError() throws {
-        ManaKit.shared.configure(apiURL: "https://managuideapp.com")
+        ManaKit.sharedCoreData.configure(apiURL: "https://managuideapp.com")
         Task {
-            await ManaKit.shared.setupResources()
+            await ManaKit.sharedCoreData.setupResources()
         }
     }
 
@@ -25,7 +25,7 @@ final class FetchSetTests: XCTestCase {
 
     func testWillFetchSet() throws {
         do {
-            let _ = try ManaKit.shared.willFetchSet(code: code,
+            let _ = try ManaKit.sharedCoreData.willFetchSet(code: code,
                                                     languageCode: languageCode)
         } catch {
             XCTFail("willFetchSet(::) error")
@@ -35,7 +35,7 @@ final class FetchSetTests: XCTestCase {
     
     func testFetchSet() async throws {
         do {
-            let set = try await ManaKit.shared.fetchSet(code: code,
+            let set = try await ManaKit.sharedCoreData.fetchSet(code: code,
                                                         languageCode: languageCode)
             XCTAssert(set != nil)
         } catch {
@@ -46,7 +46,7 @@ final class FetchSetTests: XCTestCase {
 
     func testWillFetchSets() throws {
         do {
-            let _ = try ManaKit.shared.willFetchSets()
+            let _ = try ManaKit.sharedCoreData.willFetchSets()
         } catch {
             XCTFail("willFetchSets() error")
             print(error)
@@ -55,7 +55,7 @@ final class FetchSetTests: XCTestCase {
 
     func testFetchSets() async throws {
         do {
-            let sets = try await ManaKit.shared.fetchSets(sortDescriptors: nil)
+            let sets = try await ManaKit.sharedCoreData.fetchSets(sortDescriptors: nil)
             XCTAssert(!sets.isEmpty)
         } catch {
             XCTFail("fetchSets(:) error")

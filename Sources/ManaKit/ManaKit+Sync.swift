@@ -13,7 +13,7 @@ extension ManaKit {
                                                         jsonType: T.Type,
                                                         coreDataType: U.Type,
                                                         sortDescriptors: [NSSortDescriptor]?) -> [U]? {
-        let context = newBackgroundContext()
+        let context = persistentContainer.newBackgroundContext()
         var results = [U]()
 
         for json in jsonData {

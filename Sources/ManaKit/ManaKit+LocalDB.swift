@@ -87,7 +87,7 @@ extension ManaKit {
         request.sortDescriptors = sortDescriptors
         
         let frc = NSFetchedResultsController(fetchRequest: request,
-                                             managedObjectContext: ManaKit.shared.viewContext,
+                                             managedObjectContext: ManaKit.sharedCoreData.viewContext,
                                              sectionNameKeyPath: nil,
                                              cacheName: nil)
         var sets = [MGSet]()
@@ -111,7 +111,7 @@ extension ManaKit {
         request.sortDescriptors = sortDescriptors
         
         let frc = NSFetchedResultsController(fetchRequest: request,
-                                             managedObjectContext: ManaKit.shared.viewContext,
+                                             managedObjectContext: ManaKit.sharedCoreData.viewContext,
                                              sectionNameKeyPath: nil,
                                              cacheName: nil)
         var cards = [MGCard]()
@@ -129,7 +129,7 @@ extension ManaKit {
     func vacuumLocalDB() {
         var url: URL?
         
-        for store in persistentStoreCoordinator.persistentStores {
+        for store in persistentContainer.persistentStoreCoordinator.persistentStores {
             url = store.url
         }
         

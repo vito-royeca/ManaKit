@@ -11,9 +11,9 @@ import ManaKit
 final class FetchGamesTests: XCTestCase {
 
     override func setUpWithError() throws {
-        ManaKit.shared.configure(apiURL: "https://managuideapp.com")
+        ManaKit.sharedCoreData.configure(apiURL: "https://managuideapp.com")
         Task {
-            await ManaKit.shared.setupResources()
+            await ManaKit.sharedCoreData.setupResources()
         }
     }
 
@@ -23,7 +23,7 @@ final class FetchGamesTests: XCTestCase {
 
     func testWillFetchGames() throws {
         do {
-            let _ = try ManaKit.shared.willFetchGames()
+            let _ = try ManaKit.sharedCoreData.willFetchGames()
         } catch {
             XCTFail("willFetchGames() error")
             print(error)
@@ -32,7 +32,7 @@ final class FetchGamesTests: XCTestCase {
 
     func testFetchGames() async throws {
         do {
-            let games = try await ManaKit.shared.fetchGames(sortDescriptors: nil)
+            let games = try await ManaKit.sharedCoreData.fetchGames(sortDescriptors: nil)
             XCTAssert(!games.isEmpty)
         } catch {
             XCTFail("fetchGames(:) error")

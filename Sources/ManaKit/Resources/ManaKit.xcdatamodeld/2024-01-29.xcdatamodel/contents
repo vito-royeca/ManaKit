@@ -456,6 +456,7 @@
     </entity>
     <entity name="SearchResult" representedClassName="ManaKit.SearchResult" syncable="YES">
         <attribute name="newID" attributeType="String"/>
-        <attribute name="pageOffset" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="pageOffset" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="url" attributeType="String"/>
     </entity>
 </model>

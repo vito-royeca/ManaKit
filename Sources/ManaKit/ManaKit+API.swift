@@ -9,6 +9,7 @@ import Combine
 import CoreData
 
 public protocol API {
+    // fetchSet
     func willFetchSet(code: String,
                       languageCode: String) throws -> Bool
     func fetchSet(code: String,
@@ -16,7 +17,10 @@ public protocol API {
 
     func willFetchSets() throws -> Bool
     func fetchSets(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGSet]
-    
+//    func fetchSetURL(code: String,
+//                            languageCode: String) throws -> URL
+
+    // fetchCard
     func willFetchCard(newID: String) throws -> Bool
     func fetchCard(newID: String) async throws -> MGCard?
 
@@ -32,30 +36,51 @@ public protocol API {
                     keywords: [String],
                     pageSize: Int,
                     pageOffset: Int) async throws -> [MGCard]
+//    func fetchCardsURL(name: String,
+//                       rarities: [String],
+//                       types: [String],
+//                       keywords: [String],
+//                       pageSize: Int,
+//                       pageOffset: Int) throws -> URL
 
+    // fetchCardOtherPrintings
     func willFetchCardOtherPrintings(newID: String,
                                      languageCode: String) throws -> Bool
     func fetchCardOtherPrintings(newID: String,
                                  languageCode: String,
                                  sortDescriptors: [NSSortDescriptor]?) async throws -> [MGCard]
+//    func fetchCardOtherPrintingsURL(newID: String,
+//                                    languageCode: String) throws -> URL
     
+    // fetchArtists
     func willFetchArtists() throws -> Bool
     func fetchArtists(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGArtist]
+//    func fetchArtistsURL() throws -> URL
 
+    // fetchColors
     func willFetchColors() throws -> Bool
     func fetchColors(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGColor]
-    
+//    func fetchColorsURL() throws -> URL
+
+    // fetchGames
     func willFetchGames() throws -> Bool
     func fetchGames(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGGame]
+//    func fetchGamesURL() throws -> URL
 
+    // fetchKeywords
     func willFetchKeywords() throws -> Bool
     func fetchKeywords(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGKeyword]
+//    func fetchKeywordsURL() throws -> URL
 
+    // fetchRarities
     func willFetchRarities() throws -> Bool
     func fetchRarities(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGRarity]
-    
+//    func fetchRaritiesURL() throws -> URL
+
+    // fetchCardTypes
     func willFetchCardTypes() throws -> Bool
     func fetchCardTypes(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGCardType]
+//    func fetchCardTypesURL() throws -> URL
 }
 
 extension ManaKit: API {
@@ -110,8 +135,8 @@ extension ManaKit: API {
                                    sortDescriptors: nil).first
     }
     
-    private func fetchSetURL(code: String,
-                             languageCode: String) throws -> URL {
+    func fetchSetURL(code: String,
+                     languageCode: String) throws -> URL {
         var urlComponents = URLComponents(string: apiURL)
         urlComponents?.path = "/set/\(code)/\(languageCode)"
         urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
@@ -142,7 +167,7 @@ extension ManaKit: API {
                                    sortDescriptors: sortDescriptors)
     }
 
-    private func fetchSetsURL() throws -> URL {
+    func fetchSetsURL() throws -> URL {
         var urlComponents = URLComponents(string: apiURL)
         urlComponents?.path = "/sets"
         urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
@@ -174,7 +199,7 @@ extension ManaKit: API {
                                    sortDescriptors: nil).first
     }
     
-    private func fetchCardURL(newID: String) throws -> URL {
+    func fetchCardURL(newID: String) throws -> URL {
         var urlComponents = URLComponents(string: apiURL)
         urlComponents?.path = "/card/\(newID)"
         urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
@@ -220,9 +245,15 @@ extension ManaKit: API {
         
         // delete old searchResults
         try await delete(SearchResult.self,
-                         predicate: NSPredicate(format: "pageOffset == %i", pageOffset))
-        try await delete(LocalCache.self,
-                         predicate: NSPredicate(format: "url CONTAINS[cd] %@", "/advancesearch"))
+                         predicate: NSPredicate(format: "pageOffset == %i AND url = %@",
+                                                pageOffset,
+                                                url.absoluteString))
+//        try await delete(SearchResult.self,
+//                         predicate: NSPredicate(format: "url != %@",
+//                                                url.absoluteString))
+//        try await delete(LocalCache.self,
+//                         predicate: NSPredicate(format: "url != %@",
+//                                                url.absoluteString))
 
         let cards = try await fetchData(url: url,
                                         jsonType: MCard.self,
@@ -231,7 +262,7 @@ extension ManaKit: API {
                                         sortDescriptors: nil)
         
         // add cards to searchResults
-        let context = newBackgroundContext()
+        let context = persistentContainer.newBackgroundContext()
         for card in cards {
             let predicate = NSPredicate(format: "pageOffset == %i AND newID == %@",
                                         pageOffset,
@@ -240,6 +271,7 @@ extension ManaKit: API {
             var props = [String: Any]()
             props["pageOffset"] = pageOffset
             props["newID"] = card.newIDCopy
+            props["url"] = url.absoluteString
 
             let _ = find(SearchResult.self,
                          properties: props,
@@ -253,12 +285,12 @@ extension ManaKit: API {
         return cards
     }
     
-    private func fetchCardsURL(name: String,
-                               rarities: [String],
-                               types: [String],
-                               keywords: [String],
-                               pageSize: Int,
-                               pageOffset: Int) throws -> URL {
+    func fetchCardsURL(name: String,
+                       rarities: [String],
+                       types: [String],
+                       keywords: [String],
+                       pageSize: Int,
+                       pageOffset: Int) throws -> URL {
         var queryItems = [URLQueryItem(name: "sortedBy", value: ""),
                           URLQueryItem(name: "orderBy", value: ""),
                           URLQueryItem(name: "name", value: name),
@@ -309,7 +341,7 @@ extension ManaKit: API {
             let decoder = JSONDecoder()
             let jsonData = try decoder.decode([MCard].self, from: data)
             let predicate = NSPredicate(format: "newID == %@", newID)
-            let context = newBackgroundContext()
+            let context = persistentContainer.newBackgroundContext()
             if let card = find(MGCard.self,
                                properties: nil,
                                predicate: predicate,
@@ -336,8 +368,8 @@ extension ManaKit: API {
         }
     }
     
-    private func fetchCardOtherPrintingsURL(newID: String,
-                                         languageCode: String) throws -> URL {
+    func fetchCardOtherPrintingsURL(newID: String,
+                                    languageCode: String) throws -> URL {
         var urlComponents = URLComponents(string: apiURL)
         urlComponents?.path = "/printings/\(newID)/\(languageCode)"
         urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
@@ -369,7 +401,7 @@ extension ManaKit: API {
                                    sortDescriptors: sortDescriptors)
     }
     
-    private func fetchArtistsURL() throws -> URL {
+    func fetchArtistsURL() throws -> URL {
         var urlComponents = URLComponents(string: apiURL)
         urlComponents?.path = "/artists"
         urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
@@ -401,7 +433,7 @@ extension ManaKit: API {
                                    sortDescriptors: sortDescriptors)
     }
     
-    private func fetchColorsURL() throws -> URL {
+    func fetchColorsURL() throws -> URL {
         var urlComponents = URLComponents(string: apiURL)
         urlComponents?.path = "/colors"
         urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
@@ -433,7 +465,7 @@ extension ManaKit: API {
                                    sortDescriptors: sortDescriptors)
     }
     
-    private func fetchGamesURL() throws -> URL {
+    func fetchGamesURL() throws -> URL {
         var urlComponents = URLComponents(string: apiURL)
         urlComponents?.path = "/games"
         urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
@@ -465,7 +497,7 @@ extension ManaKit: API {
                                    sortDescriptors: sortDescriptors)
     }
     
-    private func fetchKeywordsURL() throws -> URL {
+    func fetchKeywordsURL() throws -> URL {
         var urlComponents = URLComponents(string: apiURL)
         urlComponents?.path = "/keywords"
         urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
@@ -497,7 +529,7 @@ extension ManaKit: API {
                                    sortDescriptors: sortDescriptors)
     }
 
-    private func fetchRaritiesURL() throws -> URL {
+    func fetchRaritiesURL() throws -> URL {
         var urlComponents = URLComponents(string: apiURL)
         urlComponents?.path = "/rarities"
         urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),
@@ -529,7 +561,7 @@ extension ManaKit: API {
                                    sortDescriptors: sortDescriptors)
     }
     
-    private func fetchCardTypesURL() throws -> URL {
+    func fetchCardTypesURL() throws -> URL {
         var urlComponents = URLComponents(string: apiURL)
         urlComponents?.path = "/cardtypes"
         urlComponents?.queryItems = [URLQueryItem(name: "json", value: "true"),

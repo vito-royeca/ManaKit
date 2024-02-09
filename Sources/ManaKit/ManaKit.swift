@@ -9,9 +9,10 @@
 import Combine
 import CoreData
 import CoreText
+import SwiftData
 import ZipArchive
 
-public final class ManaKit: NSPersistentContainer {
+public final class ManaKit {
     
     // MARK: - Constants
     
@@ -57,6 +58,10 @@ public final class ManaKit: NSPersistentContainer {
         public static let fontsLoaded          = "fontsLoaded"
     }
 
+    private enum StorageType {
+        case coreData, swiftData
+    }
+
     let fontFiles = ["beleren-bold-webfont",
                      "belerensmallcaps-bold-webfont",
                      "Goudy Medieval",
@@ -68,26 +73,22 @@ public final class ManaKit: NSPersistentContainer {
     let sessionProcessingQueue = DispatchQueue(label: "SessionProcessingQueue")
     var apiURL = ""
     var cancellables = Set<AnyCancellable>()
-
+    
     // MARK: - Shared Instance
     
-    public static let shared = ManaKit()
-    
+    public static let sharedCoreData = ManaKit(storageType: .coreData)
+    public static let sharedSwiftData = ManaKit(storageType: .swiftData)
+
     // MARK: - Initializers
     
-    private init() {
-        guard let modelURL = Bundle.module.url(forResource:"ManaKit", withExtension: "momd"),
-              let model = NSManagedObjectModel(contentsOf: modelURL) else {
-            fatalError("Can't load persistent container")
+    private init(storageType: StorageType) {
+        switch storageType {
+        case .coreData:
+            let _ = persistentContainer
+
+        case .swiftData:
+            ()
         }
-        super.init(name: "ManaKit", managedObjectModel: model)
-        
-        loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
-                print("Unresolved error \(error), \(error.userInfo)")
-            }
-        })
-        viewContext.automaticallyMergesChangesFromParent = true
     }
 
     
@@ -236,7 +237,7 @@ public final class ManaKit: NSPersistentContainer {
     
     // MARK: - Core Data
     
-    /*public lazy var persistentContainer: NSPersistentContainer = {
+    lazy var persistentContainer: NSPersistentContainer = {
 //        let bundle = Bundle(for: ManaKit.self)
 //
 //        guard let momURL = bundle.url(forResource: "ManaKit", withExtension: "momd"),
@@ -256,23 +257,65 @@ public final class ManaKit: NSPersistentContainer {
 //
 //        return container
         
+//        guard let modelURL = Bundle.module.url(forResource:"ManaKit", withExtension: "momd"),
+//              let model = NSManagedObjectModel(contentsOf: modelURL) else {
+//            fatalError("Can't load persistent container")
+//        }
+//
+//        let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "ManaKit"
+//        let container = NSPersistentContainer(name: bundleName, managedObjectModel: model)
+//
+//        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+//            if let error = error as NSError? {
+//                print("Unresolved error \(error), \(error.userInfo)")
+//            }
+//        })
+//        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+//
+//        return container
+        
+        
         guard let modelURL = Bundle.module.url(forResource:"ManaKit", withExtension: "momd"),
               let model = NSManagedObjectModel(contentsOf: modelURL) else {
             fatalError("Can't load persistent container")
         }
-
-        let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "ManaKit"
-        let container = NSPersistentContainer(name: bundleName, managedObjectModel: model)
-
+        
+        let container = NSPersistentContainer(name: "MGManaKit", managedObjectModel: model)
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 print("Unresolved error \(error), \(error.userInfo)")
             }
         })
-        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        container.viewContext.automaticallyMergesChangesFromParent = true
 
         return container
-    }()*/
+    }()
     
+    public var viewContext: NSManagedObjectContext {
+        persistentContainer.viewContext
+    }
     
+    // MARK: - Swift Data
+
+    lazy var modelContainer: ModelContainer = {
+        do {
+            let models: [any PersistentModel.Type] = [
+                SDArtist.self,
+                SDCard.self,
+                SDLanguage.self,
+                SDSet.self,
+                SDSetBlock.self,
+                SDSetType.self
+            ]
+            let storeURL = URL.applicationSupportDirectory.appending(path: "SDManaKit.sqlite")
+            let schema = Schema(models)
+            let config = ModelConfiguration(schema: schema,
+                                            url: storeURL)
+            let container = try ModelContainer(for: schema,
+                                               configurations: config)
+            return container
+        } catch {
+            fatalError("Failed to configure SwiftData container.")
+        }
+    }()
 }
