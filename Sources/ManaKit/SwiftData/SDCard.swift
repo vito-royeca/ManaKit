@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-public class SDCard {
+public class SDCard: SDEntity {
     // MARK: - Properties
 
     public var artCropURL: String?
@@ -68,8 +68,11 @@ public class SDCard {
 //    public var colorIdentities: NSSet?
 //    public var colorIndicators: NSSet?
 //    public var colors: NSSet?
-//    public var face: MGCard?
-//    public var faces: NSSet?
+
+    public var face: SDCard?
+    @Relationship(deleteRule: .cascade, inverse: \SDCard.face)
+    public var faces: [SDCard]
+    
 //    public var formatLegalities: NSSet?
 //    public var frame: MGFrame?
 //    public var frameEffects: NSSet?
@@ -80,10 +83,14 @@ public class SDCard {
 
 //    public var layout: MGLayout?
 
-    @Relationship(inverse: \SDLanguage.cardOtherLanguagess)
-    public var otherLanguages: [SDLanguage]
+    public var otherLanguages: [SDCard]
+    @Relationship(inverse: \SDCard.otherLanguages)
+    public var languagesOther: [SDCard]
+    
+    public var otherPrintings: [SDCard]
+    @Relationship(inverse: \SDCard.otherPrintings)
+    public var printingsOther: [SDCard]
 
-//    public var otherPrintings: NSSet?
 //    public var otherPrintingInverses: NSSet?
 //    public var prices: NSSet?
 //    public var rarity: MGRarity?
@@ -94,81 +101,85 @@ public class SDCard {
 //    public var subtypes: NSSet?
 //    public var supertypes: NSSet?
 //    public var type: MGCardType?
-//    public var variation: MGCard?
-//    public var variations: NSSet?
+
+    public var variation: SDCard?
+    @Relationship(deleteRule: .cascade, inverse: \SDCard.variation)
+    public var variations: [SDCard]
+
 //    public var watermark: MGWatermark?
 
     // MARK: - Initializers
 
-    init(artCropURL: String?,
-         arenaID: String?,
-         cardBackID: String?,
-         cmc: Double,
-         collectorNumber: String?,
-         faceOrder: Int32,
-         flavorText: String?,
-         handModifier: String?,
-         illustrationID: String?,
-         isBooster: Bool,
-         isDigital: Bool,
-         isFoil: Bool,
-         isFullArt: Bool,
-         isHighResImage: Bool,
-         isNonFoil: Bool,
-         isOversized: Bool,
-         isPromo: Bool,
-         isReprint: Bool,
-         isReserved: Bool,
-         isStorySpotlight: Bool,
-         isTextless: Bool,
-         lifeModifier: String?,
-         loyalty: String?,
-         manaCost: String?,
-         mtgoFoilID: String?,
-         mtgoID: String?,
-         multiverseIDs: Data?,
-         nameSection: String?,
-         normalURL: String?,
-         numberOrder: Double,
-         name: String?,
+    init(artCropURL: String? = nil,
+         arenaID: String? = nil,
+         cardBackID: String? = nil,
+         cmc: Double = 0,
+         collectorNumber: String? = nil,
+         faceOrder: Int32 = 0,
+         flavorText: String? = nil,
+         handModifier: String? = nil,
+         illustrationID: String? = nil,
+         isBooster: Bool = false,
+         isDigital: Bool = false,
+         isFoil: Bool = false,
+         isFullArt: Bool = false,
+         isHighResImage: Bool = false,
+         isNonFoil: Bool = false,
+         isOversized: Bool = false,
+         isPromo: Bool = false,
+         isReprint: Bool = false,
+         isReserved: Bool = false,
+         isStorySpotlight: Bool = false,
+         isTextless: Bool = false,
+         lifeModifier: String? = nil,
+         loyalty: String? = nil,
+         manaCost: String? = nil,
+         mtgoFoilID: String? = nil,
+         mtgoID: String? = nil,
+         multiverseIDs: Data? = nil,
+         nameSection: String? = nil,
+         normalURL: String? = nil,
+         numberOrder: Double = 0,
+         name: String? = nil,
          newID: String,
-         oracleID: String?,
-         oracleText: String?,
-         pngURL: String?,
-         power: String?,
-         printedName: String?,
-         printedText: String?,
-         printedTypeLine: String?,
-         releaseDate: Date?,
-         tcgPlayerID: Int64,
-         toughness: String?,
-         typeLine: String?,
-         artists: [SDArtist],
+         oracleID: String? = nil,
+         oracleText: String? = nil,
+         pngURL: String? = nil,
+         power: String? = nil,
+         printedName: String? = nil,
+         printedText: String? = nil,
+         printedTypeLine: String? = nil,
+         releaseDate: Date? = nil,
+         tcgPlayerID: Int64 = 0,
+         toughness: String? = nil,
+         typeLine: String? = nil,
+         artists: [SDArtist] = [],
 //         componentParts: NSSet?,
 //         colorIdentities: NSSet?,
 //         colorIndicators: NSSet?,
 //         colors: NSSet?,
-//         face: MGCard?,
-//         faces: NSSet?,
+         face: SDCard? = nil,
+         faces: [SDCard] = [],
 //         formatLegalities: NSSet?,
 //         frame: MGFrame?,
 //         frameEffects: NSSet?,
 //         games: NSSet?,
 //         keywords: NSSet?,
-         language: SDLanguage?,
+         language: SDLanguage? = nil,
 //         layout: MGLayout?,
-         otherLanguages: [SDLanguage],
-//         otherPrintings: NSSet?,
-//         otherPrintingInverses: NSSet?,
+         otherLanguages: [SDCard] = [],
+         languagesOther: [SDCard] = [],
+         otherPrintings: [SDCard] = [],
+         printingsOther: [SDCard] = [],
 //         prices: NSSet?,
 //         rarity: MGRarity?,
 //         rulings: NSSet?,
-         set: SDSet?
+         set: SDSet? = nil,
 //         subtypes: NSSet?,
 //         supertypes: NSSet?,
 //         type: MGCardType?,
-//         variation: MGCard?,
-//         variations: NSSet?,
+         variation: SDCard? = nil,
+         variations: [SDCard] = []
          /*watermark: MGWatermark?*/) {
         self.artCropURL = artCropURL
         self.arenaID = arenaID
@@ -218,8 +229,8 @@ public class SDCard {
 //         colorIdentities: NSSet?,
 //         colorIndicators: NSSet?,
 //         colors: NSSet?,
-//         face: MGCard?,
-//         faces: NSSet?,
+        self.face = face
+        self.faces = faces
 //         formatLegalities: NSSet?,
 //         frame: MGFrame?,
 //         frameEffects: NSSet?,
@@ -228,8 +239,9 @@ public class SDCard {
         self.language = language
 //         layout: MGLayout?,
         self.otherLanguages = otherLanguages
-//         otherPrintings: NSSet?,
-//         otherPrintingInverses: NSSet?,
+        self.languagesOther = languagesOther
+        self.otherPrintings = otherPrintings
+        self.printingsOther = printingsOther
 //         prices: NSSet?,
 //         rarity: MGRarity?,
 //         rulings: NSSet?,
@@ -237,9 +249,9 @@ public class SDCard {
 //         subtypes: NSSet?,
 //         supertypes: NSSet?,
 //         type: MGCardType?,
-//         variation: MGCard?,
-//         variations: NSSet?,
-         /*watermark: MGWatermark?*/
+        self.variation = variation
+        self.variations = variations
+//         watermark: MGWatermark?
         
     }
 }

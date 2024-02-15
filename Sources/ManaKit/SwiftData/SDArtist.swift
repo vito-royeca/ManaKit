@@ -8,12 +8,13 @@
 import SwiftData
 
 @Model
-public class SDArtist {
+public final class SDArtist: SDEntity {
+
     // MARK: - Properties
 
     public var firstName: String?
     public var lastName: String?
-    public var name: String?
+    public var name: String
     public var nameSection: String?
     public var info: String?
     
@@ -25,10 +26,10 @@ public class SDArtist {
 
     init(firstName: String? = nil,
          lastName: String? = nil,
-         name: String? = nil,
+         name: String,
          nameSection: String? = nil,
          info: String? = nil,
-         cards: [SDCard]) {
+         cards: [SDCard] = []) {
         self.firstName = firstName
         self.lastName = lastName
         self.name = name

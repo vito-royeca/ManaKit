@@ -1,6 +1,6 @@
 //
-//  FetchRaritiesTests.swift
-//  
+//  CoreDataArtistsTests.swift
+//
 //
 //  Created by Vito Royeca on 1/29/24.
 //
@@ -8,7 +8,7 @@
 import XCTest
 import ManaKit
 
-final class FetchRaritiesTests: XCTestCase {
+final class CoreDataArtistsTests: XCTestCase {
 
     override func setUpWithError() throws {
         ManaKit.sharedCoreData.configure(apiURL: "https://managuideapp.com")
@@ -21,21 +21,21 @@ final class FetchRaritiesTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testWillFetchRarities() throws {
+    func testWillFetchArtists() throws {
         do {
-            let _ = try ManaKit.sharedCoreData.willFetchRarities()
+            let _ = try ManaKit.sharedCoreData.willFetchArtists()
         } catch {
-            XCTFail("willFetchRarities() error")
+            XCTFail("willFetchArtists() error")
             print(error)
         }
     }
 
-    func testFetchRarities() async throws {
+    func testFetchArtists() async throws {
         do {
-            let rarities = try await ManaKit.sharedCoreData.fetchRarities(sortDescriptors: nil)
-            XCTAssert(!rarities.isEmpty)
+            let artists = try await ManaKit.sharedCoreData.fetchArtists(sortDescriptors: nil)
+            XCTAssert(!artists.isEmpty)
         } catch {
-            XCTFail("fetchRarities(:) error")
+            XCTFail("fetchArtists(:) error")
             print(error)
         }
     }

@@ -8,7 +8,7 @@
 import SwiftData
 
 @Model
-public class SDSetType {
+public class SDSetType: SDEntity {
     // MARK: - Properties
     
     @Attribute(.unique)
@@ -25,7 +25,7 @@ public class SDSetType {
     
     init(name: String,
          nameSection: String? = nil,
-         sets: [SDSet]) {
+         sets: [SDSet] = []) {
         self.name = name
         self.nameSection = nameSection
         self.sets = sets

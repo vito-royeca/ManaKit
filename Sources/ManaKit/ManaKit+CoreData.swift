@@ -155,62 +155,7 @@ extension ManaKit {
             print(error)
         }
     }
-    
-    // MARK: - Caching
-
-    func willFetchCache(forUrl url: URL) -> Bool {
-        let context = persistentContainer.newBackgroundContext()
-        var willFetch = true
-
-        if let cache = find(LocalCache.self,
-                            properties: ["url": url.absoluteString],
-                            predicate: NSPredicate(format: "url == %@", url.absoluteString),
-                            sortDescriptors: nil,
-                            createIfNotFound: true,
-                            context: context)?.first {
-            
-            if let lastUpdated = cache.lastUpdated {
-                if let diff = Calendar.current.dateComponents([.minute],
-                                                              from: lastUpdated,
-                                                              to: Date()).minute {
-                    willFetch = diff >= Constants.cacheAge
-                }
-            }
-        }
-#if DEBUG
-        if willFetch {
-            print(url)
-        }
-#endif
-        return willFetch
-    }
-
-    func saveCache(forUrl url: URL) {
-        let context = persistentContainer.newBackgroundContext()
         
-        if let cache = find(LocalCache.self,
-                            properties: ["url": url.absoluteString],
-                            predicate: NSPredicate(format: "url == %@", url.absoluteString),
-                            sortDescriptors: nil,
-                            createIfNotFound: true,
-                            context: context)?.first {
-            cache.lastUpdated = Date()
-            save(context: context)
-        }
-    }
-
-    func deleteCache(forUrl url: URL) {
-        Task {
-            do {
-                try await delete(LocalCache.self,
-                                 predicate: NSPredicate(format: "url == %@", url.absoluteString))
-                save(context: persistentContainer.newBackgroundContext())
-            } catch {
-                print(error)
-            }
-        }
-    }
-    
 //    func copyModelFile() {
 //        guard let modelURL = Bundle(for: type(of: self)).url(forResource: "ManaKit", withExtension: "momd"),
 //              let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first,

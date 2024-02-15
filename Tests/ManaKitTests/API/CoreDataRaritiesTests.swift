@@ -1,6 +1,6 @@
 //
-//  FetchKeywordsTests.swift
-//  
+//  CoreDataRaritiesTests.swift
+//
 //
 //  Created by Vito Royeca on 1/29/24.
 //
@@ -8,7 +8,7 @@
 import XCTest
 import ManaKit
 
-final class FetchKeywordsTests: XCTestCase {
+final class CoreDataRaritiesTests: XCTestCase {
 
     override func setUpWithError() throws {
         ManaKit.sharedCoreData.configure(apiURL: "https://managuideapp.com")
@@ -21,21 +21,21 @@ final class FetchKeywordsTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testWillFetchKeywords() throws {
+    func testWillFetchRarities() throws {
         do {
-            let _ = try ManaKit.sharedCoreData.willFetchKeywords()
+            let _ = try ManaKit.sharedCoreData.willFetchRarities()
         } catch {
-            XCTFail("willFetchKeywords() error")
+            XCTFail("willFetchRarities() error")
             print(error)
         }
     }
 
-    func testFetchKeywords() async throws {
+    func testFetchRarities() async throws {
         do {
-            let keywords = try await ManaKit.sharedCoreData.fetchKeywords(sortDescriptors: nil)
-            XCTAssert(!keywords.isEmpty)
+            let rarities = try await ManaKit.sharedCoreData.fetchRarities(sortDescriptors: nil)
+            XCTAssert(!rarities.isEmpty)
         } catch {
-            XCTFail("fetchKeywords(:) error")
+            XCTFail("fetchRarities(:) error")
             print(error)
         }
     }

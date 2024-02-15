@@ -1,6 +1,6 @@
 //
-//  FetchCardTypesTests.swift
-//  
+//  CoreDataColorsTests.swift
+//
 //
 //  Created by Vito Royeca on 1/29/24.
 //
@@ -8,7 +8,7 @@
 import XCTest
 import ManaKit
 
-final class FetchCardTypesTests: XCTestCase {
+final class CoreDataColorsTests: XCTestCase {
 
     override func setUpWithError() throws {
         ManaKit.sharedCoreData.configure(apiURL: "https://managuideapp.com")
@@ -21,21 +21,21 @@ final class FetchCardTypesTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testWillFetchCardTypes() throws {
+    func testWillFetchColors() throws {
         do {
-            let _ = try ManaKit.sharedCoreData.willFetchCardTypes()
+            let _ = try ManaKit.sharedCoreData.willFetchColors()
         } catch {
-            XCTFail("willCardTypes() error")
+            XCTFail("willFetchColors() error")
             print(error)
         }
     }
 
-    func testFetchCardTypes() async throws {
+    func testFetchColors() async throws {
         do {
-            let cardTypes = try await ManaKit.sharedCoreData.fetchCardTypes(sortDescriptors: nil)
-            XCTAssert(!cardTypes.isEmpty)
+            let colors = try await ManaKit.sharedCoreData.fetchColors(sortDescriptors: nil)
+            XCTAssert(!colors.isEmpty)
         } catch {
-            XCTFail("fetchCardTypes(:) error")
+            XCTFail("fetchColors(:) error")
             print(error)
         }
     }

@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22522" systemVersion="23D56" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="LocalCache" representedClassName="ManaKit.LocalCache" syncable="YES">
-        <attribute name="lastUpdated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="url" attributeType="String"/>
-        <uniquenessConstraints>
-            <uniquenessConstraint>
-                <constraint value="url"/>
-            </uniquenessConstraint>
-        </uniquenessConstraints>
-    </entity>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22522" systemVersion="23D60" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="MGArtist" representedClassName="ManaKit.MGArtist" syncable="YES">
         <attribute name="firstName" optional="YES" attributeType="String"/>
         <attribute name="info" optional="YES" attributeType="String"/>
@@ -330,6 +321,15 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
+    <entity name="MGLocalCache" representedClassName="ManaKit.MGLocalCache" syncable="YES">
+        <attribute name="lastUpdated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="url" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="url"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
     <entity name="MGRarity" representedClassName="ManaKit.MGRarity" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String">
             <userInfo>
@@ -370,6 +370,11 @@
                 <constraint value="id"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
+    </entity>
+    <entity name="MGSearchResult" representedClassName="ManaKit.MGSearchResult" syncable="YES">
+        <attribute name="newID" attributeType="String"/>
+        <attribute name="pageOffset" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="url" attributeType="String"/>
     </entity>
     <entity name="MGSet" representedClassName="ManaKit.MGSet" syncable="YES">
         <attribute name="cardCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
@@ -453,10 +458,5 @@
                 <constraint value="name"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
-    </entity>
-    <entity name="SearchResult" representedClassName="ManaKit.SearchResult" syncable="YES">
-        <attribute name="newID" attributeType="String"/>
-        <attribute name="pageOffset" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="url" attributeType="String"/>
     </entity>
 </model>

@@ -1,6 +1,6 @@
 //
-//  FetchCardOtherPrintingsTests.swift
-//  
+//  CoreDataCardOtherPrintingsTests.swift
+//
 //
 //  Created by Vito Royeca on 1/29/24.
 //
@@ -8,7 +8,7 @@
 import XCTest
 import ManaKit
 
-final class FetchCardOtherPrintingsTests: XCTestCase {
+final class CoreDataCardOtherPrintingsTests: XCTestCase {
     let newID = "isd_en_51" // Delver of Secrets
     let languageCode = "en"
 

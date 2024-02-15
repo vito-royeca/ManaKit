@@ -8,7 +8,7 @@
 import SwiftData
 
 @Model
-public class SDLanguage {
+public class SDLanguage: SDEntity {
     // MARK: - Properties
     
     @Attribute(.unique)
@@ -23,7 +23,6 @@ public class SDLanguage {
     @Relationship(deleteRule: .cascade, inverse: \SDCard.set)
     public var cards: [SDCard]
 
-    public var cardOtherLanguagess: [SDCard]
     public var sets: [SDSet]
 
     // MARK: - Initializers
@@ -32,15 +31,13 @@ public class SDLanguage {
          displayCode: String? = nil,
          name: String,
          nameSection: String? = nil,
-         cards: [SDCard],
-         cardOtherLanguagess: [SDCard],
-         sets: [SDSet]) {
+         cards: [SDCard] = [],
+         sets: [SDSet] = []) {
         self.code = code
         self.displayCode = displayCode
         self.name = name
         self.nameSection = nameSection
         self.cards = cards
-        self.cardOtherLanguagess = cardOtherLanguagess
         self.sets = sets
     }
 }

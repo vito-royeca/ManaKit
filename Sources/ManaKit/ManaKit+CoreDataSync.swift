@@ -1,5 +1,5 @@
 //
-//  ManaKit+Sync.swift
+//  ManaKit+CoreDataSync.swift
 //  ManaKit
 //
 //  Created by Vito Royeca on 3/10/22.
@@ -13,7 +13,7 @@ extension ManaKit {
                                                         jsonType: T.Type,
                                                         coreDataType: U.Type,
                                                         sortDescriptors: [NSSortDescriptor]?) -> [U]? {
-        let context = persistentContainer.newBackgroundContext()
+        let context = backgroundContext
         var results = [U]()
 
         for json in jsonData {
@@ -161,7 +161,7 @@ extension ManaKit {
                     context: context)?.first
     }
     
-    // MARK: - SetType
+    // MARK: - Card
     func card<T: MGEntity>(from card: MCard, context: NSManagedObjectContext, type: T.Type) -> T? {
         var props = [String: Any]()
 

@@ -1,6 +1,6 @@
 //
-//  FetchSetTests.swift
-//  
+//  CoreDataSetTests.swift
+//
 //
 //  Created by Vito Royeca on 1/29/24.
 //
@@ -8,7 +8,7 @@
 import XCTest
 import ManaKit
 
-final class FetchSetTests: XCTestCase {
+final class CoreDataSetTests: XCTestCase {
     let code = "lea"
     let languageCode = "en"
 
@@ -26,7 +26,7 @@ final class FetchSetTests: XCTestCase {
     func testWillFetchSet() throws {
         do {
             let _ = try ManaKit.sharedCoreData.willFetchSet(code: code,
-                                                    languageCode: languageCode)
+                                                            languageCode: languageCode)
         } catch {
             XCTFail("willFetchSet(::) error")
             print(error)
@@ -35,9 +35,12 @@ final class FetchSetTests: XCTestCase {
     
     func testFetchSet() async throws {
         do {
-            let set = try await ManaKit.sharedCoreData.fetchSet(code: code,
-                                                        languageCode: languageCode)
-            XCTAssert(set != nil)
+            if let set: MGSet = try await ManaKit.sharedCoreData.fetchSet(code: code,
+                                                                             languageCode: languageCode) {
+                XCTAssert(set.code == code)
+            } else {
+                XCTFail("fetchSet(::) error")
+            }
         } catch {
             XCTFail("fetchSet(::) error")
             print(error)

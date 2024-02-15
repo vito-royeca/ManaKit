@@ -1,6 +1,6 @@
 //
-//  FetchGamesTests.swift
-//  
+//  CoreDataCardTypesTests.swift
+//
 //
 //  Created by Vito Royeca on 1/29/24.
 //
@@ -8,7 +8,7 @@
 import XCTest
 import ManaKit
 
-final class FetchGamesTests: XCTestCase {
+final class CoreDataCardTypesTests: XCTestCase {
 
     override func setUpWithError() throws {
         ManaKit.sharedCoreData.configure(apiURL: "https://managuideapp.com")
@@ -21,21 +21,21 @@ final class FetchGamesTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testWillFetchGames() throws {
+    func testWillFetchCardTypes() throws {
         do {
-            let _ = try ManaKit.sharedCoreData.willFetchGames()
+            let _ = try ManaKit.sharedCoreData.willFetchCardTypes()
         } catch {
-            XCTFail("willFetchGames() error")
+            XCTFail("willCardTypes() error")
             print(error)
         }
     }
 
-    func testFetchGames() async throws {
+    func testFetchCardTypes() async throws {
         do {
-            let games = try await ManaKit.sharedCoreData.fetchGames(sortDescriptors: nil)
-            XCTAssert(!games.isEmpty)
+            let cardTypes = try await ManaKit.sharedCoreData.fetchCardTypes(sortDescriptors: nil)
+            XCTAssert(!cardTypes.isEmpty)
         } catch {
-            XCTFail("fetchGames(:) error")
+            XCTFail("fetchCardTypes(:) error")
             print(error)
         }
     }

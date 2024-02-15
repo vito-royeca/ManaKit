@@ -58,7 +58,7 @@ public final class ManaKit {
         public static let fontsLoaded          = "fontsLoaded"
     }
 
-    private enum StorageType {
+    enum StorageType {
         case coreData, swiftData
     }
 
@@ -73,6 +73,7 @@ public final class ManaKit {
     let sessionProcessingQueue = DispatchQueue(label: "SessionProcessingQueue")
     var apiURL = ""
     var cancellables = Set<AnyCancellable>()
+    var storageType: StorageType = .coreData
     
     // MARK: - Shared Instance
     
@@ -82,12 +83,14 @@ public final class ManaKit {
     // MARK: - Initializers
     
     private init(storageType: StorageType) {
+        self.storageType = storageType
+
         switch storageType {
         case .coreData:
             let _ = persistentContainer
 
         case .swiftData:
-            ()
+            let _ = modelContainer
         }
     }
 
@@ -197,84 +200,9 @@ public final class ManaKit {
         NotificationCenter.default.post(name: Notification.Name(Notifications.fontsLoaded), object: nil)
     }
     
-    // MARK: - Firebase
-//    public func newFirebaseKey(from oldFirebaseKey: String) -> String {
-//        var parts = oldFirebaseKey.components(separatedBy: "_")
-//        var numComponent = ""
-//        let capName = parts[1]
-//
-//        if parts.filter({ (isIncluded) -> Bool in
-//            return isIncluded.lowercased().hasPrefix(capName.lowercased())
-//        }).count > 1 {
-//            numComponent = parts.remove(at: 2)
-//            numComponent = numComponent.replacingOccurrences(of: capName.lowercased(), with: "")
-//        }
-//
-//        var newKey = parts.joined(separator: "_")
-//        if !numComponent.isEmpty {
-//            newKey = "\(newKey)_\(numComponent)"
-//        }
-//        return encodeFirebase(key: newKey)
-//    }
-//
-//    public func encodeFirebase(key: String) -> String {
-//        return key.replacingOccurrences(of: ".", with: "P%n*")
-//            .replacingOccurrences(of: "$", with: "D%n*")
-//            .replacingOccurrences(of: "#", with: "H%n*")
-//            .replacingOccurrences(of: "[", with: "On%*")
-//            .replacingOccurrences(of: "]", with: "n*C%")
-//            .replacingOccurrences(of: "/", with: "*S%n")
-//    }
-//
-//    public func decodeFirebase(key: String) -> String {
-//        return key.replacingOccurrences(of: "P%n*", with: ".")
-//            .replacingOccurrences(of: "D%n*", with: "$")
-//            .replacingOccurrences(of: "H%n*", with: "#")
-//            .replacingOccurrences(of: "On%*", with: "[")
-//            .replacingOccurrences(of: "n*C%", with: "]")
-//            .replacingOccurrences(of: "*S%n", with: "/")
-//    }
-    
     // MARK: - Core Data
     
     lazy var persistentContainer: NSPersistentContainer = {
-//        let bundle = Bundle(for: ManaKit.self)
-//
-//        guard let momURL = bundle.url(forResource: "ManaKit", withExtension: "momd"),
-//           let managedObjectModel = NSManagedObjectModel(contentsOf: momURL) else {
-//            fatalError("Can't load persistent container")
-//        }
-//
-//        let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "ManaKit"
-//        let container = NSPersistentContainer(name: bundleName, managedObjectModel: managedObjectModel)
-//
-//        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-//            if let error = error as NSError? {
-//                fatalError("Unresolved error \(error), \(error.userInfo)")
-//            }
-//        })
-//        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-//
-//        return container
-        
-//        guard let modelURL = Bundle.module.url(forResource:"ManaKit", withExtension: "momd"),
-//              let model = NSManagedObjectModel(contentsOf: modelURL) else {
-//            fatalError("Can't load persistent container")
-//        }
-//
-//        let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "ManaKit"
-//        let container = NSPersistentContainer(name: bundleName, managedObjectModel: model)
-//
-//        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-//            if let error = error as NSError? {
-//                print("Unresolved error \(error), \(error.userInfo)")
-//            }
-//        })
-//        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-//
-//        return container
-        
-        
         guard let modelURL = Bundle.module.url(forResource:"ManaKit", withExtension: "momd"),
               let model = NSManagedObjectModel(contentsOf: modelURL) else {
             fatalError("Can't load persistent container")
@@ -295,6 +223,10 @@ public final class ManaKit {
         persistentContainer.viewContext
     }
     
+    public var backgroundContext: NSManagedObjectContext {
+        persistentContainer.newBackgroundContext()
+    }
+
     // MARK: - Swift Data
 
     lazy var modelContainer: ModelContainer = {
@@ -303,6 +235,7 @@ public final class ManaKit {
                 SDArtist.self,
                 SDCard.self,
                 SDLanguage.self,
+                SDLocalCache.self,
                 SDSet.self,
                 SDSetBlock.self,
                 SDSetType.self
@@ -318,4 +251,12 @@ public final class ManaKit {
             fatalError("Failed to configure SwiftData container.")
         }
     }()
+    
+    public var sdBackgroundContext: ModelContext {
+        ModelContext(modelContainer)
+    }
+
+//    public var sdViewContext: ModelContext  {
+//        modelContainer.mainContext
+//    }
 }

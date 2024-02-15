@@ -1,6 +1,6 @@
 //
-//  FetchArtistsTests.swift
-//  
+//  CoreDataKeywordsTests.swift
+//
 //
 //  Created by Vito Royeca on 1/29/24.
 //
@@ -8,7 +8,7 @@
 import XCTest
 import ManaKit
 
-final class FetchArtistsTests: XCTestCase {
+final class CoreDataKeywordsTests: XCTestCase {
 
     override func setUpWithError() throws {
         ManaKit.sharedCoreData.configure(apiURL: "https://managuideapp.com")
@@ -21,21 +21,21 @@ final class FetchArtistsTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testWillFetchArtists() throws {
+    func testWillFetchKeywords() throws {
         do {
-            let _ = try ManaKit.sharedCoreData.willFetchArtists()
+            let _ = try ManaKit.sharedCoreData.willFetchKeywords()
         } catch {
-            XCTFail("willFetchArtists() error")
+            XCTFail("willFetchKeywords() error")
             print(error)
         }
     }
 
-    func testFetchArtists() async throws {
+    func testFetchKeywords() async throws {
         do {
-            let artists = try await ManaKit.sharedCoreData.fetchArtists(sortDescriptors: nil)
-            XCTAssert(!artists.isEmpty)
+            let keywords = try await ManaKit.sharedCoreData.fetchKeywords(sortDescriptors: nil)
+            XCTAssert(!keywords.isEmpty)
         } catch {
-            XCTFail("fetchArtists(:) error")
+            XCTFail("fetchKeywords(:) error")
             print(error)
         }
     }

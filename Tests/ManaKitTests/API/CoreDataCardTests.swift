@@ -1,6 +1,6 @@
 //
-//  FetchCardTests.swift
-//  
+//  CoreDataCardTests.swift
+//
 //
 //  Created by Vito Royeca on 1/29/24.
 //
@@ -8,7 +8,7 @@
 import XCTest
 import ManaKit
 
-final class FetchCardTests: XCTestCase {
+final class CoreDataCardTests: XCTestCase {
     let newID = "isd_en_51" // Delver of Secrets
 
     override func setUpWithError() throws {

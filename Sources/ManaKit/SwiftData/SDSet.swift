@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-public class SDSet {
+public class SDSet: SDEntity {
     // MARK: - Properties
 
     public var cardCount: Int32
@@ -44,10 +44,10 @@ public class SDSet {
     public var setBlock: SDSetBlock?
     public var setType: SDSetType?
     
-    init(cardCount: Int32,
+    init(cardCount: Int32 = 0,
          code: String,
-         isFoilOnly: Bool,
-         isOnlineOnly: Bool,
+         isFoilOnly: Bool = false,
+         isOnlineOnly: Bool = false,
          keyruneClass: String? = nil,
          keyruneUnicode: String? = nil,
          logoCode: String? = nil,
@@ -56,11 +56,11 @@ public class SDSet {
          yearSection: String? = nil,
          name: String,
          releaseDate: Date? = nil,
-         tcgPlayerID: Int32,
-         cards: [SDCard],
-         children: [SDSet],
+         tcgPlayerID: Int32 = 0,
+         cards: [SDCard] = [],
+         children: [SDSet] = [],
          parent: SDSet? = nil,
-         languages: [SDLanguage],
+         languages: [SDLanguage] = [],
          setBlock: SDSetBlock? = nil,
          setType: SDSetType? = nil) {
         self.cardCount = cardCount

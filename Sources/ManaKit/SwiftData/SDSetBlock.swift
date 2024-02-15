@@ -8,7 +8,7 @@
 import SwiftData
 
 @Model
-public class SDSetBlock {
+public class SDSetBlock: SDEntity {
     // MARK: - Properties
 
     @Attribute(.unique)
@@ -27,7 +27,7 @@ public class SDSetBlock {
     init(code: String,
          name: String,
          nameSection: String? = nil,
-         sets: [SDSet]) {
+         sets: [SDSet] = []) {
         self.code = code
         self.name = name
         self.nameSection = nameSection
