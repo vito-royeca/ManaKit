@@ -16,7 +16,7 @@ extension MGLanguage {
         return NSFetchRequest<MGLanguage>(entityName: "MGLanguage")
     }
 
-    @NSManaged public var code: String?
+    @NSManaged public var code: String
     @NSManaged public var displayCode: String?
     @NSManaged public var name: String?
     @NSManaged public var nameSection: String?

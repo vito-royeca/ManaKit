@@ -197,11 +197,11 @@ extension ManaKit {
         if let isFullArt = card.isFullArt {
             props["isFullArt"] = isFullArt
         }
-        if let isHighresImage = card.isHighresImage {
-            props["isHighResImage"] = isHighresImage
+        if let isHighResImage = card.isHighResImage {
+            props["isHighResImage"] = isHighResImage
         }
-        if let isNonfoil = card.isNonfoil {
-            props["isNonFoil"] = isNonfoil
+        if let isNonFoil = card.isNonFoil {
+            props["isNonFoil"] = isNonFoil
         }
         if let isOversized = card.isOversized {
             props["isOversized"] = isOversized
@@ -254,8 +254,8 @@ extension ManaKit {
         if let mtgoID = card.mtgoID {
             props["mtgoID"] = mtgoID
         }
-        if let tcgplayerID = card.tcgplayerID {
-            props["tcgPlayerID"] = tcgplayerID
+        if let tcgPlayerID = card.tcgPlayerID {
+            props["tcgPlayerID"] = tcgPlayerID
         }
         if let handModifier = card.handModifier {
             props["handModifier"] = handModifier
@@ -956,8 +956,8 @@ extension ManaKit {
             props["name"] = name
             props["nameSection"] = nameSection(for: name)
         }
-        if let tcgplayerID = set.tcgplayerID {
-            props["tcgPlayerID"] = tcgplayerID
+        if let tcgPlayerID = set.tcgPlayerID {
+            props["tcgPlayerID"] = tcgPlayerID
         }
         
         let code = set.code
@@ -990,7 +990,7 @@ extension ManaKit {
                                   yearSection: nil,
                                   releaseDate: nil,
                                   name: nil,
-                                  tcgplayerID: nil,
+                                  tcgPlayerID: nil,
                                   parent: nil,
                                   setBlock: nil,
                                   setType: nil,
@@ -1039,9 +1039,6 @@ extension ManaKit {
         var props = [String: Any]()
 
         props["code"] = setBlock.code
-        if let displayCode = setBlock.displayCode {
-            props["displayCode"] = displayCode
-        }
         props["name"] = setBlock.name
         if let nameSection = setBlock.nameSection {
             props["nameSection"] = nameSection

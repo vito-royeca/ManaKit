@@ -14,7 +14,7 @@ extension ManaKit {
 
         switch storageType {
         case .coreData:
-            let context = backgroundContext
+            let context = newBackgroundContext()
 
             if let cache = find(MGLocalCache.self,
                                 properties: ["url": url.absoluteString],
@@ -60,7 +60,7 @@ extension ManaKit {
     func saveCache(forUrl url: URL) {
         switch storageType {
         case .coreData:
-            let context = backgroundContext
+            let context = newBackgroundContext()
 
             if let cache = find(MGLocalCache.self,
                                 properties: ["url": url.absoluteString],
@@ -94,7 +94,7 @@ extension ManaKit {
         case .coreData:
             Task {
                 do {
-                    let context = backgroundContext
+                    let context = newBackgroundContext()
                     try await delete(MGLocalCache.self,
                                      predicate: NSPredicate(format: "url == %@", url.absoluteString))
                     save(context: context)

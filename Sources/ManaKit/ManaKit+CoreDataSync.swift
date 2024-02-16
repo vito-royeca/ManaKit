@@ -13,7 +13,7 @@ extension ManaKit {
                                                         jsonType: T.Type,
                                                         coreDataType: U.Type,
                                                         sortDescriptors: [NSSortDescriptor]?) -> [U]? {
-        let context = backgroundContext
+        let context = newBackgroundContext()
         var results = [U]()
 
         for json in jsonData {
@@ -128,7 +128,484 @@ extension ManaKit {
 
         return results
     }
+
+    public func syncToCoreData<T: MEntity>(_ jsonData: [T],
+                                           jsonType: T.Type) async throws {
+        guard !jsonData.isEmpty else {
+            return
+        }
+        
+        let context = newBackgroundContext()
+
+        switch jsonType {
+        case is MArtist.Type:
+            let _ = try await batchInsert(jsonData,
+                                          jsonType: jsonType)
+        case is MCard.Type:
+            try await syncCards(jsonData: jsonData,
+                                jsonType: jsonType,
+                                to: context)
+        case is MColor.Type:
+            let _ = try await batchInsert(jsonData,
+                                          jsonType: jsonType)
+//        case is MComponent.Type:
+//            ()
+//        case is MComponentPart.Type:
+//            ()
+//        case is MFormat.Type:
+//            ()
+//        case is MFormatLegality.Type:
+//            ()
+//        case is MFrame.Type:
+//            ()
+//        case is MFrameEffect.Type:
+//            ()
+        case is MGame.Type:
+            let _ = try await batchInsert(jsonData,
+                                          jsonType: jsonType)
+        case is MKeyword.Type:
+            let _ = try await batchInsert(jsonData,
+                                          jsonType: jsonType)
+        case is MLanguage.Type:
+            let _ = try await batchInsert(jsonData,
+                                          jsonType: jsonType)
+//        case is MLayout.Type:
+//            ()
+//        case is MLegality.Type:
+//            ()
+//        case is MPrice.Type:
+//            ()
+        case is MRarity.Type:
+            let _ = try await batchInsert(jsonData,
+                                          jsonType: jsonType)
+//        case is MRuling.Type:
+//            ()
+        case is MSet.Type:
+            try await syncSets(jsonData: jsonData,
+                               jsonType: jsonType,
+                               to: context)
+            
+//        case is MSetBlock.Type:
+//            let _ = try await batchInsert(jsonData,
+//                                          jsonType: jsonType)
+//        case is MSetType.Type:
+//            let _ = try await batchInsert(jsonData,
+//                                          jsonType: jsonType)
+        case is MCardType.Type:
+            let _ = try await batchInsert(jsonData,
+                                          jsonType: jsonType)
+//        case is MWatermark.Type:
+//            let _ = try await batchInsert(jsonData,
+//                                          jsonType: jsonType)
+        default:
+            ()
+        }
+    }
+
+    private func batchInsert<T: MEntity>(_ jsonData: [T],
+                                         jsonType: T.Type,
+                                         keyHandlers: [String: (Any) -> Any?]? = nil) async throws -> [NSManagedObjectID] {
+        let context = newBackgroundContext()
+        context.name = "\(jsonType)ImportContext"
+        context.transactionAuthor = "import(\(jsonType))"
+
+        do {
+            var objectIDs = [NSManagedObjectID]()
+
+            try await context.perform {
+                let batchInsertRequest = try self.newBatchInsertRequest(jsonData,
+                                                                        jsonType: jsonType,
+                                                                        keyHandlers: keyHandlers)
+                if let fetchResult = try? context.execute(batchInsertRequest),
+                   let batchInsertResult = fetchResult as? NSBatchInsertResult,
+                   let ids = batchInsertResult.result as? [NSManagedObjectID] {
+                    objectIDs = ids
+                    return
+                }
+            }
+            return objectIDs
+        } catch {
+//            print(error)
+            throw ManaKitError.batchInsertError
+        }
+    }
+
+    private func newBatchInsertRequest<T: MEntity>(_ jsonData: [T],
+                                                   jsonType: T.Type,
+                                                   keyHandlers: [String: (Any) -> Any?]? = nil) throws -> NSBatchInsertRequest {
+        
+        let total = jsonData.count
+        var index = 0
+        
+
+        let entityDescription = entityDescription(for: jsonType)
+        let batchInsertRequest = NSBatchInsertRequest(entity: entityDescription) { dictionary in
+            guard index < total else {
+                return true
+            }
+            
+            do {
+                let allProperties = try jsonData[index].allProperties(keyHandlers: keyHandlers)
+                dictionary.addEntries(from: allProperties)
+                index += 1
+                return false
+            } catch {
+//                print(error)
+                return true
+            }
+        }
+        batchInsertRequest.resultType = .objectIDs
+        return batchInsertRequest
+    }
     
+    private func entityDescription<T: MEntity>(for jsonType: T.Type) -> NSEntityDescription {
+        switch jsonType {
+        case is MArtist.Type:
+            MGArtist.entity()
+        case is MCard.Type:
+            MGCard.entity()
+        case is MColor.Type:
+            MGColor.entity()
+        case is MComponent.Type:
+            MGComponent.entity()
+//        case is MComponentPart.Type:
+//            MGComponentPart.entity()
+        case is MFormat.Type:
+            MGFormat.entity()
+//        case is MFormatLegality.Type:
+//            MGFormatLegality.entity()
+        case is MFrame.Type:
+            MGFrame.entity()
+        case is MFrameEffect.Type:
+            MGFrameEffect.entity()
+        case is MGame.Type:
+            MGGame.entity()
+        case is MKeyword.Type:
+            MGKeyword.entity()
+        case is MLanguage.Type:
+            MGLanguage.entity()
+        case is MLayout.Type:
+            MGLayout.entity()
+        case is MLegality.Type:
+            MGLegality.entity()
+        case is MPrice.Type:
+            MGCardPrice.entity()
+        case is MRarity.Type:
+            MGRarity.entity()
+        case is MRuling.Type:
+            MGRuling.entity()
+        case is MSet.Type:
+            MGSet.entity()
+        case is MSetBlock.Type:
+            MGSetBlock.entity()
+        case is MSetType.Type:
+            MGSetType.entity()
+        case is MCardType.Type:
+            MGCardType.entity()
+        case is MWatermark.Type:
+            MGWatermark.entity()
+        default:
+            NSEntityDescription()
+        }
+    }
+
+    func syncSets<T: MEntity>(jsonData: [T], jsonType: T.Type, to context: NSManagedObjectContext) async throws {
+        var newEntities = [T]()
+
+        for json in jsonData {
+            if let entity = json as? MSet {
+                if let newSet = MSet(cardCount: entity.cardCount,
+                                     code: entity.code,
+                                     isFoilOnly: entity.isFoilOnly,
+                                     isOnlineOnly: entity.isOnlineOnly,
+                                     logoCode: entity.logoCode,
+                                     mtgoCode: entity.mtgoCode,
+                                     keyruneUnicode: entity.keyruneUnicode,
+                                     keyruneClass: entity.keyruneClass,
+                                     nameSection: entity.nameSection,
+                                     yearSection: entity.yearSection,
+                                     releaseDate: entity.releaseDate,
+                                     name: entity.name,
+                                     tcgPlayerID: entity.tcgPlayerID,
+                                     parent: nil,
+                                     setBlock: nil,
+                                     setType: nil,
+                                     languages: nil,
+                                     cards: nil) as? T {
+                    newEntities.append(newSet)
+                }
+            }
+        }
+        _ = try await batchInsert(newEntities,
+                                  jsonType: jsonType,
+                                  keyHandlers: ["releaseDate": releaseDateHandler()])
+
+        for json in jsonData {
+            if let entity = json as? MSet,
+               let set = find(MGSet.self,
+                              properties: nil,
+                              predicate: NSPredicate(format: "code == %@", entity.code),
+                              sortDescriptors: nil,
+                              createIfNotFound: false,
+                              context: context)?.first {
+
+                for language in entity.languages ?? [] {
+                    let properties = try language.allProperties()
+                    let predicate = NSPredicate(format: "code == %@", language.code)
+                
+                    if let newLanguage = find(MGLanguage.self,
+                                              properties: properties,
+                                              predicate: predicate,
+                                              sortDescriptors: nil,
+                                              createIfNotFound: true,
+                                              context: context)?.first {
+                        set.addToLanguages(newLanguage)
+                    }
+                }
+
+                // TODO: handle parent
+                // ...
+
+                if let setBlock = entity.setBlock {
+                    let properties = try setBlock.allProperties()
+                    let predicate = NSPredicate(format: "code == %@", setBlock.code)
+                
+                    set.setBlock = find(MGSetBlock.self,
+                                        properties: properties,
+                                        predicate: predicate,
+                                        sortDescriptors: nil,
+                                        createIfNotFound: true,
+                                        context: context)?.first
+                }
+                
+                if let setType = entity.setType {
+                    let properties = try setType.allProperties()
+                    let predicate = NSPredicate(format: "name == %@", setType.name)
+                
+                    set.setType = find(MGSetType.self,
+                                       properties: properties,
+                                       predicate: predicate,
+                                       sortDescriptors: nil,
+                                       createIfNotFound: true,
+                                       context: context)?.first
+                }
+            
+                if let cards = entity.cards {
+                    try await syncCards(jsonData: cards,
+                                        jsonType: MCard.self,
+                                        to: context)
+                }
+                try context.save()
+            }
+        }
+    }
+
+    func syncCards<T: MEntity>(jsonData: [T], jsonType: T.Type, to context: NSManagedObjectContext) async throws {
+        var newEntities = [T]()
+
+        for json in jsonData {
+            if let entity = json as? MCard {
+                if let newCard = MCard(artCropURL: entity.artCropURL,
+                                       collectorNumber: entity.collectorNumber,
+                                       cmc: entity.cmc,
+                                       faceOrder: entity.faceOrder,
+                                       flavorText: entity.flavorText,
+                                       handModifier: entity.handModifier,
+                                       lifeModifier: entity.lifeModifier,
+                                       isFoil: entity.isFoil,
+                                       isFullArt: entity.isFullArt,
+                                       isHighResImage: entity.isHighResImage,
+                                       isNonFoil: entity.isNonFoil,
+                                       isOversized: entity.isOversized,
+                                       isReserved: entity.isReserved,
+                                       isStorySpotlight: entity.isStorySpotlight,
+                                       loyalty: entity.loyalty,
+                                       manaCost: entity.manaCost,
+                                       nameSection: entity.nameSection,
+                                       numberOrder: entity.numberOrder,
+                                       name: entity.name,
+                                       normalURL: entity.normalURL,
+                                       oracleText: entity.oracleText,
+                                       power: entity.power,
+                                       printedName: entity.printedName,
+                                       printedText: entity.printedText,
+                                       toughness: entity.toughness,
+                                       arenaID: entity.arenaID,
+                                       mtgoID: entity.mtgoID,
+                                       pngURL: entity.pngURL,
+                                       tcgPlayerID: entity.tcgPlayerID,
+                                       isBooster: entity.isBooster,
+                                       isDigital: entity.isDigital,
+                                       isPromo: entity.isPromo,
+                                       releaseDate: entity.releaseDate,
+                                       isTextless: entity.isTextless,
+                                       mtgoFoilID: entity.mtgoFoilID,
+                                       isReprint: entity.isReprint,
+                                       newID: entity.newID,
+                                       printedTypeLine: entity.printedTypeLine,
+                                       typeLine: entity.typeLine,
+                                       multiverseIDs: entity.multiverseIDs,
+                                       rarity: nil,
+                                       language: nil,
+                                       layout: nil,
+                                       watermark: nil,
+                                       frame: nil,
+                                       artists: nil,
+                                       colors: nil,
+                                       colorIdentities: nil,
+                                       colorIndicators: nil,
+                                       componentParts: nil,
+                                       faces: nil,
+                                       games: nil,
+                                       keywords: nil,
+                                       otherLanguages: nil,
+                                       otherPrintings: nil,
+                                       set: nil,
+                                       variations: nil,
+                                       formatLegalities: nil,
+                                       frameEffects: nil,
+                                       subtypes: nil,
+                                       supertypes: nil,
+                                       prices: nil,
+                                       rulings: nil) as? T {
+                    newEntities.append(newCard)
+                }
+            }
+        }
+        _ = try await batchInsert(newEntities,
+                                              jsonType: jsonType,
+                                              keyHandlers: ["releaseDate": releaseDateHandler()])
+        
+        for json in jsonData {
+            if let entity = json as? MCard,
+               let card = find(MGCard.self,
+                               properties: nil,
+                               predicate: NSPredicate(format: "newID == %@", entity.newID),
+                               sortDescriptors: nil,
+                               createIfNotFound: false,
+                               context: context)?.first {
+        
+                for artist in entity.artists ?? [] {
+                    let properties = try artist.allProperties()
+                    let predicate = NSPredicate(format: "name == %@", artist.name)
+                
+                    if let newArtist = find(MGArtist.self,
+                                            properties: properties,
+                                            predicate: predicate,
+                                            sortDescriptors: nil,
+                                            createIfNotFound: true,
+                                            context: context)?.first {
+                        card.addToArtists(newArtist)
+                    }
+                }
+
+                for color in entity.colors ?? [] {
+                    let properties = try color.allProperties()
+                    let predicate = NSPredicate(format: "name == %@", color.name)
+                
+                    if let newColor = find(MGColor.self,
+                                           properties: properties,
+                                           predicate: predicate,
+                                           sortDescriptors: nil,
+                                           createIfNotFound: true,
+                                           context: context)?.first {
+                        card.addToColors(newColor)
+                    }
+                }
+                
+                if let language = entity.language {
+                    let predicate = NSPredicate(format: "code == %@", language.code)
+                
+                    card.language = find(MGLanguage.self,
+                                         properties: nil,
+                                         predicate: predicate,
+                                         sortDescriptors: nil,
+                                         createIfNotFound: false,
+                                         context: context)?.first
+                }
+
+                if let set = entity.set {
+                    let predicate = NSPredicate(format: "code == %@", set.code)
+                
+                    card.set = find(MGSet.self,
+                                    properties: nil,
+                                    predicate: predicate,
+                                    sortDescriptors: nil,
+                                    createIfNotFound: false,
+                                    context: context)?.first
+                }
+                
+                try context.save()
+            }
+        }
+        
+//        let excludedProperties = ["artists",
+//                                  "componentParts",
+//                                  "colorIdentities",
+//                                  "colorIndicators",
+//                                  "colors",
+//                                  "face",
+//                                  "faces",
+//                                  "formatLegalities",
+//                                  "frame",
+//                                  "frameEffects",
+//                                  "games",
+//                                  "keywords",
+//                                  "language",
+//                                  "layout",
+//                                  "otherLanguages",
+//                                  "otherPrintings",
+//                                  "otherPrintingInverses",
+//                                  "prices",
+//                                  "rarity",
+//                                  "rulings",
+//                                  "set",
+//                                  "subtypes",
+//                                  "supertypes",
+//                                  "type",
+//                                  "variation",
+//                                  "variations",
+//                                  "watermark"]
+//                                  
+//        var properties = try card.allProperties(excluding: excludedProperties,
+//                                                keyHandlers: ["releaseDate": releaseDateHandler()])
+//        var predicate = NSPredicate(format: "newID == %@", card.newID)
+//        
+//        guard let newCard = find(MGCard.self,
+//                                properties: properties,
+//                                predicate: predicate,
+//                                sortDescriptors: nil,
+//                                createIfNotFound: true,
+//                                context: context)?.first else {
+//            return
+//        }
+//        
+//        if let set = card.set  {
+//            properties = [:]
+//            predicate = NSPredicate(format: "code == %@", set.code)
+//        
+//            newCard.set = find(MGSet.self,
+//                               properties: properties,
+//                               predicate: predicate,
+//                               sortDescriptors: nil,
+//                               createIfNotFound: false,
+//                               context: context)?.first
+//        }
+    }
+
+    private func releaseDateHandler() -> (Any) -> Any? {
+        { (releaseDate: Any) -> Any? in
+            guard let releaseDate = releaseDate as? String else {
+                return nil
+            }
+            
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            
+            return formatter.date(from: releaseDate)
+        }
+    }
+
     func nameSection(for name: String) -> String? {
         if name.count == 0 {
             return nil
@@ -186,11 +663,11 @@ extension ManaKit {
         if let isFullArt = card.isFullArt {
             props["isFullArt"] = isFullArt
         }
-        if let isHighresImage = card.isHighresImage {
-            props["isHighResImage"] = isHighresImage
+        if let isHighResImage = card.isHighResImage {
+            props["isHighResImage"] = isHighResImage
         }
-        if let isNonfoil = card.isNonfoil {
-            props["isNonFoil"] = isNonfoil
+        if let isNonFoil = card.isNonFoil {
+            props["isNonFoil"] = isNonFoil
         }
         if let isOversized = card.isOversized {
             props["isOversized"] = isOversized
@@ -243,8 +720,8 @@ extension ManaKit {
         if let mtgoID = card.mtgoID {
             props["mtgoID"] = mtgoID
         }
-        if let tcgplayerID = card.tcgplayerID {
-            props["tcgPlayerID"] = tcgplayerID
+        if let tcgPlayerID = card.tcgPlayerID {
+            props["tcgPlayerID"] = tcgPlayerID
         }
         if let handModifier = card.handModifier {
             props["handModifier"] = handModifier
@@ -875,7 +1352,7 @@ extension ManaKit {
             props["name"] = name
             props["nameSection"] = nameSection(for: name)
         }
-        if let tcgplayerID = set.tcgplayerID {
+        if let tcgplayerID = set.tcgPlayerID {
             props["tcgPlayerID"] = tcgplayerID
         }
         
@@ -889,7 +1366,7 @@ extension ManaKit {
                              context: context)?.first as? MGSet {
             
             if let x = set.parent {
-                let parent = MSet(cardCount: nil, code: x, isFoilOnly: nil, isOnlineOnly: nil, logoCode: nil, mtgoCode: nil, keyruneUnicode: nil, keyruneClass: nil, nameSection: nil, yearSection: nil, releaseDate: nil, name: nil, tcgplayerID: nil, parent: nil, setBlock: nil, setType: nil, languages: nil, cards: nil)
+                let parent = MSet(cardCount: nil, code: x, isFoilOnly: nil, isOnlineOnly: nil, logoCode: nil, mtgoCode: nil, keyruneUnicode: nil, keyruneClass: nil, nameSection: nil, yearSection: nil, releaseDate: nil, name: nil, tcgPlayerID: nil, parent: nil, setBlock: nil, setType: nil, languages: nil, cards: nil)
                 newSet.parent = self.set(from: parent, context: context, type: MGSet.self)
             }
             if let x = set.setBlock {
@@ -920,9 +1397,6 @@ extension ManaKit {
         var props = [String: Any]()
 
         props["code"] = setBlock.code
-        if let displayCode = setBlock.displayCode {
-            props["displayCode"] = displayCode
-        }
         props["name"] = setBlock.name
         if let nameSection = setBlock.nameSection {
             props["nameSection"] = nameSection

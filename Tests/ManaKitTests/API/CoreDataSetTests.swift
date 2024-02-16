@@ -28,8 +28,8 @@ final class CoreDataSetTests: XCTestCase {
             let _ = try ManaKit.sharedCoreData.willFetchSet(code: code,
                                                             languageCode: languageCode)
         } catch {
-            XCTFail("willFetchSet(::) error")
             print(error)
+            XCTFail("willFetchSet(::) error")
         }
     }
     
@@ -42,8 +42,8 @@ final class CoreDataSetTests: XCTestCase {
                 XCTFail("fetchSet(::) error")
             }
         } catch {
-            XCTFail("fetchSet(::) error")
             print(error)
+            XCTFail("fetchSet(::) error")
         }
     }
 
@@ -51,8 +51,8 @@ final class CoreDataSetTests: XCTestCase {
         do {
             let _ = try ManaKit.sharedCoreData.willFetchSets()
         } catch {
-            XCTFail("willFetchSets() error")
             print(error)
+            XCTFail("willFetchSets() error")
         }
     }
 
@@ -61,8 +61,125 @@ final class CoreDataSetTests: XCTestCase {
             let sets = try await ManaKit.sharedCoreData.fetchSets(sortDescriptors: nil)
             XCTAssert(!sets.isEmpty)
         } catch {
-            XCTFail("fetchSets(:) error")
             print(error)
+            XCTFail("fetchSets(:) error")
+        }
+    }
+    
+    func testBatchInsertSets() async throws {
+        do {
+            let url = try ManaKit.sharedCoreData.fetchSetsURL()
+            let (data, response) = try await URLSession.shared.data(from: url)
+            
+            guard let response = response as? HTTPURLResponse,
+                  response.statusCode == 200 else {
+                throw ManaKitError.invalidHttpResponse
+            }
+
+            let decoder = JSONDecoder()
+            let jsonData = try decoder.decode([MSet].self, from: data)
+            print("jsonData=\(jsonData.count)")
+            try await ManaKit.sharedCoreData.syncToCoreData(jsonData,
+                                                            jsonType: MSet.self)
+            
+            let request: NSFetchRequest<MGSet> = MGSet.fetchRequest()
+            let sets = try ManaKit.sharedCoreData.viewContext.fetch(request)
+            print("sets=\(sets.count)")
+
+            XCTAssert(jsonData.count == sets.count)
+        } catch {
+            print(error)
+            XCTFail("testBatchInsertSets() error")
+        }
+    }
+
+    func testBatchInsertSet() async throws {
+        do {
+            let setCode = "plst"
+            let languageCode = "en"
+            let url = try ManaKit.sharedCoreData.fetchSetURL(code: setCode,
+                                                             languageCode: languageCode)
+            let (data, response) = try await URLSession.shared.data(from: url)
+            
+            guard let response = response as? HTTPURLResponse,
+                  response.statusCode == 200 else {
+                throw ManaKitError.invalidHttpResponse
+            }
+
+            let decoder = JSONDecoder()
+            let jsonData = try decoder.decode([MSet].self, from: data)
+            try await ManaKit.sharedCoreData.syncToCoreData(jsonData,
+                                                            jsonType: MSet.self)
+            
+            let request: NSFetchRequest<MGCard> = MGCard.fetchRequest()
+            let predicate = NSPredicate(format: "set.code == %@ AND language.code == %@",
+                                        setCode,
+                                        languageCode)
+            request.predicate = predicate
+
+            let cards = try ManaKit.sharedCoreData.viewContext.fetch(request)
+            print("cards=\(cards.count)")
+
+            XCTAssert(!cards.isEmpty)
+        } catch {
+            print(error)
+            XCTFail("testBatchInsertSets() error")
+        }
+    }
+
+    func testBatchInsertAllCards() async throws {
+        do {
+            let url = try ManaKit.sharedCoreData.fetchSetsURL()
+            let (data, response) = try await URLSession.shared.data(from: url)
+            
+            guard let response = response as? HTTPURLResponse,
+                  response.statusCode == 200 else {
+                throw ManaKitError.invalidHttpResponse
+            }
+
+            let decoder = JSONDecoder()
+            let jsonData = try decoder.decode([MSet].self, from: data)
+            try await ManaKit.sharedCoreData.syncToCoreData(jsonData,
+                                                            jsonType: MSet.self)
+            
+            let request: NSFetchRequest<MGSet> = MGSet.fetchRequest()
+            let sets = try ManaKit.sharedCoreData.viewContext.fetch(request)
+
+            for set in sets {
+                for language in set.sortedLanguages ?? [] {
+                    print("\(Date()) fetching \(set.code)_\(language.code)...")
+                    try await fetchCards(from: set.code,
+                                         languageCode: language.code)
+                }
+                
+            }
+        } catch {
+            print(error)
+            XCTFail("testBatchInsertSets() error")
+        }
+    }
+    
+    func fetchCards(from setCode: String, languageCode: String) async throws {
+        do {
+            let url = try ManaKit.sharedCoreData.fetchSetURL(code: setCode,
+                                                             languageCode: languageCode)
+            let (data, response) = try await URLSession.shared.data(from: url)
+            
+            guard let response = response as? HTTPURLResponse,
+                  response.statusCode == 200 else {
+                throw ManaKitError.invalidHttpResponse
+            }
+
+            let decoder = JSONDecoder()
+            let jsonData = try decoder.decode([MSet].self, from: data)
+            try await ManaKit.sharedCoreData.syncToCoreData(jsonData,
+                                                            jsonType: MSet.self)
+            
+            let request: NSFetchRequest<MGSet> = MGSet.fetchRequest()
+            let sets = try ManaKit.sharedCoreData.viewContext.fetch(request)
+        } catch {
+            print(error)
+            XCTFail("testCards() error")
         }
     }
 }

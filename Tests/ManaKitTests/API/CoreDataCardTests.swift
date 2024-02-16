@@ -26,8 +26,8 @@ final class CoreDataCardTests: XCTestCase {
         do {
             let _ = try ManaKit.sharedCoreData.willFetchCard(newID: newID)
         } catch {
-            XCTFail("willFetchCard(:) error")
             print(error)
+            XCTFail("willFetchCard(:) error")
         }
     }
     
@@ -36,8 +36,8 @@ final class CoreDataCardTests: XCTestCase {
             let card = try await ManaKit.sharedCoreData.fetchCard(newID: newID)
             XCTAssert(card != nil)
         } catch {
-            XCTFail("fetchCard(:) error")
             print(error)
+            XCTFail("fetchCard(:) error")
         }
     }
 
@@ -50,8 +50,8 @@ final class CoreDataCardTests: XCTestCase {
                                                       pageSize: 20,
                                                       pageOffset: 0)
         } catch {
-            XCTFail("willFetchCards(::::::) error")
             print(error)
+            XCTFail("willFetchCards(::::::) error")
         }
     }
 
@@ -68,8 +68,8 @@ final class CoreDataCardTests: XCTestCase {
                                                             pageOffset: pageOffSet)
             XCTAssert(!cards.isEmpty)
         } catch {
-            XCTFail("fetchCards(::::::) error")
             print(error)
+            XCTFail("fetchCards(::::::) error")
         }
     }
     
@@ -100,8 +100,8 @@ final class CoreDataCardTests: XCTestCase {
             } while cards.count >= pageSize
 
         } catch {
-            XCTFail("fetchCards(::::::) error")
             print(error)
+            XCTFail("fetchCards(::::::) error")
         }
     }
 }

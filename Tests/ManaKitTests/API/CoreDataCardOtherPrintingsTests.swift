@@ -28,8 +28,8 @@ final class CoreDataCardOtherPrintingsTests: XCTestCase {
             let _ = try ManaKit.sharedCoreData.willFetchCardOtherPrintings(newID: newID,
                                                                    languageCode: languageCode)
         } catch {
-            XCTFail("willFetchCardOtherPrintings(::) error")
             print(error)
+            XCTFail("willFetchCardOtherPrintings(::) error")
         }
     }
 
@@ -42,15 +42,14 @@ final class CoreDataCardOtherPrintingsTests: XCTestCase {
             XCTAssert(language != nil)
             
             let code = language!.code
-            XCTAssert(code != nil)
             
             let cards = try await ManaKit.sharedCoreData.fetchCardOtherPrintings(newID: card!.newID,
-                                                                         languageCode: code!,
+                                                                         languageCode: code,
                                                                          sortDescriptors: nil)
             XCTAssert(!cards.isEmpty)
         } catch {
-            XCTFail("fetchCardOtherPrintings(:::) error")
             print(error)
+            XCTFail("fetchCardOtherPrintings(:::) error")
         }
     }
 

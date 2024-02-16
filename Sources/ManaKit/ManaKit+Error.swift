@@ -13,6 +13,8 @@ public enum ManaKitError: Error {
     case missingPersistentContainer
     case badURL
     case invalidHttpResponse
+    case batchInsertError
+    case createEntityError
 }
 
 public enum DecoderConfigurationError: Error {

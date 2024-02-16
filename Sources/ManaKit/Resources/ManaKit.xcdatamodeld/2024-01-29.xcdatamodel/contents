@@ -49,12 +49,7 @@
         <attribute name="multiverseIDs" optional="YES" attributeType="Binary"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="nameSection" optional="YES" attributeType="String"/>
-        <attribute name="newID" attributeType="String">
-            <userInfo>
-                <entry key="hyper.isPrimaryKey" value="true"/>
-                <entry key="sync.isPrimaryKey" value="true"/>
-            </userInfo>
-        </attribute>
+        <attribute name="newID" attributeType="String"/>
         <attribute name="normalURL" optional="YES" attributeType="String"/>
         <attribute name="numberOrder" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="oracleId" optional="YES" attributeType="String"/>
@@ -269,7 +264,7 @@
         </uniquenessConstraints>
     </entity>
     <entity name="MGLanguage" representedClassName="ManaKit.MGLanguage" syncable="YES">
-        <attribute name="code" optional="YES" attributeType="String">
+        <attribute name="code" attributeType="String">
             <userInfo>
                 <entry key="hyper.isPrimaryKey" value="true"/>
                 <entry key="sync.isPrimaryKey" value="true"/>

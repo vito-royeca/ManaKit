@@ -61,8 +61,8 @@ extension MGCard {
         get {
             var text: String?
             
-            if let language = language,
-               let code = language.code {
+            if let language = language {
+               let code = language.code
                 
                 if code == "en" {
                     text = name
@@ -134,8 +134,8 @@ extension MGCard {
             if let sortedFaces = sortedFaces,
                let face = sortedFaces.first {
 
-                if let language = language,
-                   let code = language.code {
+                if let language = language {
+                   let code = language.code
 
                     if code == "en" {
                         text = face.typeLine
@@ -146,8 +146,8 @@ extension MGCard {
                     text = face.typeLine
                 }
             } else {
-                if let language = language,
-                   let code = language.code {
+                if let language = language {
+                   let code = language.code
                     
                     if code == "en" {
                         text = typeLine

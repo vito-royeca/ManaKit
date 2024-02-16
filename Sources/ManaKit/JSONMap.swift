@@ -13,7 +13,62 @@
 import Foundation
 
 public protocol MEntity: Codable {
+    func allProperties(keyHandlers: [String: (Any) -> Any?]?) throws -> [String: Any]
+    func allProperties(excluding keys: [String],
+                       keyHandlers: [String: (Any) -> Any?]?) throws -> [String: Any]
+//    func newEntity(excluding keys: [String],
+//                   keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy?) throws -> MEntity
+}
+
+extension MEntity {
+    public func allProperties(keyHandlers: [String: (Any) -> Any?]? = nil) throws -> [String: Any] {
+        var result: [String: Any] = [:]
+
+        let mirror = Mirror(reflecting: self)
+
+        // Optional check to make sure we're iterating over a struct or class
+        guard let style = mirror.displayStyle, style == .struct || style == .class else {
+            throw NSError()
+        }
+
+        for (property, value) in mirror.children {
+            guard let property = property else {
+                continue
+            }
+
+            if let keyHandlers = keyHandlers,
+               let keyHandler = keyHandlers[property] {
+                result[property] = keyHandler(value)
+            } else {
+                result[property] = value
+            }
+        }
+
+        return result
+    }
     
+    public func allProperties(excluding keys: [String],
+                              keyHandlers: [String: (Any) -> Any?]? = nil) throws -> [String: Any] {
+        var result = try allProperties(keyHandlers: keyHandlers)
+        
+        for key in keys {
+            result[key] = nil
+        }
+        return result
+    }
+    
+//    public func newEntity(excluding keys: [String],
+//                          keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy? = nil) throws -> MEntity {
+//        let allProperties = try allProperties(excluding: keys)
+//        let jsonData = try JSONSerialization.data(withJSONObject: allProperties,
+//                                                  options: [])
+//        let decoder = JSONDecoder()
+//        if let keyDecodingStrategy = keyDecodingStrategy {
+//            decoder.keyDecodingStrategy = keyDecodingStrategy
+//        }
+//        return try decoder.decode(Self.self,
+//                                  from: jsonData)
+//    }
 }
 
 // MARK: - WelcomeElement
@@ -22,12 +77,12 @@ public struct MCard: MEntity {
     let cmc: Double?
     let faceOrder: Int?
     let flavorText, handModifier, lifeModifier: String?
-    let isFoil, isFullArt, isHighresImage, isNonfoil, isOversized, isReserved, isStorySpotlight: Bool?
+    let isFoil, isFullArt, isHighResImage, isNonFoil, isOversized, isReserved, isStorySpotlight: Bool?
     let loyalty, manaCost: String?
     let nameSection: String?
     let numberOrder: Double?
     let name, normalURL, oracleText, power, printedName, printedText, toughness, arenaID, mtgoID, pngURL: String?
-    let tcgplayerID: Int?
+    let tcgPlayerID: Int?
     let isBooster, isDigital, isPromo: Bool?
     let releaseDate: String?
     let isTextless: Bool?
@@ -74,8 +129,8 @@ public struct MCard: MEntity {
         case isDigital        = "is_digital"
         case isFoil           = "is_foil"
         case isFullArt        = "is_full_art"
-        case isHighresImage   = "is_highres_image"
-        case isNonfoil        = "is_nonfoil"
+        case isHighResImage   = "is_highres_image"
+        case isNonFoil        = "is_nonfoil"
         case isOversized      = "is_oversized"
         case isPromo          = "is_promo"
         case isReprint        = "is_reprint"
@@ -99,7 +154,7 @@ public struct MCard: MEntity {
         case printedText      = "printed_text"
         case printedTypeLine  = "printed_type_line"
         case releaseDate      = "released_at"
-        case tcgplayerID      = "tcgplayer_id"
+        case tcgPlayerID      = "tcgplayer_id"
         case typeLine         = "type_line"
         case artists, colors, cmc, faces, frame, games, keywords, language, layout, loyalty, name, power, set, subtypes, supertypes, prices, rarity, rulings, toughness, variations, watermark
     }
@@ -325,7 +380,7 @@ public struct MSet: MEntity {
     let yearSection: String?
     let releaseDate: String?
     let name: String?
-    let tcgplayerID: Int?
+    let tcgPlayerID: Int?
     let parent: String?
     let setBlock: MSetBlock?
     let setType: MSetType?
@@ -345,10 +400,31 @@ public struct MSet: MEntity {
         case yearSection    = "year_section"
         case name
         case releaseDate    = "release_date"
-        case tcgplayerID    = "tcgplayer_id"
+        case tcgPlayerID    = "tcgplayer_id"
         case parent         = "cmset_parent"
         case setBlock       = "set_block"
         case setType        = "set_type"
+        case languages
+        case cards
+    }
+    
+    enum NewEntityCodingKeys: String, CodingKey {
+        case cardCount
+        case code
+        case isFoilOnly
+        case isOnlineOnly
+        case logoCode
+        case mtgoCode
+        case keyruneUnicode
+        case keyruneClass
+        case nameSection
+        case yearSection
+        case name
+        case releaseDate
+        case tcgPlayerID
+        case parent
+        case setBlock
+        case setType
         case languages
         case cards
     }
@@ -357,13 +433,11 @@ public struct MSet: MEntity {
 // MARK: - SetBlock
 public struct MSetBlock: MEntity {
     let code: String
-    let displayCode: String?
     let name: String
     let nameSection: String?
 
     enum CodingKeys: String, CodingKey {
         case code
-        case displayCode = "display_code"
         case name
         case nameSection = "name_section"
     }

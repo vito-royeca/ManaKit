@@ -62,6 +62,7 @@ public final class ManaKit {
         case coreData, swiftData
     }
 
+    
     let fontFiles = ["beleren-bold-webfont",
                      "belerensmallcaps-bold-webfont",
                      "Goudy Medieval",
@@ -209,12 +210,32 @@ public final class ManaKit {
         }
         
         let container = NSPersistentContainer(name: "MGManaKit", managedObjectModel: model)
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+        
+        guard let description = container.persistentStoreDescriptions.first else {
+            fatalError("Failed to retrieve a persistent store description.")
+        }
+
+//        if inMemory {
+//            description.url = URL(fileURLWithPath: "/dev/null")
+//        }
+
+        description.setOption(true as NSNumber,
+                              forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
+
+        description.setOption(true as NSNumber,
+                              forKey: NSPersistentHistoryTrackingKey)
+        
+        container.loadPersistentStores { storeDescription, error in
             if let error = error as NSError? {
-                print("Unresolved error \(error), \(error.userInfo)")
+                fatalError("Unresolved error \(error), \(error.userInfo)")
             }
-        })
-        container.viewContext.automaticallyMergesChangesFromParent = true
+        }
+
+        container.viewContext.automaticallyMergesChangesFromParent = false
+        container.viewContext.name = "viewContext"
+        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        container.viewContext.undoManager = nil
+        container.viewContext.shouldDeleteInaccessibleFaults = true
 
         return container
     }()
@@ -223,8 +244,12 @@ public final class ManaKit {
         persistentContainer.viewContext
     }
     
-    public var backgroundContext: NSManagedObjectContext {
-        persistentContainer.newBackgroundContext()
+    public func newBackgroundContext() -> NSManagedObjectContext {
+        let context = persistentContainer.newBackgroundContext()
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        context.undoManager = nil
+
+        return context
     }
 
     // MARK: - Swift Data

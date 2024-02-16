@@ -81,6 +81,7 @@ extension ManaKit {
                                 sortDescriptors: sortDescriptors,
                                 createIfNotFound: createIfNotFound,
                                 context: context)
+
                 } else {
                     return nil
                 }
