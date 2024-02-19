@@ -95,7 +95,7 @@ final class CoreDataSetTests: XCTestCase {
 
     func testBatchInsertSet() async throws {
         do {
-            let setCode = "plst"
+            let setCode = "rvr"
             let languageCode = "en"
             let url = try ManaKit.sharedCoreData.fetchSetURL(code: setCode,
                                                              languageCode: languageCode)
@@ -118,7 +118,7 @@ final class CoreDataSetTests: XCTestCase {
             request.predicate = predicate
 
             let cards = try ManaKit.sharedCoreData.viewContext.fetch(request)
-            print("cards=\(cards.count)")
+//            print("cards=\(cards.count)")
 
             XCTAssert(!cards.isEmpty)
         } catch {
