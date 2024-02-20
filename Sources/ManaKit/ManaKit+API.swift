@@ -6,21 +6,22 @@
 //
 
 import Foundation
+import CoreData
 
 public protocol API {
     // fetchSet
     func willFetchSet(code: String,
                       languageCode: String) throws -> Bool
     func fetchSet(code: String,
-                  languageCode: String) async throws -> MGSet?
+                  languageCode: String) async throws -> NSManagedObjectID?
 
     // fetchSets
     func willFetchSets() throws -> Bool
-    func fetchSets(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGSet]
+    func fetchSets() async throws -> [NSManagedObjectID]
 
     // fetchCard
     func willFetchCard(newID: String) throws -> Bool
-    func fetchCard(newID: String) async throws -> MGCard?
+    func fetchCard(newID: String) async throws -> NSManagedObjectID?
 
     // fetchCards
     func willFetchCards(name: String,
@@ -34,38 +35,37 @@ public protocol API {
                     types: [String],
                     keywords: [String],
                     pageSize: Int,
-                    pageOffset: Int) async throws -> [MGCard]
+                    pageOffset: Int) async throws -> [NSManagedObjectID]
 
     // fetchCardOtherPrintings
     func willFetchCardOtherPrintings(newID: String,
                                      languageCode: String) throws -> Bool
     func fetchCardOtherPrintings(newID: String,
-                                 languageCode: String,
-                                 sortDescriptors: [NSSortDescriptor]?) async throws -> [MGCard]
+                                 languageCode: String) async throws -> [NSManagedObjectID]
     
     // fetchArtists
     func willFetchArtists() throws -> Bool
-    func fetchArtists(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGArtist]
+    func fetchArtists() async throws -> [NSManagedObjectID]
 
     // fetchColors
     func willFetchColors() throws -> Bool
-    func fetchColors(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGColor]
+    func fetchColors() async throws -> [NSManagedObjectID]
 
     // fetchGames
     func willFetchGames() throws -> Bool
-    func fetchGames(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGGame]
+    func fetchGames() async throws -> [NSManagedObjectID]
 
     // fetchKeywords
     func willFetchKeywords() throws -> Bool
-    func fetchKeywords(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGKeyword]
+    func fetchKeywords() async throws -> [NSManagedObjectID]
 
     // fetchRarities
     func willFetchRarities() throws -> Bool
-    func fetchRarities(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGRarity]
+    func fetchRarities() async throws -> [NSManagedObjectID]
 
     // fetchCardTypes
     func willFetchCardTypes() throws -> Bool
-    func fetchCardTypes(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGCardType]
+    func fetchCardTypes() async throws -> [NSManagedObjectID]
 }
 
 extension ManaKit {

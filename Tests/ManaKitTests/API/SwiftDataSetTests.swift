@@ -33,18 +33,18 @@ final class SwiftDataSetTests: XCTestCase {
         }
     }
     
-    func testFetchSet() async throws {
-        do {
-            if let set: SDSet = try await ManaKit.sharedSwiftData.fetchSet(code: code,
-                                                                           languageCode: languageCode) {
-                XCTAssert(set.code == code)
-            } else {
-                XCTFail("fetchSet(::) error")
-            }
-        } catch {
-            XCTFail("fetchSet(::) error")
-            print(error)
-        }
-    }
+//    func testFetchSet() async throws {
+//        do {
+//            if let set: SDSet = try await ManaKit.sharedSwiftData.fetchSet(code: code,
+//                                                                           languageCode: languageCode) {
+//                XCTAssert(set.code == code)
+//            } else {
+//                XCTFail("fetchSet(::) error")
+//            }
+//        } catch {
+//            XCTFail("fetchSet(::) error")
+//            print(error)
+//        }
+//    }
 
 }

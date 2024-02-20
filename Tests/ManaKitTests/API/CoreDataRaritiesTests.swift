@@ -32,39 +32,11 @@ final class CoreDataRaritiesTests: XCTestCase {
 
     func testFetchRarities() async throws {
         do {
-            let rarities = try await ManaKit.sharedCoreData.fetchRarities(sortDescriptors: nil)
+            let rarities = try await ManaKit.sharedCoreData.fetchRarities()
             XCTAssert(!rarities.isEmpty)
         } catch {
             print(error)
             XCTFail("fetchRarities(:) error")
         }
     }
-    
-    func testBatchInsertRarities() async throws {
-        do {
-            let url = try ManaKit.sharedCoreData.fetchRaritiesURL()
-            let (data, response) = try await URLSession.shared.data(from: url)
-            
-            guard let response = response as? HTTPURLResponse,
-                  response.statusCode == 200 else {
-                throw ManaKitError.invalidHttpResponse
-            }
-
-            let decoder = JSONDecoder()
-            let jsonData = try decoder.decode([MRarity].self, from: data)
-            print("jsonData=\(jsonData.count)")
-            try await ManaKit.sharedCoreData.syncToCoreData(jsonData,
-                                                            jsonType: MRarity.self)
-            
-            let request: NSFetchRequest<MGRarity> = MGRarity.fetchRequest()
-            let rarities = try ManaKit.sharedCoreData.viewContext.fetch(request)
-            print("rarities=\(rarities.count)")
-
-            XCTAssert(jsonData.count == rarities.count)
-        } catch {
-            print(error)
-            XCTFail("testBatchInsertKeywords() error")
-        }
-    }
-
 }

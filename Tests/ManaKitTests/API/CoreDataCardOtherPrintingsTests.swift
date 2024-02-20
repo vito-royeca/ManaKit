@@ -35,17 +35,18 @@ final class CoreDataCardOtherPrintingsTests: XCTestCase {
 
     func testFetchCardOtherPrintings() async throws {
         do {
-            let card = try await ManaKit.sharedCoreData.fetchCard(newID: newID)
-            XCTAssert(card != nil)
+            let objectID = try await ManaKit.sharedCoreData.fetchCard(newID: newID)
+            XCTAssert(objectID != nil)
 
+            let card = ManaKit.sharedCoreData.viewContext.object(with: objectID!) as? MGCard
+            XCTAssert(card != nil)
+            
             let language = card!.language
             XCTAssert(language != nil)
-            
+                
             let code = language!.code
-            
             let cards = try await ManaKit.sharedCoreData.fetchCardOtherPrintings(newID: card!.newID,
-                                                                         languageCode: code,
-                                                                         sortDescriptors: nil)
+                                                                                 languageCode: code)
             XCTAssert(!cards.isEmpty)
         } catch {
             print(error)

@@ -332,7 +332,7 @@ public struct MLegality: MEntity {
 
 // MARK: - Price
 public struct MPrice: MEntity {
-    let id: Int32?
+    let id: Int32
     let low, median, high, market: Double?
     let directLow: Double?
     let isFoil: Bool

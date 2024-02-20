@@ -9,20 +9,20 @@ import Foundation
 import SwiftData
 
 extension ManaKit {
-    public func fetchSet(code: String,
-                         languageCode: String) async throws -> SDSet? {
-        let url = try fetchSetURL(code: code,
-                                  languageCode: languageCode)
-        let predicate = #Predicate<SDSet> {
-            $0.code == code
-        }
-        
-        return try await fetchData(url: url,
-                                   jsonType: MSet.self,
-                                   swiftDataType: SDSet.self,
-                                   predicate: predicate,
-                                   sortDescriptors: nil).first
-    }
+//    public func fetchSet(code: String,
+//                         languageCode: String) async throws -> SDSet? {
+//        let url = try fetchSetURL(code: code,
+//                                  languageCode: languageCode)
+//        let predicate = #Predicate<SDSet> {
+//            $0.code == code
+//        }
+//        
+//        return try await fetchData(url: url,
+//                                   jsonType: MSet.self,
+//                                   swiftDataType: SDSet.self,
+//                                   predicate: predicate,
+//                                   sortDescriptors: nil).first
+//    }
 
     func fetchData<T: MEntity, U: SDEntity>(url: URL,
                                             jsonType: T.Type,

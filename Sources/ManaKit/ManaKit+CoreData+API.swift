@@ -10,11 +10,8 @@ import CoreData
 import SwiftData
 
 extension ManaKit: API {
-    func fetchData<T: MEntity, U: MGEntity>(url: URL,
-                                            jsonType: T.Type,
-                                            coreDataType: U.Type,
-                                            predicate: NSPredicate?,
-                                            sortDescriptors: [NSSortDescriptor]?) async throws -> [U] {
+    func fetchData<T: MEntity>(url: URL,
+                               jsonType: T.Type) async throws -> [NSManagedObjectID] {
         
         do {
             let (data, response) = try await URLSession.shared.data(from: url)
@@ -26,12 +23,10 @@ extension ManaKit: API {
 
             let decoder = JSONDecoder()
             let jsonData = try decoder.decode([T].self, from: data)
-            let entities = syncToCoreData(jsonData,
-                                          jsonType: jsonType,
-                                          coreDataType: coreDataType,
-                                          sortDescriptors: sortDescriptors)
+            let objectIDs = try await syncToCoreData(jsonData,
+                                                     jsonType: jsonType)
             saveCache(forUrl: url)
-            return entities ?? []
+            return objectIDs
         } catch {
             deleteCache(forUrl: url)
             throw error
@@ -49,16 +44,12 @@ extension ManaKit: API {
     }
     
     public func fetchSet(code: String,
-                         languageCode: String) async throws -> MGSet? {
+                         languageCode: String) async throws -> NSManagedObjectID? {
         let url = try fetchSetURL(code: code,
                                   languageCode: languageCode)
-        let predicate = NSPredicate(format: "code == %@", code)
         
         return try await fetchData(url: url,
-                                   jsonType: MSet.self,
-                                   coreDataType: MGSet.self,
-                                   predicate: predicate,
-                                   sortDescriptors: nil).first
+                                   jsonType: MSet.self).first
     }
     
     // MARK: - fetchSets
@@ -69,14 +60,12 @@ extension ManaKit: API {
         return willFetchCache(forUrl: url)
     }
     
-    public func fetchSets(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGSet] {
+    public func fetchSets() async throws -> [NSManagedObjectID] {
         let url = try fetchSetsURL()
         
         return try await fetchData(url: url,
-                                   jsonType: MSet.self,
-                                   coreDataType: MGSet.self,
-                                   predicate: nil,
-                                   sortDescriptors: sortDescriptors)
+                                   jsonType: MSet.self)
+        
     }
 
     // MARK: - fetchCard(:)
@@ -87,15 +76,11 @@ extension ManaKit: API {
         return willFetchCache(forUrl: url)
     }
     
-    public func fetchCard(newID: String) async throws -> MGCard? {
+    public func fetchCard(newID: String) async throws -> NSManagedObjectID? {
         let url = try fetchCardURL(newID: newID)
-        let predicate = NSPredicate(format: "newID == %@", newID)
         
         return try await fetchData(url: url,
-                                   jsonType: MCard.self,
-                                   coreDataType: MGCard.self,
-                                   predicate: predicate,
-                                   sortDescriptors: nil).first
+                                   jsonType: MCard.self).first
     }
     
     // MARK: - fetchCards(::::)
@@ -121,7 +106,7 @@ extension ManaKit: API {
                            types: [String],
                            keywords: [String],
                            pageSize: Int,
-                           pageOffset: Int) async throws -> [MGCard] {
+                           pageOffset: Int) async throws -> [NSManagedObjectID] {
         let url = try fetchCardsURL(name: name,
                                     rarities: rarities,
                                     types: types,
@@ -141,34 +126,31 @@ extension ManaKit: API {
 //                         predicate: NSPredicate(format: "url != %@",
 //                                                url.absoluteString))
 
-        let cards = try await fetchData(url: url,
-                                        jsonType: MCard.self,
-                                        coreDataType: MGCard.self,
-                                        predicate: nil,
-                                        sortDescriptors: nil)
+        let objectIDs = try await fetchData(url: url,
+                                            jsonType: MCard.self)
         
         // add cards to searchResults
-        let context = newBackgroundContext()
-        for card in cards {
-            let predicate = NSPredicate(format: "pageOffset == %i AND newID == %@",
-                                        pageOffset,
-                                        card.newIDCopy)
+//        let context = newBackgroundContext()
+//        for card in cards {
+//            let predicate = NSPredicate(format: "pageOffset == %i AND newID == %@",
+//                                        pageOffset,
+//                                        card.newIDCopy)
+//
+//            var props = [String: Any]()
+//            props["pageOffset"] = pageOffset
+//            props["newID"] = card.newIDCopy
+//            props["url"] = url.absoluteString
+//
+//            let _ = find(MGSearchResult.self,
+//                         properties: props,
+//                         predicate: predicate,
+//                         sortDescriptors: nil,
+//                         createIfNotFound: true,
+//                         context: context)
+//        }
+//        save(context: context)
 
-            var props = [String: Any]()
-            props["pageOffset"] = pageOffset
-            props["newID"] = card.newIDCopy
-            props["url"] = url.absoluteString
-
-            let _ = find(MGSearchResult.self,
-                         properties: props,
-                         predicate: predicate,
-                         sortDescriptors: nil,
-                         createIfNotFound: true,
-                         context: context)
-        }
-        save(context: context)
-
-        return cards
+        return objectIDs
     }
     
     // MARK: - fetchCardOtherPrintings(::)
@@ -182,47 +164,30 @@ extension ManaKit: API {
     }
     
     public func fetchCardOtherPrintings(newID: String,
-                                        languageCode: String,
-                                        sortDescriptors: [NSSortDescriptor]?) async throws -> [MGCard] {
+                                        languageCode: String) async throws -> [NSManagedObjectID] {
         let url = try fetchCardOtherPrintingsURL(newID: newID,
-                                             languageCode: languageCode)
+                                                 languageCode: languageCode)
+
+        let objectIDs = try await fetchData(url: url,
+                                            jsonType: MCard.self)
+
         
-        do {
-            let (data, response) = try await URLSession.shared.data(from: url)
-            
-            guard let response = response as? HTTPURLResponse,
-                  response.statusCode == 200 else {
-                throw ManaKitError.invalidHttpResponse
+        // add otherPrintings to card
+        let context = viewContext
+        let predicate = NSPredicate(format: "newID == %@", newID)
+        if let card = find(MGCard.self,
+                           properties: nil,
+                           predicate: predicate,
+                           sortDescriptors: nil,
+                           createIfNotFound: true,
+                           context: context)?.first {
+            for objectID in objectIDs {
+                card.addToOtherPrintings(object(MGCard.self,
+                                                with: objectID))
             }
-            
-            let decoder = JSONDecoder()
-            let jsonData = try decoder.decode([MCard].self, from: data)
-            let predicate = NSPredicate(format: "newID == %@", newID)
-            let context = newBackgroundContext()
-            if let card = find(MGCard.self,
-                               properties: nil,
-                               predicate: predicate,
-                               sortDescriptors: nil,
-                               createIfNotFound: true,
-                               context: context)?.first,
-               let otherPrintings = syncToCoreData(jsonData,
-                                                   jsonType: MCard.self,
-                                                   coreDataType: MGCard.self,
-                                                   sortDescriptors: sortDescriptors) {
-                for otherPrinting in otherPrintings {
-                    card.addToOtherPrintings(otherPrinting)
-                }
-                save(context: context)
-                
-                saveCache(forUrl: url)
-                return otherPrintings
-            } else {
-                return []
-            }
-        } catch {
-            deleteCache(forUrl: url)
-            throw error
         }
+        
+        return objectIDs
     }
     
     // MARK: - fetchArtists()
@@ -233,15 +198,11 @@ extension ManaKit: API {
         return willFetchCache(forUrl: url)
     }
 
-    public func fetchArtists(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGArtist] {
+    public func fetchArtists() async throws -> [NSManagedObjectID] {
         let url = try fetchArtistsURL()
-        let predicate = NSPredicate(format: "name != nil")
 
         return try await fetchData(url: url,
-                                   jsonType: MArtist.self,
-                                   coreDataType: MGArtist.self,
-                                   predicate: predicate,
-                                   sortDescriptors: sortDescriptors)
+                                   jsonType: MArtist.self)
     }
     
     // MARK: - fetchColors()
@@ -252,15 +213,11 @@ extension ManaKit: API {
         return willFetchCache(forUrl: url)
     }
 
-    public func fetchColors(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGColor] {
+    public func fetchColors() async throws -> [NSManagedObjectID] {
         let url = try fetchColorsURL()
-        let predicate = NSPredicate(format: "name != nil")
 
         return try await fetchData(url: url,
-                                   jsonType: MColor.self,
-                                   coreDataType: MGColor.self,
-                                   predicate: predicate,
-                                   sortDescriptors: sortDescriptors)
+                                   jsonType: MColor.self)
     }
     
     // MARK: - fetchGames()
@@ -271,15 +228,11 @@ extension ManaKit: API {
         return willFetchCache(forUrl: url)
     }
 
-    public func fetchGames(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGGame] {
+    public func fetchGames() async throws -> [NSManagedObjectID] {
         let url = try fetchGamesURL()
-        let predicate = NSPredicate(format: "name != nil")
 
         return try await fetchData(url: url,
-                                   jsonType: MGame.self,
-                                   coreDataType: MGGame.self,
-                                   predicate: predicate,
-                                   sortDescriptors: sortDescriptors)
+                                   jsonType: MGame.self)
     }
 
     // MARK: - fetchKeywords()
@@ -290,15 +243,11 @@ extension ManaKit: API {
         return willFetchCache(forUrl: url)
     }
 
-    public func fetchKeywords(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGKeyword] {
+    public func fetchKeywords() async throws -> [NSManagedObjectID] {
         let url = try fetchKeywordsURL()
-        let predicate = NSPredicate(format: "name != nil")
 
         return try await fetchData(url: url,
-                                   jsonType: MKeyword.self,
-                                   coreDataType: MGKeyword.self,
-                                   predicate: predicate,
-                                   sortDescriptors: sortDescriptors)
+                                   jsonType: MKeyword.self)
     }
     
     // MARK: - fetchRarities()
@@ -309,15 +258,11 @@ extension ManaKit: API {
         return willFetchCache(forUrl: url)
     }
     
-    public func fetchRarities(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGRarity] {
+    public func fetchRarities() async throws -> [NSManagedObjectID] {
         let url = try fetchRaritiesURL()
-        let predicate = NSPredicate(format: "name != nil")
 
         return try await fetchData(url: url,
-                                   jsonType: MRarity.self,
-                                   coreDataType: MGRarity.self,
-                                   predicate: predicate,
-                                   sortDescriptors: sortDescriptors)
+                                   jsonType: MRarity.self)
     }
 
     // MARK: - fetchCardTypes()
@@ -328,14 +273,10 @@ extension ManaKit: API {
         return willFetchCache(forUrl: url)
     }
 
-    public func fetchCardTypes(sortDescriptors: [NSSortDescriptor]?) async throws -> [MGCardType] {
+    public func fetchCardTypes() async throws -> [NSManagedObjectID] {
         let url = try fetchCardTypesURL()
-        let predicate = NSPredicate(format: "name != nil")
 
         return try await fetchData(url: url,
-                                   jsonType: MCardType.self,
-                                   coreDataType: MGCardType.self,
-                                   predicate: predicate,
-                                   sortDescriptors: sortDescriptors)
+                                   jsonType: MCardType.self)
     }
 }

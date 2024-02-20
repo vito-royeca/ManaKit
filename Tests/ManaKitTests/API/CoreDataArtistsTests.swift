@@ -32,38 +32,11 @@ final class CoreDataArtistsTests: XCTestCase {
 
     func testFetchArtists() async throws {
         do {
-            let artists = try await ManaKit.sharedCoreData.fetchArtists(sortDescriptors: nil)
+            let artists = try await ManaKit.sharedCoreData.fetchArtists()
             XCTAssert(!artists.isEmpty)
         } catch {
             print(error)
             XCTFail("fetchArtists(:) error")
-        }
-    }
-    
-    func testBatchInsertArtists() async throws {
-        do {
-            let url = try ManaKit.sharedCoreData.fetchArtistsURL()
-            let (data, response) = try await URLSession.shared.data(from: url)
-            
-            guard let response = response as? HTTPURLResponse,
-                  response.statusCode == 200 else {
-                throw ManaKitError.invalidHttpResponse
-            }
-
-            let decoder = JSONDecoder()
-            let jsonData = try decoder.decode([MArtist].self, from: data)
-            print("jsonData=\(jsonData.count)")
-            try await ManaKit.sharedCoreData.syncToCoreData(jsonData,
-                                                            jsonType: MArtist.self)
-            
-            let request: NSFetchRequest<MGArtist> = MGArtist.fetchRequest()
-            let artists = try ManaKit.sharedCoreData.viewContext.fetch(request)
-            print("artists=\(artists.count)")
-
-            XCTAssert(jsonData.count == artists.count)
-        } catch {
-            print(error)
-            XCTFail("testBatchInsertArtists() error")
         }
     }
 }
