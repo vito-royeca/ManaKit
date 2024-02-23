@@ -1,5 +1,5 @@
 //
-//  ManaKit+SwiftDataSync.swift
+//  ManaKit+SwiftData+Sync.swift
 //
 //
 //  Created by Miguel Ponce de Monio III on 2/9/24.

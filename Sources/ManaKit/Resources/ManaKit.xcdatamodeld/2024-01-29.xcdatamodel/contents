@@ -87,8 +87,7 @@
         <relationship name="subtypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardType" inverseName="subtypes" inverseEntity="MGCardType"/>
         <relationship name="supertypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardType" inverseName="supertypes" inverseEntity="MGCardType"/>
         <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGCardType" inverseName="card" inverseEntity="MGCardType"/>
-        <relationship name="variation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGCard" inverseName="variations" inverseEntity="MGCard"/>
-        <relationship name="variations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="variation" inverseEntity="MGCard"/>
+        <relationship name="variations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="variations" inverseEntity="MGCard"/>
         <relationship name="watermark" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGWatermark" inverseName="cards" inverseEntity="MGWatermark"/>
         <uniquenessConstraints>
             <uniquenessConstraint>

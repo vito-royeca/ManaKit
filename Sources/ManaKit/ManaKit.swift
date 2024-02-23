@@ -231,11 +231,12 @@ public final class ManaKit {
             }
         }
 
-        container.viewContext.automaticallyMergesChangesFromParent = false
-        container.viewContext.name = "viewContext"
-        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-        container.viewContext.undoManager = nil
-        container.viewContext.shouldDeleteInaccessibleFaults = true
+        container.viewContext.automaticallyMergesChangesFromParent = true
+//        container.viewContext.automaticallyMergesChangesFromParent = false
+//        container.viewContext.name = "viewContext"
+//        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+//        container.viewContext.undoManager = nil
+//        container.viewContext.shouldDeleteInaccessibleFaults = true
 
         return container
     }()

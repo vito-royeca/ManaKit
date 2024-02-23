@@ -229,4 +229,17 @@ extension ManaKit {
         
         return url
     }
+    
+    func nameSection(for name: String) -> String? {
+        if name.count == 0 {
+            return nil
+        } else {
+            let letters = CharacterSet.letters
+            var prefix = String(name.prefix(1))
+            if prefix.rangeOfCharacter(from: letters) == nil {
+                prefix = "#"
+            }
+            return prefix.uppercased().folding(options: .diacriticInsensitive, locale: .current)
+        }
+    }
 }
