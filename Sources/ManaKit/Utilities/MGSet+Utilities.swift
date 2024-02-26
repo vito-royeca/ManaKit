@@ -31,7 +31,7 @@ extension MGSet {
     
     public var smallLogoURL: URL? {
         guard let logoCode = logoCode,
-            let url = URL(string: "\(ManaKit.sharedCoreData.apiURL)/images/sets/\(logoCode)_small.png") else {
+            let url = URL(string: "\(ManaKit.shared.apiURL)/images/sets/\(logoCode)_small.png") else {
             return nil
         }
         
@@ -40,7 +40,7 @@ extension MGSet {
     
     public var bigLogoURL: URL? {
         guard let logoCode = logoCode,
-            let url = URL(string: "\(ManaKit.sharedCoreData.apiURL)/images/sets/\(logoCode)_big.png") else {
+            let url = URL(string: "\(ManaKit.shared.apiURL)/images/sets/\(logoCode)_big.png") else {
             return nil
         }
         

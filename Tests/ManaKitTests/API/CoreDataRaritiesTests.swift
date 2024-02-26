@@ -11,9 +11,9 @@ import ManaKit
 final class CoreDataRaritiesTests: XCTestCase {
 
     override func setUpWithError() throws {
-        ManaKit.sharedCoreData.configure(apiURL: "https://managuideapp.com")
+        ManaKit.shared.configure(apiURL: "https://managuideapp.com")
         Task {
-            await ManaKit.sharedCoreData.setupResources()
+            await ManaKit.shared.setupResources()
         }
     }
 
@@ -23,7 +23,7 @@ final class CoreDataRaritiesTests: XCTestCase {
 
     func testWillFetchRarities() throws {
         do {
-            let _ = try ManaKit.sharedCoreData.willFetchRarities()
+            let _ = try ManaKit.shared.willFetchRarities()
         } catch {
             print(error)
             XCTFail("willFetchRarities() error")
@@ -32,7 +32,7 @@ final class CoreDataRaritiesTests: XCTestCase {
 
     func testFetchRarities() async throws {
         do {
-            let rarities = try await ManaKit.sharedCoreData.fetchRarities()
+            let rarities = try await ManaKit.shared.fetchRarities()
             XCTAssert(!rarities.isEmpty)
         } catch {
             print(error)

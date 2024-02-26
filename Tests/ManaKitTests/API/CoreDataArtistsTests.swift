@@ -11,9 +11,9 @@ import ManaKit
 final class CoreDataArtistsTests: XCTestCase {
 
     override func setUpWithError() throws {
-        ManaKit.sharedCoreData.configure(apiURL: "https://managuideapp.com")
+        ManaKit.shared.configure(apiURL: "https://managuideapp.com")
         Task {
-            await ManaKit.sharedCoreData.setupResources()
+            await ManaKit.shared.setupResources()
         }
     }
 
@@ -23,7 +23,7 @@ final class CoreDataArtistsTests: XCTestCase {
 
     func testWillFetchArtists() throws {
         do {
-            let _ = try ManaKit.sharedCoreData.willFetchArtists()
+            let _ = try ManaKit.shared.willFetchArtists()
         } catch {
             XCTFail("willFetchArtists() error")
             print(error)
@@ -32,7 +32,7 @@ final class CoreDataArtistsTests: XCTestCase {
 
     func testFetchArtists() async throws {
         do {
-            let artists = try await ManaKit.sharedCoreData.fetchArtists()
+            let artists = try await ManaKit.shared.fetchArtists()
             XCTAssert(!artists.isEmpty)
         } catch {
             print(error)

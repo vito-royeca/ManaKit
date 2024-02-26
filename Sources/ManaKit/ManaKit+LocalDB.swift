@@ -87,7 +87,7 @@ extension ManaKit {
         request.sortDescriptors = sortDescriptors
         
         let frc = NSFetchedResultsController(fetchRequest: request,
-                                             managedObjectContext: ManaKit.sharedCoreData.viewContext,
+                                             managedObjectContext: ManaKit.shared.viewContext,
                                              sectionNameKeyPath: nil,
                                              cacheName: nil)
         var sets = [MGSet]()
@@ -111,7 +111,7 @@ extension ManaKit {
         request.sortDescriptors = sortDescriptors
         
         let frc = NSFetchedResultsController(fetchRequest: request,
-                                             managedObjectContext: ManaKit.sharedCoreData.viewContext,
+                                             managedObjectContext: ManaKit.shared.viewContext,
                                              sectionNameKeyPath: nil,
                                              cacheName: nil)
         var cards = [MGCard]()

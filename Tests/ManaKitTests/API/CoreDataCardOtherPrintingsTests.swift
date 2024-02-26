@@ -13,9 +13,9 @@ final class CoreDataCardOtherPrintingsTests: XCTestCase {
     let languageCode = "en"
 
     override func setUpWithError() throws {
-        ManaKit.sharedCoreData.configure(apiURL: "https://managuideapp.com")
+        ManaKit.shared.configure(apiURL: "https://managuideapp.com")
         Task {
-            await ManaKit.sharedCoreData.setupResources()
+            await ManaKit.shared.setupResources()
         }
     }
 
@@ -25,7 +25,7 @@ final class CoreDataCardOtherPrintingsTests: XCTestCase {
 
     func testWillFetchCardOtherPrintingsTest() throws {
         do {
-            let _ = try ManaKit.sharedCoreData.willFetchCardOtherPrintings(newID: newID,
+            let _ = try ManaKit.shared.willFetchCardOtherPrintings(newID: newID,
                                                                    languageCode: languageCode)
         } catch {
             print(error)
@@ -35,18 +35,18 @@ final class CoreDataCardOtherPrintingsTests: XCTestCase {
 
     func testFetchCardOtherPrintings() async throws {
         do {
-            let objectID = try await ManaKit.sharedCoreData.fetchCard(newID: newID)
+            let objectID = try await ManaKit.shared.fetchCard(newID: newID)
             XCTAssert(objectID != nil)
 
-            let card = ManaKit.sharedCoreData.viewContext.object(with: objectID!) as? MGCard
+            let card = ManaKit.shared.viewContext.object(with: objectID!) as? MGCard
             XCTAssert(card != nil)
             
             let language = card!.language
             XCTAssert(language != nil)
                 
             let code = language!.code
-            let cards = try await ManaKit.sharedCoreData.fetchCardOtherPrintings(newID: card!.newID,
-                                                                                 languageCode: code)
+            let cards = try await ManaKit.shared.fetchCardOtherPrintings(newID: card!.newID,
+                                                                         languageCode: code)
             XCTAssert(!cards.isEmpty)
         } catch {
             print(error)

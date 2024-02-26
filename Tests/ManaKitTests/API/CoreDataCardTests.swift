@@ -12,9 +12,9 @@ final class CoreDataCardTests: XCTestCase {
     let newID = "wwk_en_31"
 
     override func setUpWithError() throws {
-        ManaKit.sharedCoreData.configure(apiURL: "https://managuideapp.com")
+        ManaKit.shared.configure(apiURL: "https://managuideapp.com")
         Task {
-            await ManaKit.sharedCoreData.setupResources()
+            await ManaKit.shared.setupResources()
         }
     }
 
@@ -24,7 +24,7 @@ final class CoreDataCardTests: XCTestCase {
 
     func testWillFetchCard() throws {
         do {
-            let _ = try ManaKit.sharedCoreData.willFetchCard(newID: newID)
+            let _ = try ManaKit.shared.willFetchCard(newID: newID)
         } catch {
             print(error)
             XCTFail("willFetchCard(:) error")
@@ -33,7 +33,7 @@ final class CoreDataCardTests: XCTestCase {
     
     func testFetchCard() async throws {
         do {
-            let objectID = try await ManaKit.sharedCoreData.fetchCard(newID: newID)
+            let objectID = try await ManaKit.shared.fetchCard(newID: newID)
             XCTAssert(objectID != nil)
         } catch {
             print(error)
@@ -43,7 +43,7 @@ final class CoreDataCardTests: XCTestCase {
 
     func testWillFetchCards() throws {
         do {
-            let _ = try ManaKit.sharedCoreData.willFetchCards(name: "angel",
+            let _ = try ManaKit.shared.willFetchCards(name: "angel",
                                                       rarities: [],
                                                       types: [],
                                                       keywords: [],
@@ -60,7 +60,7 @@ final class CoreDataCardTests: XCTestCase {
             let pageSize = 20
             let pageOffSet = 0
 
-            let cards = try await ManaKit.sharedCoreData.fetchCards(name: "angel",
+            let cards = try await ManaKit.shared.fetchCards(name: "angel",
                                                             rarities: [],
                                                             types: [],
                                                             keywords: [],
@@ -78,7 +78,7 @@ final class CoreDataCardTests: XCTestCase {
             let pageSize = 20
             var pageOffSet = 0
 
-            var cards = try await ManaKit.sharedCoreData.fetchCards(name: "angel",
+            var cards = try await ManaKit.shared.fetchCards(name: "angel",
                                                             rarities: [],
                                                             types: [],
                                                             keywords: [],
@@ -89,7 +89,7 @@ final class CoreDataCardTests: XCTestCase {
             
             repeat {
                 pageOffSet += pageSize
-                cards = try await ManaKit.sharedCoreData.fetchCards(name: "angel",
+                cards = try await ManaKit.shared.fetchCards(name: "angel",
                                                             rarities: [],
                                                             types: [],
                                                             keywords: [],

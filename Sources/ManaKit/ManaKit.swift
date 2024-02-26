@@ -74,25 +74,15 @@ public final class ManaKit {
     let sessionProcessingQueue = DispatchQueue(label: "SessionProcessingQueue")
     var apiURL = ""
     var cancellables = Set<AnyCancellable>()
-    var storageType: StorageType = .coreData
     
     // MARK: - Shared Instance
     
-    public static let sharedCoreData = ManaKit(storageType: .coreData)
-    public static let sharedSwiftData = ManaKit(storageType: .swiftData)
+    public static let shared = ManaKit()
 
     // MARK: - Initializers
     
-    private init(storageType: StorageType) {
-        self.storageType = storageType
-
-        switch storageType {
-        case .coreData:
-            let _ = persistentContainer
-
-        case .swiftData:
-            let _ = modelContainer
-        }
+    private init() {
+        let _ = persistentContainer
     }
 
     
@@ -252,37 +242,4 @@ public final class ManaKit {
 
         return context
     }
-
-    // MARK: - Swift Data
-
-    lazy var modelContainer: ModelContainer = {
-        do {
-            let models: [any PersistentModel.Type] = [
-                SDArtist.self,
-                SDCard.self,
-                SDLanguage.self,
-                SDLocalCache.self,
-                SDSet.self,
-                SDSetBlock.self,
-                SDSetType.self
-            ]
-            let storeURL = URL.applicationSupportDirectory.appending(path: "SDManaKit.sqlite")
-            let schema = Schema(models)
-            let config = ModelConfiguration(schema: schema,
-                                            url: storeURL)
-            let container = try ModelContainer(for: schema,
-                                               configurations: config)
-            return container
-        } catch {
-            fatalError("Failed to configure SwiftData container.")
-        }
-    }()
-    
-    public var sdBackgroundContext: ModelContext {
-        ModelContext(modelContainer)
-    }
-
-//    public var sdViewContext: ModelContext  {
-//        modelContainer.mainContext
-//    }
 }
