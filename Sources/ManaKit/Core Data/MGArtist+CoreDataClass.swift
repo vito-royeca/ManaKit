@@ -8,5 +8,9 @@
 import CoreData
 
 public class MGArtist: MGEntity {
-
+    public override var description: String {
+        get {
+            name ?? ""
+        }
+    }
 }

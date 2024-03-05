@@ -10,8 +10,8 @@ import CoreData
 // MARK: - MGCard
 public class MGCard: MGEntity {
     public var sortedArtists: [MGArtist]? {
-        guard let set = artists,
-            let array = set.allObjects as? [MGArtist] else {
+        guard let artists = artists,
+            let array = artists.allObjects as? [MGArtist] else {
             return nil
         }
         
@@ -20,8 +20,8 @@ public class MGCard: MGEntity {
     }
 
     public var sortedColors: [MGColor]? {
-        guard let set = colors,
-            let array = set.allObjects as? [MGColor] else {
+        guard let colors = colors,
+            let array = colors.allObjects as? [MGColor] else {
             return nil
         }
         
@@ -30,8 +30,8 @@ public class MGCard: MGEntity {
     }
     
     public var sortedColorIdentities: [MGColor]? {
-        guard let set = colorIdentities,
-            let array = set.allObjects as? [MGColor] else {
+        guard let colorIdentities = colorIdentities,
+            let array = colorIdentities.allObjects as? [MGColor] else {
             return nil
         }
         
@@ -40,8 +40,8 @@ public class MGCard: MGEntity {
     }
     
     public var sortedColorIndicators: [MGColor]? {
-        guard let set = colorIndicators,
-            let array = set.allObjects as? [MGColor] else {
+        guard let colorIndicators = colorIndicators,
+            let array = colorIndicators.allObjects as? [MGColor] else {
             return nil
         }
         
@@ -50,8 +50,8 @@ public class MGCard: MGEntity {
     }
     
     public var sortedComponentParts: [MGCardComponentPart]? {
-        guard let set = componentParts,
-            let array = set.allObjects as? [MGCardComponentPart] else {
+        guard let componentParts = componentParts,
+            let array = componentParts.allObjects as? [MGCardComponentPart] else {
             return nil
         }
         
@@ -59,9 +59,25 @@ public class MGCard: MGEntity {
         return sortedArray.isEmpty ? nil : sortedArray
     }
     
+    public var sectionedComponentParts: [String: [MGCardComponentPart]] {
+        guard let componentParts = sortedComponentParts else {
+            return [:]
+        }
+        
+        var result = [String: [MGCardComponentPart]]()
+        let keys = componentParts.map { $0.component?.name ?? "" }
+        
+        for key in keys {
+            let values = componentParts.filter { $0.component?.name == key }
+            result[key] = values
+        }
+        
+        return result
+    }
+    
     public var sortedFaces: [MGCard]? {
-        guard let set = faces,
-            let array = set.allObjects as? [MGCard] else {
+        guard let faces = faces,
+            let array = faces.allObjects as? [MGCard] else {
             return nil
         }
         
@@ -70,8 +86,8 @@ public class MGCard: MGEntity {
     }
     
     public var sortedFormatLegalities: [MGCardFormatLegality]? {
-        guard let set = formatLegalities,
-            let array = set.allObjects as? [MGCardFormatLegality] else {
+        guard let formatLegalities = formatLegalities,
+            let array = formatLegalities.allObjects as? [MGCardFormatLegality] else {
             return nil
         }
         
@@ -81,8 +97,8 @@ public class MGCard: MGEntity {
     }
     
     public var sortedFrameEffects: [MGFrameEffect]? {
-        guard let set = frameEffects,
-            let array = set.allObjects as? [MGFrameEffect] else {
+        guard let frameEffects = frameEffects,
+            let array = frameEffects.allObjects as? [MGFrameEffect] else {
             return nil
         }
         
@@ -91,8 +107,8 @@ public class MGCard: MGEntity {
     }
     
     public var sortedGames: [MGGame]? {
-        guard let set = games,
-            let array = set.allObjects as? [MGGame] else {
+        guard let games = games,
+            let array = games.allObjects as? [MGGame] else {
             return nil
         }
         
@@ -101,8 +117,8 @@ public class MGCard: MGEntity {
     }
     
     public var sortedKeywords: [MGKeyword]? {
-        guard let set = keywords,
-            let array = set.allObjects as? [MGKeyword] else {
+        guard let keywords = keywords,
+            let array = keywords.allObjects as? [MGKeyword] else {
             return nil
         }
         
@@ -111,8 +127,8 @@ public class MGCard: MGEntity {
     }
 
     public var sortedOtherLanguages: [MGCard]? {
-        guard let set = otherLanguages,
-            let array = set.allObjects as? [MGCard] else {
+        guard let otherLanguages = otherLanguages,
+            let array = otherLanguages.allObjects as? [MGCard] else {
             return nil
         }
         
@@ -121,8 +137,8 @@ public class MGCard: MGEntity {
     }
     
     public var sortedOtherPrintings: [MGCard]? {
-        guard let set = otherPrintings,
-            let array = set.allObjects as? [MGCard] else {
+        guard let otherPrintings = otherPrintings,
+            let array = otherPrintings.allObjects as? [MGCard] else {
             return nil
         }
         
@@ -132,8 +148,8 @@ public class MGCard: MGEntity {
     }
     
     public var sortedRulings: [MGRuling]? {
-        guard let set = rulings,
-            let array = set.allObjects as? [MGRuling] else {
+        guard let rulings = rulings,
+            let array = rulings.allObjects as? [MGRuling] else {
             return nil
         }
         
@@ -143,8 +159,8 @@ public class MGCard: MGEntity {
     }
     
     public var sortedSubtypes: [MGCardType]? {
-        guard let set = subtypes,
-            let array = set.allObjects as? [MGCardType] else {
+        guard let subtypes = subtypes,
+            let array = subtypes.allObjects as? [MGCardType] else {
             return nil
         }
         
@@ -153,8 +169,8 @@ public class MGCard: MGEntity {
     }
     
     public var sortedSupertypes: [MGCardType]? {
-        guard let set = supertypes,
-            let array = set.allObjects as? [MGCardType] else {
+        guard let supertypes = supertypes,
+            let array = supertypes.allObjects as? [MGCardType] else {
             return nil
         }
         
@@ -163,8 +179,8 @@ public class MGCard: MGEntity {
     }
     
     public var sortedVariations: [MGCard]? {
-        guard let set = variations,
-            let array = set.allObjects as? [MGCard] else {
+        guard let variations = variations,
+            let array = variations.allObjects as? [MGCard] else {
             return nil
         }
         

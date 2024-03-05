@@ -28,12 +28,14 @@ public protocol API {
                         rarities: [String],
                         types: [String],
                         keywords: [String],
+                        artists: [String],
                         pageSize: Int,
                         pageOffset: Int) throws -> Bool
     func fetchCards(name: String,
                     rarities: [String],
                     types: [String],
                     keywords: [String],
+                    artists: [String],
                     pageSize: Int,
                     pageOffset: Int) async throws -> [NSManagedObjectID]
 
@@ -113,6 +115,7 @@ extension ManaKit {
                               rarities: [String],
                               types: [String],
                               keywords: [String],
+                              artists: [String],
                               pageSize: Int,
                               pageOffset: Int) throws -> URL {
         var queryItems = [URLQueryItem(name: "sortedBy", value: ""),
@@ -123,6 +126,7 @@ extension ManaKit {
         queryItems.append(contentsOf: rarities.map { URLQueryItem(name: "rarities[]", value: $0) })
         queryItems.append(contentsOf: types.map { URLQueryItem(name: "types[]", value: $0) })
         queryItems.append(contentsOf: keywords.map { URLQueryItem(name: "keywords[]", value: $0) })
+        queryItems.append(contentsOf: artists.map { URLQueryItem(name: "artists[]", value: $0) })
         queryItems.append(URLQueryItem(name: "pageSize", value: "\(pageSize)"))
         queryItems.append(URLQueryItem(name: "pageOffset", value: "\(pageOffset)"))
 

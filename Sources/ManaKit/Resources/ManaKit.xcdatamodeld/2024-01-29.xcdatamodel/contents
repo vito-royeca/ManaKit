@@ -1,5 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22522" systemVersion="23D60" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="LocalCache" representedClassName="ManaKit.LocalCache" syncable="YES">
+        <attribute name="lastUpdated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="pageCount" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="pageNumber" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="url" attributeType="String"/>
+        <relationship name="queries" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="LocalQuery" inverseName="localCache" inverseEntity="LocalQuery"/>
+        <relationship name="sorters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="LocalSorter" inverseName="localCache" inverseEntity="LocalSorter"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="url"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="LocalQuery" representedClassName="ManaKit.QueryCache" syncable="YES">
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="key" attributeType="String"/>
+        <attribute name="value" attributeType="String"/>
+        <relationship name="localCache" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="LocalCache" inverseName="queries" inverseEntity="LocalCache"/>
+    </entity>
+    <entity name="LocalSorter" representedClassName="ManaKit.LocalSorter" syncable="YES">
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isAscending" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="key" attributeType="String"/>
+        <relationship name="localCache" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="LocalCache" inverseName="sorters" inverseEntity="LocalCache"/>
+    </entity>
     <entity name="MGArtist" representedClassName="ManaKit.MGArtist" syncable="YES">
         <attribute name="firstName" optional="YES" attributeType="String"/>
         <attribute name="info" optional="YES" attributeType="String"/>
@@ -315,15 +340,6 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
-    <entity name="MGLocalCache" representedClassName="ManaKit.MGLocalCache" syncable="YES">
-        <attribute name="lastUpdated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="url" attributeType="String"/>
-        <uniquenessConstraints>
-            <uniquenessConstraint>
-                <constraint value="url"/>
-            </uniquenessConstraint>
-        </uniquenessConstraints>
-    </entity>
     <entity name="MGRarity" representedClassName="ManaKit.MGRarity" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String">
             <userInfo>
@@ -364,11 +380,6 @@
                 <constraint value="id"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
-    </entity>
-    <entity name="MGSearchResult" representedClassName="ManaKit.MGSearchResult" syncable="YES">
-        <attribute name="newID" attributeType="String"/>
-        <attribute name="pageOffset" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="url" attributeType="String"/>
     </entity>
     <entity name="MGSet" representedClassName="ManaKit.MGSet" syncable="YES">
         <attribute name="cardCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>

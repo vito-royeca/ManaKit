@@ -47,6 +47,7 @@ final class CoreDataCardTests: XCTestCase {
                                                       rarities: [],
                                                       types: [],
                                                       keywords: [],
+                                                      artists: [],
                                                       pageSize: 20,
                                                       pageOffset: 0)
         } catch {
@@ -64,6 +65,7 @@ final class CoreDataCardTests: XCTestCase {
                                                             rarities: [],
                                                             types: [],
                                                             keywords: [],
+                                                            artists: [],
                                                             pageSize: pageSize,
                                                             pageOffset: pageOffSet)
             XCTAssert(!cards.isEmpty)
@@ -82,6 +84,7 @@ final class CoreDataCardTests: XCTestCase {
                                                             rarities: [],
                                                             types: [],
                                                             keywords: [],
+                                                            artists: [],
                                                             pageSize: pageSize,
                                                             pageOffset: pageOffSet)
             XCTAssert(!cards.isEmpty)
@@ -93,6 +96,7 @@ final class CoreDataCardTests: XCTestCase {
                                                             rarities: [],
                                                             types: [],
                                                             keywords: [],
+                                                            artists: [],
                                                             pageSize: pageSize,
                                                             pageOffset: pageOffSet)
                 XCTAssert(!cards.isEmpty)

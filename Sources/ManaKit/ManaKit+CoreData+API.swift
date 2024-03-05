@@ -10,47 +10,6 @@ import CoreData
 import SwiftData
 
 extension ManaKit: API {
-//    func fetchData<T: MEntity>(url: URL,
-//                               jsonType: T.Type) async throws -> [NSManagedObjectID] {
-//        
-//        do {
-//            let (data, response) = try await URLSession.shared.data(from: url)
-//            
-//            guard let response = response as? HTTPURLResponse,
-//                  response.statusCode == 200 else {
-//                throw ManaKitError.invalidHttpResponse
-//            }
-//
-//            let decoder = JSONDecoder()
-//            let jsonData = try decoder.decode([T].self, from: data)
-//            
-//            if jsonData.count > 1 {
-//                let objectIDs = try await batchInsertToCoreData(jsonData,
-//                                                                jsonType: jsonType)
-//                saveCache(forUrl: url)
-//                return objectIDs
-//            } else {
-//                var objectID: NSManagedObjectID?
-//                
-//                if let entity = jsonData.first as? MSet {
-//                    objectID = try await insert(set: entity)
-//                } else if let entity = jsonData.first as? MCard {
-//                    objectID = try await insert(card: entity)
-//                }
-//                saveCache(forUrl: url)
-//                
-//                guard let objectID = objectID else {
-//                    return []
-//                }
-//
-//                return [objectID]
-//            }
-//        } catch {
-//            deleteCache(forUrl: url)
-//            throw error
-//        }
-//    }
-    
     func fetchData<T: MEntity>(url: URL,
                                jsonType: T.Type) async throws -> [NSManagedObjectID] {
         
@@ -131,12 +90,14 @@ extension ManaKit: API {
                                rarities: [String],
                                types: [String],
                                keywords: [String],
+                               artists: [String],
                                pageSize: Int,
                                pageOffset: Int) throws -> Bool {
         let url = try fetchCardsURL(name: name,
                                     rarities: rarities,
                                     types: types,
                                     keywords: keywords,
+                                    artists: artists,
                                     pageSize: pageSize,
                                     pageOffset: pageOffset)
         
@@ -147,20 +108,22 @@ extension ManaKit: API {
                            rarities: [String],
                            types: [String],
                            keywords: [String],
+                           artists: [String],
                            pageSize: Int,
                            pageOffset: Int) async throws -> [NSManagedObjectID] {
         let url = try fetchCardsURL(name: name,
                                     rarities: rarities,
                                     types: types,
                                     keywords: keywords,
+                                    artists: artists,
                                     pageSize: pageSize,
                                     pageOffset: pageOffset)
         
         // delete old searchResults
-        try await delete(MGSearchResult.self,
-                         predicate: NSPredicate(format: "pageOffset == %i AND url = %@",
-                                                pageOffset,
-                                                url.absoluteString))
+//        try await delete(MGSearchResult.self,
+//                         predicate: NSPredicate(format: "pageOffset == %i AND url = %@",
+//                                                pageOffset,
+//                                                url.absoluteString))
 
         let objectIDs = try await fetchData(url: url,
                                             jsonType: MCard.self)
