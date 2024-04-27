@@ -104,8 +104,7 @@ public final class ManaKit {
     
     public func setupResources() async {
 //        copyModelFile()
-//        copyDatabaseFile()
-//        loadCustomFonts()
+        copyDatabaseFile()
         await downloadKeyruneFont()
     }
     
@@ -161,6 +160,85 @@ public final class ManaKit {
         }
     }
 
+    func copyDatabaseFile() {
+        let bundle = Bundle(for: ManaKit.self)
+
+        guard let bundleURL = bundle.resourceURL?.appendingPathComponent("ManaKit.bundle"),
+            let resourceBundle = Bundle(url: bundleURL),
+            let appSupportPath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory,
+                                                                     .userDomainMask,
+                                                                     true).first,
+            let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory,
+                                                                .userDomainMask,
+                                                                true).first,
+            let sourcePath = resourceBundle.path(forResource: "ManaKit.sqlite",
+                                                 ofType: "zip"),
+            let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String else {
+            return
+        }
+        
+        let targetPath = "\(appSupportPath)/\(bundleName).sqlite"
+
+        if needsUpgrade() {
+//            print("Copying database file: \(Constants.ScryfallDate)")
+            
+            // Shutdown database
+//            dataStack = nil
+//            persistentContainer = nil
+
+            // Remove old database files in docs directory
+            for file in try! FileManager.default.contentsOfDirectory(atPath: appSupportPath) {
+                let path = "\(appSupportPath)/\(file)"
+                if file.hasPrefix(bundleName) {
+                    try! FileManager.default.removeItem(atPath: path)
+                }
+            }
+            
+            // remove the contents of crop directory
+//            let cropPath = "\(cachePath)/crop/"
+//            if FileManager.default.fileExists(atPath: cropPath) {
+//                for file in try! FileManager.default.contentsOfDirectory(atPath: cropPath) {
+//                    let path = "\(cropPath)/\(file)"
+//                    try! FileManager.default.removeItem(atPath: path)
+//                }
+//            }
+
+            // delete image cache
+//            let imageCache = SDImageCache.init()
+//            imageCache.clearDisk(onCompletion: nil)
+            
+            // Unzip
+            SSZipArchive.unzipFile(atPath: sourcePath,
+                                   toDestination: appSupportPath)
+            
+            // rename
+            try! FileManager.default.moveItem(atPath: "\(appSupportPath)/ManaKit.sqlite",
+                                              toPath: targetPath)
+            
+            // skip from iCloud backups!
+//            var targetURL = URL(fileURLWithPath: targetPath)
+//            var resourceValues = URLResourceValues()
+//            resourceValues.isExcludedFromBackup = true
+//            try! targetURL.setResourceValues(resourceValues)
+            
+//            UserDefaults.standard.set(Constants.ScryfallDate,
+//                                      forKey: UserDefaultsKeys.ScryfallDate)
+//            UserDefaults.standard.synchronize()
+        }
+    }
+
+    func needsUpgrade() -> Bool {
+        var willUpgrade = true
+        
+        if let scryfallDate = UserDefaults.standard.string(forKey: UserDefaultsKeys.ScryfallDate) {
+//            if scryfallDate == Constants.ScryfallDate {
+                willUpgrade = false
+//            }
+        }
+        
+        return willUpgrade
+    }
+    
     func loadCustomFonts(and url: URL) {
         var urls = [URL]()
         
@@ -199,7 +277,7 @@ public final class ManaKit {
             fatalError("Can't load persistent container")
         }
         
-        let container = NSPersistentContainer(name: "MGManaKit", managedObjectModel: model)
+        let container = NSPersistentContainer(name: "ManaKit", managedObjectModel: model)
         
         guard let description = container.persistentStoreDescriptions.first else {
             fatalError("Failed to retrieve a persistent store description.")

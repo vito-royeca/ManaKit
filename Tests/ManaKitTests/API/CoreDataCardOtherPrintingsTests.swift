@@ -14,9 +14,6 @@ final class CoreDataCardOtherPrintingsTests: XCTestCase {
 
     override func setUpWithError() throws {
         ManaKit.shared.configure(apiURL: "https://managuideapp.com")
-        Task {
-            await ManaKit.shared.setupResources()
-        }
     }
 
     override func tearDownWithError() throws {
