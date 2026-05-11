@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14315.18" systemVersion="17G65" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CMArtist" representedClassName="CMArtist" syncable="YES">
+        <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="nameSection" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="artist_" inverseEntity="CMCard" syncable="YES"/>
+    </entity>
+    <entity name="CMBlock" representedClassName="CMBlock" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMSet" inverseName="block_" inverseEntity="CMSet" syncable="YES"/>
+    </entity>
+    <entity name="CMBooster" representedClassName="CMBooster" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <relationship name="setBoosters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMSetBooster" inverseName="booster" inverseEntity="CMSetBooster" syncable="YES"/>
+    </entity>
+    <entity name="CMBorder" representedClassName="CMBorder" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="border_" inverseEntity="CMCard" syncable="YES"/>
+        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMSet" inverseName="border_" inverseEntity="CMSet" syncable="YES"/>
+    </entity>
+    <entity name="CMCard" representedClassName="CMCard" syncable="YES">
+        <attribute name="artist" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="border" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="cmc" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="colorIdentity" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="colors" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="flavor" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="foreignNames" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="hand" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="imageName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageURIs" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="layout" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="legalities" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="life" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="loyalty" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="manaCost" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mciNumber" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="multiverseid" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="names" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="nameSection" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="number" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="numberOrder" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="originalText" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="originalType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="power" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="printings" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="rarity" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rating" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="ratings" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="releaseDate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="reserved" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="rulings" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="scryfallId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="source" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="starter" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="storePricingLastUpdate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="storePricingNote" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="subtypes" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="supertypes" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timeshifted" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="toughness" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="types" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="typeSection" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="variations" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="views" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="watermark" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="artist_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMArtist" inverseName="cards" inverseEntity="CMArtist" syncable="YES"/>
+        <relationship name="border_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMBorder" inverseName="cards" inverseEntity="CMBorder" syncable="YES"/>
+        <relationship name="cardLegalities_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCardLegality" inverseName="card" inverseEntity="CMCardLegality" syncable="YES"/>
+        <relationship name="colorIdentities_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMColor" inverseName="cardIdentities" inverseEntity="CMColor" syncable="YES"/>
+        <relationship name="colors_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMColor" inverseName="cardColors" inverseEntity="CMColor" syncable="YES"/>
+        <relationship name="deckHeroes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMDeck" inverseName="heroCard" inverseEntity="CMDeck" syncable="YES"/>
+        <relationship name="foreignNames_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMForeignName" inverseName="card" inverseEntity="CMForeignName" syncable="YES"/>
+        <relationship name="inventories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCardInventory" inverseName="card" inverseEntity="CMCardInventory" syncable="YES"/>
+        <relationship name="layout_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMLayout" inverseName="cards" inverseEntity="CMLayout" syncable="YES"/>
+        <relationship name="names_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="names_" inverseEntity="CMCard" syncable="YES"/>
+        <relationship name="pricing" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCardPricing" inverseName="cards" inverseEntity="CMCardPricing" syncable="YES"/>
+        <relationship name="printings_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMSet" inverseName="printings_" inverseEntity="CMSet" syncable="YES"/>
+        <relationship name="rarity_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMRarity" inverseName="cards" inverseEntity="CMRarity" syncable="YES"/>
+        <relationship name="rulings_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMRuling" inverseName="card" inverseEntity="CMRuling" syncable="YES"/>
+        <relationship name="set" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMSet" inverseName="cards" inverseEntity="CMSet" syncable="YES"/>
+        <relationship name="subtypes_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCardType" inverseName="cardSubtypes" inverseEntity="CMCardType" syncable="YES"/>
+        <relationship name="supertypes_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCardType" inverseName="cardSupertypes" inverseEntity="CMCardType" syncable="YES"/>
+        <relationship name="suppliers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMSupplier" inverseName="card" inverseEntity="CMSupplier" syncable="YES"/>
+        <relationship name="type_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCardType" inverseName="cards" inverseEntity="CMCardType" syncable="YES"/>
+        <relationship name="types_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCardType" inverseName="cardTypes" inverseEntity="CMCardType" syncable="YES"/>
+        <relationship name="userFavorites" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMUser" inverseName="favorites" inverseEntity="CMUser" syncable="YES"/>
+        <relationship name="userRatings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCardRating" inverseName="card" inverseEntity="CMCardRating" syncable="YES"/>
+        <relationship name="variations_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="variations_" inverseEntity="CMCard" syncable="YES"/>
+        <relationship name="watermark_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMWatermark" inverseName="cards" inverseEntity="CMWatermark" syncable="YES"/>
+    </entity>
+    <entity name="CMCardInventory" representedClassName="CMCardInventory" syncable="YES">
+        <attribute name="acquiredFrom" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="acquisitionPrice" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="condition" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dateAcquired" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="foil" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="mainboard" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="quantity" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="sideboard" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCard" inverseName="inventories" inverseEntity="CMCard" syncable="YES"/>
+        <relationship name="collection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCollection" inverseName="cards" inverseEntity="CMCollection" syncable="YES"/>
+        <relationship name="deck" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMDeck" inverseName="cards" inverseEntity="CMDeck" syncable="YES"/>
+        <relationship name="list" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMList" inverseName="cards" inverseEntity="CMList" syncable="YES"/>
+    </entity>
+    <entity name="CMCardLegality" representedClassName="CMCardLegality" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCard" inverseName="cardLegalities_" inverseEntity="CMCard" syncable="YES"/>
+        <relationship name="format" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMFormat" inverseName="cardLegalities" inverseEntity="CMFormat" syncable="YES"/>
+        <relationship name="legality" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMLegality" inverseName="cardLegalities" inverseEntity="CMLegality" syncable="YES"/>
+    </entity>
+    <entity name="CMCardPricing" representedClassName="CMCardPricing" syncable="YES">
+        <attribute name="average" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="foil" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="high" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="lastUpdate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="link" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="low" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="pricing" inverseEntity="CMCard" syncable="YES"/>
+        <relationship name="collections" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCollection" inverseName="pricing" inverseEntity="CMCollection" syncable="YES"/>
+        <relationship name="decks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMDeck" inverseName="pricing" inverseEntity="CMDeck" syncable="YES"/>
+    </entity>
+    <entity name="CMCardRating" representedClassName="CMCardRating" syncable="YES">
+        <attribute name="rating" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCard" inverseName="userRatings" inverseEntity="CMCard" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMUser" inverseName="ratings" inverseEntity="CMUser" syncable="YES"/>
+    </entity>
+    <entity name="CMCardType" representedClassName="CMCardType" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="type_" inverseEntity="CMCard" syncable="YES"/>
+        <relationship name="cardSubtypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="subtypes_" inverseEntity="CMCard" syncable="YES"/>
+        <relationship name="cardSupertypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="supertypes_" inverseEntity="CMCard" syncable="YES"/>
+        <relationship name="cardTypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="types_" inverseEntity="CMCard" syncable="YES"/>
+    </entity>
+    <entity name="CMCollection" representedClassName="CMCollection" syncable="YES">
+        <attribute name="createdOn" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="description_" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="isPrivate" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="nameSection" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="updatedOn" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="views" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCardInventory" inverseName="collection" inverseEntity="CMCardInventory" syncable="YES"/>
+        <relationship name="pricing" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCardPricing" inverseName="collections" inverseEntity="CMCardPricing" syncable="YES"/>
+    </entity>
+    <entity name="CMColor" representedClassName="CMColor" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="symbol" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="cardColors" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="colors_" inverseEntity="CMCard" syncable="YES"/>
+        <relationship name="cardIdentities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="colorIdentities_" inverseEntity="CMCard" syncable="YES"/>
+    </entity>
+    <entity name="CMDeck" representedClassName="CMDeck" syncable="YES">
+        <attribute name="colors" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="createdOn" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="description_" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="mainboard" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="nameSection" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="originalCreator" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sideboard" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="updatedOn" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="views" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCardInventory" inverseName="deck" inverseEntity="CMCardInventory" syncable="YES"/>
+        <relationship name="format" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMFormat" inverseName="decks" inverseEntity="CMFormat" syncable="YES"/>
+        <relationship name="heroCard" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCard" inverseName="deckHeroes" inverseEntity="CMCard" syncable="YES"/>
+        <relationship name="pricing" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCardPricing" inverseName="decks" inverseEntity="CMCardPricing" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMUser" inverseName="decks" inverseEntity="CMUser" syncable="YES"/>
+    </entity>
+    <entity name="CMForeignName" representedClassName="CMForeignName" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="multiverseid" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCard" inverseName="foreignNames_" inverseEntity="CMCard" syncable="YES"/>
+        <relationship name="language" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMLanguage" inverseName="foreignNames" inverseEntity="CMLanguage" syncable="YES"/>
+    </entity>
+    <entity name="CMFormat" representedClassName="CMFormat" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="nameSection" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="cardLegalities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCardLegality" inverseName="format" inverseEntity="CMCardLegality" syncable="YES"/>
+        <relationship name="decks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMDeck" inverseName="format" inverseEntity="CMDeck" syncable="YES"/>
+    </entity>
+    <entity name="CMLanguage" representedClassName="CMLanguage" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <relationship name="foreignNames" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMForeignName" inverseName="language" inverseEntity="CMForeignName" syncable="YES"/>
+    </entity>
+    <entity name="CMLayout" representedClassName="CMLayout" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="layout_" inverseEntity="CMCard" syncable="YES"/>
+    </entity>
+    <entity name="CMLegality" representedClassName="CMLegality" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <relationship name="cardLegalities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCardLegality" inverseName="legality" inverseEntity="CMCardLegality" syncable="YES"/>
+    </entity>
+    <entity name="CMList" representedClassName="CMList" syncable="YES">
+        <attribute name="createdOn" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="description_" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="nameSection" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="query" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="updatedOn" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="views" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCardInventory" inverseName="list" inverseEntity="CMCardInventory" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMUser" inverseName="lists" inverseEntity="CMUser" syncable="YES"/>
+    </entity>
+    <entity name="CMRarity" representedClassName="CMRarity" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="rarity_" inverseEntity="CMCard" syncable="YES"/>
+    </entity>
+    <entity name="CMRule" representedClassName="CMRule" syncable="YES">
+        <attribute name="definition" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="term" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="termSection" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMRule" inverseName="parent" inverseEntity="CMRule" syncable="YES"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMRule" inverseName="children" inverseEntity="CMRule" syncable="YES"/>
+    </entity>
+    <entity name="CMRuling" representedClassName="CMRuling" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCard" inverseName="rulings_" inverseEntity="CMCard" syncable="YES"/>
+    </entity>
+    <entity name="CMSet" representedClassName="CMSet" syncable="YES">
+        <attribute name="block" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="booster" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="border" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="code" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="gathererCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="keyruneCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="magicCardsInfoCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="nameSection" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="oldCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="onlineOnly" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="releaseDate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="scryfallCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tcgPlayerName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="typeSection" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="yearSection" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="block_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMBlock" inverseName="sets" inverseEntity="CMBlock" syncable="YES"/>
+        <relationship name="border_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMBorder" inverseName="sets" inverseEntity="CMBorder" syncable="YES"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="set" inverseEntity="CMCard" syncable="YES"/>
+        <relationship name="printings_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="printings_" inverseEntity="CMCard" syncable="YES"/>
+        <relationship name="setBoosters_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMSetBooster" inverseName="set" inverseEntity="CMSetBooster" syncable="YES"/>
+        <relationship name="type_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMSetType" inverseName="sets" inverseEntity="CMSetType" syncable="YES"/>
+        <userInfo>
+            <entry key="hyper.isPrimaryKey" value="true"/>
+            <entry key="sync.isPrimaryKey" value="true"/>
+        </userInfo>
+    </entity>
+    <entity name="CMSetBooster" representedClassName="CMSetBooster" syncable="YES">
+        <attribute name="count" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <relationship name="booster" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMBooster" inverseName="setBoosters" inverseEntity="CMBooster" syncable="YES"/>
+        <relationship name="set" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMSet" inverseName="setBoosters_" inverseEntity="CMSet" syncable="YES"/>
+    </entity>
+    <entity name="CMSetType" representedClassName="CMSetType" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMSet" inverseName="type_" inverseEntity="CMSet" syncable="YES"/>
+    </entity>
+    <entity name="CMSupplier" representedClassName="CMSupplier" syncable="YES">
+        <attribute name="condition" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="link" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="price" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="qty" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CMCard" inverseName="suppliers" inverseEntity="CMCard" syncable="YES"/>
+    </entity>
+    <entity name="CMSystem" representedClassName="CMSystem" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="description_" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="version" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+    </entity>
+    <entity name="CMUser" representedClassName="CMUser" syncable="YES">
+        <attribute name="avatarURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="decks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMDeck" inverseName="user" inverseEntity="CMDeck" syncable="YES"/>
+        <relationship name="favorites" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="userFavorites" inverseEntity="CMCard" syncable="YES"/>
+        <relationship name="lists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMList" inverseName="user" inverseEntity="CMList" syncable="YES"/>
+        <relationship name="ratings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCardRating" inverseName="user" inverseEntity="CMCardRating" syncable="YES"/>
+    </entity>
+    <entity name="CMWatermark" representedClassName="CMWatermark" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CMCard" inverseName="watermark_" inverseEntity="CMCard" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="CMArtist" positionX="-45" positionY="153" width="128" height="120"/>
+        <element name="CMBlock" positionX="-18" positionY="144" width="128" height="75"/>
+        <element name="CMBooster" positionX="0" positionY="162" width="128" height="75"/>
+        <element name="CMBorder" positionX="-9" positionY="153" width="128" height="90"/>
+        <element name="CMCard" positionX="-54" positionY="72" width="128" height="1140"/>
+        <element name="CMCardInventory" positionX="-27" positionY="135" width="128" height="240"/>
+        <element name="CMCardLegality" positionX="-27" positionY="135" width="128" height="105"/>
+        <element name="CMCardPricing" positionX="-27" positionY="135" width="128" height="195"/>
+        <element name="CMCardRating" positionX="-27" positionY="135" width="128" height="90"/>
+        <element name="CMCardType" positionX="27" positionY="189" width="128" height="120"/>
+        <element name="CMCollection" positionX="-27" positionY="135" width="128" height="195"/>
+        <element name="CMColor" positionX="18" positionY="180" width="128" height="105"/>
+        <element name="CMDeck" positionX="-18" positionY="144" width="128" height="285"/>
+        <element name="CMForeignName" positionX="-27" positionY="162" width="128" height="120"/>
+        <element name="CMFormat" positionX="18" positionY="189" width="128" height="105"/>
+        <element name="CMLanguage" positionX="-18" positionY="171" width="128" height="75"/>
+        <element name="CMLayout" positionX="9" positionY="171" width="128" height="75"/>
+        <element name="CMLegality" positionX="9" positionY="180" width="128" height="75"/>
+        <element name="CMList" positionX="-27" positionY="135" width="128" height="195"/>
+        <element name="CMRarity" positionX="-27" positionY="135" width="128" height="75"/>
+        <element name="CMRule" positionX="0" positionY="162" width="128" height="135"/>
+        <element name="CMRuling" positionX="-27" positionY="135" width="128" height="105"/>
+        <element name="CMSet" positionX="-63" positionY="-18" width="128" height="390"/>
+        <element name="CMSetBooster" positionX="-27" positionY="135" width="128" height="105"/>
+        <element name="CMSetType" positionX="-27" positionY="135" width="128" height="75"/>
+        <element name="CMSupplier" positionX="-27" positionY="135" width="128" height="150"/>
+        <element name="CMSystem" positionX="-27" positionY="135" width="128" height="90"/>
+        <element name="CMUser" positionX="-9" positionY="153" width="128" height="150"/>
+        <element name="CMWatermark" positionX="-18" positionY="144" width="128" height="75"/>
+    </elements>
+</model>

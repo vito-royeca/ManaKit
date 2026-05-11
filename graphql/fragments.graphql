@@ -1,0 +1,237 @@
+fragment SectionedSets on MGSectionedSets {
+  __typename
+  count
+  sections
+  sectionedSets {
+    __typename
+    count
+    section
+    sets {
+        __typename
+        ...SetInfo
+      }
+  }
+}
+
+fragment SetInfo on MGSet {
+  __typename
+  ...SetBasicInfo
+  children {
+    __typename
+    ...SetBasicInfo
+    children {
+      __typename
+      ...SetBasicInfo
+        children {
+          __typename
+          ...SetBasicInfo
+        }
+    }
+  }
+}
+
+fragment SetBasicInfo on MGSet {
+  __typename
+  id: code
+  isOnlineOnly
+  name
+  cardCount
+  keyruneUnicode
+  keyruneClass
+  releaseDate
+  bigLogoURL
+  smallLogoURL
+  yearSection
+  languages {
+    __typename
+    id: code
+    displayID: displayCode
+    name
+  }
+  setBlock {
+    __typename
+    name
+  }
+  setType {
+    __typename
+    name
+  }
+}
+
+fragment ColorInfo on MGColor {
+  __typename
+  name
+  symbol
+}
+
+fragment InnerCardInfo on MGCard {
+  __typename
+  artCropURL: artCropUrl
+  collectorNumber
+  displayManaCost
+  displayName
+  displayPowerToughness
+  displayTypeLine
+  id: newId
+  faceOrder
+  flavorText
+  keyruneColor
+  loyalty
+  manaCost
+  numberOrder
+  name
+  normalURL: normalUrl
+  numberOrder
+  oracleText
+  pngURL: pngUrl
+  power
+  printedName
+  printedText
+  printedTypeLine
+  toughness
+  typeLine
+  colors {
+    __typename
+    ...ColorInfo
+  }
+  language {
+    __typename
+    id: code
+    displayID: displayCode
+    name
+  }
+  layout {
+    __typename
+    id: code
+    name
+    description
+  }
+  prices {
+    __typename
+    low
+    median
+    high
+    market
+    directLow
+    isFoil
+  }
+  rarity {
+    __typename
+    name
+  }
+  set {
+    __typename
+    name
+    keyruneUnicode
+  }
+  supertypes {
+    __typename
+    name
+  }
+}
+
+fragment CardBasicInfo on MGCard {
+  __typename
+  ...InnerCardInfo
+  faces {
+    __typename
+    ...InnerCardInfo
+  }
+  printings: otherPrintings {
+    __typename
+    ...InnerCardInfo
+  }
+  otherLanguages {
+    __typename
+    ...InnerCardInfo
+  }
+  variations {
+    __typename
+    ...InnerCardInfo
+  }
+}
+
+fragment CardCompleteInfo on MGCard {
+  __typename
+  ...CardBasicInfo
+  arenaID: arenaId
+  cmc
+  handModifier
+  isBooster
+  isDigital
+  isFoil
+  isFullArt
+  isHighresImage
+  isNonfoil
+  isOversized
+  isPromo
+  isReprint
+  isReserved
+  isStorySpotlight
+  isTextless
+  lifeModifier
+  mtgoFoilID: mtgoFoilId
+  mtgoID: mtgoId
+  multiverseIDs: multiverseIds
+  releasedAt
+  tcgplayerID: tcgplayerId
+  toughness
+  artists {
+    __typename
+    name
+  }
+  colorIdentities{
+    __typename
+    ...ColorInfo
+  }
+  colorIndicators{
+    __typename
+    ...ColorInfo
+  }
+  componentParts {
+    __typename
+    card {
+      __typename
+      ...CardBasicInfo
+    }
+    component {
+      __typename
+      name
+    }
+  }
+  formatLegalities {
+    __typename
+    format {
+      __typename
+      name
+    }
+    legality {
+      __typename
+      name
+    }
+  }
+  frame {
+    __typename
+    name
+    description
+  }
+  frameEffects {
+    __typename
+    name
+    description
+  }
+  rulings {
+    __typename
+    datePublished
+    id
+    text
+  }
+  subtypes {
+    __typename
+    name
+  }
+  watermark {
+    __typename
+    name
+  }
+}

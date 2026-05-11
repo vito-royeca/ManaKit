@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22522" systemVersion="23B92" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="MGArtist" representedClassName="ManaKit.MGArtist" syncable="YES">
+        <attribute name="firstName" optional="YES" attributeType="String"/>
+        <attribute name="info" optional="YES" attributeType="String"/>
+        <attribute name="lastName" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="nameSection" optional="YES" attributeType="String"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="artists" inverseEntity="MGCard"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="name"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="MGCard" representedClassName="ManaKit.MGCard" syncable="YES">
+        <attribute name="arenaID" optional="YES" attributeType="String"/>
+        <attribute name="artCropURL" optional="YES" attributeType="String"/>
+        <attribute name="cardBackID" optional="YES" attributeType="String"/>
+        <attribute name="cmc" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="collectorNumber" optional="YES" attributeType="String"/>
+        <attribute name="displayTypeLine" optional="YES" transient="YES" attributeType="String"/>
+        <attribute name="faceOrder" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="flavorText" optional="YES" attributeType="String"/>
+        <attribute name="handModifier" optional="YES" attributeType="String"/>
+        <attribute name="illustrationID" optional="YES" attributeType="String"/>
+        <attribute name="isBooster" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isDigital" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isFoil" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isFullArt" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isHighResImage" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isNonFoil" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isOversized" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isPromo" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isReprint" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isReserved" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isStorySpotlight" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isTextless" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="lifeModifier" optional="YES" attributeType="String"/>
+        <attribute name="loyalty" optional="YES" attributeType="String"/>
+        <attribute name="manaCost" optional="YES" attributeType="String"/>
+        <attribute name="mtgoFoilID" optional="YES" attributeType="String"/>
+        <attribute name="mtgoID" optional="YES" attributeType="String"/>
+        <attribute name="multiverseIDs" optional="YES" attributeType="Binary"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="nameSection" optional="YES" attributeType="String"/>
+        <attribute name="newID" attributeType="String">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="normalURL" optional="YES" attributeType="String"/>
+        <attribute name="numberOrder" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="oracleId" optional="YES" attributeType="String"/>
+        <attribute name="oracleText" optional="YES" attributeType="String"/>
+        <attribute name="pngURL" optional="YES" attributeType="String"/>
+        <attribute name="power" optional="YES" attributeType="String"/>
+        <attribute name="printedName" optional="YES" attributeType="String"/>
+        <attribute name="printedText" optional="YES" attributeType="String"/>
+        <attribute name="printedTypeLine" optional="YES" attributeType="String"/>
+        <attribute name="releaseDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="tcgPlayerID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="toughness" optional="YES" attributeType="String"/>
+        <attribute name="typeLine" optional="YES" attributeType="String"/>
+        <relationship name="artists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGArtist" inverseName="cards" inverseEntity="MGArtist"/>
+        <relationship name="colorIdentities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGColor" inverseName="identities" inverseEntity="MGColor"/>
+        <relationship name="colorIndicators" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGColor" inverseName="indicators" inverseEntity="MGColor"/>
+        <relationship name="colors" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGColor" inverseName="cards" inverseEntity="MGColor"/>
+        <relationship name="componentParts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardComponentPart" inverseName="card" inverseEntity="MGCardComponentPart"/>
+        <relationship name="face" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGCard" inverseName="faces" inverseEntity="MGCard"/>
+        <relationship name="faces" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="face" inverseEntity="MGCard"/>
+        <relationship name="formatLegalities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardFormatLegality" inverseName="card" inverseEntity="MGCardFormatLegality"/>
+        <relationship name="frame" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGFrame" inverseName="cards" inverseEntity="MGFrame"/>
+        <relationship name="frameEffects" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGFrameEffect" inverseName="cards" inverseEntity="MGFrameEffect"/>
+        <relationship name="games" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGGame" inverseName="cards" inverseEntity="MGGame"/>
+        <relationship name="keywords" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGKeyword" inverseName="cards" inverseEntity="MGKeyword"/>
+        <relationship name="language" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGLanguage" inverseName="cards" inverseEntity="MGLanguage"/>
+        <relationship name="layout" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGLayout" inverseName="cards" inverseEntity="MGLayout"/>
+        <relationship name="otherLanguages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="otherLanguages" inverseEntity="MGCard"/>
+        <relationship name="otherPrintings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="otherPrintings" inverseEntity="MGCard"/>
+        <relationship name="parts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardComponentPart" inverseName="part" inverseEntity="MGCardComponentPart"/>
+        <relationship name="prices" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardPrice" inverseName="card" inverseEntity="MGCardPrice"/>
+        <relationship name="rarity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGRarity" inverseName="cards" inverseEntity="MGRarity"/>
+        <relationship name="rulings" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGRuling" inverseName="card" inverseEntity="MGRuling"/>
+        <relationship name="set" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGSet" inverseName="cards" inverseEntity="MGSet"/>
+        <relationship name="subtypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardType" inverseName="subtypes" inverseEntity="MGCardType"/>
+        <relationship name="supertypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardType" inverseName="supertypes" inverseEntity="MGCardType"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGCardType" inverseName="card" inverseEntity="MGCardType"/>
+        <relationship name="variation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGCard" inverseName="variations" inverseEntity="MGCard"/>
+        <relationship name="variations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="variation" inverseEntity="MGCard"/>
+        <relationship name="watermark" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGWatermark" inverseName="cards" inverseEntity="MGWatermark"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="newID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="MGCardComponentPart" representedClassName="ManaKit.MGCardComponentPart" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGCard" inverseName="componentParts" inverseEntity="MGCard"/>
+        <relationship name="component" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGComponent" inverseName="componentParts" inverseEntity="MGComponent"/>
+        <relationship name="part" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGCard" inverseName="parts" inverseEntity="MGCard"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="MGCardFormatLegality" representedClassName="ManaKit.MGCardFormatLegality" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGCard" inverseName="formatLegalities" inverseEntity="MGCard"/>
+        <relationship name="format" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGFormat" inverseName="cardFormatLegalities" inverseEntity="MGFormat"/>
+        <relationship name="legality" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGLegality" inverseName="cardFormatLegalities" inverseEntity="MGLegality"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="MGCardPrice" representedClassName="ManaKit.MGCardPrice" syncable="YES">
+        <attribute name="condition" optional="YES" attributeType="String"/>
+        <attribute name="dateUpdated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="directLow" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="high" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="isFoil" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="low" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="market" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="median" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="card" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGCard" inverseName="prices" inverseEntity="MGCard"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="MGCardType" representedClassName="ManaKit.MGCardType" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="nameSection" optional="YES" attributeType="String"/>
+        <relationship name="card" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="type" inverseEntity="MGCard"/>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardType" inverseName="parent" inverseEntity="MGCardType"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGCardType" inverseName="children" inverseEntity="MGCardType"/>
+        <relationship name="subtypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="subtypes" inverseEntity="MGCard"/>
+        <relationship name="supertypes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="supertypes" inverseEntity="MGCard"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="name"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="MGColor" representedClassName="ManaKit.MGColor" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="nameSection" optional="YES" attributeType="String"/>
+        <attribute name="symbol" optional="YES" attributeType="String"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="colors" inverseEntity="MGCard"/>
+        <relationship name="identities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="colorIdentities" inverseEntity="MGCard"/>
+        <relationship name="indicators" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="colorIndicators" inverseEntity="MGCard"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="name"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="MGComponent" representedClassName="ManaKit.MGComponent" syncable="YES">
+        <attribute name="name" attributeType="String">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="nameSection" optional="YES" attributeType="String"/>
+        <relationship name="componentParts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardComponentPart" inverseName="component" inverseEntity="MGCardComponentPart"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="name"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="MGFormat" representedClassName="ManaKit.MGFormat" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="nameSection" optional="YES" attributeType="String"/>
+        <relationship name="cardFormatLegalities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardFormatLegality" inverseName="format" inverseEntity="MGCardFormatLegality"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="name"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="MGFrame" representedClassName="ManaKit.MGFrame" syncable="YES">
+        <attribute name="description_" optional="YES" attributeType="String">
+            <userInfo>
+                <entry key="sync.remoteKey" value="description"/>
+            </userInfo>
+        </attribute>
+        <attribute name="name" optional="YES" attributeType="String">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="value"/>
+            </userInfo>
+        </attribute>
+        <attribute name="nameSection" optional="YES" attributeType="String"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="frame" inverseEntity="MGCard"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="name"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="MGFrameEffect" representedClassName="ManaKit.MGFrameEffect" syncable="YES">
+        <attribute name="description_" optional="YES" attributeType="String">
+            <userInfo>
+                <entry key="sync.remoteKey" value="description"/>
+            </userInfo>
+        </attribute>
+        <attribute name="id" optional="YES" attributeType="String">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="nameSection" optional="YES" attributeType="String"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="frameEffects" inverseEntity="MGCard"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="MGGame" representedClassName="ManaKit.MGGame" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="nameSection" optional="YES" attributeType="String"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="games" inverseEntity="MGCard"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="name"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="MGKeyword" representedClassName="ManaKit.MGKeyword" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="nameSection" optional="YES" attributeType="String"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="keywords" inverseEntity="MGCard"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="name"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="MGLanguage" representedClassName="ManaKit.MGLanguage" syncable="YES">
+        <attribute name="code" optional="YES" attributeType="String">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="displayCode" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="nameSection" optional="YES" attributeType="String"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="language" inverseEntity="MGCard"/>
+        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGSet" inverseName="languages" inverseEntity="MGSet"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="code"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="MGLayout" representedClassName="ManaKit.MGLayout" syncable="YES">
+        <attribute name="description_" optional="YES" attributeType="String">
+            <userInfo>
+                <entry key="sync.remoteKey" value="description"/>
+            </userInfo>
+        </attribute>
+        <attribute name="name" optional="YES" attributeType="String">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="nameSection" optional="YES" attributeType="String"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="layout" inverseEntity="MGCard"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="name"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="MGLegality" representedClassName="ManaKit.MGLegality" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="nameSection" optional="YES" attributeType="String"/>
+        <relationship name="cardFormatLegalities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCardFormatLegality" inverseName="legality" inverseEntity="MGCardFormatLegality"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="name"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="MGLocalCache" representedClassName="ManaKit.MGLocalCache" syncable="YES">
+        <attribute name="lastUpdated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="url" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="url"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="MGRarity" representedClassName="ManaKit.MGRarity" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="nameSection" optional="YES" attributeType="String"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="rarity" inverseEntity="MGCard"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="name"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="MGRule" representedClassName="ManaKit.MGRule" syncable="YES">
+        <attribute name="definition" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="order" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="term" optional="YES" attributeType="String"/>
+        <attribute name="termSection" optional="YES" attributeType="String"/>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGRule" inverseName="parent" inverseEntity="MGRule"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGRule" inverseName="children" inverseEntity="MGRule"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="MGRuling" representedClassName="ManaKit.MGRuling" syncable="YES">
+        <attribute name="datePublished" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="oracleId" optional="YES" attributeType="String"/>
+        <attribute name="text" optional="YES" attributeType="String"/>
+        <relationship name="card" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="rulings" inverseEntity="MGCard"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="MGSet" representedClassName="ManaKit.MGSet" syncable="YES">
+        <attribute name="cardCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="code" attributeType="String">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="displayReleaseDate" optional="YES" transient="YES" attributeType="String"/>
+        <attribute name="isFoilOnly" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isOnlineOnly" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="keyruneClass" optional="YES" attributeType="String"/>
+        <attribute name="keyruneUnicode" optional="YES" attributeType="String"/>
+        <attribute name="logoCode" optional="YES" attributeType="String"/>
+        <attribute name="mtgoCode" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="nameSection" optional="YES" attributeType="String"/>
+        <attribute name="releaseDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="tcgPlayerID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES">
+            <userInfo>
+                <entry key="sync.remoteKey" value="tcgplayer_id"/>
+            </userInfo>
+        </attribute>
+        <attribute name="yearSection" optional="YES" attributeType="String"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="set" inverseEntity="MGCard"/>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGSet" inverseName="parent" inverseEntity="MGSet"/>
+        <relationship name="languages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGLanguage" inverseName="sets" inverseEntity="MGLanguage"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGSet" inverseName="children" inverseEntity="MGSet"/>
+        <relationship name="setBlock" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGSetBlock" inverseName="sets" inverseEntity="MGSetBlock"/>
+        <relationship name="setType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MGSetType" inverseName="sets" inverseEntity="MGSetType"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="code"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="MGSetBlock" representedClassName="ManaKit.MGSetBlock" syncable="YES">
+        <attribute name="code" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="nameSection" optional="YES" attributeType="String"/>
+        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGSet" inverseName="setBlock" inverseEntity="MGSet"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="code"/>
+                <constraint value="name"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="MGSetType" representedClassName="ManaKit.MGSetType" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="nameSection" optional="YES" attributeType="String"/>
+        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGSet" inverseName="setType" inverseEntity="MGSet"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="name"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="MGWatermark" representedClassName="ManaKit.MGWatermark" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String">
+            <userInfo>
+                <entry key="hyper.isPrimaryKey" value="true"/>
+                <entry key="sync.isPrimaryKey" value="true"/>
+            </userInfo>
+        </attribute>
+        <attribute name="nameSection" optional="YES" attributeType="String"/>
+        <relationship name="cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MGCard" inverseName="watermark" inverseEntity="MGCard"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="name"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+</model>

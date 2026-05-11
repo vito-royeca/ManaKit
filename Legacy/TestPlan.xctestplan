@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "6E3BE1B1-C3C7-4262-B200-99F955FBEC56",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "ManaKitTests",
+        "name" : "ManaKitTests"
+      }
+    }
+  ],
+  "version" : 1
+}

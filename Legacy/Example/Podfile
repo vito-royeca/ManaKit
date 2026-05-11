@@ -1,0 +1,22 @@
+use_frameworks!
+
+def default_pods
+    pod 'ManaKit', :path => '../'
+    
+    #pod 'Kanna'
+end
+
+target 'ManaKit_Example' do
+    default_pods
+    platform :ios, "15.0"
+end
+
+target 'ManaKit_ExampleTests' do
+    default_pods
+    platform :ios, "15.0"
+end
+
+target 'ManaKit_ExampleUITests' do
+    default_pods
+    platform :ios, "15.0"
+end

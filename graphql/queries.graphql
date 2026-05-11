@@ -1,0 +1,69 @@
+query Set($input: SetByIDInput!) {
+  set(input: $input) {
+    ...SetInfo
+    cards {
+      ...CardBasicInfo
+    }
+  }
+}
+
+query Sets {
+  sets {
+    count
+    sets {
+      ...SetInfo
+    }
+  }
+}
+
+query SetsByName {
+  setsByName {
+    ...SectionedSets
+  }
+}
+
+query SetsByType {
+  setsByType {
+    ...SectionedSets
+  }
+}
+
+query SetsByYear {
+  setsByYear {
+    ...SectionedSets
+  }
+}
+
+query Card($id: String!) {
+  card(id: $id) {
+    ...CardCompleteInfo
+  }
+}
+
+query CardPrintings($id: String!, $languageID: String!) {
+  cardPrintings(id: $id, languageID: $languageID) {
+    count
+    cards {
+      ...CardBasicInfo
+    }
+  }
+}
+
+query CardsByIDs($ids: [String!]!) {
+  cardsByIDs(ids: $ids) {
+    count
+    cards {
+      ...CardBasicInfo
+    }
+  }
+}
+
+query Feeds {
+  feeds {
+    count
+    feeds {
+      title
+      url
+    }
+  }
+}

@@ -1,0 +1,897 @@
+{
+  "data": {
+    "card": {
+      "__typename": "MGCard",
+      "artCropURL": "https://cards.scryfall.io/art_crop/front/e/b/ebb6664d-23ca-456e-9916-afcd6f26aa7f.jpg",
+      "collectorNumber": "98",
+      "displayManaCost": "{B}",
+      "displayName": "Dark Ritual",
+      "displayPowerToughness": null,
+      "displayTypeLine": "Instant",
+      "id": "lea_en_98",
+      "faceOrder": 0,
+      "flavorText": null,
+      "keyruneColor": "1A1718",
+      "loyalty": null,
+      "manaCost": "{B}",
+      "numberOrder": 98,
+      "name": "Dark Ritual",
+      "normalURL": "https://cards.scryfall.io/normal/front/e/b/ebb6664d-23ca-456e-9916-afcd6f26aa7f.jpg",
+      "oracleText": "Add {B}{B}{B}.",
+      "pngURL": "https://cards.scryfall.io/png/front/e/b/ebb6664d-23ca-456e-9916-afcd6f26aa7f.png",
+      "power": null,
+      "printedName": null,
+      "printedText": null,
+      "printedTypeLine": null,
+      "toughness": null,
+      "typeLine": "Instant",
+      "colors": [
+        {
+          "__typename": "MGColor",
+          "name": "Black",
+          "symbol": "B"
+        }
+      ],
+      "language": {
+        "__typename": "MGLanguage",
+        "id": "en",
+        "displayID": "EN",
+        "name": "English"
+      },
+      "layout": {
+        "__typename": "MGLayout",
+        "id": "normal",
+        "name": "Normal",
+        "description": "A standard Magic card with one face"
+      },
+      "prices": [
+        {
+          "__typename": "MGCardPrice",
+          "low": 299.99,
+          "median": 318.72,
+          "high": 435,
+          "market": 300,
+          "directLow": null,
+          "isFoil": false
+        }
+      ],
+      "rarity": {
+        "__typename": "MGRarity",
+        "name": "Common"
+      },
+      "set": {
+        "__typename": "MGSet",
+        "name": "Limited Edition Alpha",
+        "keyruneUnicode": "e600"
+      },
+      "supertypes": [
+        {
+          "__typename": "MGCardType",
+          "name": "Instant"
+        }
+      ],
+      "faces": [],
+      "printings": [
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/e/f/ef9d3e48-85c2-4347-810f-a6a0725b288d.jpg",
+          "collectorNumber": "131",
+          "displayManaCost": " ",
+          "displayName": "Dark Ritual",
+          "displayPowerToughness": null,
+          "displayTypeLine": null,
+          "id": "tmc_en_131",
+          "faceOrder": null,
+          "flavorText": null,
+          "keyruneColor": "BF4427",
+          "loyalty": null,
+          "manaCost": null,
+          "numberOrder": null,
+          "name": "Dark Ritual",
+          "normalURL": "https://cards.scryfall.io/normal/front/e/f/ef9d3e48-85c2-4347-810f-a6a0725b288d.jpg",
+          "oracleText": null,
+          "pngURL": "https://cards.scryfall.io/png/front/e/f/ef9d3e48-85c2-4347-810f-a6a0725b288d.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": null,
+          "colors": [],
+          "language": {
+            "__typename": "MGLanguage",
+            "id": "en",
+            "displayID": null,
+            "name": "English"
+          },
+          "layout": null,
+          "prices": [
+            {
+              "__typename": "MGCardPrice",
+              "low": null,
+              "median": null,
+              "high": null,
+              "market": 12.19,
+              "directLow": null,
+              "isFoil": true
+            }
+          ],
+          "rarity": {
+            "__typename": "MGRarity",
+            "name": "Mythic"
+          },
+          "set": {
+            "__typename": "MGSet",
+            "name": "Teenage Mutant Ninja Turtles Eternal",
+            "keyruneUnicode": "ea15"
+          },
+          "supertypes": null
+        },
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/7/c/7cc0cfe1-7f13-4b1b-9a37-33ef457d3c62.jpg",
+          "collectorNumber": "8",
+          "displayManaCost": " ",
+          "displayName": "Dark Ritual",
+          "displayPowerToughness": null,
+          "displayTypeLine": null,
+          "id": "fca_en_8",
+          "faceOrder": null,
+          "flavorText": null,
+          "keyruneColor": "A58E4A",
+          "loyalty": null,
+          "manaCost": null,
+          "numberOrder": null,
+          "name": "Dark Ritual",
+          "normalURL": "https://cards.scryfall.io/normal/front/7/c/7cc0cfe1-7f13-4b1b-9a37-33ef457d3c62.jpg",
+          "oracleText": null,
+          "pngURL": "https://cards.scryfall.io/png/front/7/c/7cc0cfe1-7f13-4b1b-9a37-33ef457d3c62.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": null,
+          "colors": [],
+          "language": {
+            "__typename": "MGLanguage",
+            "id": "en",
+            "displayID": null,
+            "name": "English"
+          },
+          "layout": null,
+          "prices": [
+            {
+              "__typename": "MGCardPrice",
+              "low": null,
+              "median": null,
+              "high": null,
+              "market": 11.73,
+              "directLow": null,
+              "isFoil": false
+            }
+          ],
+          "rarity": {
+            "__typename": "MGRarity",
+            "name": "Rare"
+          },
+          "set": {
+            "__typename": "MGSet",
+            "name": "Final Fantasy: Through the Ages",
+            "keyruneUnicode": "e9f8"
+          },
+          "supertypes": null
+        },
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/e/d/ed01a644-f25c-44ee-aa42-688203032798.jpg",
+          "collectorNumber": "179",
+          "displayManaCost": " ",
+          "displayName": "Dark Ritual",
+          "displayPowerToughness": null,
+          "displayTypeLine": null,
+          "id": "mb2_en_179",
+          "faceOrder": null,
+          "flavorText": null,
+          "keyruneColor": "1A1718",
+          "loyalty": null,
+          "manaCost": null,
+          "numberOrder": null,
+          "name": "Dark Ritual",
+          "normalURL": "https://cards.scryfall.io/normal/front/e/d/ed01a644-f25c-44ee-aa42-688203032798.jpg",
+          "oracleText": null,
+          "pngURL": "https://cards.scryfall.io/png/front/e/d/ed01a644-f25c-44ee-aa42-688203032798.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": null,
+          "colors": [],
+          "language": {
+            "__typename": "MGLanguage",
+            "id": "en",
+            "displayID": null,
+            "name": "English"
+          },
+          "layout": null,
+          "prices": [
+            {
+              "__typename": "MGCardPrice",
+              "low": null,
+              "median": null,
+              "high": null,
+              "market": 8.31,
+              "directLow": null,
+              "isFoil": false
+            }
+          ],
+          "rarity": {
+            "__typename": "MGRarity",
+            "name": "Common"
+          },
+          "set": {
+            "__typename": "MGSet",
+            "name": "Mystery Booster 2",
+            "keyruneUnicode": "e9d9"
+          },
+          "supertypes": null
+        },
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/0/d/0de4d738-e71e-49ab-b842-e7ea785450e9.jpg",
+          "collectorNumber": "16",
+          "displayManaCost": " ",
+          "displayName": "Dark Ritual",
+          "displayPowerToughness": null,
+          "displayTypeLine": null,
+          "id": "slp_en_16",
+          "faceOrder": null,
+          "flavorText": null,
+          "keyruneColor": "A58E4A",
+          "loyalty": null,
+          "manaCost": null,
+          "numberOrder": null,
+          "name": "Dark Ritual",
+          "normalURL": "https://cards.scryfall.io/normal/front/0/d/0de4d738-e71e-49ab-b842-e7ea785450e9.jpg",
+          "oracleText": null,
+          "pngURL": "https://cards.scryfall.io/png/front/0/d/0de4d738-e71e-49ab-b842-e7ea785450e9.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": null,
+          "colors": [],
+          "language": {
+            "__typename": "MGLanguage",
+            "id": "en",
+            "displayID": null,
+            "name": "English"
+          },
+          "layout": null,
+          "prices": [],
+          "rarity": {
+            "__typename": "MGRarity",
+            "name": "Rare"
+          },
+          "set": {
+            "__typename": "MGSet",
+            "name": "Secret Lair Promo",
+            "keyruneUnicode": "e687"
+          },
+          "supertypes": null
+        },
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/f/5/f556b9b8-6811-4328-9297-f1e7876c2d7d.jpg",
+          "collectorNumber": "394",
+          "displayManaCost": " ",
+          "displayName": "Dark Ritual",
+          "displayPowerToughness": null,
+          "displayTypeLine": null,
+          "id": "30a_en_394",
+          "faceOrder": null,
+          "flavorText": null,
+          "keyruneColor": "1A1718",
+          "loyalty": null,
+          "manaCost": null,
+          "numberOrder": null,
+          "name": "Dark Ritual",
+          "normalURL": "https://cards.scryfall.io/normal/front/f/5/f556b9b8-6811-4328-9297-f1e7876c2d7d.jpg",
+          "oracleText": null,
+          "pngURL": "https://cards.scryfall.io/png/front/f/5/f556b9b8-6811-4328-9297-f1e7876c2d7d.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": null,
+          "colors": [],
+          "language": {
+            "__typename": "MGLanguage",
+            "id": "en",
+            "displayID": null,
+            "name": "English"
+          },
+          "layout": null,
+          "prices": [],
+          "rarity": {
+            "__typename": "MGRarity",
+            "name": "Common"
+          },
+          "set": {
+            "__typename": "MGSet",
+            "name": "30th Anniversary Edition",
+            "keyruneUnicode": "e9aa"
+          },
+          "supertypes": null
+        },
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/f/d/fdb2f93b-3278-4b42-9fde-163b735da738.jpg",
+          "collectorNumber": "97",
+          "displayManaCost": " ",
+          "displayName": "Dark Ritual",
+          "displayPowerToughness": null,
+          "displayTypeLine": null,
+          "id": "30a_en_97",
+          "faceOrder": null,
+          "flavorText": null,
+          "keyruneColor": "1A1718",
+          "loyalty": null,
+          "manaCost": null,
+          "numberOrder": null,
+          "name": "Dark Ritual",
+          "normalURL": "https://cards.scryfall.io/normal/front/f/d/fdb2f93b-3278-4b42-9fde-163b735da738.jpg",
+          "oracleText": null,
+          "pngURL": "https://cards.scryfall.io/png/front/f/d/fdb2f93b-3278-4b42-9fde-163b735da738.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": null,
+          "colors": [],
+          "language": {
+            "__typename": "MGLanguage",
+            "id": "en",
+            "displayID": null,
+            "name": "English"
+          },
+          "layout": null,
+          "prices": [],
+          "rarity": {
+            "__typename": "MGRarity",
+            "name": "Common"
+          },
+          "set": {
+            "__typename": "MGSet",
+            "name": "30th Anniversary Edition",
+            "keyruneUnicode": "e9aa"
+          },
+          "supertypes": null
+        },
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/a/5/a5dc69ff-b3d4-420e-858c-4880d852c415.jpg",
+          "collectorNumber": "196",
+          "displayManaCost": " ",
+          "displayName": "Dark Ritual",
+          "displayPowerToughness": null,
+          "displayTypeLine": null,
+          "id": "40k_en_196",
+          "faceOrder": null,
+          "flavorText": null,
+          "keyruneColor": "1A1718",
+          "loyalty": null,
+          "manaCost": null,
+          "numberOrder": null,
+          "name": "Dark Ritual",
+          "normalURL": "https://cards.scryfall.io/normal/front/a/5/a5dc69ff-b3d4-420e-858c-4880d852c415.jpg",
+          "oracleText": null,
+          "pngURL": "https://cards.scryfall.io/png/front/a/5/a5dc69ff-b3d4-420e-858c-4880d852c415.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": null,
+          "colors": [],
+          "language": {
+            "__typename": "MGLanguage",
+            "id": "en",
+            "displayID": null,
+            "name": "English"
+          },
+          "layout": null,
+          "prices": [
+            {
+              "__typename": "MGCardPrice",
+              "low": null,
+              "median": null,
+              "high": null,
+              "market": 5.93,
+              "directLow": null,
+              "isFoil": false
+            }
+          ],
+          "rarity": {
+            "__typename": "MGRarity",
+            "name": "Common"
+          },
+          "set": {
+            "__typename": "MGSet",
+            "name": "Warhammer 40,000 Commander",
+            "keyruneUnicode": "e998"
+          },
+          "supertypes": null
+        },
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/4/6/464127e8-9d82-44a3-95a3-6e7535e6fa2f.jpg",
+          "collectorNumber": "196★",
+          "displayManaCost": " ",
+          "displayName": "Dark Ritual",
+          "displayPowerToughness": null,
+          "displayTypeLine": null,
+          "id": "40k_en_196star",
+          "faceOrder": null,
+          "flavorText": null,
+          "keyruneColor": "1A1718",
+          "loyalty": null,
+          "manaCost": null,
+          "numberOrder": null,
+          "name": "Dark Ritual",
+          "normalURL": "https://cards.scryfall.io/normal/front/4/6/464127e8-9d82-44a3-95a3-6e7535e6fa2f.jpg",
+          "oracleText": null,
+          "pngURL": "https://cards.scryfall.io/png/front/4/6/464127e8-9d82-44a3-95a3-6e7535e6fa2f.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": null,
+          "colors": [],
+          "language": {
+            "__typename": "MGLanguage",
+            "id": "en",
+            "displayID": null,
+            "name": "English"
+          },
+          "layout": null,
+          "prices": [
+            {
+              "__typename": "MGCardPrice",
+              "low": null,
+              "median": null,
+              "high": null,
+              "market": 10.48,
+              "directLow": null,
+              "isFoil": true
+            }
+          ],
+          "rarity": {
+            "__typename": "MGRarity",
+            "name": "Common"
+          },
+          "set": {
+            "__typename": "MGSet",
+            "name": "Warhammer 40,000 Commander",
+            "keyruneUnicode": "e998"
+          },
+          "supertypes": null
+        },
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/2/0/20fec71b-a9e8-4b2d-b480-6a977e29a5a6.jpg",
+          "collectorNumber": "783",
+          "displayManaCost": " ",
+          "displayName": "Dark Ritual",
+          "displayPowerToughness": null,
+          "displayTypeLine": null,
+          "id": "j21_en_783",
+          "faceOrder": null,
+          "flavorText": null,
+          "keyruneColor": "1A1718",
+          "loyalty": null,
+          "manaCost": null,
+          "numberOrder": null,
+          "name": "Dark Ritual",
+          "normalURL": "https://cards.scryfall.io/normal/front/2/0/20fec71b-a9e8-4b2d-b480-6a977e29a5a6.jpg",
+          "oracleText": null,
+          "pngURL": "https://cards.scryfall.io/png/front/2/0/20fec71b-a9e8-4b2d-b480-6a977e29a5a6.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": null,
+          "colors": [],
+          "language": {
+            "__typename": "MGLanguage",
+            "id": "en",
+            "displayID": null,
+            "name": "English"
+          },
+          "layout": null,
+          "prices": [],
+          "rarity": {
+            "__typename": "MGRarity",
+            "name": "Common"
+          },
+          "set": {
+            "__typename": "MGSet",
+            "name": "Jumpstart: Historic Horizons",
+            "keyruneUnicode": "e983"
+          },
+          "supertypes": null
+        },
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/6/f/6fc57076-cac4-4f5e-956b-e3d77bd258b2.jpg",
+          "collectorNumber": "26",
+          "displayManaCost": " ",
+          "displayName": "Dark Ritual",
+          "displayPowerToughness": null,
+          "displayTypeLine": null,
+          "id": "sta_en_26",
+          "faceOrder": null,
+          "flavorText": null,
+          "keyruneColor": "A58E4A",
+          "loyalty": null,
+          "manaCost": null,
+          "numberOrder": null,
+          "name": "Dark Ritual",
+          "normalURL": "https://cards.scryfall.io/normal/front/6/f/6fc57076-cac4-4f5e-956b-e3d77bd258b2.jpg",
+          "oracleText": null,
+          "pngURL": "https://cards.scryfall.io/png/front/6/f/6fc57076-cac4-4f5e-956b-e3d77bd258b2.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": null,
+          "colors": [],
+          "language": {
+            "__typename": "MGLanguage",
+            "id": "en",
+            "displayID": null,
+            "name": "English"
+          },
+          "layout": null,
+          "prices": [
+            {
+              "__typename": "MGCardPrice",
+              "low": null,
+              "median": null,
+              "high": null,
+              "market": 14.98,
+              "directLow": null,
+              "isFoil": false
+            }
+          ],
+          "rarity": {
+            "__typename": "MGRarity",
+            "name": "Rare"
+          },
+          "set": {
+            "__typename": "MGSet",
+            "name": "Strixhaven Mystical Archive",
+            "keyruneUnicode": "e980"
+          },
+          "supertypes": null
+        }
+      ],
+      "otherLanguages": [],
+      "variations": [],
+      "arenaID": null,
+      "cmc": 1,
+      "handModifier": null,
+      "isBooster": true,
+      "isDigital": false,
+      "isFoil": false,
+      "isFullArt": false,
+      "isHighresImage": true,
+      "isNonfoil": true,
+      "isOversized": false,
+      "isPromo": false,
+      "isReprint": false,
+      "isReserved": false,
+      "isStorySpotlight": false,
+      "isTextless": false,
+      "lifeModifier": null,
+      "mtgoFoilID": null,
+      "mtgoID": null,
+      "multiverseIDs": [
+        54
+      ],
+      "releasedAt": "1993-08-05",
+      "tcgplayerID": 1080,
+      "artists": [
+        {
+          "__typename": "MGArtist",
+          "name": "Sandra Everingham"
+        }
+      ],
+      "colorIdentities": [
+        {
+          "__typename": "MGColor",
+          "name": "Black",
+          "symbol": "B"
+        }
+      ],
+      "colorIndicators": [],
+      "componentParts": [],
+      "formatLegalities": [
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Alchemy"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Not Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Brawl"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Commander"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Duel"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Banned"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Future"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Not Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Gladiator"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Historic"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Banned"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Legacy"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Modern"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Not Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Oathbreaker"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Banned"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Oldschool"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Pauper"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Paupercommander"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Penny"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Penny"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Not Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Pioneer"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Not Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Predh"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Premodern"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Standard"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Not Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Standardbrawl"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Not Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Timeless"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Tlr"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Vintage"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Legal"
+          }
+        }
+      ],
+      "frame": {
+        "__typename": "MGFrame",
+        "name": "1993",
+        "description": null
+      },
+      "frameEffects": [],
+      "rulings": [],
+      "subtypes": [
+        {
+          "__typename": "MGCardType",
+          "name": "Instant"
+        }
+      ],
+      "watermark": null
+    }
+  }
+}

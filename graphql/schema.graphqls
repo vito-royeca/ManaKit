@@ -1,0 +1,296 @@
+"""
+A directive used by the Apollo iOS client to annotate operations or fragments that should be used exclusively for generating local cache mutations instead of as standard operations.
+"""
+directive @apollo_client_ios_localCacheMutation on QUERY | MUTATION | SUBSCRIPTION | FRAGMENT_DEFINITION
+
+"""
+A directive used by the Apollo iOS code generation engine to generate custom import statements in operation or fragment definition files. An import statement to import a module with the name provided in the `module` argument will be added to the generated definition file.
+"""
+directive @import(
+  """The name of the module to import."""
+  module: String!
+) repeatable on QUERY | MUTATION | SUBSCRIPTION | FRAGMENT_DEFINITION
+
+"""Attach extra information to a given type."""
+directive @typePolicy(
+  """
+  A selection set containing fields used to compute the cache key of an object. Referenced fields must have non-nullable scalar types. Order is important.
+  """
+  keyFields: String!
+) on OBJECT | INTERFACE
+
+"""
+A directive used by Apollo iOS to map query input data to cache keys of objects.
+"""
+directive @fieldPolicy(
+  """The field you are setting the @fieldPolicy for."""
+  forField: String!
+
+  """Set of fields used to compute the cache key."""
+  keyArgs: String!
+) repeatable on OBJECT | INTERFACE
+
+"""
+Directs the executor to defer this fragment when the `if` argument is true or undefined.
+"""
+directive @defer(
+  """Deferred when true or undefined."""
+  if: Boolean
+
+  """Unique name"""
+  label: String
+) on FRAGMENT_SPREAD | INLINE_FRAGMENT
+
+scalar Date
+
+scalar DateTime
+
+"""Types"""
+type MGArtist {
+  firstName: String
+  info: String
+  lastName: String
+  name: String!
+}
+
+type MGCard {
+  arenaId: String
+  artCropUrl: String
+  cmc: Int
+  collectorNumber: String
+  displayManaCost: String
+  displayName: String
+  displayPowerToughness: String
+  displayTypeLine: String
+  faceOrder: Int
+  flavorText: String
+  handModifier: String
+  isBooster: Boolean
+  isDigital: Boolean
+  isFoil: Boolean
+  isFullArt: Boolean
+  isHighresImage: Boolean
+  isNonfoil: Boolean
+  isOversized: Boolean
+  isPromo: Boolean
+  isReprint: Boolean
+  isReserved: Boolean
+  isStorySpotlight: Boolean
+  isTextless: Boolean
+  keyruneColor: String
+  lifeModifier: String
+  loyalty: String
+  manaCost: String
+  mtgoFoilId: String
+  mtgoId: String
+  multiverseIds: [Int!]
+  numberOrder: Float
+  name: String
+  newId: String!
+  normalUrl: String
+  oracleText: String
+  pngUrl: String
+  power: String
+  printedName: String
+  printedText: String
+  printedTypeLine: String
+  releasedAt: DateTime
+  tcgplayerId: Int
+  toughness: String
+  typeLine: String
+  artists: [MGArtist!]!
+  colors: [MGColor!]!
+  colorIdentities: [MGColor!]!
+  colorIndicators: [MGColor!]!
+  componentParts: [MGCardComponent!]!
+  faces: [MGCard!]!
+  formatLegalities: [MGCardFormatLegality!]!
+  frame: MGFrame
+  frameEffects: [MGFrameEffect!]!
+  language: MGLanguage
+  layout: MGLayout
+  otherLanguages: [MGCard!]!
+  otherPrintings: [MGCard!]!
+  prices: [MGCardPrice!]
+  rarity: MGRarity
+  rulings: [MGRuling!]
+  set: MGSet
+  subtypes: [MGCardType!]!
+  supertypes: [MGCardType!]
+  variations: [MGCard!]!
+  watermark: MGWatermark
+}
+
+type MGCardComponent {
+  card: MGCard!
+  component: MGComponent!
+}
+
+type MGCardFormatLegality {
+  format: MGFormat!
+  legality: MGLegality!
+}
+
+type MGCardPrice {
+  id: Int!
+  low: Float
+  median: Float
+  high: Float
+  market: Float
+  directLow: Float
+  isFoil: Boolean
+  dateUpdated: DateTime
+}
+
+type MGCardType {
+  name: String!
+  parent: MGCardType
+}
+
+type MGColor {
+  name: String!
+  symbol: String!
+}
+
+type MGComponent {
+  name: String!
+}
+
+type MGFormat {
+  name: String!
+}
+
+type MGFrame {
+  description: String
+  name: String!
+}
+
+type MGFrameEffect {
+  description: String
+  name: String!
+}
+
+type MGLanguage {
+  code: String!
+  displayCode: String
+  name: String!
+}
+
+type MGLayout {
+  code: String!
+  description: String
+  name: String!
+}
+
+type MGLegality {
+  name: String!
+}
+
+type MGRarity {
+  name: String!
+}
+
+type MGRule {
+  definition: String!
+  id: Int!
+  order: Float!
+  parent: MGRule
+  term: String!
+}
+
+type MGRuling {
+  datePublished: Date!
+  id: Int!
+  text: String!
+}
+
+type MGSet {
+  bigLogoURL: String
+  cardCount: Int
+  code: String!
+  isFoilOnly: Boolean!
+  isOnlineOnly: Boolean!
+  keyruneUnicode: String!
+  keyruneClass: String!
+  logoCode: String
+  mtgoCode: String
+  name: String!
+  releaseDate: String!
+  smallLogoURL: String
+  tcgplayerId: Int!
+  yearSection: String!
+  cards: [MGCard!]!
+  children: [MGSet!]!
+  setParent: MGSet
+  setBlock: MGSetBlock
+  setType: MGSetType!
+  languages: [MGLanguage!]!
+}
+
+type MGSetType {
+  name: String!
+}
+
+type MGSetBlock {
+  name: String!
+  code: String!
+}
+
+type MGWatermark {
+  name: String!
+}
+
+type MGFeed {
+  title: String!
+  url: String!
+}
+
+"""Results"""
+type MGSets {
+  count: Int!
+  sets: [MGSet!]!
+}
+
+type MGSectionedSet {
+  count: Int!
+  section: String!
+  sets: [MGSet!]!
+}
+
+type MGSectionedSets {
+  count: Int!
+  sections: [String!]!
+  sectionedSets: [MGSectionedSet!]!
+}
+
+type MGCards {
+  count: Int!
+  cards: [MGCard!]!
+}
+
+type MGFeeds {
+  count: Int!
+  feeds: [MGFeed!]!
+}
+
+"""Inputs"""
+input SetByIDInput {
+  setID: String!
+  languageID: String!
+  sortedBy: String
+  orderBy: String
+}
+
+"""Queries"""
+type Query {
+  set(input: SetByIDInput): MGSet
+  sets: MGSets
+  setTypes: MGSetType
+  setsByName: MGSectionedSets
+  setsByType: MGSectionedSets
+  setsByYear: MGSectionedSets
+  card(id: String!): MGCard
+  cardPrintings(id: String!, languageID: String!): MGCards
+  cardsByIDs(ids: [String!]!): MGCards
+  feeds: MGFeeds
+}

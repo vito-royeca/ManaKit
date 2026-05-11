@@ -1,0 +1,1590 @@
+{
+  "data": {
+    "card": {
+      "__typename": "MGCard",
+      "artCropURL": "https://cards.scryfall.io/art_crop/front/2/4/24c0d87b-0049-4beb-b9cb-6f813b7aa7dc.jpg",
+      "collectorNumber": "141",
+      "displayManaCost": "{2}{R} // ",
+      "displayName": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+      "displayPowerToughness": null,
+      "displayTypeLine": "Enchantment — Saga",
+      "id": "neo_en_141",
+      "faceOrder": 0,
+      "flavorText": null,
+      "keyruneColor": "A58E4A",
+      "loyalty": null,
+      "manaCost": null,
+      "numberOrder": 141,
+      "name": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+      "normalURL": "https://cards.scryfall.io/normal/front/2/4/24c0d87b-0049-4beb-b9cb-6f813b7aa7dc.jpg",
+      "oracleText": null,
+      "pngURL": "https://cards.scryfall.io/png/front/2/4/24c0d87b-0049-4beb-b9cb-6f813b7aa7dc.png",
+      "power": null,
+      "printedName": null,
+      "printedText": null,
+      "printedTypeLine": null,
+      "toughness": null,
+      "typeLine": "Enchantment — Saga // Enchantment Creature — Goblin Shaman",
+      "colors": [],
+      "language": {
+        "__typename": "MGLanguage",
+        "id": "en",
+        "displayID": "EN",
+        "name": "English"
+      },
+      "layout": {
+        "__typename": "MGLayout",
+        "id": "transform",
+        "name": "Transform",
+        "description": "Double-sided cards that transform"
+      },
+      "prices": [
+        {
+          "__typename": "MGCardPrice",
+          "low": 4.99,
+          "median": 8.4,
+          "high": 1008.41,
+          "market": 8.1,
+          "directLow": 8.82,
+          "isFoil": false
+        }
+      ],
+      "rarity": {
+        "__typename": "MGRarity",
+        "name": "Rare"
+      },
+      "set": {
+        "__typename": "MGSet",
+        "name": "Kamigawa: Neon Dynasty",
+        "keyruneUnicode": "e98c"
+      },
+      "supertypes": [
+        {
+          "__typename": "MGCardType",
+          "name": "Enchantment"
+        },
+        {
+          "__typename": "MGCardType",
+          "name": "Enchantment Creature"
+        }
+      ],
+      "faces": [
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/2/4/24c0d87b-0049-4beb-b9cb-6f813b7aa7dc.jpg",
+          "collectorNumber": null,
+          "displayManaCost": "{2}{R}",
+          "displayName": "Fable of the Mirror-Breaker",
+          "displayPowerToughness": null,
+          "displayTypeLine": "Enchantment — Saga",
+          "id": "neo_en_141_0",
+          "faceOrder": 0,
+          "flavorText": null,
+          "keyruneColor": null,
+          "loyalty": null,
+          "manaCost": "{2}{R}",
+          "numberOrder": 0,
+          "name": "Fable of the Mirror-Breaker",
+          "normalURL": "https://cards.scryfall.io/normal/front/2/4/24c0d87b-0049-4beb-b9cb-6f813b7aa7dc.jpg",
+          "oracleText": "(As this Saga enters and after your draw step, add a lore counter.)\nI — Create a 2/2 red Goblin Shaman creature token with \"Whenever this token attacks, create a Treasure token.\"\nII — You may discard up to two cards. If you do, draw that many cards.\nIII — Exile this Saga, then return it to the battlefield transformed under your control.",
+          "pngURL": "https://cards.scryfall.io/png/front/2/4/24c0d87b-0049-4beb-b9cb-6f813b7aa7dc.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": "Enchantment — Saga",
+          "colors": [
+            {
+              "__typename": "MGColor",
+              "name": "Red",
+              "symbol": "R"
+            }
+          ],
+          "language": null,
+          "layout": null,
+          "prices": null,
+          "rarity": null,
+          "set": null,
+          "supertypes": null
+        },
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/back/2/4/24c0d87b-0049-4beb-b9cb-6f813b7aa7dc.jpg",
+          "collectorNumber": null,
+          "displayManaCost": "",
+          "displayName": "Reflection of Kiki-Jiki",
+          "displayPowerToughness": "2/2",
+          "displayTypeLine": "Enchantment Creature — Goblin Shaman",
+          "id": "neo_en_141_1",
+          "faceOrder": 1,
+          "flavorText": "Blessed by Keiga, the Tide Star, Kiki-Jiki would one day master the art of duplication.",
+          "keyruneColor": null,
+          "loyalty": null,
+          "manaCost": "",
+          "numberOrder": 0,
+          "name": "Reflection of Kiki-Jiki",
+          "normalURL": "https://cards.scryfall.io/normal/back/2/4/24c0d87b-0049-4beb-b9cb-6f813b7aa7dc.jpg",
+          "oracleText": "{1}, {T}: Create a token that's a copy of another target nonlegendary creature you control, except it has haste. Sacrifice it at the beginning of the next end step.",
+          "pngURL": "https://cards.scryfall.io/png/back/2/4/24c0d87b-0049-4beb-b9cb-6f813b7aa7dc.png",
+          "power": "2",
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": "2",
+          "typeLine": "Enchantment Creature — Goblin Shaman",
+          "colors": [
+            {
+              "__typename": "MGColor",
+              "name": "Red",
+              "symbol": "R"
+            }
+          ],
+          "language": null,
+          "layout": null,
+          "prices": null,
+          "rarity": null,
+          "set": null,
+          "supertypes": null
+        }
+      ],
+      "printings": [
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/3/d/3d4b9d4e-ab16-4d81-ac15-e84b351ef2dd.jpg",
+          "collectorNumber": "44",
+          "displayManaCost": "  //  ",
+          "displayName": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "displayPowerToughness": null,
+          "displayTypeLine": null,
+          "id": "sch_en_44",
+          "faceOrder": null,
+          "flavorText": null,
+          "keyruneColor": "A58E4A",
+          "loyalty": null,
+          "manaCost": null,
+          "numberOrder": null,
+          "name": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "normalURL": "https://cards.scryfall.io/normal/front/3/d/3d4b9d4e-ab16-4d81-ac15-e84b351ef2dd.jpg",
+          "oracleText": null,
+          "pngURL": "https://cards.scryfall.io/png/front/3/d/3d4b9d4e-ab16-4d81-ac15-e84b351ef2dd.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": null,
+          "colors": [],
+          "language": {
+            "__typename": "MGLanguage",
+            "id": "en",
+            "displayID": null,
+            "name": "English"
+          },
+          "layout": null,
+          "prices": [],
+          "rarity": {
+            "__typename": "MGRarity",
+            "name": "Rare"
+          },
+          "set": {
+            "__typename": "MGSet",
+            "name": "Store Championships",
+            "keyruneUnicode": "e687"
+          },
+          "supertypes": null
+        },
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/2/4/24c0d87b-0049-4beb-b9cb-6f813b7aa7dc.jpg",
+          "collectorNumber": "141",
+          "displayManaCost": "  //  ",
+          "displayName": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "displayPowerToughness": null,
+          "displayTypeLine": null,
+          "id": "neo_en_141",
+          "faceOrder": null,
+          "flavorText": null,
+          "keyruneColor": "A58E4A",
+          "loyalty": null,
+          "manaCost": null,
+          "numberOrder": null,
+          "name": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "normalURL": "https://cards.scryfall.io/normal/front/2/4/24c0d87b-0049-4beb-b9cb-6f813b7aa7dc.jpg",
+          "oracleText": null,
+          "pngURL": "https://cards.scryfall.io/png/front/2/4/24c0d87b-0049-4beb-b9cb-6f813b7aa7dc.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": null,
+          "colors": [],
+          "language": {
+            "__typename": "MGLanguage",
+            "id": "en",
+            "displayID": null,
+            "name": "English"
+          },
+          "layout": null,
+          "prices": [
+            {
+              "__typename": "MGCardPrice",
+              "low": null,
+              "median": null,
+              "high": null,
+              "market": 8.1,
+              "directLow": null,
+              "isFoil": false
+            }
+          ],
+          "rarity": {
+            "__typename": "MGRarity",
+            "name": "Rare"
+          },
+          "set": {
+            "__typename": "MGSet",
+            "name": "Kamigawa: Neon Dynasty",
+            "keyruneUnicode": "e98c"
+          },
+          "supertypes": null
+        },
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/e/c/eca77d44-2e1c-4b97-a4c4-e7ac3b576440.jpg",
+          "collectorNumber": "141s",
+          "displayManaCost": "  //  ",
+          "displayName": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "displayPowerToughness": null,
+          "displayTypeLine": null,
+          "id": "pneo_en_141s",
+          "faceOrder": null,
+          "flavorText": null,
+          "keyruneColor": "A58E4A",
+          "loyalty": null,
+          "manaCost": null,
+          "numberOrder": null,
+          "name": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "normalURL": "https://cards.scryfall.io/normal/front/e/c/eca77d44-2e1c-4b97-a4c4-e7ac3b576440.jpg",
+          "oracleText": null,
+          "pngURL": "https://cards.scryfall.io/png/front/e/c/eca77d44-2e1c-4b97-a4c4-e7ac3b576440.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": null,
+          "colors": [],
+          "language": {
+            "__typename": "MGLanguage",
+            "id": "en",
+            "displayID": null,
+            "name": "English"
+          },
+          "layout": null,
+          "prices": [
+            {
+              "__typename": "MGCardPrice",
+              "low": null,
+              "median": null,
+              "high": null,
+              "market": 10.34,
+              "directLow": null,
+              "isFoil": true
+            }
+          ],
+          "rarity": {
+            "__typename": "MGRarity",
+            "name": "Rare"
+          },
+          "set": {
+            "__typename": "MGSet",
+            "name": "Kamigawa: Neon Dynasty Promos",
+            "keyruneUnicode": "e98c"
+          },
+          "supertypes": null
+        },
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/0/b/0b696cd1-0d72-4df5-bacc-dc77e62f9a13.jpg",
+          "collectorNumber": "357",
+          "displayManaCost": "  //  ",
+          "displayName": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "displayPowerToughness": null,
+          "displayTypeLine": null,
+          "id": "neo_en_357",
+          "faceOrder": null,
+          "flavorText": null,
+          "keyruneColor": "A58E4A",
+          "loyalty": null,
+          "manaCost": null,
+          "numberOrder": null,
+          "name": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "normalURL": "https://cards.scryfall.io/normal/front/0/b/0b696cd1-0d72-4df5-bacc-dc77e62f9a13.jpg",
+          "oracleText": null,
+          "pngURL": "https://cards.scryfall.io/png/front/0/b/0b696cd1-0d72-4df5-bacc-dc77e62f9a13.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": null,
+          "colors": [],
+          "language": {
+            "__typename": "MGLanguage",
+            "id": "en",
+            "displayID": null,
+            "name": "English"
+          },
+          "layout": null,
+          "prices": [
+            {
+              "__typename": "MGCardPrice",
+              "low": null,
+              "median": null,
+              "high": null,
+              "market": 9.09,
+              "directLow": null,
+              "isFoil": false
+            }
+          ],
+          "rarity": {
+            "__typename": "MGRarity",
+            "name": "Rare"
+          },
+          "set": {
+            "__typename": "MGSet",
+            "name": "Kamigawa: Neon Dynasty",
+            "keyruneUnicode": "e98c"
+          },
+          "supertypes": null
+        },
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/6/d/6dee0388-a78d-4b3c-a0c5-25655e14115e.jpg",
+          "collectorNumber": "465",
+          "displayManaCost": "  //  ",
+          "displayName": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "displayPowerToughness": null,
+          "displayTypeLine": null,
+          "id": "neo_en_465",
+          "faceOrder": null,
+          "flavorText": null,
+          "keyruneColor": "A58E4A",
+          "loyalty": null,
+          "manaCost": null,
+          "numberOrder": null,
+          "name": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "normalURL": "https://cards.scryfall.io/normal/front/6/d/6dee0388-a78d-4b3c-a0c5-25655e14115e.jpg",
+          "oracleText": null,
+          "pngURL": "https://cards.scryfall.io/png/front/6/d/6dee0388-a78d-4b3c-a0c5-25655e14115e.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": null,
+          "colors": [],
+          "language": {
+            "__typename": "MGLanguage",
+            "id": "en",
+            "displayID": null,
+            "name": "English"
+          },
+          "layout": null,
+          "prices": [
+            {
+              "__typename": "MGCardPrice",
+              "low": null,
+              "median": null,
+              "high": null,
+              "market": 7.92,
+              "directLow": null,
+              "isFoil": false
+            }
+          ],
+          "rarity": {
+            "__typename": "MGRarity",
+            "name": "Rare"
+          },
+          "set": {
+            "__typename": "MGSet",
+            "name": "Kamigawa: Neon Dynasty",
+            "keyruneUnicode": "e98c"
+          },
+          "supertypes": null
+        },
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/c/6/c604ee2e-5d26-4706-968b-75e84e7168f6.jpg",
+          "collectorNumber": "98009",
+          "displayManaCost": "  //  ",
+          "displayName": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "displayPowerToughness": null,
+          "displayTypeLine": null,
+          "id": "prm_en_98009",
+          "faceOrder": null,
+          "flavorText": null,
+          "keyruneColor": "A58E4A",
+          "loyalty": null,
+          "manaCost": null,
+          "numberOrder": null,
+          "name": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "normalURL": "https://cards.scryfall.io/normal/front/c/6/c604ee2e-5d26-4706-968b-75e84e7168f6.jpg",
+          "oracleText": null,
+          "pngURL": "https://cards.scryfall.io/png/front/c/6/c604ee2e-5d26-4706-968b-75e84e7168f6.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": null,
+          "colors": [],
+          "language": {
+            "__typename": "MGLanguage",
+            "id": "en",
+            "displayID": null,
+            "name": "English"
+          },
+          "layout": null,
+          "prices": [],
+          "rarity": {
+            "__typename": "MGRarity",
+            "name": "Rare"
+          },
+          "set": {
+            "__typename": "MGSet",
+            "name": "Magic Online Promos",
+            "keyruneUnicode": "e91b"
+          },
+          "supertypes": null
+        }
+      ],
+      "otherLanguages": [
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/a/f/afe18d5c-22be-4ed5-bca1-860249e598ab.jpg",
+          "collectorNumber": "141",
+          "displayManaCost": "  //  ",
+          "displayName": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "displayPowerToughness": null,
+          "displayTypeLine": null,
+          "id": "neo_de_141",
+          "faceOrder": null,
+          "flavorText": null,
+          "keyruneColor": "A58E4A",
+          "loyalty": null,
+          "manaCost": null,
+          "numberOrder": null,
+          "name": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "normalURL": "https://cards.scryfall.io/normal/front/a/f/afe18d5c-22be-4ed5-bca1-860249e598ab.jpg",
+          "oracleText": null,
+          "pngURL": "https://cards.scryfall.io/png/front/a/f/afe18d5c-22be-4ed5-bca1-860249e598ab.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": null,
+          "colors": [],
+          "language": {
+            "__typename": "MGLanguage",
+            "id": "de",
+            "displayID": "DE",
+            "name": "German"
+          },
+          "layout": null,
+          "prices": null,
+          "rarity": {
+            "__typename": "MGRarity",
+            "name": "Rare"
+          },
+          "set": {
+            "__typename": "MGSet",
+            "name": "Kamigawa: Neon Dynasty",
+            "keyruneUnicode": "e98c"
+          },
+          "supertypes": null
+        },
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/9/3/93b07dd1-a0a1-4de3-bb0c-c132a0e250fc.jpg",
+          "collectorNumber": "141",
+          "displayManaCost": "  //  ",
+          "displayName": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "displayPowerToughness": null,
+          "displayTypeLine": null,
+          "id": "neo_es_141",
+          "faceOrder": null,
+          "flavorText": null,
+          "keyruneColor": "A58E4A",
+          "loyalty": null,
+          "manaCost": null,
+          "numberOrder": null,
+          "name": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "normalURL": "https://cards.scryfall.io/normal/front/9/3/93b07dd1-a0a1-4de3-bb0c-c132a0e250fc.jpg",
+          "oracleText": null,
+          "pngURL": "https://cards.scryfall.io/png/front/9/3/93b07dd1-a0a1-4de3-bb0c-c132a0e250fc.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": null,
+          "colors": [],
+          "language": {
+            "__typename": "MGLanguage",
+            "id": "es",
+            "displayID": "ES",
+            "name": "Spanish"
+          },
+          "layout": null,
+          "prices": null,
+          "rarity": {
+            "__typename": "MGRarity",
+            "name": "Rare"
+          },
+          "set": {
+            "__typename": "MGSet",
+            "name": "Kamigawa: Neon Dynasty",
+            "keyruneUnicode": "e98c"
+          },
+          "supertypes": null
+        },
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/a/9/a9f77209-aa7b-4936-9fb1-854db7e6f876.jpg",
+          "collectorNumber": "141",
+          "displayManaCost": "  //  ",
+          "displayName": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "displayPowerToughness": null,
+          "displayTypeLine": null,
+          "id": "neo_fr_141",
+          "faceOrder": null,
+          "flavorText": null,
+          "keyruneColor": "A58E4A",
+          "loyalty": null,
+          "manaCost": null,
+          "numberOrder": null,
+          "name": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "normalURL": "https://cards.scryfall.io/normal/front/a/9/a9f77209-aa7b-4936-9fb1-854db7e6f876.jpg",
+          "oracleText": null,
+          "pngURL": "https://cards.scryfall.io/png/front/a/9/a9f77209-aa7b-4936-9fb1-854db7e6f876.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": null,
+          "colors": [],
+          "language": {
+            "__typename": "MGLanguage",
+            "id": "fr",
+            "displayID": "FR",
+            "name": "French"
+          },
+          "layout": null,
+          "prices": null,
+          "rarity": {
+            "__typename": "MGRarity",
+            "name": "Rare"
+          },
+          "set": {
+            "__typename": "MGSet",
+            "name": "Kamigawa: Neon Dynasty",
+            "keyruneUnicode": "e98c"
+          },
+          "supertypes": null
+        },
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/6/a/6aa8009a-6fb2-4de0-b9fe-e0902f5a42ad.jpg",
+          "collectorNumber": "141",
+          "displayManaCost": "  //  ",
+          "displayName": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "displayPowerToughness": null,
+          "displayTypeLine": null,
+          "id": "neo_it_141",
+          "faceOrder": null,
+          "flavorText": null,
+          "keyruneColor": "A58E4A",
+          "loyalty": null,
+          "manaCost": null,
+          "numberOrder": null,
+          "name": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "normalURL": "https://cards.scryfall.io/normal/front/6/a/6aa8009a-6fb2-4de0-b9fe-e0902f5a42ad.jpg",
+          "oracleText": null,
+          "pngURL": "https://cards.scryfall.io/png/front/6/a/6aa8009a-6fb2-4de0-b9fe-e0902f5a42ad.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": null,
+          "colors": [],
+          "language": {
+            "__typename": "MGLanguage",
+            "id": "it",
+            "displayID": "IT",
+            "name": "Italian"
+          },
+          "layout": null,
+          "prices": null,
+          "rarity": {
+            "__typename": "MGRarity",
+            "name": "Rare"
+          },
+          "set": {
+            "__typename": "MGSet",
+            "name": "Kamigawa: Neon Dynasty",
+            "keyruneUnicode": "e98c"
+          },
+          "supertypes": null
+        },
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/9/d/9dc5d989-dba5-45a8-8537-c291bf49e545.jpg",
+          "collectorNumber": "141",
+          "displayManaCost": "  //  ",
+          "displayName": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "displayPowerToughness": null,
+          "displayTypeLine": null,
+          "id": "neo_ja_141",
+          "faceOrder": null,
+          "flavorText": null,
+          "keyruneColor": "A58E4A",
+          "loyalty": null,
+          "manaCost": null,
+          "numberOrder": null,
+          "name": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "normalURL": "https://cards.scryfall.io/normal/front/9/d/9dc5d989-dba5-45a8-8537-c291bf49e545.jpg",
+          "oracleText": null,
+          "pngURL": "https://cards.scryfall.io/png/front/9/d/9dc5d989-dba5-45a8-8537-c291bf49e545.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": null,
+          "colors": [],
+          "language": {
+            "__typename": "MGLanguage",
+            "id": "ja",
+            "displayID": "JP",
+            "name": "Japanese"
+          },
+          "layout": null,
+          "prices": null,
+          "rarity": {
+            "__typename": "MGRarity",
+            "name": "Rare"
+          },
+          "set": {
+            "__typename": "MGSet",
+            "name": "Kamigawa: Neon Dynasty",
+            "keyruneUnicode": "e98c"
+          },
+          "supertypes": null
+        },
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/a/1/a1d42b80-7e87-4a7e-a4e1-a5bf70a2b273.jpg",
+          "collectorNumber": "141",
+          "displayManaCost": "  //  ",
+          "displayName": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "displayPowerToughness": null,
+          "displayTypeLine": null,
+          "id": "neo_pt_141",
+          "faceOrder": null,
+          "flavorText": null,
+          "keyruneColor": "A58E4A",
+          "loyalty": null,
+          "manaCost": null,
+          "numberOrder": null,
+          "name": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "normalURL": "https://cards.scryfall.io/normal/front/a/1/a1d42b80-7e87-4a7e-a4e1-a5bf70a2b273.jpg",
+          "oracleText": null,
+          "pngURL": "https://cards.scryfall.io/png/front/a/1/a1d42b80-7e87-4a7e-a4e1-a5bf70a2b273.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": null,
+          "colors": [],
+          "language": {
+            "__typename": "MGLanguage",
+            "id": "pt",
+            "displayID": "PT",
+            "name": "Portuguese"
+          },
+          "layout": null,
+          "prices": null,
+          "rarity": {
+            "__typename": "MGRarity",
+            "name": "Rare"
+          },
+          "set": {
+            "__typename": "MGSet",
+            "name": "Kamigawa: Neon Dynasty",
+            "keyruneUnicode": "e98c"
+          },
+          "supertypes": null
+        },
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/c/d/cdb370b5-5b1e-482d-95f3-750e33e51e35.jpg",
+          "collectorNumber": "141",
+          "displayManaCost": "  //  ",
+          "displayName": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "displayPowerToughness": null,
+          "displayTypeLine": null,
+          "id": "neo_ru_141",
+          "faceOrder": null,
+          "flavorText": null,
+          "keyruneColor": "A58E4A",
+          "loyalty": null,
+          "manaCost": null,
+          "numberOrder": null,
+          "name": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "normalURL": "https://cards.scryfall.io/normal/front/c/d/cdb370b5-5b1e-482d-95f3-750e33e51e35.jpg",
+          "oracleText": null,
+          "pngURL": "https://cards.scryfall.io/png/front/c/d/cdb370b5-5b1e-482d-95f3-750e33e51e35.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": null,
+          "colors": [],
+          "language": {
+            "__typename": "MGLanguage",
+            "id": "ru",
+            "displayID": "RU",
+            "name": "Russian"
+          },
+          "layout": null,
+          "prices": null,
+          "rarity": {
+            "__typename": "MGRarity",
+            "name": "Rare"
+          },
+          "set": {
+            "__typename": "MGSet",
+            "name": "Kamigawa: Neon Dynasty",
+            "keyruneUnicode": "e98c"
+          },
+          "supertypes": null
+        },
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/c/6/c622d393-481a-4624-aca3-66568ba41c15.jpg",
+          "collectorNumber": "141",
+          "displayManaCost": "  //  ",
+          "displayName": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "displayPowerToughness": null,
+          "displayTypeLine": null,
+          "id": "neo_zhs_141",
+          "faceOrder": null,
+          "flavorText": null,
+          "keyruneColor": "A58E4A",
+          "loyalty": null,
+          "manaCost": null,
+          "numberOrder": null,
+          "name": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "normalURL": "https://cards.scryfall.io/normal/front/c/6/c622d393-481a-4624-aca3-66568ba41c15.jpg",
+          "oracleText": null,
+          "pngURL": "https://cards.scryfall.io/png/front/c/6/c622d393-481a-4624-aca3-66568ba41c15.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": null,
+          "colors": [],
+          "language": {
+            "__typename": "MGLanguage",
+            "id": "zhs",
+            "displayID": "CS",
+            "name": "Simplified Chinese"
+          },
+          "layout": null,
+          "prices": null,
+          "rarity": {
+            "__typename": "MGRarity",
+            "name": "Rare"
+          },
+          "set": {
+            "__typename": "MGSet",
+            "name": "Kamigawa: Neon Dynasty",
+            "keyruneUnicode": "e98c"
+          },
+          "supertypes": null
+        }
+      ],
+      "variations": [
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/0/b/0b696cd1-0d72-4df5-bacc-dc77e62f9a13.jpg",
+          "collectorNumber": "357",
+          "displayManaCost": "  //  ",
+          "displayName": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "displayPowerToughness": null,
+          "displayTypeLine": null,
+          "id": "neo_en_357",
+          "faceOrder": null,
+          "flavorText": null,
+          "keyruneColor": "A58E4A",
+          "loyalty": null,
+          "manaCost": null,
+          "numberOrder": null,
+          "name": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "normalURL": "https://cards.scryfall.io/normal/front/0/b/0b696cd1-0d72-4df5-bacc-dc77e62f9a13.jpg",
+          "oracleText": null,
+          "pngURL": "https://cards.scryfall.io/png/front/0/b/0b696cd1-0d72-4df5-bacc-dc77e62f9a13.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": null,
+          "colors": [],
+          "language": {
+            "__typename": "MGLanguage",
+            "id": "en",
+            "displayID": null,
+            "name": "English"
+          },
+          "layout": null,
+          "prices": null,
+          "rarity": {
+            "__typename": "MGRarity",
+            "name": "Rare"
+          },
+          "set": {
+            "__typename": "MGSet",
+            "name": "Kamigawa: Neon Dynasty",
+            "keyruneUnicode": "e98c"
+          },
+          "supertypes": null
+        },
+        {
+          "__typename": "MGCard",
+          "artCropURL": "https://cards.scryfall.io/art_crop/front/6/d/6dee0388-a78d-4b3c-a0c5-25655e14115e.jpg",
+          "collectorNumber": "465",
+          "displayManaCost": "  //  ",
+          "displayName": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "displayPowerToughness": null,
+          "displayTypeLine": null,
+          "id": "neo_en_465",
+          "faceOrder": null,
+          "flavorText": null,
+          "keyruneColor": "A58E4A",
+          "loyalty": null,
+          "manaCost": null,
+          "numberOrder": null,
+          "name": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "normalURL": "https://cards.scryfall.io/normal/front/6/d/6dee0388-a78d-4b3c-a0c5-25655e14115e.jpg",
+          "oracleText": null,
+          "pngURL": "https://cards.scryfall.io/png/front/6/d/6dee0388-a78d-4b3c-a0c5-25655e14115e.png",
+          "power": null,
+          "printedName": null,
+          "printedText": null,
+          "printedTypeLine": null,
+          "toughness": null,
+          "typeLine": null,
+          "colors": [],
+          "language": {
+            "__typename": "MGLanguage",
+            "id": "en",
+            "displayID": null,
+            "name": "English"
+          },
+          "layout": null,
+          "prices": null,
+          "rarity": {
+            "__typename": "MGRarity",
+            "name": "Rare"
+          },
+          "set": {
+            "__typename": "MGSet",
+            "name": "Kamigawa: Neon Dynasty",
+            "keyruneUnicode": "e98c"
+          },
+          "supertypes": null
+        }
+      ],
+      "arenaID": null,
+      "cmc": 3,
+      "handModifier": null,
+      "isBooster": true,
+      "isDigital": false,
+      "isFoil": true,
+      "isFullArt": false,
+      "isHighresImage": true,
+      "isNonfoil": true,
+      "isOversized": false,
+      "isPromo": false,
+      "isReprint": false,
+      "isReserved": false,
+      "isStorySpotlight": false,
+      "isTextless": false,
+      "lifeModifier": null,
+      "mtgoFoilID": null,
+      "mtgoID": null,
+      "multiverseIDs": [
+        548443,
+        548444
+      ],
+      "releasedAt": "2022-02-18",
+      "tcgplayerID": 262222,
+      "artists": [
+        {
+          "__typename": "MGArtist",
+          "name": "Joseph Meehan"
+        }
+      ],
+      "colorIdentities": [
+        {
+          "__typename": "MGColor",
+          "name": "Red",
+          "symbol": "R"
+        }
+      ],
+      "colorIndicators": [],
+      "componentParts": [
+        {
+          "__typename": "MGCardComponent",
+          "card": {
+            "__typename": "MGCard",
+            "artCropURL": "https://cards.scryfall.io/art_crop/front/6/d/6dee0388-a78d-4b3c-a0c5-25655e14115e.jpg",
+            "collectorNumber": "465",
+            "displayManaCost": "  //  ",
+            "displayName": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+            "displayPowerToughness": null,
+            "displayTypeLine": null,
+            "id": "neo_en_465",
+            "faceOrder": null,
+            "flavorText": null,
+            "keyruneColor": null,
+            "loyalty": null,
+            "manaCost": null,
+            "numberOrder": null,
+            "name": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+            "normalURL": "https://cards.scryfall.io/normal/front/6/d/6dee0388-a78d-4b3c-a0c5-25655e14115e.jpg",
+            "oracleText": null,
+            "pngURL": "https://cards.scryfall.io/png/front/6/d/6dee0388-a78d-4b3c-a0c5-25655e14115e.png",
+            "power": null,
+            "printedName": null,
+            "printedText": null,
+            "printedTypeLine": null,
+            "toughness": null,
+            "typeLine": null,
+            "colors": [],
+            "language": {
+              "__typename": "MGLanguage",
+              "id": "en",
+              "displayID": null,
+              "name": "English"
+            },
+            "layout": null,
+            "prices": null,
+            "rarity": null,
+            "set": {
+              "__typename": "MGSet",
+              "name": "Kamigawa: Neon Dynasty",
+              "keyruneUnicode": "e98c"
+            },
+            "supertypes": null,
+            "faces": [
+              {
+                "__typename": "MGCard",
+                "artCropURL": "https://cards.scryfall.io/art_crop/front/6/d/6dee0388-a78d-4b3c-a0c5-25655e14115e.jpg",
+                "collectorNumber": null,
+                "displayManaCost": " ",
+                "displayName": "Fable of the Mirror-Breaker",
+                "displayPowerToughness": null,
+                "displayTypeLine": null,
+                "id": "neo_en_465_0",
+                "faceOrder": null,
+                "flavorText": null,
+                "keyruneColor": null,
+                "loyalty": null,
+                "manaCost": null,
+                "numberOrder": null,
+                "name": "Fable of the Mirror-Breaker",
+                "normalURL": "https://cards.scryfall.io/normal/front/6/d/6dee0388-a78d-4b3c-a0c5-25655e14115e.jpg",
+                "oracleText": null,
+                "pngURL": "https://cards.scryfall.io/png/front/6/d/6dee0388-a78d-4b3c-a0c5-25655e14115e.png",
+                "power": null,
+                "printedName": null,
+                "printedText": null,
+                "printedTypeLine": null,
+                "toughness": null,
+                "typeLine": null,
+                "colors": [],
+                "language": null,
+                "layout": null,
+                "prices": null,
+                "rarity": null,
+                "set": null,
+                "supertypes": null
+              },
+              {
+                "__typename": "MGCard",
+                "artCropURL": "https://cards.scryfall.io/art_crop/back/6/d/6dee0388-a78d-4b3c-a0c5-25655e14115e.jpg",
+                "collectorNumber": null,
+                "displayManaCost": " ",
+                "displayName": "Reflection of Kiki-Jiki",
+                "displayPowerToughness": null,
+                "displayTypeLine": null,
+                "id": "neo_en_465_1",
+                "faceOrder": null,
+                "flavorText": null,
+                "keyruneColor": null,
+                "loyalty": null,
+                "manaCost": null,
+                "numberOrder": null,
+                "name": "Reflection of Kiki-Jiki",
+                "normalURL": "https://cards.scryfall.io/normal/back/6/d/6dee0388-a78d-4b3c-a0c5-25655e14115e.jpg",
+                "oracleText": null,
+                "pngURL": "https://cards.scryfall.io/png/back/6/d/6dee0388-a78d-4b3c-a0c5-25655e14115e.png",
+                "power": null,
+                "printedName": null,
+                "printedText": null,
+                "printedTypeLine": null,
+                "toughness": null,
+                "typeLine": null,
+                "colors": [],
+                "language": null,
+                "layout": null,
+                "prices": null,
+                "rarity": null,
+                "set": null,
+                "supertypes": null
+              }
+            ],
+            "printings": [],
+            "otherLanguages": [],
+            "variations": []
+          },
+          "component": {
+            "__typename": "MGComponent",
+            "name": "Combo Piece"
+          }
+        },
+        {
+          "__typename": "MGCardComponent",
+          "card": {
+            "__typename": "MGCard",
+            "artCropURL": "https://cards.scryfall.io/art_crop/front/6/9/6911181d-573b-41eb-96a4-799c96e008fc.jpg",
+            "collectorNumber": "17",
+            "displayManaCost": " ",
+            "displayName": "Treasure",
+            "displayPowerToughness": null,
+            "displayTypeLine": null,
+            "id": "tneo_en_17",
+            "faceOrder": null,
+            "flavorText": null,
+            "keyruneColor": null,
+            "loyalty": null,
+            "manaCost": null,
+            "numberOrder": null,
+            "name": "Treasure",
+            "normalURL": "https://cards.scryfall.io/normal/front/6/9/6911181d-573b-41eb-96a4-799c96e008fc.jpg",
+            "oracleText": null,
+            "pngURL": "https://cards.scryfall.io/png/front/6/9/6911181d-573b-41eb-96a4-799c96e008fc.png",
+            "power": null,
+            "printedName": null,
+            "printedText": null,
+            "printedTypeLine": null,
+            "toughness": null,
+            "typeLine": null,
+            "colors": [],
+            "language": {
+              "__typename": "MGLanguage",
+              "id": "en",
+              "displayID": null,
+              "name": "English"
+            },
+            "layout": null,
+            "prices": null,
+            "rarity": null,
+            "set": {
+              "__typename": "MGSet",
+              "name": "Kamigawa: Neon Dynasty Tokens",
+              "keyruneUnicode": "e98c"
+            },
+            "supertypes": null,
+            "faces": [],
+            "printings": [],
+            "otherLanguages": [],
+            "variations": []
+          },
+          "component": {
+            "__typename": "MGComponent",
+            "name": "Token"
+          }
+        },
+        {
+          "__typename": "MGCardComponent",
+          "card": {
+            "__typename": "MGCard",
+            "artCropURL": "https://cards.scryfall.io/art_crop/front/0/d/0d9461c3-f545-4efb-926e-759961db0495.jpg",
+            "collectorNumber": "8",
+            "displayManaCost": " ",
+            "displayName": "Goblin Shaman",
+            "displayPowerToughness": null,
+            "displayTypeLine": null,
+            "id": "tneo_en_8",
+            "faceOrder": null,
+            "flavorText": null,
+            "keyruneColor": null,
+            "loyalty": null,
+            "manaCost": null,
+            "numberOrder": null,
+            "name": "Goblin Shaman",
+            "normalURL": "https://cards.scryfall.io/normal/front/0/d/0d9461c3-f545-4efb-926e-759961db0495.jpg",
+            "oracleText": null,
+            "pngURL": "https://cards.scryfall.io/png/front/0/d/0d9461c3-f545-4efb-926e-759961db0495.png",
+            "power": null,
+            "printedName": null,
+            "printedText": null,
+            "printedTypeLine": null,
+            "toughness": null,
+            "typeLine": null,
+            "colors": [],
+            "language": {
+              "__typename": "MGLanguage",
+              "id": "en",
+              "displayID": null,
+              "name": "English"
+            },
+            "layout": null,
+            "prices": null,
+            "rarity": null,
+            "set": {
+              "__typename": "MGSet",
+              "name": "Kamigawa: Neon Dynasty Tokens",
+              "keyruneUnicode": "e98c"
+            },
+            "supertypes": null,
+            "faces": [],
+            "printings": [],
+            "otherLanguages": [],
+            "variations": []
+          },
+          "component": {
+            "__typename": "MGComponent",
+            "name": "Token"
+          }
+        },
+        {
+          "__typename": "MGCardComponent",
+          "card": {
+            "__typename": "MGCard",
+            "artCropURL": "https://cards.scryfall.io/art_crop/front/4/e/4e119457-948d-4ef8-8c27-59fa675f766f.jpg",
+            "collectorNumber": "1",
+            "displayManaCost": " ",
+            "displayName": "Copy",
+            "displayPowerToughness": null,
+            "displayTypeLine": null,
+            "id": "tsos_en_1",
+            "faceOrder": null,
+            "flavorText": null,
+            "keyruneColor": null,
+            "loyalty": null,
+            "manaCost": null,
+            "numberOrder": null,
+            "name": "Copy",
+            "normalURL": "https://cards.scryfall.io/normal/front/4/e/4e119457-948d-4ef8-8c27-59fa675f766f.jpg",
+            "oracleText": null,
+            "pngURL": "https://cards.scryfall.io/png/front/4/e/4e119457-948d-4ef8-8c27-59fa675f766f.png",
+            "power": null,
+            "printedName": null,
+            "printedText": null,
+            "printedTypeLine": null,
+            "toughness": null,
+            "typeLine": null,
+            "colors": [],
+            "language": {
+              "__typename": "MGLanguage",
+              "id": "en",
+              "displayID": null,
+              "name": "English"
+            },
+            "layout": null,
+            "prices": null,
+            "rarity": null,
+            "set": {
+              "__typename": "MGSet",
+              "name": "Secrets of Strixhaven Tokens",
+              "keyruneUnicode": ""
+            },
+            "supertypes": null,
+            "faces": [],
+            "printings": [],
+            "otherLanguages": [],
+            "variations": []
+          },
+          "component": {
+            "__typename": "MGComponent",
+            "name": "Token"
+          }
+        }
+      ],
+      "formatLegalities": [
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Alchemy"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Not Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Brawl"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Commander"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Duel"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Future"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Not Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Gladiator"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Historic"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Legacy"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Modern"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Oathbreaker"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Oldschool"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Not Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Pauper"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Not Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Paupercommander"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Not Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Penny"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Not Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Pioneer"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Predh"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Not Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Premodern"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Not Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Standard"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Not Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Standardbrawl"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Not Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Timeless"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Tlr"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Legal"
+          }
+        },
+        {
+          "__typename": "MGCardFormatLegality",
+          "format": {
+            "__typename": "MGFormat",
+            "name": "Vintage"
+          },
+          "legality": {
+            "__typename": "MGLegality",
+            "name": "Legal"
+          }
+        }
+      ],
+      "frame": {
+        "__typename": "MGFrame",
+        "name": "2015",
+        "description": null
+      },
+      "frameEffects": [
+        {
+          "__typename": "MGFrameEffect",
+          "name": "Enchantment",
+          "description": "The enchantment frame effect"
+        },
+        {
+          "__typename": "MGFrameEffect",
+          "name": "Fandfc",
+          "description": "The cards have fan transforming marks"
+        }
+      ],
+      "rulings": [
+        {
+          "__typename": "MGRuling",
+          "datePublished": "2022-02-18",
+          "id": 359618,
+          "text": "The token created by Reflection of Kiki-Jiki copies exactly what was printed on the original creature (except that the copy also has haste) and nothing else (unless it's copying a creature that's a token or that's copying something else; see below). It doesn't copy whether the creature is tapped or untapped, whether it has any counters on it or Auras and/or Equipment attached to it, or any non-copy effects that changed its power, toughness, types, color, and so on. Most notably, if the target creature isn't normally a creature, the copy won't be a creature."
+        },
+        {
+          "__typename": "MGRuling",
+          "datePublished": "2022-02-18",
+          "id": 359619,
+          "text": "A transforming double-faced card enters the battlefield with its front face up by default, unless a spell or ability instructs you to put it onto the battlefield transformed or you cast it transformed, in which case it enters with its back face up."
+        },
+        {
+          "__typename": "MGRuling",
+          "datePublished": "2022-02-18",
+          "id": 359620,
+          "text": "The mana value of a transforming double-faced card is the mana value of its front face, no matter which face is up."
+        },
+        {
+          "__typename": "MGRuling",
+          "datePublished": "2022-02-18",
+          "id": 359621,
+          "text": "If a copied creature is a token that isn't a copy of something else, the copy copies the original characteristics of that token as stated by the effect that created it."
+        },
+        {
+          "__typename": "MGRuling",
+          "datePublished": "2022-02-18",
+          "id": 359622,
+          "text": "If you are instructed to put a card that isn't a double-faced card onto the battlefield transformed, it will not enter the battlefield at all. In that case, it stays in the zone it was previously in. For example, if a single-faced card is a copy of Azusa's Many Journeys, the chapter III ability will cause it to be exiled and then remain in exile."
+        },
+        {
+          "__typename": "MGRuling",
+          "datePublished": "2022-02-18",
+          "id": 359623,
+          "text": "If another creature becomes a copy of, or enters the battlefield as a copy of, the token, that creature will copy the creature card the token is copying, except it will also have haste. However, you won't sacrifice the new copy at the beginning of the next end step."
+        },
+        {
+          "__typename": "MGRuling",
+          "datePublished": "2022-02-18",
+          "id": 359624,
+          "text": "If a copied creature is copying something else, the token you create will use the copiable values of the target creature. In most cases, it will just be a copy of whatever that creature is copying."
+        },
+        {
+          "__typename": "MGRuling",
+          "datePublished": "2022-02-18",
+          "id": 359625,
+          "text": "If Reflection of Kiki-Jiki's ability creates multiple tokens due to a replacement effect (such as the one Doubling Season creates), you'll sacrifice each of them."
+        },
+        {
+          "__typename": "MGRuling",
+          "datePublished": "2022-02-18",
+          "id": 359626,
+          "text": "If the copied creature has {X} in its mana cost, X is 0."
+        },
+        {
+          "__typename": "MGRuling",
+          "datePublished": "2022-02-18",
+          "id": 359627,
+          "text": "The back face of a transforming double-faced card usually has a color indicator that defines its color."
+        },
+        {
+          "__typename": "MGRuling",
+          "datePublished": "2022-02-18",
+          "id": 359628,
+          "text": "Each transforming double-faced card in this set is cast face up. In every zone other than the battlefield, consider only the characteristics of its front face. If it is on the battlefield, consider only the characteristics of the face that's up; the other face's characteristics are ignored."
+        },
+        {
+          "__typename": "MGRuling",
+          "datePublished": "2022-02-18",
+          "id": 359629,
+          "text": "Any enters-the-battlefield abilities of the copied creature will trigger when the token enters the battlefield. Any “as [this permanent] enters the battlefield” or “[this permanent] enters the battlefield with” abilities of the copied creature card will also work."
+        },
+        {
+          "__typename": "MGRuling",
+          "datePublished": "2022-02-18",
+          "id": 359630,
+          "text": "Each face of a transforming double-faced card has its own set of characteristics: name, types, subtypes, abilities, and so on. While a transforming double-faced permanent is on the battlefield, consider only the characteristics of the face that's currently up. The other set of characteristics is ignored."
+        }
+      ],
+      "subtypes": [
+        {
+          "__typename": "MGCardType",
+          "name": "Goblin Shaman"
+        },
+        {
+          "__typename": "MGCardType",
+          "name": "Saga"
+        }
+      ],
+      "watermark": null
+    }
+  }
+}
