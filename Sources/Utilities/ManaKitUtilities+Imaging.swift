@@ -17,6 +17,16 @@ extension ManaKitUtilities {
         }
     }
 
+    public func image(fileName: String) -> UIImage? {
+        if let name = fileName.split(separator: ".").first,
+           let ext = fileName.split(separator: ".").last,
+           let path = Bundle.module.path(forResource: String(name), ofType: String(ext)) {
+            return UIImage(contentsOfFile: path)
+        } else {
+            return nil
+        }
+    }
+    
     public func symbolImage(name: String) -> UIImage? {
         return UIImage(named: name, in: Bundle.module, compatibleWith: nil)
     }

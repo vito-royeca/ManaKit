@@ -55,7 +55,7 @@ public class ManaKitUtilities {
     ]
     
     // MARK: - Appollo GraphQL
-    private(set) public lazy var apollo = ApolloClient(url: URL(string: apiURL)!)
+    lazy var apollo = ApolloClient(url: URL(string: apiURL)!)
 //    private(set) public lazy var apolloSQLite: ApolloClient = {
 //        do {
 //            let documentsPath = try FileManager.default.url(for: .documentDirectory,
@@ -81,6 +81,7 @@ public class ManaKitUtilities {
     
     // MARK: - Initializer
     private var apiURL = ""
+    
     public func configure(apiURL: String) {
         self.apiURL = apiURL
     }
