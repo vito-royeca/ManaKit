@@ -10,76 +10,62 @@ import Apollo
 import ApolloAPI
 
 extension ManaKitUtilities {
-    public func prefetchSets(type: SectionedSetsType, fetchSets: Bool, fetchCards: Bool) async throws {
-        guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
-            return
-        }
-        
-        let fileURL = URL(filePath: cachePath.appending("/\(type.rawValue).json"))
-        var sectionedSets: [SetsByYearQuery.Data.SetsByYear.SectionedSet]?
+    public func prefetchSets(fetchSetDetails: Bool = false,
+                             includeNonEnglishSets: Bool = false,
+                             fetchCards: Bool = false) async throws {
+        do {
+            let sectionedSets = try await sets(fetchRemote: false, type: .byName)?
+                .sectionedSets
+            try await sets(fetchRemote: false, type: .byType)
+            try await sets(fetchRemote: false, type: .byYear)
+            
+            if let sectionedSets,
+                fetchSetDetails {
+                let maxFetch = 60
+                let sleepInterval = UInt32(30)
+                var sleepCounter = 0
 
-        if !FileManager.default.fileExists(atPath: fileURL.path()) {
-            sectionedSets = try await sets(fetchRemote: true, type: type)?.sectionedSets
-        } else {
-            sectionedSets = try await sets(fetchRemote: false, type: type)?.sectionedSets
-        }
+                for sectionedSet in sectionedSets {
+                    for setItem in sectionedSet.sets {
+                        for language in setItem.languages ?? [] {
+                            if sleepCounter >= maxFetch {
+                                let date = Date()
+                                print("Sleep... \(date)")
+                                sleep(sleepInterval)
+                                sleepCounter = 0
+                            }
+                            
+                            let willFetch = includeNonEnglishSets || language.id == "en"
+                            
+                            if willFetch {
+                                if let set = try await set(fetchRemote: true,
+                                                           setID: setItem.id,
+                                                           languageID: language.id) {
+                                    sleepCounter += 1
+                                    
+                                    if fetchCards {
+                                        for setCard in set.cards ?? [] {
+                                            if sleepCounter >= maxFetch {
+                                                let date = Date()
+                                                print("Sleep... \(date)")
+                                                sleep(sleepInterval)
+                                                sleepCounter = 0
+                                            }
 
-        if fetchSets {
-            let maxFetch = 30
-            let sleepInterval = UInt32(300)
-            var sleepCounter = 0
-            for sectionedSet in sectionedSets ?? [] {
-                for setItem in sectionedSet.sets {
-                    for language in setItem.languages ?? [] {
-                        if sleepCounter >= maxFetch {
-                            let date = Date()
-                            print("Sleep... \(date)")
-                            sleep(sleepInterval)
-                            sleepCounter = 0
-                        }
-                        
-                        // fetch only the English language
-                        if language.id == "en" {
-                            if let set = try await set(fetchRemote: true,
-                                                       setID: setItem.id,
-                                                       languageID: language.id) {
-                                sleepCounter += 1
+                                            if let _ = try await card(fetchRemote: false,
+                                                                      id: setCard.id) {
+                                                sleepCounter += 1
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
+        } catch {
+            print(error)
         }
     }
-
-//    
-//    func fetchCard(id: String) async throws -> Bool {
-//        guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
-//            return false
-//        }
-//        
-//        do {
-//            let response = try await apollo.fetch(query: CardQuery(id: id))
-//            
-//            let array = id.split(separator: "_")
-//            let dir = URL(fileURLWithPath: cachePath.appending("/\(array[0])/\(array[1])"), isDirectory: true)
-//            if !FileManager.default.fileExists(atPath: dir.path) {
-//                try FileManager.default.createDirectory(at: dir,
-//                                                        withIntermediateDirectories: true,
-//                                                        attributes: nil)
-//            }
-//            
-//            let fileURL = dir.appending(path: "\(array[2]).json")
-//            if !FileManager.default.fileExists(atPath: fileURL.path()) {
-//                let jsonData = response.asJSONDictionary()
-//                let data = try JSONSerialization.data(withJSONObject: jsonData, options: [])
-//                try data.write(to: fileURL, options: [])
-//                print("\(fileURL.path())")
-//                return true
-//            }
-//            return false
-//        } catch {
-//            return false
-//        }
-//    }
 }
