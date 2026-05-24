@@ -14,10 +14,10 @@ extension ManaKitUtilities {
                              includeNonEnglishSets: Bool = false,
                              fetchCards: Bool = false) async throws {
         do {
-            let sectionedSets = try await sets(fetchRemote: false, type: .byName)?
+            let sectionedSets = try await sets(fetchRemote: false, type: .byYear)?
                 .sectionedSets
             try await sets(fetchRemote: false, type: .byType)
-            try await sets(fetchRemote: false, type: .byYear)
+            try await sets(fetchRemote: false, type: .byName)
             
             if let sectionedSets,
                 fetchSetDetails {
