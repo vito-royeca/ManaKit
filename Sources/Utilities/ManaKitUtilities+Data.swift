@@ -15,6 +15,9 @@ public enum SectionedSetsType: String {
 }
 
 extension ManaKitUtilities {
+    
+    // MARK: - GraphQL methods
+
     public func sets(fetchRemote: Bool, type: SectionedSetsType) async throws -> SectionedSets? {
         guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
             return nil
@@ -23,9 +26,14 @@ extension ManaKitUtilities {
         let parentURL = URL(filePath: cachePath.appending("/sets"))
         let fileURL = parentURL.appendingPathComponent(type.rawValue, conformingTo: .json)
         let bundleName = type.rawValue
+        var willFetchRemote = fetchRemote
+        
+        if !willFetchRemote {
+            willFetchRemote = isOutdated(file: fileURL)
+        }
         
         do {
-            if fetchRemote {
+            if willFetchRemote {
                 var sectionedSets: SectionedSets?
                 var jsonData: [String: Any]?
 
@@ -84,9 +92,14 @@ extension ManaKitUtilities {
         let parentURL = URL(fileURLWithPath: cachePath.appending("/sets/\(setID)"), isDirectory: true)
         let fileURL = parentURL.appendingPathComponent("\(setID)_\(languageID)", conformingTo: .json)
         let bundleName = "\(setID)_\(languageID)"
+        var willFetchRemote = fetchRemote
+        
+        if !willFetchRemote {
+            willFetchRemote = isOutdated(file: fileURL)
+        }
         
         do {
-            if fetchRemote {
+            if willFetchRemote {
                 var set: SetQuery.Data.Set?
                 var jsonData: [String: Any]?
                 
@@ -127,9 +140,14 @@ extension ManaKitUtilities {
         let parentURL = URL(fileURLWithPath: cachePath.appending("/sets/\(array[0])/\(array[1])"), isDirectory: true)
         let fileURL = parentURL.appendingPathComponent("\(array[2])", conformingTo: .json)
         let bundleName = id
+        var willFetchRemote = fetchRemote
+        
+        if !willFetchRemote {
+            willFetchRemote = isOutdated(file: fileURL)
+        }
         
         do {
-            if fetchRemote {
+            if willFetchRemote {
                 var card: CardQuery.Data.Card?
                 var jsonData: [String: Any]?
                 
@@ -169,9 +187,14 @@ extension ManaKitUtilities {
         let parentURL = URL(fileURLWithPath: cachePath.appending("/printings/\(array[0])/\(array[1])"), isDirectory: true)
         let fileURL = parentURL.appendingPathComponent("\(array[2])", conformingTo: .json)
         let bundleName: String? = nil
+        var willFetchRemote = fetchRemote
+        
+        if !willFetchRemote {
+            willFetchRemote = isOutdated(file: fileURL)
+        }
         
         do {
-            if fetchRemote {
+            if willFetchRemote {
                 var cardPrintings: CardPrintingsQuery.Data.CardPrintings?
                 var jsonData: [String: Any]?
                 
@@ -215,9 +238,14 @@ extension ManaKitUtilities {
         let parentURL = URL(filePath: cachePath.appending("/cardsByIDs"))
         let fileURL = parentURL.appendingPathComponent("\(hash)", conformingTo: .json)
         let bundleName:String? = nil
+        var willFetchRemote = fetchRemote
+        
+        if !willFetchRemote {
+            willFetchRemote = isOutdated(file: fileURL)
+        }
         
         do {
-            if fetchRemote {
+            if willFetchRemote {
                 var cardByIDs: CardsByIDsQuery.Data.CardsByIDs?
                 var jsonData: [String: Any]?
                 
@@ -256,9 +284,14 @@ extension ManaKitUtilities {
         let parentURL = URL(filePath: cachePath.appending("/feeds"))
         let fileURL = parentURL.appendingPathComponent("feeds", conformingTo: .json)
         let bundleName = "feeds"
+        var willFetchRemote = fetchRemote
+        
+        if !willFetchRemote {
+            willFetchRemote = isOutdated(file: fileURL)
+        }
         
         do {
-            if fetchRemote {
+            if willFetchRemote {
                 var feeds: FeedsQuery.Data.Feeds?
                 var jsonData: [String: Any]?
 
@@ -289,7 +322,8 @@ extension ManaKitUtilities {
         }
     }
     
-    // MARK: Private methods
+    
+    // MARK: - Private helper methods
     
     func write(to file: URL, parent: URL?, jsonData: [String: Any]) throws {
         do {
@@ -330,6 +364,28 @@ extension ManaKitUtilities {
             return data
         } catch {
             throw error
+        }
+    }
+    
+    func isOutdated(file: URL) -> Bool {
+        do {
+            let path = file.path()
+            
+            guard FileManager.default.fileExists(atPath: path),
+                let lastUpdated = try FileManager.default.attributesOfItem(atPath: path)[.modificationDate] as? Foundation.Date,
+                let diff = Calendar.current.dateComponents([.minute],
+                                                           from: lastUpdated,
+                                                           to: Foundation.Date()).minute else {
+                    
+                return true
+            }
+            
+            let outdated = diff >= Constants.cacheAge
+//            print("\(file.lastPathComponent) is outdated: \(outdated); It was last updated on: \(lastUpdated)")
+            return outdated
+        } catch {
+//            print(error)
+            return true
         }
     }
 }
