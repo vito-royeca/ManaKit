@@ -220,6 +220,10 @@ fragment CardCompleteInfo on MGCard {
     name
     description
   }
+  keywords {
+    __typename
+    name
+  }
   rulings {
     __typename
     datePublished

@@ -82,6 +82,7 @@ nonisolated public struct CardQuery: GraphQLQuery {
       public var formatLegalities: [FormatLegality] { __data["formatLegalities"] }
       public var frame: Frame? { __data["frame"] }
       public var frameEffects: [FrameEffect] { __data["frameEffects"] }
+      public var keywords: [Keyword] { __data["keywords"] }
       public var rulings: [Ruling]? { __data["rulings"] }
       public var subtypes: [Subtype] { __data["subtypes"] }
       public var watermark: Watermark? { __data["watermark"] }
@@ -141,6 +142,8 @@ nonisolated public struct CardQuery: GraphQLQuery {
       public typealias Frame = CardCompleteInfo.Frame
 
       public typealias FrameEffect = CardCompleteInfo.FrameEffect
+
+      public typealias Keyword = CardCompleteInfo.Keyword
 
       public typealias Ruling = CardCompleteInfo.Ruling
 

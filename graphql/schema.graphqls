@@ -107,6 +107,7 @@ type MGCard {
   formatLegalities: [MGCardFormatLegality!]!
   frame: MGFrame
   frameEffects: [MGFrameEffect!]!
+  keywords: [MGKeyword!]!
   language: MGLanguage
   layout: MGLayout
   otherLanguages: [MGCard!]!
@@ -167,6 +168,10 @@ type MGFrame {
 
 type MGFrameEffect {
   description: String
+  name: String!
+}
+
+type MGKeyword {
   name: String!
 }
 
@@ -292,5 +297,6 @@ type Query {
   card(id: String!): MGCard
   cardPrintings(id: String!, languageID: String!): MGCards
   cardsByIDs(ids: [String!]!): MGCards
+  search(query: String!): MGCards
   feeds: MGFeeds
 }

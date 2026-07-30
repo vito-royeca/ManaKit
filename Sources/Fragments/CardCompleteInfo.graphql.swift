@@ -6,7 +6,7 @@
 
 nonisolated public struct CardCompleteInfo: ManaKit.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment CardCompleteInfo on MGCard { __typename ...CardBasicInfo arenaID: arenaId cmc handModifier isBooster isDigital isFoil isFullArt isHighresImage isNonfoil isOversized isPromo isReprint isReserved isStorySpotlight isTextless lifeModifier mtgoFoilID: mtgoFoilId mtgoID: mtgoId multiverseIDs: multiverseIds releasedAt tcgplayerID: tcgplayerId toughness artists { __typename name } colorIdentities { __typename ...ColorInfo } colorIndicators { __typename ...ColorInfo } componentParts { __typename card { __typename ...CardBasicInfo } component { __typename name } } formatLegalities { __typename format { __typename name } legality { __typename name } } frame { __typename name description } frameEffects { __typename name description } rulings { __typename datePublished id text } subtypes { __typename name } watermark { __typename name } }"#
+    #"fragment CardCompleteInfo on MGCard { __typename ...CardBasicInfo arenaID: arenaId cmc handModifier isBooster isDigital isFoil isFullArt isHighresImage isNonfoil isOversized isPromo isReprint isReserved isStorySpotlight isTextless lifeModifier mtgoFoilID: mtgoFoilId mtgoID: mtgoId multiverseIDs: multiverseIds releasedAt tcgplayerID: tcgplayerId toughness artists { __typename name } colorIdentities { __typename ...ColorInfo } colorIndicators { __typename ...ColorInfo } componentParts { __typename card { __typename ...CardBasicInfo } component { __typename name } } formatLegalities { __typename format { __typename name } legality { __typename name } } frame { __typename name description } frameEffects { __typename name description } keywords { __typename name } rulings { __typename datePublished id text } subtypes { __typename name } watermark { __typename name } }"#
   }
 
   @_spi(Unsafe) public let __data: DataDict
@@ -44,6 +44,7 @@ nonisolated public struct CardCompleteInfo: ManaKit.SelectionSet, Fragment {
     .field("formatLegalities", [FormatLegality].self),
     .field("frame", Frame?.self),
     .field("frameEffects", [FrameEffect].self),
+    .field("keywords", [Keyword].self),
     .field("rulings", [Ruling]?.self),
     .field("subtypes", [Subtype].self),
     .field("watermark", Watermark?.self),
@@ -84,6 +85,7 @@ nonisolated public struct CardCompleteInfo: ManaKit.SelectionSet, Fragment {
   public var formatLegalities: [FormatLegality] { __data["formatLegalities"] }
   public var frame: Frame? { __data["frame"] }
   public var frameEffects: [FrameEffect] { __data["frameEffects"] }
+  public var keywords: [Keyword] { __data["keywords"] }
   public var rulings: [Ruling]? { __data["rulings"] }
   public var subtypes: [Subtype] { __data["subtypes"] }
   public var watermark: Watermark? { __data["watermark"] }
@@ -427,6 +429,25 @@ nonisolated public struct CardCompleteInfo: ManaKit.SelectionSet, Fragment {
 
     public var name: String { __data["name"] }
     public var description: String? { __data["description"] }
+  }
+
+  /// Keyword
+  ///
+  /// Parent Type: `MGKeyword`
+  nonisolated public struct Keyword: ManaKit.SelectionSet {
+    @_spi(Unsafe) public let __data: DataDict
+    @_spi(Unsafe) public init(_dataDict: DataDict) { __data = _dataDict }
+
+    @_spi(Execution) public static var __parentType: any ApolloAPI.ParentType { ManaKit.Objects.MGKeyword }
+    @_spi(Execution) public static var __selections: [ApolloAPI.Selection] { [
+      .field("__typename", String.self),
+      .field("name", String.self),
+    ] }
+    @_spi(Execution) public static var __fulfilledFragments: [any ApolloAPI.SelectionSet.Type] { [
+      CardCompleteInfo.Keyword.self
+    ] }
+
+    public var name: String { __data["name"] }
   }
 
   /// Ruling

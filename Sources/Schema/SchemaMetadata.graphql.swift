@@ -33,6 +33,7 @@ nonisolated public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     "MGFormat": ManaKit.Objects.MGFormat,
     "MGFrame": ManaKit.Objects.MGFrame,
     "MGFrameEffect": ManaKit.Objects.MGFrameEffect,
+    "MGKeyword": ManaKit.Objects.MGKeyword,
     "MGLanguage": ManaKit.Objects.MGLanguage,
     "MGLayout": ManaKit.Objects.MGLayout,
     "MGLegality": ManaKit.Objects.MGLegality,
