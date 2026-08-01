@@ -276,6 +276,51 @@ extension ManaKitUtilities {
         }
     }
 
+    public func search(fetchRemote: Bool, query: String) async throws -> SearchQuery.Data.Search? {
+        guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
+            return nil
+        }
+        
+        let parentURL = URL(fileURLWithPath: cachePath.appending("/search"), isDirectory: true)
+        let fileURL = parentURL.appendingPathComponent("\(query)", conformingTo: .json)
+        var willFetchRemote = fetchRemote
+        
+        if !willFetchRemote {
+            willFetchRemote = isOutdated(file: fileURL)
+        }
+        
+        do {
+            if willFetchRemote {
+                var search: SearchQuery.Data.Search?
+                var jsonData: [String: Any]?
+                
+                // fetch remotely
+                let response = try await apollo.fetch(query: SearchQuery(query: query))
+                search = response.data?.search
+                jsonData = response.asJSONDictionary()
+
+                // write to disk
+                if let search, let jsonData {
+                    try write(to: fileURL, parent: parentURL, jsonData: jsonData)
+                }
+                return search
+            } else {
+                // read from disk (previously downloaded) or from Bundle
+                if let data = try read(from: fileURL, or: nil),
+                   let jsonObject = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String: AnyHashable],
+                   let jsonValue = jsonObject["data"] as? [String: AnyHashable] {
+                    let queryData = try await SearchQuery.Data(data: jsonValue)
+                    return queryData.search
+                } else {
+                    // fallback: fetchRemote = true
+                    return try await search(fetchRemote: true, query: query)
+                }
+            }
+        } catch {
+            throw error
+        }
+    }
+
     public func feeds(fetchRemote: Bool) async throws -> FeedsQuery.Data.Feeds? {
         guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
             return nil
@@ -321,7 +366,6 @@ extension ManaKitUtilities {
             throw error
         }
     }
-    
     
     // MARK: - Private helper methods
     

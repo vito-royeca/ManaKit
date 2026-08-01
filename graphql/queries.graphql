@@ -1,3 +1,12 @@
+query Search($query: String!) {
+  search(query: $query) {
+    count
+    cards {
+      ...CardBasicInfo
+    }
+  }
+}
+
 query Set($input: SetByIDInput!) {
   set(input: $input) {
     ...SetInfo
