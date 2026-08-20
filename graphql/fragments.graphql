@@ -1,3 +1,11 @@
+fragment RuleInfo on MGRule {
+  id
+  order
+  term
+  termSection
+  definition
+}
+
 fragment SectionedSets on MGSectionedSets {
   __typename
   count

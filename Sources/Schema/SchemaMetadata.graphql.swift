@@ -38,6 +38,8 @@ nonisolated public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     "MGLayout": ManaKit.Objects.MGLayout,
     "MGLegality": ManaKit.Objects.MGLegality,
     "MGRarity": ManaKit.Objects.MGRarity,
+    "MGRule": ManaKit.Objects.MGRule,
+    "MGRules": ManaKit.Objects.MGRules,
     "MGRuling": ManaKit.Objects.MGRuling,
     "MGSectionedSet": ManaKit.Objects.MGSectionedSet,
     "MGSectionedSets": ManaKit.Objects.MGSectionedSets,

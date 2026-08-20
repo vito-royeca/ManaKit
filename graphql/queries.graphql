@@ -1,3 +1,45 @@
+query Rules {
+  rules {
+    count
+    rules {
+      ... RuleInfo
+      children {
+        ... RuleInfo
+      }
+      parent {
+        ... RuleInfo
+      }
+    }
+  }
+}
+
+query Rule($id: Int!) {
+  rule(id: $id) {
+    ... RuleInfo
+    children {
+      ... RuleInfo
+    }
+    parent {
+      ... RuleInfo
+    }
+  }
+}
+
+query RulesByQuery($query: String!) {
+  rulesByQuery(query: $query) {
+    count
+    rules {
+      ... RuleInfo
+      children {
+        ... RuleInfo
+      }
+      parent {
+        ... RuleInfo
+      }
+    }
+  }
+}
+
 query Search($query: String!) {
   search(query: $query) {
     count

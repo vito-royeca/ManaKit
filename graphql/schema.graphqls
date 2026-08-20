@@ -196,11 +196,13 @@ type MGRarity {
 }
 
 type MGRule {
-  definition: String!
+  definition: String
   id: Int!
-  order: Float!
+  order: Float
   parent: MGRule
-  term: String!
+  term: String
+  termSection: String
+  children: [MGRule!]
 }
 
 type MGRuling {
@@ -278,6 +280,11 @@ type MGFeeds {
   feeds: [MGFeed!]!
 }
 
+type MGRules {
+  count: Int!
+  rules: [MGRule!]!
+}
+
 """Inputs"""
 input SetByIDInput {
   setID: String!
@@ -298,5 +305,8 @@ type Query {
   cardPrintings(id: String!, languageID: String!): MGCards
   cardsByIDs(ids: [String!]!): MGCards
   search(query: String!): MGCards
+  rules: MGRules
+  rule(id: Int!): MGRule
+  rulesByQuery(query: String!): MGRules
   feeds: MGFeeds
 }
