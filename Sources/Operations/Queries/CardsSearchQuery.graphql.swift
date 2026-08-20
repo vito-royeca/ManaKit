@@ -4,11 +4,11 @@
 @_exported import ApolloAPI
 @_spi(Execution) @_spi(Unsafe) import ApolloAPI
 
-nonisolated public struct SearchQuery: GraphQLQuery {
-  public static let operationName: String = "Search"
+nonisolated public struct CardsSearchQuery: GraphQLQuery {
+  public static let operationName: String = "CardsSearch"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query Search($query: String!) { search(query: $query) { __typename count cards { __typename ...CardBasicInfo } } }"#,
+      #"query CardsSearch($query: String!) { cardsSearch(query: $query) { __typename count cards { __typename ...CardBasicInfo } } }"#,
       fragments: [CardBasicInfo.self, ColorInfo.self, InnerCardInfo.self]
     ))
 
@@ -26,18 +26,18 @@ nonisolated public struct SearchQuery: GraphQLQuery {
 
     @_spi(Execution) public static var __parentType: any ApolloAPI.ParentType { ManaKit.Objects.Query }
     @_spi(Execution) public static var __selections: [ApolloAPI.Selection] { [
-      .field("search", Search?.self, arguments: ["query": .variable("query")]),
+      .field("cardsSearch", CardsSearch?.self, arguments: ["query": .variable("query")]),
     ] }
     @_spi(Execution) public static var __fulfilledFragments: [any ApolloAPI.SelectionSet.Type] { [
-      SearchQuery.Data.self
+      CardsSearchQuery.Data.self
     ] }
 
-    public var search: Search? { __data["search"] }
+    public var cardsSearch: CardsSearch? { __data["cardsSearch"] }
 
-    /// Search
+    /// CardsSearch
     ///
     /// Parent Type: `MGCards`
-    nonisolated public struct Search: ManaKit.SelectionSet {
+    nonisolated public struct CardsSearch: ManaKit.SelectionSet {
       @_spi(Unsafe) public let __data: DataDict
       @_spi(Unsafe) public init(_dataDict: DataDict) { __data = _dataDict }
 
@@ -48,13 +48,13 @@ nonisolated public struct SearchQuery: GraphQLQuery {
         .field("cards", [Card].self),
       ] }
       @_spi(Execution) public static var __fulfilledFragments: [any ApolloAPI.SelectionSet.Type] { [
-        SearchQuery.Data.Search.self
+        CardsSearchQuery.Data.CardsSearch.self
       ] }
 
       public var count: Int { __data["count"] }
       public var cards: [Card] { __data["cards"] }
 
-      /// Search.Card
+      /// CardsSearch.Card
       ///
       /// Parent Type: `MGCard`
       nonisolated public struct Card: ManaKit.SelectionSet {
@@ -67,7 +67,7 @@ nonisolated public struct SearchQuery: GraphQLQuery {
           .fragment(CardBasicInfo.self),
         ] }
         @_spi(Execution) public static var __fulfilledFragments: [any ApolloAPI.SelectionSet.Type] { [
-          SearchQuery.Data.Search.Card.self,
+          CardsSearchQuery.Data.CardsSearch.Card.self,
           CardBasicInfo.self,
           InnerCardInfo.self
         ] }

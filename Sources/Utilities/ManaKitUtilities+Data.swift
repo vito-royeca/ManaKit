@@ -18,6 +18,383 @@ extension ManaKitUtilities {
     
     // MARK: - GraphQL methods
 
+    // Cards
+    public func card(fetchRemote: Bool, id: String) async throws -> CardQuery.Data.Card? {
+        guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
+            return nil
+        }
+        
+        let array = id.split(separator: "_")
+        let parentURL = URL(fileURLWithPath: cachePath.appending("/sets/\(array[0])/\(array[1])"), isDirectory: true)
+        let fileURL = parentURL.appendingPathComponent("\(array[2])", conformingTo: .json)
+        let bundleName = id
+        var willFetchRemote = fetchRemote
+        
+        if !willFetchRemote {
+            willFetchRemote = isOutdated(file: fileURL)
+        }
+        
+        do {
+            if willFetchRemote {
+                var card: CardQuery.Data.Card?
+                var jsonData: [String: Any]?
+                
+                // fetch remotely
+                let response = try await apollo.fetch(query: CardQuery(id: id))
+                card = response.data?.card
+                jsonData = response.asJSONDictionary()
+
+                // write to disk
+                if let jsonData {
+                    try write(to: fileURL, parent: parentURL, jsonData: jsonData)
+                }
+                return card
+            } else {
+                // read from disk (previously downloaded) or from Bundle
+                if let data = try read(from: fileURL, or: bundleName),
+                   let jsonObject = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String: AnyHashable],
+                   let jsonValue = jsonObject["data"] as? [String: AnyHashable] {
+                    let queryData = try await CardQuery.Data(data: jsonValue)
+                    return queryData.card
+                } else {
+                    // fallback: fetchRemote = true
+                    return try await card(fetchRemote: true, id: id)
+                }
+            }
+        } catch {
+            throw error
+        }
+    }
+    
+    public func cardPrintings(fetchRemote: Bool, id: String, languageID: String) async throws -> CardPrintingsQuery.Data.CardPrintings? {
+        guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
+            return nil
+        }
+        
+        let array = id.split(separator: "_")
+        let parentURL = URL(fileURLWithPath: cachePath.appending("/cards/printings/\(array[0])/\(array[1])"), isDirectory: true)
+        let fileURL = parentURL.appendingPathComponent("\(array[2])", conformingTo: .json)
+        let bundleName: String? = nil
+        var willFetchRemote = fetchRemote
+        
+        if !willFetchRemote {
+            willFetchRemote = isOutdated(file: fileURL)
+        }
+        
+        do {
+            if willFetchRemote {
+                var cardPrintings: CardPrintingsQuery.Data.CardPrintings?
+                var jsonData: [String: Any]?
+                
+                // fetch remotely
+                let response = try await apollo.fetch(query: CardPrintingsQuery(id: id, languageID: languageID))
+                cardPrintings = response.data?.cardPrintings
+                jsonData = response.asJSONDictionary()
+
+                // write to disk
+                if let jsonData {
+                    try write(to: fileURL, parent: parentURL, jsonData: jsonData)
+                }
+                return cardPrintings
+            } else {
+                // read from disk (previously downloaded) or from Bundle
+                if let data = try read(from: fileURL, or: bundleName),
+                   let jsonObject = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String: AnyHashable],
+                   let jsonValue = jsonObject["data"] as? [String: AnyHashable] {
+                    let queryData = try await CardPrintingsQuery.Data(data: jsonValue)
+                    return queryData.cardPrintings
+                } else {
+                    // fallback: fetchRemote = true
+                    return try await cardPrintings(fetchRemote: true, id: id, languageID: languageID)
+                }
+            }
+        } catch {
+            throw error
+        }
+    }
+    
+    public func cardsByIDs(fetchRemote: Bool, cardIDs: [String]) async throws -> CardsByIDsQuery.Data.CardsByIDs? {
+        guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
+            return nil
+        }
+        
+        let string = cardIDs.joined(separator: "_")
+        let stringData = Data(string.utf8)
+        let digest = Insecure.MD5.hash(data: stringData)
+        let hash = digest.map { String(format: "%02x", $0) }.joined()
+        
+        let parentURL = URL(filePath: cachePath.appending("/cards/ids"))
+        let fileURL = parentURL.appendingPathComponent("\(hash)", conformingTo: .json)
+        let bundleName:String? = nil
+        var willFetchRemote = fetchRemote
+        
+        if !willFetchRemote {
+            willFetchRemote = isOutdated(file: fileURL)
+        }
+        
+        do {
+            if willFetchRemote {
+                var cardByIDs: CardsByIDsQuery.Data.CardsByIDs?
+                var jsonData: [String: Any]?
+                
+                // fetch remotely
+                let response = try await apollo.fetch(query: CardsByIDsQuery(ids: cardIDs))
+                cardByIDs = response.data?.cardsByIDs
+                jsonData = response.asJSONDictionary()
+
+                // write to disk
+                if let jsonData {
+                    try write(to: fileURL, parent: parentURL, jsonData: jsonData)
+                }
+                return cardByIDs
+            } else {
+                // read from disk (previously downloaded) or from Bundle
+                if let data = try read(from: fileURL, or: bundleName),
+                   let jsonObject = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String: AnyHashable],
+                   let jsonValue = jsonObject["data"] as? [String: AnyHashable] {
+                    let queryData = try await CardsByIDsQuery.Data(data: jsonValue)
+                    return queryData.cardsByIDs
+                } else {
+                    // fallback: fetchRemote = true
+                    return try await cardsByIDs(fetchRemote: true, cardIDs: cardIDs)
+                }
+            }
+        } catch {
+            throw error
+        }
+    }
+
+    public func cardsSearch(fetchRemote: Bool, query: String) async throws -> CardsSearchQuery.Data.CardsSearch? {
+        guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
+            return nil
+        }
+        
+        let parentURL = URL(fileURLWithPath: cachePath.appending("/cards/search"), isDirectory: true)
+        let fileURL = parentURL.appendingPathComponent("\(query)", conformingTo: .json)
+        var willFetchRemote = fetchRemote
+        
+        if !willFetchRemote {
+            willFetchRemote = isOutdated(file: fileURL)
+        }
+        
+        do {
+            if willFetchRemote {
+                var search: CardsSearchQuery.Data.CardsSearch?
+                var jsonData: [String: Any]?
+                
+                // fetch remotely
+                let response = try await apollo.fetch(query: CardsSearchQuery(query: query))
+                search = response.data?.cardsSearch
+                jsonData = response.asJSONDictionary()
+
+                // write to disk
+                if let search, let jsonData {
+                    try write(to: fileURL, parent: parentURL, jsonData: jsonData)
+                }
+                return search
+            } else {
+                // read from disk (previously downloaded) or from Bundle
+                if let data = try read(from: fileURL, or: nil),
+                   let jsonObject = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String: AnyHashable],
+                   let jsonValue = jsonObject["data"] as? [String: AnyHashable] {
+                    let queryData = try await CardsSearchQuery.Data(data: jsonValue)
+                    return queryData.cardsSearch
+                } else {
+                    // fallback: fetchRemote = true
+                    return try await cardsSearch(fetchRemote: true, query: query)
+                }
+            }
+        } catch {
+            throw error
+        }
+    }
+
+    // Feeds
+    public func feeds(fetchRemote: Bool) async throws -> FeedsQuery.Data.Feeds? {
+        guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
+            return nil
+        }
+
+        let parentURL = URL(filePath: cachePath.appending("/feeds"))
+        let fileURL = parentURL.appendingPathComponent("feeds", conformingTo: .json)
+        let bundleName = "feeds"
+        var willFetchRemote = fetchRemote
+        
+        if !willFetchRemote {
+            willFetchRemote = isOutdated(file: fileURL)
+        }
+        
+        do {
+            if willFetchRemote {
+                var feeds: FeedsQuery.Data.Feeds?
+                var jsonData: [String: Any]?
+
+                // fetch remotely
+                let response = try await ManaKitUtilities.shared.apollo.fetch(query: FeedsQuery())
+                feeds = response.data?.feeds
+                jsonData = response.asJSONDictionary()
+                
+                // write to disk
+                if let feeds, let jsonData {
+                    try write(to: fileURL, parent: parentURL, jsonData: jsonData)
+                }
+                return feeds
+            } else {
+                // read from disk (previously downloaded) or from Bundle
+                if let data = try read(from: fileURL, or: "feeds"),
+                    let jsonObject = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String: AnyHashable],
+                    let jsonValue = jsonObject["data"] as? [String: AnyHashable] {
+                    let queryData = try await FeedsQuery.Data(data: jsonValue)
+                    return queryData.feeds
+                } else {
+                    // fallback: fetchRemote = true
+                    return try await feeds(fetchRemote: true)
+                }
+            }
+        } catch {
+            throw error
+        }
+    }
+    
+    // Rules
+    public func rule(fetchRemote: Bool, id: Int) async throws -> RuleQuery.Data.Rule? {
+        guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
+            return nil
+        }
+        
+        let parentURL = URL(fileURLWithPath: cachePath.appending("/rules"), isDirectory: true)
+        let fileURL = parentURL.appendingPathComponent("\(id)", conformingTo: .json)
+        let bundleName = "\(id)"
+        var willFetchRemote = fetchRemote
+        
+        if !willFetchRemote {
+            willFetchRemote = isOutdated(file: fileURL)
+        }
+        
+        do {
+            if willFetchRemote {
+                var rule: RuleQuery.Data.Rule?
+                var jsonData: [String: Any]?
+                
+                // fetch remotely
+                let response = try await apollo.fetch(query: RuleQuery(id: Int32(id)))
+                rule = response.data?.rule
+                jsonData = response.asJSONDictionary()
+
+                // write to disk
+                if let jsonData {
+                    try write(to: fileURL, parent: parentURL, jsonData: jsonData)
+                }
+                return rule
+            } else {
+                // read from disk (previously downloaded) or from Bundle
+                if let data = try read(from: fileURL, or: bundleName),
+                   let jsonObject = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String: AnyHashable],
+                   let jsonValue = jsonObject["data"] as? [String: AnyHashable] {
+                    let queryData = try await RuleQuery.Data(data: jsonValue)
+                    return queryData.rule
+                } else {
+                    // fallback: fetchRemote = true
+                    return try await rule(fetchRemote: true, id: id)
+                }
+            }
+        } catch {
+            throw error
+        }
+    }
+    
+    public func rules(fetchRemote: Bool) async throws -> RulesQuery.Data.Rules? {
+        guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
+            return nil
+        }
+
+        let parentURL = URL(filePath: cachePath.appending("/rules"))
+        let fileURL = parentURL.appendingPathComponent("rules", conformingTo: .json)
+        let bundleName = "rules"
+        var willFetchRemote = fetchRemote
+        
+        if !willFetchRemote {
+            willFetchRemote = isOutdated(file: fileURL)
+        }
+        
+        do {
+            if willFetchRemote {
+                var rules: RulesQuery.Data.Rules?
+                var jsonData: [String: Any]?
+
+                // fetch remotely
+                let response = try await ManaKitUtilities.shared.apollo.fetch(query: RulesQuery())
+                rules = response.data?.rules
+                jsonData = response.asJSONDictionary()
+                
+                // write to disk
+                if let rules, let jsonData {
+                    try write(to: fileURL, parent: parentURL, jsonData: jsonData)
+                }
+                return rules
+            } else {
+                // read from disk (previously downloaded) or from Bundle
+                if let data = try read(from: fileURL, or: "rules"),
+                    let jsonObject = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String: AnyHashable],
+                    let jsonValue = jsonObject["data"] as? [String: AnyHashable] {
+                    let queryData = try await RulesQuery.Data(data: jsonValue)
+                    return queryData.rules
+                } else {
+                    // fallback: fetchRemote = true
+                    return try await rules(fetchRemote: true)
+                }
+            }
+        } catch {
+            throw error
+        }
+    }
+    
+    public func rulesSearch(fetchRemote: Bool, query: String) async throws -> RulesSearchQuery.Data.RulesSearch? {
+        guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
+            return nil
+        }
+        
+        let parentURL = URL(fileURLWithPath: cachePath.appending("/rules"), isDirectory: true)
+        let fileURL = parentURL.appendingPathComponent("\(query)", conformingTo: .json)
+        var willFetchRemote = fetchRemote
+        
+        if !willFetchRemote {
+            willFetchRemote = isOutdated(file: fileURL)
+        }
+        
+        do {
+            if willFetchRemote {
+                var search: RulesSearchQuery.Data.RulesSearch?
+                var jsonData: [String: Any]?
+                
+                // fetch remotely
+                let response = try await apollo.fetch(query: RulesSearchQuery(query: query))
+                search = response.data?.rulesSearch
+                jsonData = response.asJSONDictionary()
+
+                // write to disk
+                if let search, let jsonData {
+                    try write(to: fileURL, parent: parentURL, jsonData: jsonData)
+                }
+                return search
+            } else {
+                // read from disk (previously downloaded) or from Bundle
+                if let data = try read(from: fileURL, or: nil),
+                   let jsonObject = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String: AnyHashable],
+                   let jsonValue = jsonObject["data"] as? [String: AnyHashable] {
+                    let queryData = try await RulesSearchQuery.Data(data: jsonValue)
+                    return queryData.rulesSearch
+                } else {
+                    // fallback: fetchRemote = true
+                    return try await rulesSearch(fetchRemote: true, query: query)
+                }
+            }
+        } catch {
+            throw error
+        }
+    }
+
+    // Sets
     public func sets(fetchRemote: Bool, type: SectionedSetsType) async throws -> SectionedSets? {
         guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
             return nil
@@ -131,242 +508,6 @@ extension ManaKitUtilities {
         }
     }
 
-    public func card(fetchRemote: Bool, id: String) async throws -> CardQuery.Data.Card? {
-        guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
-            return nil
-        }
-        
-        let array = id.split(separator: "_")
-        let parentURL = URL(fileURLWithPath: cachePath.appending("/sets/\(array[0])/\(array[1])"), isDirectory: true)
-        let fileURL = parentURL.appendingPathComponent("\(array[2])", conformingTo: .json)
-        let bundleName = id
-        var willFetchRemote = fetchRemote
-        
-        if !willFetchRemote {
-            willFetchRemote = isOutdated(file: fileURL)
-        }
-        
-        do {
-            if willFetchRemote {
-                var card: CardQuery.Data.Card?
-                var jsonData: [String: Any]?
-                
-                // fetch remotely
-                let response = try await apollo.fetch(query: CardQuery(id: id))
-                card = response.data?.card
-                jsonData = response.asJSONDictionary()
-
-                // write to disk
-                if let jsonData {
-                    try write(to: fileURL, parent: parentURL, jsonData: jsonData)
-                }
-                return card
-            } else {
-                // read from disk (previously downloaded) or from Bundle
-                if let data = try read(from: fileURL, or: bundleName),
-                   let jsonObject = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String: AnyHashable],
-                   let jsonValue = jsonObject["data"] as? [String: AnyHashable] {
-                    let queryData = try await CardQuery.Data(data: jsonValue)
-                    return queryData.card
-                } else {
-                    // fallback: fetchRemote = true
-                    return try await card(fetchRemote: true, id: id)
-                }
-            }
-        } catch {
-            throw error
-        }
-    }
-    
-    public func cardPrintings(fetchRemote: Bool, id: String, languageID: String) async throws -> CardPrintingsQuery.Data.CardPrintings? {
-        guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
-            return nil
-        }
-        
-        let array = id.split(separator: "_")
-        let parentURL = URL(fileURLWithPath: cachePath.appending("/printings/\(array[0])/\(array[1])"), isDirectory: true)
-        let fileURL = parentURL.appendingPathComponent("\(array[2])", conformingTo: .json)
-        let bundleName: String? = nil
-        var willFetchRemote = fetchRemote
-        
-        if !willFetchRemote {
-            willFetchRemote = isOutdated(file: fileURL)
-        }
-        
-        do {
-            if willFetchRemote {
-                var cardPrintings: CardPrintingsQuery.Data.CardPrintings?
-                var jsonData: [String: Any]?
-                
-                // fetch remotely
-                let response = try await apollo.fetch(query: CardPrintingsQuery(id: id, languageID: languageID))
-                cardPrintings = response.data?.cardPrintings
-                jsonData = response.asJSONDictionary()
-
-                // write to disk
-                if let jsonData {
-                    try write(to: fileURL, parent: parentURL, jsonData: jsonData)
-                }
-                return cardPrintings
-            } else {
-                // read from disk (previously downloaded) or from Bundle
-                if let data = try read(from: fileURL, or: bundleName),
-                   let jsonObject = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String: AnyHashable],
-                   let jsonValue = jsonObject["data"] as? [String: AnyHashable] {
-                    let queryData = try await CardPrintingsQuery.Data(data: jsonValue)
-                    return queryData.cardPrintings
-                } else {
-                    // fallback: fetchRemote = true
-                    return try await cardPrintings(fetchRemote: true, id: id, languageID: languageID)
-                }
-            }
-        } catch {
-            throw error
-        }
-    }
-    
-    public func cardsByIDs(fetchRemote: Bool, cardIDs: [String]) async throws -> CardsByIDsQuery.Data.CardsByIDs? {
-        guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
-            return nil
-        }
-        
-        let string = cardIDs.joined(separator: "_")
-        let stringData = Data(string.utf8)
-        let digest = Insecure.MD5.hash(data: stringData)
-        let hash = digest.map { String(format: "%02x", $0) }.joined()
-        
-        let parentURL = URL(filePath: cachePath.appending("/cardsByIDs"))
-        let fileURL = parentURL.appendingPathComponent("\(hash)", conformingTo: .json)
-        let bundleName:String? = nil
-        var willFetchRemote = fetchRemote
-        
-        if !willFetchRemote {
-            willFetchRemote = isOutdated(file: fileURL)
-        }
-        
-        do {
-            if willFetchRemote {
-                var cardByIDs: CardsByIDsQuery.Data.CardsByIDs?
-                var jsonData: [String: Any]?
-                
-                // fetch remotely
-                let response = try await apollo.fetch(query: CardsByIDsQuery(ids: cardIDs))
-                cardByIDs = response.data?.cardsByIDs
-                jsonData = response.asJSONDictionary()
-
-                // write to disk
-                if let jsonData {
-                    try write(to: fileURL, parent: parentURL, jsonData: jsonData)
-                }
-                return cardByIDs
-            } else {
-                // read from disk (previously downloaded) or from Bundle
-                if let data = try read(from: fileURL, or: bundleName),
-                   let jsonObject = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String: AnyHashable],
-                   let jsonValue = jsonObject["data"] as? [String: AnyHashable] {
-                    let queryData = try await CardsByIDsQuery.Data(data: jsonValue)
-                    return queryData.cardsByIDs
-                } else {
-                    // fallback: fetchRemote = true
-                    return try await cardsByIDs(fetchRemote: true, cardIDs: cardIDs)
-                }
-            }
-        } catch {
-            throw error
-        }
-    }
-
-    public func search(fetchRemote: Bool, query: String) async throws -> SearchQuery.Data.Search? {
-        guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
-            return nil
-        }
-        
-        let parentURL = URL(fileURLWithPath: cachePath.appending("/search"), isDirectory: true)
-        let fileURL = parentURL.appendingPathComponent("\(query)", conformingTo: .json)
-        var willFetchRemote = fetchRemote
-        
-        if !willFetchRemote {
-            willFetchRemote = isOutdated(file: fileURL)
-        }
-        
-        do {
-            if willFetchRemote {
-                var search: SearchQuery.Data.Search?
-                var jsonData: [String: Any]?
-                
-                // fetch remotely
-                let response = try await apollo.fetch(query: SearchQuery(query: query))
-                search = response.data?.search
-                jsonData = response.asJSONDictionary()
-
-                // write to disk
-                if let search, let jsonData {
-                    try write(to: fileURL, parent: parentURL, jsonData: jsonData)
-                }
-                return search
-            } else {
-                // read from disk (previously downloaded) or from Bundle
-                if let data = try read(from: fileURL, or: nil),
-                   let jsonObject = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String: AnyHashable],
-                   let jsonValue = jsonObject["data"] as? [String: AnyHashable] {
-                    let queryData = try await SearchQuery.Data(data: jsonValue)
-                    return queryData.search
-                } else {
-                    // fallback: fetchRemote = true
-                    return try await search(fetchRemote: true, query: query)
-                }
-            }
-        } catch {
-            throw error
-        }
-    }
-
-    public func feeds(fetchRemote: Bool) async throws -> FeedsQuery.Data.Feeds? {
-        guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
-            return nil
-        }
-
-        let parentURL = URL(filePath: cachePath.appending("/feeds"))
-        let fileURL = parentURL.appendingPathComponent("feeds", conformingTo: .json)
-        let bundleName = "feeds"
-        var willFetchRemote = fetchRemote
-        
-        if !willFetchRemote {
-            willFetchRemote = isOutdated(file: fileURL)
-        }
-        
-        do {
-            if willFetchRemote {
-                var feeds: FeedsQuery.Data.Feeds?
-                var jsonData: [String: Any]?
-
-                // fetch remotely
-                let response = try await ManaKitUtilities.shared.apollo.fetch(query: FeedsQuery())
-                feeds = response.data?.feeds
-                jsonData = response.asJSONDictionary()
-                
-                // write to disk
-                if let feeds, let jsonData {
-                    try write(to: fileURL, parent: parentURL, jsonData: jsonData)
-                }
-                return feeds
-            } else {
-                // read from disk (previously downloaded) or from Bundle
-                if let data = try read(from: fileURL, or: "feeds"),
-                    let jsonObject = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String: AnyHashable],
-                    let jsonValue = jsonObject["data"] as? [String: AnyHashable] {
-                    let queryData = try await FeedsQuery.Data(data: jsonValue)
-                    return queryData.feeds
-                } else {
-                    // fallback: fetchRemote = true
-                    return try await feeds(fetchRemote: true)
-                }
-            }
-        } catch {
-            throw error
-        }
-    }
-    
     // MARK: - Private helper methods
     
     func write(to file: URL, parent: URL?, jsonData: [String: Any]) throws {

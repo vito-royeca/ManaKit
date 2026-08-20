@@ -295,18 +295,18 @@ input SetByIDInput {
 
 """Queries"""
 type Query {
+  card(id: String!): MGCard
+  cardPrintings(id: String!, languageID: String!): MGCards
+  cardsByIDs(ids: [String!]!): MGCards
+  cardsSearch(query: String!): MGCards
+  feeds: MGFeeds
+  rule(id: Int!): MGRule
+  rules: MGRules
+  rulesSearch(query: String!): MGRules
   set(input: SetByIDInput): MGSet
   sets: MGSets
   setTypes: MGSetType
   setsByName: MGSectionedSets
   setsByType: MGSectionedSets
   setsByYear: MGSectionedSets
-  card(id: String!): MGCard
-  cardPrintings(id: String!, languageID: String!): MGCards
-  cardsByIDs(ids: [String!]!): MGCards
-  search(query: String!): MGCards
-  rules: MGRules
-  rule(id: Int!): MGRule
-  rulesByQuery(query: String!): MGRules
-  feeds: MGFeeds
 }

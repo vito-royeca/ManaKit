@@ -1,14 +1,42 @@
-query Rules {
-  rules {
+query Card($id: String!) {
+  card(id: $id) {
+    ...CardCompleteInfo
+  }
+}
+
+query CardPrintings($id: String!, $languageID: String!) {
+  cardPrintings(id: $id, languageID: $languageID) {
     count
-    rules {
-      ... RuleInfo
-      children {
-        ... RuleInfo
-      }
-      parent {
-        ... RuleInfo
-      }
+    cards {
+      ...CardBasicInfo
+    }
+  }
+}
+
+query CardsByIDs($ids: [String!]!) {
+  cardsByIDs(ids: $ids) {
+    count
+    cards {
+      ...CardBasicInfo
+    }
+  }
+}
+
+query CardsSearch($query: String!) {
+  cardsSearch(query: $query) {
+    count
+    cards {
+      ...CardBasicInfo
+    }
+  }
+}
+
+query Feeds {
+  feeds {
+    count
+    feeds {
+      title
+      url
     }
   }
 }
@@ -25,8 +53,8 @@ query Rule($id: Int!) {
   }
 }
 
-query RulesByQuery($query: String!) {
-  rulesByQuery(query: $query) {
+query Rules {
+  rules {
     count
     rules {
       ... RuleInfo
@@ -40,11 +68,17 @@ query RulesByQuery($query: String!) {
   }
 }
 
-query Search($query: String!) {
-  search(query: $query) {
+query RulesSearch($query: String!) {
+  rulesSearch(query: $query) {
     count
-    cards {
-      ...CardBasicInfo
+    rules {
+      ... RuleInfo
+      children {
+        ... RuleInfo
+      }
+      parent {
+        ... RuleInfo
+      }
     }
   }
 }
@@ -82,39 +116,5 @@ query SetsByType {
 query SetsByYear {
   setsByYear {
     ...SectionedSets
-  }
-}
-
-query Card($id: String!) {
-  card(id: $id) {
-    ...CardCompleteInfo
-  }
-}
-
-query CardPrintings($id: String!, $languageID: String!) {
-  cardPrintings(id: $id, languageID: $languageID) {
-    count
-    cards {
-      ...CardBasicInfo
-    }
-  }
-}
-
-query CardsByIDs($ids: [String!]!) {
-  cardsByIDs(ids: $ids) {
-    count
-    cards {
-      ...CardBasicInfo
-    }
-  }
-}
-
-query Feeds {
-  feeds {
-    count
-    feeds {
-      title
-      url
-    }
   }
 }

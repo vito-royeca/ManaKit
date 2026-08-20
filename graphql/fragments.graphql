@@ -1,4 +1,5 @@
 fragment RuleInfo on MGRule {
+  __typename
   id
   order
   term

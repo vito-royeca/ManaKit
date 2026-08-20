@@ -4,11 +4,11 @@
 @_exported import ApolloAPI
 @_spi(Execution) @_spi(Unsafe) import ApolloAPI
 
-nonisolated public struct RulesByQuery: GraphQLQuery {
-  public static let operationName: String = "RulesByQuery"
+nonisolated public struct RulesSearchQuery: GraphQLQuery {
+  public static let operationName: String = "RulesSearch"
   public static let operationDocument: ApolloAPI.OperationDocument = .init(
     definition: .init(
-      #"query RulesByQuery($query: String!) { rulesByQuery(query: $query) { __typename count rules { __typename ...RuleInfo children { __typename ...RuleInfo } parent { __typename ...RuleInfo } } } }"#,
+      #"query RulesSearch($query: String!) { rulesSearch(query: $query) { __typename count rules { __typename ...RuleInfo children { __typename ...RuleInfo } parent { __typename ...RuleInfo } } } }"#,
       fragments: [RuleInfo.self]
     ))
 
@@ -26,18 +26,18 @@ nonisolated public struct RulesByQuery: GraphQLQuery {
 
     @_spi(Execution) public static var __parentType: any ApolloAPI.ParentType { ManaKit.Objects.Query }
     @_spi(Execution) public static var __selections: [ApolloAPI.Selection] { [
-      .field("rulesByQuery", RulesByQuery?.self, arguments: ["query": .variable("query")]),
+      .field("rulesSearch", RulesSearch?.self, arguments: ["query": .variable("query")]),
     ] }
     @_spi(Execution) public static var __fulfilledFragments: [any ApolloAPI.SelectionSet.Type] { [
-      RulesByQuery.Data.self
+      RulesSearchQuery.Data.self
     ] }
 
-    public var rulesByQuery: RulesByQuery? { __data["rulesByQuery"] }
+    public var rulesSearch: RulesSearch? { __data["rulesSearch"] }
 
-    /// RulesByQuery
+    /// RulesSearch
     ///
     /// Parent Type: `MGRules`
-    nonisolated public struct RulesByQuery: ManaKit.SelectionSet {
+    nonisolated public struct RulesSearch: ManaKit.SelectionSet {
       @_spi(Unsafe) public let __data: DataDict
       @_spi(Unsafe) public init(_dataDict: DataDict) { __data = _dataDict }
 
@@ -48,13 +48,13 @@ nonisolated public struct RulesByQuery: GraphQLQuery {
         .field("rules", [Rule].self),
       ] }
       @_spi(Execution) public static var __fulfilledFragments: [any ApolloAPI.SelectionSet.Type] { [
-        RulesByQuery.Data.RulesByQuery.self
+        RulesSearchQuery.Data.RulesSearch.self
       ] }
 
       public var count: Int { __data["count"] }
       public var rules: [Rule] { __data["rules"] }
 
-      /// RulesByQuery.Rule
+      /// RulesSearch.Rule
       ///
       /// Parent Type: `MGRule`
       nonisolated public struct Rule: ManaKit.SelectionSet {
@@ -69,7 +69,7 @@ nonisolated public struct RulesByQuery: GraphQLQuery {
           .fragment(RuleInfo.self),
         ] }
         @_spi(Execution) public static var __fulfilledFragments: [any ApolloAPI.SelectionSet.Type] { [
-          RulesByQuery.Data.RulesByQuery.Rule.self,
+          RulesSearchQuery.Data.RulesSearch.Rule.self,
           RuleInfo.self
         ] }
 
@@ -88,7 +88,7 @@ nonisolated public struct RulesByQuery: GraphQLQuery {
           public var ruleInfo: RuleInfo { _toFragment() }
         }
 
-        /// RulesByQuery.Rule.Child
+        /// RulesSearch.Rule.Child
         ///
         /// Parent Type: `MGRule`
         nonisolated public struct Child: ManaKit.SelectionSet {
@@ -101,7 +101,7 @@ nonisolated public struct RulesByQuery: GraphQLQuery {
             .fragment(RuleInfo.self),
           ] }
           @_spi(Execution) public static var __fulfilledFragments: [any ApolloAPI.SelectionSet.Type] { [
-            RulesByQuery.Data.RulesByQuery.Rule.Child.self,
+            RulesSearchQuery.Data.RulesSearch.Rule.Child.self,
             RuleInfo.self
           ] }
 
@@ -119,7 +119,7 @@ nonisolated public struct RulesByQuery: GraphQLQuery {
           }
         }
 
-        /// RulesByQuery.Rule.Parent
+        /// RulesSearch.Rule.Parent
         ///
         /// Parent Type: `MGRule`
         nonisolated public struct Parent: ManaKit.SelectionSet {
@@ -132,7 +132,7 @@ nonisolated public struct RulesByQuery: GraphQLQuery {
             .fragment(RuleInfo.self),
           ] }
           @_spi(Execution) public static var __fulfilledFragments: [any ApolloAPI.SelectionSet.Type] { [
-            RulesByQuery.Data.RulesByQuery.Rule.Parent.self,
+            RulesSearchQuery.Data.RulesSearch.Rule.Parent.self,
             RuleInfo.self
           ] }
 
