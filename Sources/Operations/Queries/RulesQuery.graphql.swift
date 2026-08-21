@@ -75,7 +75,6 @@ nonisolated public struct RulesQuery: GraphQLQuery {
         public var parent: Parent? { __data["parent"] }
         public var children: [Child]? { __data["children"] }
         public var id: Int { __data["id"] }
-        public var order: Double? { __data["order"] }
         public var term: String? { __data["term"] }
         public var termSection: String? { __data["termSection"] }
         public var definition: String? { __data["definition"] }

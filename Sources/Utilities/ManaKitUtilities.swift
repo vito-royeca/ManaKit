@@ -152,11 +152,15 @@ public class ManaKitUtilities {
         urls.append(url)
         
         for url in urls {
-            if !CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil) {
-                print("Failed to register font at: \(url)")
-            }
+            loadCustomFont(url: url)
         }
         
 //        NotificationCenter.default.post(name: Notification.Name(Notifications.fontsLoaded), object: nil)
+    }
+    
+    func loadCustomFont(url: URL) {
+        if !CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil) {
+            print("Failed to register font at: \(url)")
+        }
     }
 }

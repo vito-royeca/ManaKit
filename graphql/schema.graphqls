@@ -198,7 +198,6 @@ type MGRarity {
 type MGRule {
   definition: String
   id: Int!
-  order: Float
   parent: MGRule
   term: String
   termSection: String

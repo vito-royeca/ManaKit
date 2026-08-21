@@ -1,7 +1,6 @@
 fragment RuleBasicInfo on MGRule {
   __typename
   id
-  order
   term
   termSection
   definition

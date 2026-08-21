@@ -6,7 +6,7 @@
 
 nonisolated public struct RuleBasicInfo: ManaKit.SelectionSet, Fragment {
   public static var fragmentDefinition: StaticString {
-    #"fragment RuleBasicInfo on MGRule { __typename id order term termSection definition }"#
+    #"fragment RuleBasicInfo on MGRule { __typename id term termSection definition }"#
   }
 
   @_spi(Unsafe) public let __data: DataDict
@@ -16,7 +16,6 @@ nonisolated public struct RuleBasicInfo: ManaKit.SelectionSet, Fragment {
   @_spi(Execution) public static var __selections: [ApolloAPI.Selection] { [
     .field("__typename", String.self),
     .field("id", Int.self),
-    .field("order", Double?.self),
     .field("term", String?.self),
     .field("termSection", String?.self),
     .field("definition", String?.self),
@@ -26,7 +25,6 @@ nonisolated public struct RuleBasicInfo: ManaKit.SelectionSet, Fragment {
   ] }
 
   public var id: Int { __data["id"] }
-  public var order: Double? { __data["order"] }
   public var term: String? { __data["term"] }
   public var termSection: String? { __data["termSection"] }
   public var definition: String? { __data["definition"] }
