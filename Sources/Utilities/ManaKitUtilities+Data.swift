@@ -262,7 +262,7 @@ extension ManaKitUtilities {
             return nil
         }
 
-        let fileName = id != nil ? "\(id)" : "tableOfContents"
+        let fileName = id != nil ? "\(id!)" : "tableOfContents"
         let parentURL = URL(fileURLWithPath: cachePath.appending("/rules"), isDirectory: true)
         let fileURL = parentURL.appendingPathComponent(fileName, conformingTo: .json)
         let bundleName = fileName

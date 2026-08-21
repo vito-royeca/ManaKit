@@ -51,8 +51,10 @@ public class ManaKitUtilities {
         "beleren-bold-webfont",
         "belerensmallcaps-bold-webfont",
         "Goudy Medieval",
+        "keyrune",
+        "mana",
         "Matrix Bold",
-        "MPlantin"
+        "mplantin"
     ]
     
     // MARK: - Appollo GraphQL
@@ -89,73 +91,92 @@ public class ManaKitUtilities {
     
     // MARK: - Utility methods
 
-    public func downloadKeyruneFont() async {
+    public func downloadSymbolsFont() async {
         guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
             return
         }
         
-        let keyrunePath = "\(cachePath)/keyrune-master"
+        let fonts = [
+            [
+                "name": "keyrune",
+                "localPath": "\(cachePath)/keyrune-master",
+                "remotePath": Constants.keyruneSymbolURL,
+            ],
+            [
+                "name": "mana",
+                "localPath": "\(cachePath)/mana-master",
+                "remotePath": Constants.manaSymbolURL,
+            ]
+        ]
         var willDownload = false
         
-        do {
-            if FileManager.default.fileExists(atPath: keyrunePath) {
-                let attributes = try FileManager.default.attributesOfItem(atPath: keyrunePath)
+        for font in fonts {
+            if let name = font["name"],
+               let localPath = font["localPath"],
+               let remotePath = font["remotePath"],
+               let remoteUrl = URL(string: remotePath) {
                 
-                if let creationDate = attributes[FileAttributeKey.creationDate] as? Foundation.Date,
-                    let diff = Calendar.current.dateComponents([.day],
-                                                               from: creationDate,
-                                                               to: Foundation.Date()).day {
-                    willDownload = diff >= Constants.symbolCacheAge
-                }
-            } else {
-                willDownload = true
-            }
-            
-            guard let url = URL(string: Constants.keyruneSymbolURL) else {
-                return
-            }
-            
-            if willDownload {
-                // Remove the old files
-                if FileManager.default.fileExists(atPath: keyrunePath) {
-                    for file in try FileManager.default.contentsOfDirectory(atPath: keyrunePath) {
-                        let path = "\(keyrunePath)/\(file)"
-                        try FileManager.default.removeItem(atPath: path)
+                do {
+                    if FileManager.default.fileExists(atPath: localPath) {
+                        let attributes = try FileManager.default.attributesOfItem(atPath: localPath)
+                        let lastDownloaded = UserDefaults().object(forKey: "\(name)_lastDownloaded") as? Foundation.Date
+                            ?? Foundation.Date()
+
+                        if let creationDate = attributes[FileAttributeKey.creationDate] as? Foundation.Date,
+                           let diff = Calendar.current.dateComponents([.day],
+                                                                      from: Foundation.Date(),
+                                                                      to: lastDownloaded).day {
+                            willDownload = diff >= Constants.symbolCacheAge
+                        }
+                    } else {
+                        willDownload = true
                     }
-                    try FileManager.default.removeItem(atPath: keyrunePath)
+                    
+                    if willDownload {
+                        // Remove the old files
+                        if FileManager.default.fileExists(atPath: localPath) {
+                            for file in try FileManager.default.contentsOfDirectory(atPath: localPath) {
+                                let path = "\(localPath)/\(file)"
+                                try FileManager.default.removeItem(atPath: path)
+                            }
+                            try FileManager.default.removeItem(atPath: localPath)
+                        }
+                        
+                        let (localURL, _) = try await URLSession.shared.download(from: remoteUrl)
+                        SSZipArchive.unzipFile(atPath: localURL.path, toDestination: cachePath)
+
+                        // record the download date
+                        UserDefaults().set(Foundation.Date(), forKey: "\(name)_lastDownloaded")
+                    }
+                    
+                    // unload bundled font
+                    if let bundlePath = Bundle.module.path(forResource: name, ofType: "ttf") {
+                        let url = URL(fileURLWithPath: bundlePath)
+                        unloadCustomFont(url: url)
+                    }
+                    
+                    // find all .ttf files and load them
+                    for file in try FileManager.default.contentsOfDirectory(atPath: "\(localPath)/fonts") {
+                        if file.hasSuffix(".ttf") {
+                            let url = URL(fileURLWithPath: "\(localPath)/fonts/\(file)")
+                            loadCustomFont(url: url)
+                        }
+                    }
+                } catch {
+                    print(error)
                 }
-
-                let (localURL, _) = try await URLSession.shared.download(from: url)
-                SSZipArchive.unzipFile(atPath: localURL.path, toDestination: cachePath)
-                
-                let fontURL = URL(fileURLWithPath: "\(keyrunePath)/fonts/keyrune.ttf")
-                self.loadCustomFonts(and: fontURL)
-
-            } else {
-                let fontURL = URL(fileURLWithPath: "\(keyrunePath)/fonts/keyrune.ttf")
-                loadCustomFonts(and: fontURL)
             }
-        } catch {
-            print(error)
-            return
+            willDownload = false
         }
     }
     
-    func loadCustomFonts(and url: URL) {
-        var urls = [URL]()
-        
+    public func loadCustomFonts() {
         for font in fontFiles {
             if let path = Bundle.module.path(forResource: font, ofType: "ttf") {
-                urls.append(URL(fileURLWithPath: path))
+                let url = URL(fileURLWithPath: path)
+                loadCustomFont(url: url)
             }
         }
-        urls.append(url)
-        
-        for url in urls {
-            loadCustomFont(url: url)
-        }
-        
-//        NotificationCenter.default.post(name: Notification.Name(Notifications.fontsLoaded), object: nil)
     }
     
     func loadCustomFont(url: URL) {
@@ -163,4 +184,11 @@ public class ManaKitUtilities {
             print("Failed to register font at: \(url)")
         }
     }
+    
+    func unloadCustomFont(url: URL) {
+        if !CTFontManagerUnregisterFontsForURL(url as CFURL, .process, nil) {
+            print("Failed to unregister font at: \(url)")
+        }
+    }
 }
+
