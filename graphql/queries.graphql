@@ -41,29 +41,11 @@ query Feeds {
   }
 }
 
-query Rule($id: Int!) {
-  rule(id: $id) {
-    ... RuleInfo
-    children {
-      ... RuleInfo
-    }
-    parent {
-      ... RuleInfo
-    }
-  }
-}
-
-query Rules {
-  rules {
+query Rules($id: Int) {
+  rules(id: $id) {
     count
     rules {
       ... RuleInfo
-      children {
-        ... RuleInfo
-      }
-      parent {
-        ... RuleInfo
-      }
     }
   }
 }
@@ -73,12 +55,6 @@ query RulesSearch($query: String!) {
     count
     rules {
       ... RuleInfo
-      children {
-        ... RuleInfo
-      }
-      parent {
-        ... RuleInfo
-      }
     }
   }
 }

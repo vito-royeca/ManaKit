@@ -29,8 +29,9 @@ public class ManaKitUtilities {
     public enum Constants {
         public static let eightEditionRelease  = "2003-07-28"
         public static let cacheAge             = 60 // 60 mins
-        public static let keyruneURL           = "https://github.com/andrewgioia/Keyrune/archive/master.zip"
-        public static let keyruneCacheAge      = 30 // 30 days
+        public static let keyruneSymbolURL     = "https://github.com/andrewgioia/keyrune/archive/master.zip"
+        public static let manaSymbolURL        = "https://github.com/andrewgioia/mana/archive/master.zip"
+        public static let symbolCacheAge       = 30 // 30 days
     }
     
     public enum ImageName: String {
@@ -104,13 +105,13 @@ public class ManaKitUtilities {
                     let diff = Calendar.current.dateComponents([.day],
                                                                from: creationDate,
                                                                to: Foundation.Date()).day {
-                    willDownload = diff >= Constants.keyruneCacheAge
+                    willDownload = diff >= Constants.symbolCacheAge
                 }
             } else {
                 willDownload = true
             }
             
-            guard let url = URL(string: Constants.keyruneURL) else {
+            guard let url = URL(string: Constants.keyruneSymbolURL) else {
                 return
             }
             

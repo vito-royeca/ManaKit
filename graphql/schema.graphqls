@@ -300,8 +300,7 @@ type Query {
   cardsByIDs(ids: [String!]!): MGCards
   cardsSearch(query: String!): MGCards
   feeds: MGFeeds
-  rule(id: Int!): MGRule
-  rules: MGRules
+  rules(id: Int): MGRules
   rulesSearch(query: String!): MGRules
   set(input: SetByIDInput): MGSet
   sets: MGSets

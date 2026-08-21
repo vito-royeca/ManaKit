@@ -257,60 +257,15 @@ extension ManaKitUtilities {
     }
     
     // Rules
-    public func rule(fetchRemote: Bool, id: Int) async throws -> RuleQuery.Data.Rule? {
+    public func rules(fetchRemote: Bool, id: Int?) async throws -> RulesQuery.Data.Rules? {
         guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
             return nil
         }
-        
+
+        let fileName = id != nil ? "\(id)" : "tableOfContents"
         let parentURL = URL(fileURLWithPath: cachePath.appending("/rules"), isDirectory: true)
-        let fileURL = parentURL.appendingPathComponent("\(id)", conformingTo: .json)
-        let bundleName = "\(id)"
-        var willFetchRemote = fetchRemote
-        
-        if !willFetchRemote {
-            willFetchRemote = isOutdated(file: fileURL)
-        }
-        
-        do {
-            if willFetchRemote {
-                var rule: RuleQuery.Data.Rule?
-                var jsonData: [String: Any]?
-                
-                // fetch remotely
-                let response = try await apollo.fetch(query: RuleQuery(id: Int32(id)))
-                rule = response.data?.rule
-                jsonData = response.asJSONDictionary()
-
-                // write to disk
-                if let jsonData {
-                    try write(to: fileURL, parent: parentURL, jsonData: jsonData)
-                }
-                return rule
-            } else {
-                // read from disk (previously downloaded) or from Bundle
-                if let data = try read(from: fileURL, or: bundleName),
-                   let jsonObject = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String: AnyHashable],
-                   let jsonValue = jsonObject["data"] as? [String: AnyHashable] {
-                    let queryData = try await RuleQuery.Data(data: jsonValue)
-                    return queryData.rule
-                } else {
-                    // fallback: fetchRemote = true
-                    return try await rule(fetchRemote: true, id: id)
-                }
-            }
-        } catch {
-            throw error
-        }
-    }
-    
-    public func rules(fetchRemote: Bool) async throws -> RulesQuery.Data.Rules? {
-        guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
-            return nil
-        }
-
-        let parentURL = URL(filePath: cachePath.appending("/rules"))
-        let fileURL = parentURL.appendingPathComponent("rules", conformingTo: .json)
-        let bundleName = "rules"
+        let fileURL = parentURL.appendingPathComponent(fileName, conformingTo: .json)
+        let bundleName = fileName
         var willFetchRemote = fetchRemote
         
         if !willFetchRemote {
@@ -323,7 +278,8 @@ extension ManaKitUtilities {
                 var jsonData: [String: Any]?
 
                 // fetch remotely
-                let response = try await ManaKitUtilities.shared.apollo.fetch(query: RulesQuery())
+                let idParam = id != nil ? GraphQLNullable.some(Int32(id!)) : GraphQLNullable.none
+                let response = try await ManaKitUtilities.shared.apollo.fetch(query: RulesQuery(id: idParam))
                 rules = response.data?.rules
                 jsonData = response.asJSONDictionary()
                 
@@ -341,7 +297,7 @@ extension ManaKitUtilities {
                     return queryData.rules
                 } else {
                     // fallback: fetchRemote = true
-                    return try await rules(fetchRemote: true)
+                    return try await rules(fetchRemote: true, id: id)
                 }
             }
         } catch {
