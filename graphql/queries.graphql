@@ -41,6 +41,15 @@ query Feeds {
   }
 }
 
+query GlossarySearch($letter: String!) {
+  glossarySearch(letter: $letter) {
+    count
+    rules {
+      ... RuleInfo
+    }
+  }
+}
+
 query Rules($id: Int) {
   rules(id: $id) {
     count

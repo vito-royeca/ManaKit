@@ -257,6 +257,52 @@ extension ManaKitUtilities {
     }
     
     // Rules
+    
+    public func glossarySearch(fetchRemote: Bool, letter: String) async throws -> GlossarySearchQuery.Data.GlossarySearch? {
+        guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
+            return nil
+        }
+        
+        let parentURL = URL(fileURLWithPath: cachePath.appending("/rules"), isDirectory: true)
+        let fileURL = parentURL.appendingPathComponent("\(letter)", conformingTo: .json)
+        var willFetchRemote = fetchRemote
+        
+        if !willFetchRemote {
+            willFetchRemote = isOutdated(file: fileURL)
+        }
+        
+        do {
+            if willFetchRemote {
+                var search: GlossarySearchQuery.Data.GlossarySearch?
+                var jsonData: [String: Any]?
+                
+                // fetch remotely
+                let response = try await apollo.fetch(query: GlossarySearchQuery(letter: letter))
+                search = response.data?.glossarySearch
+                jsonData = response.asJSONDictionary()
+
+                // write to disk
+                if let search, let jsonData {
+                    try write(to: fileURL, parent: parentURL, jsonData: jsonData)
+                }
+                return search
+            } else {
+                // read from disk (previously downloaded) or from Bundle
+                if let data = try read(from: fileURL, or: nil),
+                   let jsonObject = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String: AnyHashable],
+                   let jsonValue = jsonObject["data"] as? [String: AnyHashable] {
+                    let queryData = try await GlossarySearchQuery.Data(data: jsonValue)
+                    return queryData.glossarySearch
+                } else {
+                    // fallback: fetchRemote = true
+                    return try await glossarySearch(fetchRemote: true, letter: letter)
+                }
+            }
+        } catch {
+            throw error
+        }
+    }
+    
     public func rules(fetchRemote: Bool, id: Int?) async throws -> RulesQuery.Data.Rules? {
         guard let cachePath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first else {
             return nil
